@@ -29,9 +29,8 @@ CREATE TABLE LOS_BORBOTONES.Funcionalidad_X_Rol (
 GO
 
 INSERT INTO LOS_BORBOTONES.Rol (Nombre, Activo)
-VALUES ('Administrador', 1), ('Recepcionista', 1), ('Guest', 1);
+VALUES ('Administrador', 1), ('Recepcionista', 1), ('Guest', 1), ('RolDummy', 0);
 
 INSERT INTO LOS_BORBOTONES.Funcionalidad (Descripcion)
-VALUES ('ABMRoles'), ('ABMReservas'), ('ABMUsuarios'), ('ABMClientes'), ('ABMHoteles'),
-('ABMHabitaciones'), ('ABMRegímenesEstadía'), ('ABMEstadías'), ('ModificarUsuarios');
-
+VALUES ('ABMRol'), ('ABMReserva'), ('ABMUsuario'), ('ABMCliente'), ('ABMHotel'),
+('ABMHabitacion'), ('ABMRégimenEstadía'), ('RegistrarEstadía'), ('RegistrarConsumible'), ('FacturarEstadía'), ('GenerarListadoEstadistico');
