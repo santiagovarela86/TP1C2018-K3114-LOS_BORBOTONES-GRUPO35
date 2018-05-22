@@ -13,39 +13,57 @@ namespace FrbaHotel.Repositorios
     {
         override public Rol getById(int id)
         {
+            //Elementos del Rol a devolver
             String nombre;
             Boolean activo;
             Rol rol;
-            List<Funcionalidad> funcionalidades;
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
 
+            //Configuraciones de la consulta
             String connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["BaseLocal"].ConnectionString;
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            //getRolById.CommandText = "SELECT * FROM Rol WHERE id=@id";
-            sqlCommand.CommandText = @"
-                
-                SELECT f.idFuncionalidad, Descripcion
-                FROM Funcionalidad_X_Rol fr 
-                INNER JOIN Funcionalidad f ON f.idFuncionalidad = fr.idFuncionalidad
-                WHERE fr.idRol = @Id
-
-            ";
+            sqlCommand.Parameters.AddWithValue("@Id", id);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.AddWithValue("@Id", id);
 
+            //Primera Consulta
+            sqlCommand.CommandText = "SELECT * FROM Rol WHERE id = @Id";
+                     
             sqlConnection.Open();
 
             reader = sqlCommand.ExecuteReader();
-            // Data is accessible through the DataReader object here.
 
             nombre = reader.GetString(reader.GetOrdinal("Nombre"));
             activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
-            rol = new Rol(id, nombre, activo, null);
+
+            //Segunda Consulta
+            sqlCommand.CommandText = @"
+                
+                SELECT f.idFuncionalidad, Descripcion
+                FROM LOS_BORBOTONES.Funcionalidad_X_Rol fr 
+                INNER JOIN LOS_BORBOTONES.Funcionalidad f ON f.idFuncionalidad = fr.idFuncionalidad
+                WHERE fr.idRol = @Id
+
+            ";
+
+            reader = sqlCommand.ExecuteReader();
+
+            while(reader.Read()){
+
+                int idFuncionalidad = reader.GetInt32(reader.GetOrdinal("idFuncionalidad"));
+                String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
+                Funcionalidad funcionalidad = new Funcionalidad(idFuncionalidad, descripcion);
+
+                funcionalidades.Add(funcionalidad);
+
+            }
 
             sqlConnection.Close();
+
+            rol = new Rol(id, nombre, activo, funcionalidades);
 
             return rol;
         }
