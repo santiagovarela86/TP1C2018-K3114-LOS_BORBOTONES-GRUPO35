@@ -6,15 +6,26 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.Modelo
 {
-    class Funcionalidad
+    public class Funcionalidad
     {
-        private int id;
+        private int idFuncionalidad;
         private String descripcion;
 
-        public Funcionalidad(int id, String descripcion)
+        public Funcionalidad(int idFuncionalidad, String descripcion)
         {
-            this.id = id;
+            this.idFuncionalidad = idFuncionalidad;
             this.descripcion = descripcion;
         }
+
+        public int getIdFuncionalidad()
+        {
+            return this.idFuncionalidad;
+        }
+
+        public String getDescripcion()
+        {
+            return this.descripcion;
+        }
+
     }
 }

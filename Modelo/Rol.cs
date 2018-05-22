@@ -6,19 +6,39 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.Modelo
 {
-    class Rol
+    public class Rol
     {
-        private int id;
+        private int idRol;
         private String nombre;
         private Boolean activo;
         private List<Funcionalidad> funcionalidades;
 
-        public Rol(int id, String nombre, Boolean activo, List<Funcionalidad> funcionalidades)
+        public Rol(int idRol, String nombre, Boolean activo, List<Funcionalidad> funcionalidades)
         {
-            this.id = id;
+            this.idRol = idRol;
             this.nombre = nombre;
             this.activo = activo;
             this.funcionalidades = funcionalidades;
+        }
+
+        public int getIdRol()
+        {
+            return this.idRol;
+        }
+
+        public String getNombre()
+        {
+            return this.nombre;
+        }
+
+        public Boolean getActivo()
+        {
+            return this.activo;
+        }
+
+        public List<Funcionalidad> getFuncionalidades()
+        {
+            return this.funcionalidades;
         }
 
     }

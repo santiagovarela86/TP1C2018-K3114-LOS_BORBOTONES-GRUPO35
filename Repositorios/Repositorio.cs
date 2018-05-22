@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.Repositorios
 {
-    abstract class Repositorio<T>
+    public abstract class Repositorio<T>
     {
-        abstract public T getById(int id);
-        abstract public List<T> getAll();
+        public abstract T getById(int id);
+        public abstract List<T> getAll();
     }
 }
