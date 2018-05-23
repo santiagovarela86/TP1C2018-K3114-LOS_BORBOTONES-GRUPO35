@@ -21,7 +21,20 @@ namespace TestingFrbaHotel
 
             rol = repositorioRol.getByNombre("Guest");
             Assert.AreEqual(1, rol.getFuncionalidades().Count);
-            
+        }
+
+        [TestMethod]
+        public void Valido_Query_GetAll() 
+        {
+            RepositorioRol repositorioRol = new RepositorioRol();
+
+            Assert.AreEqual(4, repositorioRol.getAll().Count);
+
+            Assert.IsTrue(repositorioRol.getAll().Exists(r => r.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMHotel"))));
+
+            Assert.IsTrue(repositorioRol.getAll().Exists(r => r.getActivo().Equals(false)));
+
+            Assert.IsTrue(repositorioRol.getAll().Exists(r => r.getNombre().Equals("Guest")));
         }
     }
 }

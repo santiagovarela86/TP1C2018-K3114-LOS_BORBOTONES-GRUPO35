@@ -78,7 +78,31 @@ namespace FrbaHotel.Repositorios
 
         override public List<Rol> getAll()
         {
-            throw new NotImplementedException();
+            List<Rol> roles = new List<Rol>();
+            
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+
+            sqlCommand.CommandText = "SELECT idRol FROM LOS_BORBOTONES.Rol";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                roles.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idRol"))));
+            }
+
+            sqlConnection.Close();
+
+            return roles;
         }
 
         public Rol getByNombre(String nombre)
