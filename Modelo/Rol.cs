@@ -8,10 +8,10 @@ namespace FrbaHotel.Modelo
 {
     public class Rol
     {
-        private int idRol;
-        private String nombre;
-        private Boolean activo;
-        private List<Funcionalidad> funcionalidades;
+        private int idRol = 0;
+        private String nombre = "";
+        private Boolean activo = false;
+        private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
 
         public Rol(int idRol, String nombre, Boolean activo, List<Funcionalidad> funcionalidades)
         {
@@ -39,6 +39,11 @@ namespace FrbaHotel.Modelo
         public List<Funcionalidad> getFuncionalidades()
         {
             return this.funcionalidades;
+        }
+
+        public Boolean esNuevo()
+        {
+            return idRol.Equals(0);
         }
 
     }

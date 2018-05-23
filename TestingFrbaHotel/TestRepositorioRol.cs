@@ -52,9 +52,19 @@ namespace TestingFrbaHotel
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
 
-            Assert.IsFalse(repositorioRol.existe(new Rol(50, "Dummy", false, null)));
+            Assert.IsFalse(repositorioRol.exists(new Rol(50, "Dummy", false, null)));
 
-            Assert.IsTrue(repositorioRol.existe(rolAdministrador));
+            Assert.IsTrue(repositorioRol.exists(rolAdministrador));
+
+            Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NoExisteNombreException), "No existe rol con el Nombre asociado")]
+        public void Valido_Get_By_Name()
+        {
+            RepositorioRol repositorioRol = new RepositorioRol();
+            Rol rol = repositorioRol.getByNombre("Lanata");
         }
     }
 }
