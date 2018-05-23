@@ -45,5 +45,16 @@ namespace TestingFrbaHotel
 
             Assert.IsTrue(repositorioRol.getAll().Exists(r => r.getNombre().Equals("Guest")));
         }
+
+        [TestMethod]
+        public void Valido_Existe_EnRepositorio()
+        {
+            RepositorioRol repositorioRol = new RepositorioRol();
+            Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
+
+            Assert.IsFalse(repositorioRol.existe(new Rol(50, "Dummy", false, null)));
+
+            Assert.IsTrue(repositorioRol.existe(rolAdministrador));
+        }
     }
 }

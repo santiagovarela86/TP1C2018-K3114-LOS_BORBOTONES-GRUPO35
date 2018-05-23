@@ -140,12 +140,40 @@ namespace FrbaHotel.Repositorios
 
         override public void save(Rol rol)
         {
-            if (true)
+            if (this.existe(rol))
             {
-                //
+                //Actualizo el registro
             } else {
-                //
+                //Creo un nuevo registro
             }
+        }
+
+        public Boolean existe(Rol rol)
+        {
+            int idRol = 0;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idRol", rol.getIdRol());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idRol FROM LOS_BORBOTONES.Rol WHERE idRol = @idRol";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idRol = reader.GetInt32(reader.GetOrdinal("idROl"));
+            }
+
+            return (idRol != 0);
         }
     }
 }
