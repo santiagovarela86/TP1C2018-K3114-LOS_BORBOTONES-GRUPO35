@@ -7,12 +7,12 @@ using FrbaHotel.Modelo;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios
 {
     public class RepositorioRol : Repositorio<Rol>
     {
-
         override public Rol getById(int idRol)
         {
             //Elementos del Rol a devolver
@@ -45,6 +45,9 @@ namespace FrbaHotel.Repositorios
 
             //Cierro Primera Consulta
             sqlConnection.Close();
+
+            //Si no encuentro elemento con ese ID tiro una excepción
+            if (nombre.Equals("")) throw new NoExisteIDException("No existe rol con el ID asociado");
 
             //Segunda Consulta
             sqlCommand.CommandText = @"
@@ -79,7 +82,7 @@ namespace FrbaHotel.Repositorios
         override public List<Rol> getAll()
         {
             List<Rol> roles = new List<Rol>();
-            
+
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -133,6 +136,16 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             return getById(idRol);
+        }
+
+        override public void save(Rol rol)
+        {
+            if (true)
+            {
+                //
+            } else {
+                //
+            }
         }
     }
 }

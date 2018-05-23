@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System.Collections.Generic;
+using FrbaHotel.Excepciones;
 
 namespace TestingFrbaHotel
 {
@@ -21,6 +22,14 @@ namespace TestingFrbaHotel
 
             rol = repositorioRol.getByNombre("Guest");
             Assert.AreEqual(1, rol.getFuncionalidades().Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NoExisteIDException), "No existe rol con el ID asociado")]
+        public void Valido_ID_OutOfBoundaries()
+        {
+            RepositorioRol repositorioRol = new RepositorioRol();
+            Rol rol = repositorioRol.getById(50);
         }
 
         [TestMethod]
