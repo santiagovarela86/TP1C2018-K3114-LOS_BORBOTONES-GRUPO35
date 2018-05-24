@@ -11,7 +11,7 @@ namespace TestingFrbaHotel
     public class TestRepositorioRol
     {
         [TestMethod]
-        public void Valido_Creacion_Correcta_De_Rol()
+        public void Test_Repo_Rol_Creacion_Rol()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getByNombre("Administrador");
@@ -26,14 +26,14 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteIDException), "No existe rol con el ID asociado")]
-        public void Valido_ID_OutOfBoundaries()
+        public void Test_Repo_Rol_getById()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getById(50);
         }
 
         [TestMethod]
-        public void Valido_Query_GetAll() 
+        public void Test_Repo_Rol_getAll() 
         {
             RepositorioRol repositorioRol = new RepositorioRol();
 
@@ -47,7 +47,7 @@ namespace TestingFrbaHotel
         }
 
         [TestMethod]
-        public void Valido_Existe_EnRepositorio()
+        public void Test_Repo_Rol_exists()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
@@ -61,7 +61,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteNombreException), "No existe rol con el Nombre asociado")]
-        public void Valido_Get_By_Name()
+        public void Test_Repo_Rol_getByName()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getByNombre("Lanata");

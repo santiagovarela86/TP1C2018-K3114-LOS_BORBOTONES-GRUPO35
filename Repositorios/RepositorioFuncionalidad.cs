@@ -11,15 +11,13 @@ using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios
 {
-    public class RepositorioRol : Repositorio<Rol>
+    public class RepositorioFuncionalidad : Repositorio<Funcionalidad>
     {
-        override public Rol getById(int idRol)
+        override public Funcionalidad getById(int idFuncionalidad)
         {
-            //Elementos del Rol a devolver
-            String nombre = "";
-            Boolean activo = false;
-            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
-            Rol rol;
+            //Elementos de la Funcionalidad a devolver
+            String descripcion = "";
+            Funcionalidad funcionalidad;
 
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -28,10 +26,10 @@ namespace FrbaHotel.Repositorios
             SqlDataReader reader;
 
             //Primera Consulta
-            sqlCommand.Parameters.AddWithValue("@idRol", idRol);
+            sqlCommand.Parameters.AddWithValue("@idFuncionalidad", idFuncionalidad);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Rol WHERE idRol = @idRol";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Funcionalidad WHERE idFuncionalidad = @idFuncionalidad";
                      
             sqlConnection.Open();
 
@@ -39,51 +37,24 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
+                descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
             }
 
             //Cierro Primera Consulta
             sqlConnection.Close();
 
             //Si no encuentro elemento con ese ID tiro una excepción
-            if (nombre.Equals("")) throw new NoExisteIDException("No existe rol con el ID asociado");
+            if (descripcion.Equals("")) throw new NoExisteIDException("No existe funcionalidad con el ID asociado");
 
-            //Segunda Consulta
-            sqlCommand.CommandText = @"
-                
-                SELECT f.idFuncionalidad, Descripcion
-                FROM LOS_BORBOTONES.Funcionalidad_X_Rol fr 
-                INNER JOIN LOS_BORBOTONES.Funcionalidad f ON f.idFuncionalidad = fr.idFuncionalidad
-                WHERE fr.idRol = @idRol
+            //Armo la funcionalidad completa
+            funcionalidad = new Funcionalidad(idFuncionalidad, descripcion);
 
-            ";
-
-            sqlConnection.Open();
-            reader = sqlCommand.ExecuteReader();
-
-            //Colecto las funcionalidades
-            while(reader.Read()){
-
-                int idFuncionalidad = reader.GetInt32(reader.GetOrdinal("idFuncionalidad"));
-                String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                Funcionalidad funcionalidad = new Funcionalidad(idFuncionalidad, descripcion);
-
-                funcionalidades.Add(funcionalidad);
-
-            }
-
-            sqlConnection.Close();
-
-            //Armo el rol completo
-            rol = new Rol(idRol, nombre, activo, funcionalidades);
-
-            return rol;
+            return funcionalidad;
         }
 
-        override public List<Rol> getAll()
+        override public List<Funcionalidad> getAll()
         {
-            List<Rol> roles = new List<Rol>();
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -93,7 +64,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
 
-            sqlCommand.CommandText = "SELECT idRol FROM LOS_BORBOTONES.Rol";
+            sqlCommand.CommandText = "SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad";
 
             sqlConnection.Open();
 
@@ -101,17 +72,17 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                roles.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idRol"))));
+                funcionalidades.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idFuncionalidad"))));
             }
 
             sqlConnection.Close();
 
-            return roles;
+            return funcionalidades;
         }
 
-        override public void create(Rol rol)
+        override public void create(Funcionalidad funcionalidad)
         {
-            if (this.exists(rol))
+            if (this.exists(funcionalidad))
             {
                 //Error
             } else {
@@ -119,9 +90,9 @@ namespace FrbaHotel.Repositorios
             }
         }
 
-        override public void update(Rol rol)
+        override public void update(Funcionalidad funcionalidad)
         {
-            if (this.exists(rol))
+            if (this.exists(funcionalidad))
             {
                 //Actualizo el registro
             }
@@ -131,9 +102,9 @@ namespace FrbaHotel.Repositorios
             }
         }
 
-        override public void delete(Rol rol)
+        override public void delete(Funcionalidad funcionalidad)
         {
-            if (this.exists(rol))
+            if (this.exists(funcionalidad))
             {
                 //Borro el registro
             }
@@ -143,20 +114,20 @@ namespace FrbaHotel.Repositorios
             }
         }
 
-        override public Boolean exists(Rol rol)
+        override public Boolean exists(Funcionalidad funcionalidad)
         {
-            int idRol = 0;
-            String nombre = "";
+            int idFuncionalidad = 0;
+            String descripcion = "";
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@idRol", rol.getIdRol());
+            sqlCommand.Parameters.AddWithValue("@idFuncionalidad", funcionalidad.getIdFuncionalidad());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idRol FROM LOS_BORBOTONES.Rol WHERE idRol = @idRol";
+            sqlCommand.CommandText = "SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE idFuncionalidad = @idFuncionalidad";
 
             sqlConnection.Open();
 
@@ -164,15 +135,15 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                idRol = reader.GetInt32(reader.GetOrdinal("idRol"));
+                idFuncionalidad = reader.GetInt32(reader.GetOrdinal("idFuncionalidad"));
             }
 
             sqlConnection.Close();
 
-            sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+            sqlCommand.Parameters.AddWithValue("@Descripcion", funcionalidad.getDescripcion());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT Nombre FROM LOS_BORBOTONES.Rol WHERE Nombre = @Nombre";
+            sqlCommand.CommandText = "SELECT Descripcion FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = @Descripcion";
 
             sqlConnection.Open();
 
@@ -180,29 +151,29 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                nombre = reader.GetString(reader.GetOrdinal("Nombre"));
+                descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
             }
 
             sqlConnection.Close();
 
             //Devuelve verdadero si el ID coincide o si el Nombre coincide
-            return idRol != 0 || rol.getNombre().Equals(nombre);
+            return idFuncionalidad != 0 || funcionalidad.getDescripcion().Equals(descripcion);
         }
 
-        public Rol getByNombre(String nombre)
+        public Funcionalidad getByDescripcion(String descripcion)
         {
-            int idRol = 0;
+            int idFuncionalidad = 0;
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@Nombre", nombre);
+            sqlCommand.Parameters.AddWithValue("@Descripcion", descripcion);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
 
-            sqlCommand.CommandText = "SELECT idRol FROM LOS_BORBOTONES.Rol WHERE nombre = @Nombre";
+            sqlCommand.CommandText = "SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE descripcion = @Descripcion";
 
             sqlConnection.Open();
 
@@ -210,15 +181,15 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                idRol = reader.GetInt32(reader.GetOrdinal("idRol"));
+                idFuncionalidad = reader.GetInt32(reader.GetOrdinal("idFuncionalidad"));
             }
 
             sqlConnection.Close();
 
-            //Si no encuentro elemento con ese Nombre tiro una excepción
-            if (idRol.Equals(0)) throw new NoExisteNombreException("No existe rol con el Nombre asociado");
+            //Si no encuentro elemento con esa Descripcion tiro una excepción
+            if (idFuncionalidad.Equals(0)) throw new NoExisteNombreException("No existe funcionalidad con la Descripcion asociada");
 
-            return getById(idRol);
+            return getById(idFuncionalidad);
         }
     }
 }

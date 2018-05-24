@@ -27,5 +27,9 @@ namespace FrbaHotel.Modelo
             return this.descripcion;
         }
 
+        //Estos metodos extra los necesito para popular los combo Box
+        public String descripcionI { get { return descripcion; } }
+        public int idFuncionalidadI { get { return idFuncionalidad; } }
+
     }
 }
