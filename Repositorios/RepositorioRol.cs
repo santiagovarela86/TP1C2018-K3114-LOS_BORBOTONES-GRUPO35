@@ -220,5 +220,77 @@ namespace FrbaHotel.Repositorios
 
             return getById(idRol);
         }
+
+        public List<Rol> getByQuery(String nombreRol, KeyValuePair<String, Boolean> estado, Funcionalidad funcionalidad)
+        {
+            List<Rol> roles = new List<Rol>();
+            String query = "SELECT idRol FROM LOS_BORBOTONES.Rol";
+
+            //Consulta SIN FILTRO
+            if (nombreRol.Equals("") &&
+                estado.Key == null &&
+                funcionalidad == null)
+            {
+                roles = this.getAll();
+            }
+            else
+            {
+                //Consulta CON FILTROS
+                query = query + " WHERE ";
+                Boolean primerFiltro = true;
+
+                //PREPARO TODO PARA HACER LA CONSULTA
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+
+                //AGREGO FILTRO NOMBRE
+                if (!nombreRol.Equals(""))
+                {
+                    query = query + "Nombre = @Nombre";
+                    sqlCommand.Parameters.AddWithValue("@Nombre", nombreRol);
+                    primerFiltro = false;
+                }
+
+                //AGREGO FILTRO ESTADO
+                if (estado.Key != null)
+                {
+                    if (primerFiltro)
+                    {
+                        query = query + "Activo = @Estado";
+                        primerFiltro = false;
+                    }
+                    else
+                    {
+                        query = query + " AND Activo = @Estado";
+                    }
+                    sqlCommand.Parameters.AddWithValue("@Estado", Convert.ToInt32(estado.Value));
+                }
+
+                //FALTA ARMAR LA CONSULTA PARA FILTRAR POR FUNCIONALIDADES TAMBIEN
+                if (funcionalidad != null)
+                {
+
+                }
+
+                //HAGO LA CONSULTA
+                sqlCommand.CommandText = query;
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                //ARMAR ROLES
+                while (reader.Read())
+                {
+                    roles.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idRol"))));
+                }
+
+                sqlConnection.Close();
+            }
+
+            return roles;
+        }
     }
 }

@@ -66,5 +66,25 @@ namespace TestingFrbaHotel
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getByNombre("Lanata");
         }
+
+        [TestMethod]
+        public void Test_Repo_Rol_getByQuery()
+        {
+            RepositorioRol repositorioRol = new RepositorioRol();
+
+            //SIN FILTRO
+            Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
+
+            //FILTRO NOMBRE
+            Assert.AreEqual(1, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>(), null).Count);
+
+            //FILTRO ESTADO
+            Assert.AreEqual(3, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
+
+            //FILTRO NOMBRE Y ESTADO
+            Assert.AreEqual(0, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>("", false), null).Count);
+
+            //FALTA FILTRO FUNCIONALIDAD
+        }
     }
 }
