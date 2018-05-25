@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaHotel.AbmRol;
+using FrbaHotel.Login;
 
 namespace FrbaHotel
 {
