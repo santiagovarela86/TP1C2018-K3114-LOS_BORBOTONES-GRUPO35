@@ -224,20 +224,16 @@ namespace FrbaHotel.Repositorios
         public List<Rol> getByQuery(String nombreRol, KeyValuePair<String, Boolean> estado, Funcionalidad funcionalidad)
         {
             List<Rol> roles = new List<Rol>();
-            String query = "SELECT idRol FROM LOS_BORBOTONES.Rol";
+            String query = "SELECT r.idRol FROM LOS_BORBOTONES.Rol r";
 
             //Consulta SIN FILTRO
-            if (nombreRol.Equals("") &&
-                estado.Key == null)
+            if (nombreRol.Equals("") && estado.Key == null && funcionalidad == null)
             {
                 roles = this.getAll();
             }
             else
             {
                 //Consulta CON FILTROS
-                query = query + " WHERE ";
-                Boolean primerFiltro = true;
-
                 //PREPARO TODO PARA HACER LA CONSULTA
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -246,26 +242,44 @@ namespace FrbaHotel.Repositorios
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = sqlConnection;
 
+                //Booleano que uso para armar bien la consulta
+                Boolean primerCriterioWhere = true;
+
+                //Consulta por FUNCIONALIDAD
+                //Va primero porque el JOIN va antes que el WHERE
+                if (funcionalidad != null)
+                {
+                    sqlCommand.Parameters.AddWithValue("@Funcionalidad", funcionalidad.getDescripcion());
+                    query = query + " INNER JOIN LOS_BORBOTONES.Funcionalidad_X_Rol fxr ON r.idRol = fxr.idRol INNER JOIN LOS_BORBOTONES.Funcionalidad f ON f.idFuncionalidad = fxr.idFuncionalidad WHERE f.Descripcion = @Funcionalidad";
+                    primerCriterioWhere = false;
+                }
+
                 //AGREGO FILTRO NOMBRE
                 if (!nombreRol.Equals(""))
                 {
-                    //query = query + "Nombre LIKE '"\'%@Nombre%\'";
-                    query = query + "Nombre LIKE @Nombre";
+                    if (primerCriterioWhere)
+                    {
+                        query = query + " WHERE r.Nombre LIKE @Nombre";
+                        primerCriterioWhere = false;
+                    }
+                    else
+                    {
+                        query = query + " AND r.Nombre LIKE @Nombre";
+                    }
                     sqlCommand.Parameters.AddWithValue("@Nombre", "%" + nombreRol + "%");
-                    primerFiltro = false;
                 }
 
                 //AGREGO FILTRO ESTADO
                 if (estado.Key != null)
                 {
-                    if (primerFiltro)
+                    if (primerCriterioWhere)
                     {
-                        query = query + "Activo = @Estado";
-                        primerFiltro = false;
+                        query = query + " WHERE r.Activo = @Estado";
+                        primerCriterioWhere = false;
                     }
                     else
                     {
-                        query = query + " AND Activo = @Estado";
+                        query = query + " AND r.Activo = @Estado";
                     }
                     sqlCommand.Parameters.AddWithValue("@Estado", Convert.ToInt32(estado.Value));
                 }
