@@ -30,8 +30,8 @@ namespace FrbaHotel.AbmRol
             comboBoxEstados.SelectedValue = "";
 
             RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
-            comboBoxFuncionalidades.ValueMember = "idFuncionalidadI";
-            comboBoxFuncionalidades.DisplayMember = "descripcionI";
+            comboBoxFuncionalidades.ValueMember = "idFuncionalidad";
+            comboBoxFuncionalidades.DisplayMember = "descripcion";
             comboBoxFuncionalidades.DataSource = repositorioFuncionalidad.getAll();
             comboBoxFuncionalidades.SelectedValue = "";
         }

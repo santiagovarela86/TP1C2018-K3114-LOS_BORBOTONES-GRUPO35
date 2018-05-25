@@ -8,8 +8,8 @@ namespace FrbaHotel.Modelo
 {
     public class Funcionalidad
     {
-        private int idFuncionalidad;
-        private String descripcion;
+        private int idFuncionalidad = 0;
+        private String descripcion = "";
 
         public Funcionalidad(int idFuncionalidad, String descripcion)
         {
@@ -27,9 +27,9 @@ namespace FrbaHotel.Modelo
             return this.descripcion;
         }
 
-        //Estos metodos/propiedades/atributos(???) extra los necesito para popular los combo Box
-        public int idFuncionalidadI { get { return idFuncionalidad; } }
-        public String descripcionI { get { return descripcion; } }
+        //Estos metodos extra los necesito para popular los combo box y data grid view
+        public int IdFuncionalidad { get { return this.getIdFuncionalidad(); } }
+        public String Descripcion { get { return this.getDescripcion(); } }
 
     }
 }

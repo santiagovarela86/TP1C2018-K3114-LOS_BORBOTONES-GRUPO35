@@ -46,10 +46,10 @@ namespace FrbaHotel.Modelo
             return idRol.Equals(0);
         }
 
-        //Estos metodos/propiedades/atributos(???) extra los necesito para popular los combo Box
-        public int idRolI { get { return idRol; } }
-        public String nombreI { get { return nombre; } }
-        public Boolean activoI { get { return activo; } }
+        //Estos metodos extra los necesito para popular los combo box y data grid view
+        public int IdRol { get { return this.getIdRol(); } }
+        public String Nombre { get { return this.getNombre(); } }
+        public Boolean Activo { get { return this.getActivo(); } }
 
     }
 }
