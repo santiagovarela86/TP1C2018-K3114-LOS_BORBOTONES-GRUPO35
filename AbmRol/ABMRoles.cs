@@ -62,7 +62,7 @@ namespace FrbaHotel.AbmRol
 
             List<Rol> roles = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad);
 
-            
+            dataGridView1.DataSource = roles;
         }
     }
 }

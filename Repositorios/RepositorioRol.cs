@@ -228,8 +228,7 @@ namespace FrbaHotel.Repositorios
 
             //Consulta SIN FILTRO
             if (nombreRol.Equals("") &&
-                estado.Key == null &&
-                funcionalidad == null)
+                estado.Key == null)
             {
                 roles = this.getAll();
             }
@@ -250,8 +249,9 @@ namespace FrbaHotel.Repositorios
                 //AGREGO FILTRO NOMBRE
                 if (!nombreRol.Equals(""))
                 {
-                    query = query + "Nombre = @Nombre";
-                    sqlCommand.Parameters.AddWithValue("@Nombre", nombreRol);
+                    //query = query + "Nombre LIKE '"\'%@Nombre%\'";
+                    query = query + "Nombre LIKE @Nombre";
+                    sqlCommand.Parameters.AddWithValue("@Nombre", "%" + nombreRol + "%");
                     primerFiltro = false;
                 }
 
@@ -268,12 +268,6 @@ namespace FrbaHotel.Repositorios
                         query = query + " AND Activo = @Estado";
                     }
                     sqlCommand.Parameters.AddWithValue("@Estado", Convert.ToInt32(estado.Value));
-                }
-
-                //FALTA ARMAR LA CONSULTA PARA FILTRAR POR FUNCIONALIDADES TAMBIEN
-                if (funcionalidad != null)
-                {
-
                 }
 
                 //HAGO LA CONSULTA

@@ -28,8 +28,8 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos/propiedades/atributos(???) extra los necesito para popular los combo Box
-        public String descripcionI { get { return descripcion; } }
         public int idFuncionalidadI { get { return idFuncionalidad; } }
+        public String descripcionI { get { return descripcion; } }
 
     }
 }
