@@ -21,6 +21,8 @@ namespace FrbaHotel.AbmRol
 
         private void ListadoRoles_Load(object sender, EventArgs e)
         {
+            dataGridView1.DataSource = new List<Rol>();
+
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
             estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
             estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
@@ -41,6 +43,9 @@ namespace FrbaHotel.AbmRol
             textBox1.Text = "";
             comboBoxEstados.SelectedValue = "";
             comboBoxFuncionalidades.SelectedValue = "";
+            dataGridView1.DataSource = new List<Rol>();
+            this.button4.Enabled = false;
+            this.button5.Enabled = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -63,6 +68,50 @@ namespace FrbaHotel.AbmRol
             List<Rol> roles = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad);
 
             dataGridView1.DataSource = roles;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            using (AltaModificacionRol form = new AltaModificacionRol())
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    //string val = form.ReturnValue1;            //values preserved after close
+                    //string dateString = form.ReturnValue2;
+                    //Do something here with these values
+
+                    //for example
+                    //this.txtSomething.Text = val;
+                }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Rol rol = (Rol) dataGridView1.CurrentRow.DataBoundItem;
+
+            using (AltaModificacionRol form = new AltaModificacionRol(rol))
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    //string val = form.ReturnValue1;            //values preserved after close
+                    //string dateString = form.ReturnValue2;
+                    //Do something here with these values
+
+                    //for example
+                    //this.txtSomething.Text = val;
+                }
+            }
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            this.button4.Enabled = true;
+            this.button5.Enabled = true;
         }
     }
 }
