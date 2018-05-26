@@ -21,6 +21,13 @@ namespace FrbaHotel.AbmRol
 
         private void ListadoRoles_Load(object sender, EventArgs e)
         {
+            textBox1.Text = "";
+            comboBoxEstados.SelectedValue = "";
+            comboBoxFuncionalidades.SelectedValue = "";
+            dataGridView1.DataSource = new List<Rol>();
+            this.button4.Enabled = false;
+            this.button5.Enabled = false;
+            
             dataGridView1.DataSource = new List<Rol>();
 
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
@@ -40,12 +47,7 @@ namespace FrbaHotel.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "";
-            comboBoxEstados.SelectedValue = "";
-            comboBoxFuncionalidades.SelectedValue = "";
-            dataGridView1.DataSource = new List<Rol>();
-            this.button4.Enabled = false;
-            this.button5.Enabled = false;
+            this.ListadoRoles_Load(sender, e);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -68,11 +70,12 @@ namespace FrbaHotel.AbmRol
             List<Rol> roles = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad);
 
             dataGridView1.DataSource = roles;
+            dataGridView1.ClearSelection();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            using (AltaModificacionRol form = new AltaModificacionRol())
+            using (AltaRol form = new AltaRol())
             {
                 var result = form.ShowDialog();
 
@@ -92,7 +95,7 @@ namespace FrbaHotel.AbmRol
         {
             Rol rol = (Rol) dataGridView1.CurrentRow.DataBoundItem;
 
-            using (AltaModificacionRol form = new AltaModificacionRol(rol))
+            using (ModificacionRol form = new ModificacionRol(rol))
             {
                 var result = form.ShowDialog();
 
