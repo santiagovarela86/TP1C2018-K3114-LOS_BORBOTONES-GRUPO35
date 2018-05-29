@@ -14,12 +14,13 @@ namespace FrbaHotel.Modelo
         private String nombre = "";
         private String mail = "";
         private String telefono = "";
+        private DateTime fechaInicioActividades = new DateTime();
         private List<Reserva> reservas = new List<Reserva>();
         private List<Regimen> regimenes = new List<Regimen>();
         private List<Habitacion> habitaciones = new List<Habitacion>();
         private List<CierreTemporal> cierresTemporales = new List<CierreTemporal>();
 
-        public Hotel(int idHotel, int idCategoria, int idDireccion, String nombre, String mail, String telefono,
+        public Hotel(int idHotel, int idCategoria, int idDireccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,
             List<Reserva> reservas, List<Regimen> regimenes, List<Habitacion> habitaciones, List<CierreTemporal> cierresTemporales)
         {
             this.idHotel = idHotel;
@@ -28,6 +29,7 @@ namespace FrbaHotel.Modelo
             this.nombre = nombre;
             this.mail = mail;
             this.telefono = telefono;
+            this.fechaInicioActividades = fechaInicioActividades;
             this.reservas = reservas;
             this.regimenes = regimenes;
             this.habitaciones = habitaciones;
@@ -56,6 +58,11 @@ namespace FrbaHotel.Modelo
 
         public String getTelefono(){
             return this.telefono;
+        }
+
+        public DateTime getFechaInicioActividades()
+        {
+            return this.fechaInicioActividades;
         }
 
         public List<Reserva> getReservas(){
@@ -87,6 +94,7 @@ namespace FrbaHotel.Modelo
         private String Nombre { get { return this.getNombre(); } }
         private String Mail { get { return this.getMail(); } }
         private String Telefono { get { return this.getTelefono(); } }
+        private DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
         private List<Reserva> Reservas { get { return this.getReservas(); } }
         private List<Regimen> Regimenes { get { return this.getRegimenes(); } }
         private List<Habitacion> Habitaciones { get { return this.getHabitaciones(); } }
