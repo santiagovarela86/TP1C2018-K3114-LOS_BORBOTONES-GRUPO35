@@ -167,6 +167,7 @@
     <Compile Include="Repositorios\RepositorioFuncionalidad.cs" />
     <Compile Include="Repositorios\Repositorio.cs" />
     <Compile Include="Repositorios\RepositorioRol.cs" />
+    <Compile Include="Repositorios\RepositorioUsuario.cs" />
     <EmbeddedResource Include="AbmRol\ABMRoles.resx">
       <DependentUpon>ABMRoles.cs</DependentUpon>
     </EmbeddedResource>

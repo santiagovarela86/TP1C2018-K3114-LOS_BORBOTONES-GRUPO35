@@ -56,7 +56,7 @@ namespace FrbaHotel.Login
                 
                 while (reader.Read())
                 {
-                    intentos = reader.GetInt16(reader.GetOrdinal("IntentosFallidosLogin"));
+                    intentos = reader.GetInt32(reader.GetOrdinal("IntentosFallidosLogin"));
                     estado = reader.GetBoolean(reader.GetOrdinal("Estado"));
                     userLogin = reader.GetString(reader.GetOrdinal("Username"));
                        
