@@ -50,6 +50,7 @@ namespace FrbaHotel.Modelo
         public int IdRol { get { return this.getIdRol(); } }
         public String Nombre { get { return this.getNombre(); } }
         public Boolean Activo { get { return this.getActivo(); } }
+        public List<Funcionalidad> Funcionalidades { get { return this.getFuncionalidades(); } }
 
     }
 }
