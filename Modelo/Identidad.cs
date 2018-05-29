@@ -15,11 +15,98 @@ namespace FrbaHotel.Modelo
         private String tipoDocumento = "";
         private String numeroDocumento = "";
         private String mail = "";
-        private DateTime fechaNacimiento
+        private DateTime fechaNacimiento = new DateTime();
+        private String nacionalidad = "";
+        private String telefono = "";
+        private List<Direccion> direcciones = new List<Direccion>();
 
-        public Identidad() 
+        public Identidad(int idIdentidad, String tipoIdentidad, String nombre, String apellido, String tipoDocumento, String numeroDocumento,
+            String mail, DateTime fechaNacimiento, String nacionalidad, String telefono, List<Direccion> direcciones) 
         {
-
+            this.idIdentidad = idIdentidad;
+            this.tipoIdentidad = tipoIdentidad;
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.tipoDocumento = tipoDocumento;
+            this.numeroDocumento = numeroDocumento;
+            this.mail = mail;
+            this.fechaNacimiento = fechaNacimiento;
+            this.nacionalidad = nacionalidad;
+            this.telefono = telefono;
+            this.direcciones = direcciones;
         }
+
+        public int getIdIdentidad()
+        {
+            return this.idIdentidad;
+        }
+
+        public String getTipoIdentidad()
+        {
+            return this.tipoIdentidad;
+        }
+
+        public String getNombre()
+        {
+            return this.nombre;
+        }
+
+        public String getApellido()
+        {
+            return this.apellido;
+        }
+
+        public String getTipoDocumento()
+        {
+            return this.tipoDocumento;
+        }
+
+        public String getNumeroDocumento()
+        {
+            return this.numeroDocumento;
+        }
+
+        public String getMail()
+        {
+            return this.mail;
+        }
+
+        public DateTime getFechaNacimiento()
+        {
+            return this.fechaNacimiento;
+        }
+
+        public String getNacionalidad()
+        {
+            return this.nacionalidad;
+        }
+
+        public String getTelefono()
+        {
+            return this.telefono;
+        }
+
+        public List<Direccion> getDirecciones()
+        {
+            return this.direcciones;
+        }
+
+        public Boolean esNuevo()
+        {
+            return idIdentidad.Equals(0);
+        }
+
+        //Estos metodos extra los necesito para popular los combo box y data grid view
+        public int IdIdentidad { get { return this.getIdIdentidad(); } }
+        public String TipoIdentidad { get { return this.getTipoIdentidad(); } }
+        public String Nombre { get { return this.getNombre(); } }
+        public String Apellido { get { return this.getApellido(); } }
+        public String TipoDocumento { get { return this.getTipoDocumento(); } }
+        public String NumeroDocumento { get { return this.getNumeroDocumento(); } }
+        public String Mail { get { return this.getMail(); } }
+        public DateTime FechaNacimiento { get { return this.getFechaNacimiento(); } }
+        public String Nacionalidad { get { return this.getNacionalidad(); } }
+        public String Telefono { get { return this.getTelefono(); } }
+        public List<Direccion> Direcciones { get { return this.getDirecciones(); } }
     }
 }
