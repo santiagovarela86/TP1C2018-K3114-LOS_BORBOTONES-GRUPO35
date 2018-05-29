@@ -26,10 +26,9 @@ namespace FrbaHotel.Login
             {
 
                 int intentos = -1;//no existe usuario
-                int estado = 0;//no habilitado
+                Boolean estado = false;//no habilitado
 
-                //pasarle la password y usuario al formulario principal seguro para mostrar el nombre ahi en pantalla.
-                Principal.password = txtPassword.Text;
+                //pasarle el usuario al formulario principal seguro para mostrar el nombre ahi en pantalla.
                 Principal.user=txtUsername.Text;
                 
                 //encripto la clave
@@ -43,38 +42,32 @@ namespace FrbaHotel.Login
                 SqlCommand sqlCommand = new SqlCommand();
                 SqlDataReader reader;
 
-                //verifico la cantidad de intentos que hizo el user
+                //traigo la informacion verificando usuario y password
                 sqlCommand.Parameters.AddWithValue("@usuario", user);
+                sqlCommand.Parameters.AddWithValue("@pass", Encriptada);
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Usuario WHERE Username = @usuario";
+                sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Usuario where Username = @usuario and Password= @pass";
 
                 sqlConnection.Open();
 
                 reader = sqlCommand.ExecuteReader();
-
+                String userLogin = "";
+                
                 while (reader.Read())
                 {
                     intentos = reader.GetInt16(reader.GetOrdinal("IntentosFallidosLogin"));
+                    estado = reader.GetBoolean(reader.GetOrdinal("Estado"));
+                    userLogin = reader.GetString(reader.GetOrdinal("Username"));
+                       
                 }
-
-                //verifico usuario y contraseña
-                //uso el mismo sqlCommand modificando la query si falla hacer un nuevo command y liberar el otro.
-                sqlCommand.Parameters.AddWithValue("@usuario", user);
-                sqlCommand.Parameters.AddWithValue("@pass", Encriptada);
-                sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Usuario where Username = @usuario and Password= @pass";
-                reader = sqlCommand.ExecuteReader();
 
                 // Verifico la cantidad de intentos, si es -1 como fue inicializado es que no existe el usuario
                 if (intentos < 3 & intentos > -1)
                 {
-                    if (reader.Read())
-                    {
-                        estado = reader.GetInt16(reader.GetOrdinal("Estado"));
-                        String userLogin = reader.GetString(reader.GetOrdinal("Username"));
                         // Verifico que el nombre de usuario y la contraseña sean validos y que el usuario este habilitado
-                        //ya si me trae el estado 1 significa que valido bien usuario y contraseña
-                        if (userLogin.Equals(user) && estado==1)
+                        
+                        if (userLogin.Equals(user) && estado.Equals(true))
                         {
                             // El usuario y la contraseña son correctos y el usuario se encuentra habilitado, reseteo el contador de intentos
                             reader.Close();
@@ -92,7 +85,7 @@ namespace FrbaHotel.Login
                         }
                         else
                         {
-                            if (userLogin.Equals(user) && estado == 0)
+                            if (userLogin.Equals(user) && estado.Equals(false))
                             {
                                 // El usuario y la contraseña son validos pero el usuario se encuentra deshabilitado
                                 MessageBox.Show("El usuario ingresado se encuentra deshabilitado", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -112,7 +105,7 @@ namespace FrbaHotel.Login
                                 txtPassword.Text = "";
                             }
                         }
-                    }
+                    
                 }
                 else
                 {
