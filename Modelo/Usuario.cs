@@ -9,7 +9,7 @@ namespace FrbaHotel.Modelo
     public class Usuario
     {
         private int idUsuario = 0;
-        private int idIdentidad = 0;
+        private int idIdentidad = 0; //ALMACENAMOS MEJOR LA IDENTIDAD DIRECTAMENTE?
         private String username = "";
         private String password = "";
         private int intentosFallidosLogin = 0;

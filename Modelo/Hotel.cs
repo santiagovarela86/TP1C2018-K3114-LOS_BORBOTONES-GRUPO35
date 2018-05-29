@@ -9,8 +9,8 @@ namespace FrbaHotel.Modelo
     public class Hotel
     {
         private int idHotel = 0;
-        private int idCategoria = 0;
-        private int idDireccion = 0;
+        private int idCategoria = 0; //ALMACENAMOS MEJOR LA CATEGORIA DIRECTAMENTE?
+        private int idDireccion = 0; //ALMACENAMOS MEJOR LA DIRECCION DIRECTAMENTE?
         private String nombre = "";
         private String mail = "";
         private String telefono = "";
