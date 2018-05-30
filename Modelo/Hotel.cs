@@ -9,8 +9,8 @@ namespace FrbaHotel.Modelo
     public class Hotel
     {
         private int idHotel = 0;
-        private int idCategoria = 0; //ALMACENAMOS MEJOR LA CATEGORIA DIRECTAMENTE?
-        private int idDireccion = 0; //ALMACENAMOS MEJOR LA DIRECCION DIRECTAMENTE?
+        private Categoria categoria = null;
+        Direccion direccion = null;
         private String nombre = "";
         private String mail = "";
         private String telefono = "";
@@ -20,12 +20,12 @@ namespace FrbaHotel.Modelo
         private List<Habitacion> habitaciones = new List<Habitacion>();
         private List<CierreTemporal> cierresTemporales = new List<CierreTemporal>();
 
-        public Hotel(int idHotel, int idCategoria, int idDireccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,
+        public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,
             List<Reserva> reservas, List<Regimen> regimenes, List<Habitacion> habitaciones, List<CierreTemporal> cierresTemporales)
         {
             this.idHotel = idHotel;
-            this.idCategoria = idCategoria;
-            this.idDireccion = idDireccion;
+            this.categoria = categoria;
+            this.direccion = direccion;
             this.nombre = nombre;
             this.mail = mail;
             this.telefono = telefono;
@@ -40,12 +40,13 @@ namespace FrbaHotel.Modelo
             return this.idHotel;
         }
 
-        public int getIdCategoria(){
-            return this.idCategoria;
+        public int getCategoria(){
+            return this.categoria;
         }
 
-        public int getIdDireccion(){
-            return this.idDireccion;
+        public Direccion getDireccion()
+        {
+            return this.direccion;
         }
 
         public String getNombre(){
@@ -88,16 +89,16 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        private int IdHotel { get { return this.getIdHotel(); } }
-        private int IdCategoria { get { return this.getIdCategoria(); } }
-        private int IdDireccion { get { return this.getIdDireccion(); } }
-        private String Nombre { get { return this.getNombre(); } }
-        private String Mail { get { return this.getMail(); } }
-        private String Telefono { get { return this.getTelefono(); } }
-        private DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
-        private List<Reserva> Reservas { get { return this.getReservas(); } }
-        private List<Regimen> Regimenes { get { return this.getRegimenes(); } }
-        private List<Habitacion> Habitaciones { get { return this.getHabitaciones(); } }
-        private List<CierreTemporal> CierresTemporales { get { return this.getCierresTemporales(); } }
+        public int IdHotel { get { return this.getIdHotel(); } }
+        public Categoria Categoria { get { return this.getCategoria(); } }
+        public Direccion Direccion { get { return this.getDireccion(); } }
+        public String Nombre { get { return this.getNombre(); } }
+        public String Mail { get { return this.getMail(); } }
+        public String Telefono { get { return this.getTelefono(); } }
+        public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
+        public List<Reserva> Reservas { get { return this.getReservas(); } }
+        public List<Regimen> Regimenes { get { return this.getRegimenes(); } }
+        public List<Habitacion> Habitaciones { get { return this.getHabitaciones(); } }
+        public List<CierreTemporal> CierresTemporales { get { return this.getCierresTemporales(); } }
     }
 }

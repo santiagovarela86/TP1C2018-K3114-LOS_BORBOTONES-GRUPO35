@@ -9,10 +9,10 @@ namespace FrbaHotel.Modelo
     public class Reserva
     {
         private int idReserva = 0;
-        private int idHotel = 0; //ALMACENAMOS MEJOR EL HOTEL DIRECTAMENTE?
-        private int idEstadia = 0; //ALMACENAMOS MEJOR LA ESTADIA DIRECTAMENTE?
-        private int idRegimen = 0; //ALMACENAMOS MEJOR EL REGIMEN DIRECTAMENTE?
-        private int idCliente = 0; //ALMACENAMOS MEJOR EL CLIENTE DIRECTAMENTE?
+        private Hotel hotel = null;
+        private Estadia estadia = null;
+        private Regimen regimen = null;
+        private Cliente cliente = null;
         private int codigoReserva = 0;
         private int diasAlojados = 0;
         private DateTime fechaCreacion = new DateTime();
@@ -20,14 +20,14 @@ namespace FrbaHotel.Modelo
         private DateTime fechaHasta = new DateTime();        
         private List<EstadoReserva> estados = new List<EstadoReserva>();
 
-        public Reserva(int idReserva, int idHotel, int idEstadia, int idRegimen, int idCliente, int codigoReserva,
+        public Reserva(int idReserva, Hotel hotel, Estadia estadia, Regimen regimen, Cliente cliente, int codigoReserva,
             int diasAlojados, DateTime fechaCreacion, DateTime fechaDesde, DateTime fechaHasta, List<EstadoReserva> estados)
         {
             this.idReserva = idReserva;
-            this.idHotel = idHotel;
-            this.idEstadia = idEstadia;
-            this.idRegimen = idRegimen;
-            this.idCliente = idCliente;
+            this.hotel = hotel;
+            this.estadia = estadia;
+            this.regimen = regimen;
+            this.cliente = cliente;
             this.codigoReserva = codigoReserva;
             this.diasAlojados = diasAlojados;
             this.fechaCreacion = fechaCreacion;
@@ -41,24 +41,24 @@ namespace FrbaHotel.Modelo
             return this.idReserva;
         }
 
-        public int getIdHotel()
+        public Hotel getHotel()
         {
-            return this.idHotel;
+            return this.hotel;
         }
 
-        public int getIdEstadia()
+        public Estadia getEstadia()
         {
-            return this.idEstadia;
+            return this.estadia;
         }
 
-        public int getIdRegimen()
+        public Regimen getRegimen()
         {
-            return this.idRegimen;
+            return this.regimen;
         }
 
-        public int getIdCliente()
+        public Cliente getCliente()
         {
-            return this.idCliente;
+            return this.cliente;
         }
 
         public int getCodigoReserva()
@@ -97,17 +97,17 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        private int IdReserva { get { return this.getIdReserva(); } }
-        private int IdHotel { get { return this.getIdHotel(); } }
-        private int IdEstadia { get { return this.getIdEstadia(); } }
-        private int IdRegimen { get { return this.getIdRegimen(); } }
-        private int IdCliente { get { return this.getIdCliente(); } }
-        private int CodigoReserva { get { return this.getCodigoReserva(); } }
-        private int DiasAlojados { get { return this.getDiasAlojados(); } }
-        private DateTime FechaCreacion { get { return this.getFechaCreacion(); } }
-        private DateTime FechaDesde { get { return this.getFechaDesde(); } }
-        private DateTime FechaHasta { get { return this.getFechaHasta(); } }
-        private List<EstadoReserva> Estados { get { return this.getEstados(); } }
+        public int IdReserva { get { return this.getIdReserva(); } }
+        public Hotel Hotel { get { return this.getHotel(); } }
+        public Estadia Estadia { get { return this.getEstadia(); } }
+        public Regimen Regimen { get { return this.getRegimen(); } }
+        public Cliente Cliente { get { return this.getCliente(); } }
+        public int CodigoReserva { get { return this.getCodigoReserva(); } }
+        public int DiasAlojados { get { return this.getDiasAlojados(); } }
+        public DateTime FechaCreacion { get { return this.getFechaCreacion(); } }
+        public DateTime FechaDesde { get { return this.getFechaDesde(); } }
+        public DateTime FechaHasta { get { return this.getFechaHasta(); } }
+        public List<EstadoReserva> Estados { get { return this.getEstados(); } }
 
     }
 }

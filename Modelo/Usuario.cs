@@ -9,7 +9,7 @@ namespace FrbaHotel.Modelo
     public class Usuario
     {
         private int idUsuario = 0;
-        private int idIdentidad = 0; //ALMACENAMOS MEJOR LA IDENTIDAD DIRECTAMENTE?
+        private Identidad identidad = null;
         private String username = "";
         private String password = "";
         private int intentosFallidosLogin = 0;
@@ -17,10 +17,10 @@ namespace FrbaHotel.Modelo
         private List<Rol> roles = new List<Rol>();
         private List<Hotel> hoteles = new List<Hotel>();
 
-        public Usuario(int idUsuario, int idIdentidad, String username, String password, int intentosFallidosLogin, Boolean activo, List<Rol> roles, List<Hotel> hoteles)
+        public Usuario(int idUsuario, Identidad identidad, String username, String password, int intentosFallidosLogin, Boolean activo, List<Rol> roles, List<Hotel> hoteles)
         {
             this.idUsuario = idUsuario;
-            this.idIdentidad = idIdentidad;
+            this.identidad = identidad;
             this.username = username;
             this.password = password;
             this.intentosFallidosLogin = intentosFallidosLogin;
@@ -34,9 +34,9 @@ namespace FrbaHotel.Modelo
             return this.idUsuario;
         }
 
-        public int getIdIdentidad()
+        public Identidad getIdentidad()
         {
-            return this.idIdentidad;
+            return this.identidad;
         }
 
         public String getUsername()
@@ -76,7 +76,7 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdUsuario { get { return this.getIdUsuario(); } }
-        public int IdIdentidad { get { return this.getIdIdentidad(); } }
+        public Identidad Identidad { get { return this.getIdentidad(); } }
         public String Username { get { return this.getUsername(); } }
         public String Password { get { return this.getPassword(); } }
         public int IntentosFallidosLogin { get { return this.getIntentosFallidosLogin(); } }

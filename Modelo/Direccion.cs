@@ -9,7 +9,7 @@ namespace FrbaHotel.Modelo
     public class Direccion
     {
         private int idDireccion = 0;
-        private int idIdentidad = 0; //ALMACENAMOS MEJOR LA IDENTIDAD DIRECTAMENTE?
+        private Identidad identidad = null;
         private String pais = "";
         private String ciudad = "";
         private String calle = "";
@@ -17,11 +17,11 @@ namespace FrbaHotel.Modelo
         private int piso = 0;
         private String departamento = "";
 
-        public Direccion(int idDireccion, int idIdentidad, String pais, String ciudad,
+        public Direccion(int idDireccion, Identidad identidad, String pais, String ciudad,
             String calle, int numeroCalle, int piso, String departamento)
         {
             this.idDireccion = idDireccion;
-            this.idIdentidad = idIdentidad;
+            this.identidad = identidad;
             this.pais = pais;
             this.ciudad = ciudad;
             this.calle = calle;
@@ -35,9 +35,9 @@ namespace FrbaHotel.Modelo
             return this.idDireccion;
         }
 
-        public int getIdIdentidad()
+        public Identidad getIdentidad()
         {
-            return this.idIdentidad;
+            return this.identidad;
         }
 
         public String getPais()
@@ -76,13 +76,13 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        private int IdDireccion { get { return this.getIdDireccion(); } }
-        private int IdIdentidad { get { return this.getIdIdentidad(); } }
-        private String Pais { get { return this.getPais(); } }
-        private String Ciudad { get { return this.getCiudad(); } }
-        private String Calle { get { return this.getCalle(); } }
-        private int NumeroCalle { get { return this.getNumeroCalle(); } }
-        private int Piso { get { return this.getPiso(); } }
-        private String Departamento { get { return this.getDepartamento(); } }
+        public int IdDireccion { get { return this.getIdDireccion(); } }
+        public Identidad Identidad { get { return this.getIdentidad(); } }
+        public String Pais { get { return this.getPais(); } }
+        public String Ciudad { get { return this.getCiudad(); } }
+        public String Calle { get { return this.getCalle(); } }
+        public int NumeroCalle { get { return this.getNumeroCalle(); } }
+        public int Piso { get { return this.getPiso(); } }
+        public String Departamento { get { return this.getDepartamento(); } }
     }
 }
