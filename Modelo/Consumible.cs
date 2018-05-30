@@ -41,6 +41,11 @@ namespace FrbaHotel.Modelo
             return this.precio;
         }
 
+        public Boolean esNuevo()
+        {
+            return idConsumible.Equals(0);
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdConsumible { get { return this.getIdConsumible(); } }
         public int Codigo { get { return this.getCodigo(); } }

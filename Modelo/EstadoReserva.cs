@@ -55,6 +55,11 @@ namespace FrbaHotel.Modelo
             return descripcion;
         }
 
+        public Boolean esNuevo()
+        {
+            return idEstadoReserva.Equals(0);
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdEstadoReserva { get { return this.getIdEstadoReserva(); } }
         public Usuario Usuario { get { return this.getUsuario(); } }

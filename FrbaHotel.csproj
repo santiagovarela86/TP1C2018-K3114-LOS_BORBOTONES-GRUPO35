@@ -141,6 +141,7 @@
     <Compile Include="Login\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modelo\CierreTemporal.cs" />
     <Compile Include="Modelo\Cliente.cs" />
     <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Direccion.cs" />

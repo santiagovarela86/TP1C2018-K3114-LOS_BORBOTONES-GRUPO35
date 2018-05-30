@@ -48,6 +48,11 @@ namespace FrbaHotel.Modelo
             return fechaCreacion;
         }
 
+        public Boolean esNuevo()
+        {
+            return idItemFactura.Equals(0);
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdItemFactura { get { return this.getIdItemFactura(); } }
         public Consumible Consumible { get { return this.getConsumible(); } }
