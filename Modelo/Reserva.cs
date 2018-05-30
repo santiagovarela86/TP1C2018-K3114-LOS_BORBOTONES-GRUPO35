@@ -17,7 +17,7 @@ namespace FrbaHotel.Modelo
         private int diasAlojados = 0;
         private DateTime fechaCreacion = new DateTime();
         private DateTime fechaDesde = new DateTime();
-        private DateTime fechaHasta = new DateTime();        
+        private DateTime fechaHasta = new DateTime();
         private List<EstadoReserva> estados = new List<EstadoReserva>();
 
         public Reserva(int idReserva, Hotel hotel, Estadia estadia, Regimen regimen, Cliente cliente, int codigoReserva,

@@ -13,7 +13,7 @@ namespace FrbaHotel.Modelo
         private String username = "";
         private String password = "";
         private int intentosFallidosLogin = 0;
-        private Boolean activo = false;        
+        private Boolean activo = false;
         private List<Rol> roles = new List<Rol>();
         private List<Hotel> hoteles = new List<Hotel>();
 

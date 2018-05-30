@@ -9,15 +9,15 @@ namespace FrbaHotel.Modelo
     public class Cliente
     {
         private int idCliente = 0;
-        private Boolean activo = false;
         private Identidad identidad = null;
+        private Boolean activo = false;
         private List<Reserva> reservas = new List<Reserva>();
 
-        public Cliente(int idCliente, Boolean activo, Identidad identidad, List<Reserva> reservas)
+        public Cliente(int idCliente, Identidad identidad, Boolean activo, List<Reserva> reservas)
         {
             this.idCliente = idCliente;
-            this.activo = activo;
             this.identidad = identidad;
+            this.activo = activo;
             this.reservas = reservas;
         }
 
@@ -26,14 +26,14 @@ namespace FrbaHotel.Modelo
             return idCliente;
         }
 
-        public Boolean getActivo()
-        {
-            return activo;
-        }
-
         public Identidad getIdentidad()
         {
             return identidad;
+        }
+
+        public Boolean getActivo()
+        {
+            return activo;
         }
 
         public List<Reserva> getReservas()
@@ -48,8 +48,8 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdCliente { get { return this.getIdCliente(); } }
-        public Boolean Activo { get { return this.getActivo(); } }
         public Identidad Identidad { get { return this.getIdentidad(); } }
+        public Boolean Activo { get { return this.getActivo(); } }
         public List<Reserva> Reservas { get { return this.getReservas(); } }
     }
 }

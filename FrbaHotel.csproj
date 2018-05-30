@@ -145,6 +145,7 @@
     <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Direccion.cs" />
     <Compile Include="Modelo\Estadia.cs" />
+    <Compile Include="Modelo\EstadoReserva.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />

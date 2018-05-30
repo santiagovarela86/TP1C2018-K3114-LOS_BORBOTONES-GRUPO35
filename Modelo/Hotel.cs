@@ -10,7 +10,7 @@ namespace FrbaHotel.Modelo
     {
         private int idHotel = 0;
         private Categoria categoria = null;
-        Direccion direccion = null;
+        private Direccion direccion = null;
         private String nombre = "";
         private String mail = "";
         private String telefono = "";
