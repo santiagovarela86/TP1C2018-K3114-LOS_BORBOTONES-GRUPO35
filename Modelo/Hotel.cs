@@ -40,7 +40,8 @@ namespace FrbaHotel.Modelo
             return this.idHotel;
         }
 
-        public int getCategoria(){
+        public Categoria getCategoria()
+        {
             return this.categoria;
         }
 

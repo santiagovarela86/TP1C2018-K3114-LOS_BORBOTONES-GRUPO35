@@ -106,7 +106,10 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
     
             //Armo el usuario completo
-            usuario = new Usuario(idUsuario,idIdentidad,username,password,intentosFallidosLogin,activo,roles,hoteles);
+            //Hay que adaptarlo al nuevo modelo (pasarle la identidad armada en vez del id de identidad,
+            //para esto necesitamos el repositorio de identidades primero)
+            //usuario = new Usuario(idUsuario,idIdentidad,username,password,intentosFallidosLogin,activo,roles,hoteles);
+            usuario = null;
 
             return usuario;
         }
