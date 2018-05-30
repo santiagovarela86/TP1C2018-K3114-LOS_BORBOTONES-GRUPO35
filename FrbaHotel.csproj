@@ -142,6 +142,7 @@
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="Modelo\Cliente.cs" />
+    <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Direccion.cs" />
     <Compile Include="Modelo\Funcionalidad.cs" />
     <Compile Include="Modelo\Hotel.cs" />
