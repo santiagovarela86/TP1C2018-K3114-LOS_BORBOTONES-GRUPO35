@@ -150,6 +150,7 @@
     <Compile Include="Modelo\Funcionalidad.cs" />
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />
+    <Compile Include="Modelo\ItemFactura.cs" />
     <Compile Include="Modelo\Regimen.cs" />
     <Compile Include="Modelo\Reserva.cs" />
     <Compile Include="Modelo\Rol.cs" />
