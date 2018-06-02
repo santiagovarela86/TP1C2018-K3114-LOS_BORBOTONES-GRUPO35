@@ -19,6 +19,8 @@ namespace FrbaHotel.Repositorios
             Usuario usuario;
             Boolean activo = false;
             int idIdentidad=0;
+            Identidad identidad = null;
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
             String username="";
             String password="";
             int intentosFallidosLogin=-1; 
@@ -48,6 +50,7 @@ namespace FrbaHotel.Repositorios
                 activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
                 intentosFallidosLogin = reader.GetInt32(reader.GetOrdinal("IntentosFallidosLogin"));
                 idIdentidad = reader.GetInt32(reader.GetOrdinal("IdIdentidad"));
+                identidad = repoIdentidad.getById(idIdentidad);
             }
 
             //Cierro Primera Consulta
@@ -95,20 +98,18 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 //lleno el hotel con el getbyID
-                /*
+                
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 RepositorioHotel repoHotel = new RepositorioHotel();
                 hoteles.Add(repoHotel.getById(idHotel));
-                */
+                
 
             }
 
             sqlConnection.Close();
     
             //Armo el usuario completo
-            //Hay que adaptarlo al nuevo modelo (pasarle la identidad armada en vez del id de identidad,
-            //para esto necesitamos el repositorio de identidades primero)
-            //usuario = new Usuario(idUsuario,idIdentidad,username,password,intentosFallidosLogin,activo,roles,hoteles);
+            usuario = new Usuario(idUsuario,identidad,username,password,intentosFallidosLogin,activo,roles,hoteles);
             usuario = null;
 
             return usuario;

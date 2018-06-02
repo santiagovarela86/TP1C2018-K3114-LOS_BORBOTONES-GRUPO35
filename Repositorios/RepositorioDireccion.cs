@@ -79,5 +79,45 @@ namespace FrbaHotel.Repositorios
 
             return direccion;
         }
+        public Direccion getByIdIdentidad(int id)
+        {
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            Direccion direccion = null;
+
+
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", id);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idDireccion,Pais,Ciudad,Calle,NumeroCalle,Piso,Depto FROM LOS_BORBOTONES.Direccion AS DIR WHERE DIR.idIdentidad = @idIdentidad";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+
+
+                int idDireccion = reader.GetInt32(reader.GetOrdinal("idDireccion"));
+                String pais = reader.GetString(reader.GetOrdinal("Pais"));
+                String ciudad = reader.GetString(reader.GetOrdinal("Ciudad"));
+                String calle = reader.GetString(reader.GetOrdinal("calle"));
+                int numeroCalle = reader.GetInt32(reader.GetOrdinal("NumeroCalle"));
+                int piso = reader.GetInt32(reader.GetOrdinal("Piso"));
+                String departamento = reader.GetString(reader.GetOrdinal("Depto"));
+
+                direccion = new Direccion(idDireccion, null, pais, ciudad, calle, numeroCalle, piso, departamento);
+            }
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return direccion;
+        }
+ 
     }
 }
