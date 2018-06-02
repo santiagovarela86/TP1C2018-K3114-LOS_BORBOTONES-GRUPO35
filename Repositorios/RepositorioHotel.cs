@@ -22,7 +22,7 @@ namespace FrbaHotel.Repositorios {
 
         public override void create(Hotel hotel)
         {
-
+            //TO DO migrar inserts ajenos de hotel a su respectivo repositorio
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
