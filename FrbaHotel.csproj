@@ -97,11 +97,15 @@
     <Compile Include="AbmRol\ModificacionRol.Designer.cs">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmUsuario\ABMUsuarios.cs" />
+    <Compile Include="AbmUsuario\ABMUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmUsuario\ABMUsuarios.Designer.cs">
       <DependentUpon>ABMUsuarios.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmUsuario\AltaUsuario.cs" />
+    <Compile Include="AbmUsuario\AltaUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmUsuario\AltaUsuario.Designer.cs">
       <DependentUpon>AltaUsuario.cs</DependentUpon>
     </Compile>
@@ -161,7 +165,9 @@
     <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\TipoHabitacion.cs" />
     <Compile Include="Modelo\Usuario.cs" />
-    <Compile Include="PantallaPrincipal.cs" />
+    <Compile Include="PantallaPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PantallaPrincipal.Designer.cs">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>
     </Compile>
@@ -184,11 +190,13 @@
     </Compile>
     <Compile Include="Repositorios\RepositorioCategoria.cs" />
     <Compile Include="Repositorios\RepositorioCierreTemporal.cs" />
+    <Compile Include="Repositorios\RepositorioCliente.cs" />
     <Compile Include="Repositorios\RepositorioDireccion.cs" />
     <Compile Include="Repositorios\RepositorioFuncionalidad.cs" />
     <Compile Include="Repositorios\Repositorio.cs" />
     <Compile Include="Repositorios\RepositorioHabitacion.cs" />
     <Compile Include="Repositorios\RepositorioHotel.cs" />
+    <Compile Include="Repositorios\RepositorioIdentidad.cs" />
     <Compile Include="Repositorios\RepositorioRegimen.cs" />
     <Compile Include="Repositorios\RepositorioRol.cs" />
     <Compile Include="Repositorios\RepositorioTipoHabitacion.cs" />

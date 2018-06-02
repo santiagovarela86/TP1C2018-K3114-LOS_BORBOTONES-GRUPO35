@@ -20,7 +20,7 @@ namespace FrbaHotel.Repositorios
             Boolean activo = false;
             int idIdentidad=0;
             Identidad identidad = null;
-            //RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
             String username="";
             String password="";
             int intentosFallidosLogin=-1; 
@@ -50,7 +50,7 @@ namespace FrbaHotel.Repositorios
                 activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
                 intentosFallidosLogin = reader.GetInt32(reader.GetOrdinal("IntentosFallidosLogin"));
                 idIdentidad = reader.GetInt32(reader.GetOrdinal("IdIdentidad"));
-                //identidad = repoIdentidad.getById(idIdentidad);
+                identidad = repoIdentidad.getById(idIdentidad);
             }
 
             //Cierro Primera Consulta

@@ -71,5 +71,51 @@ namespace FrbaHotel.Repositorios
             identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDocumento, numeroDocumento, mail, fechaNacimiento, nacionalidad, telefono, direcciones);
             return identidad;
         }
+
+        override public void create(Identidad identidad)
+        {
+            if (this.exists(identidad))
+            {
+                //Error
+            }
+            else
+            {
+                //Creo un nuevo registro
+            }
+        }
+
+        override public void update(Identidad identidad)
+        {
+            if (this.exists(identidad))
+            {
+                //Actualizo el registro
+            }
+            else
+            {
+                //Error
+            }
+        }
+
+        override public void delete(Identidad identidad)
+        {
+            if (this.exists(identidad))
+            {
+                //Borro el registro
+            }
+            else
+            {
+                //Error
+            }
+        }
+
+        override public Boolean exists(Identidad identidad)
+        {
+            throw new NotImplementedException();
+        }
+
+        override public List<Identidad> getAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
