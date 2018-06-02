@@ -53,6 +53,7 @@
     <Compile Include="TestRepositorioFuncionalidad.cs" />
     <Compile Include="TestRepositorioRol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestRepositorioUsuario.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FrbaHotel.csproj">

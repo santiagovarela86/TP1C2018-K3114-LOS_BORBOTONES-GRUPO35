@@ -78,5 +78,5 @@ namespace FrbaHotel.Repositorios
             return regimenes;
         }
     }
-    }
 }
+

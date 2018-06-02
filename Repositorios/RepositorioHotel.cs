@@ -26,7 +26,7 @@ namespace FrbaHotel.Repositorios {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
+            //SqlDataReader reader;
 
             sqlCommand.Parameters.AddWithValue("@Estrellas", hotel.getCategoria().Estrellas);
             sqlCommand.Parameters.AddWithValue("@RecargaEstrellas", hotel.getCategoria().RecargaEstrellas);
