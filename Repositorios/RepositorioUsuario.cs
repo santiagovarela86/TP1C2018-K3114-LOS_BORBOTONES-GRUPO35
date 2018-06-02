@@ -18,14 +18,14 @@ namespace FrbaHotel.Repositorios
             //Elementos del usuario a devolver
             Usuario usuario;
             Boolean activo = false;
-            int idIdentidad=0;
+            int idIdentidad = 0;
             Identidad identidad = null;
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
-            String username="";
-            String password="";
-            int intentosFallidosLogin=-1; 
-            List<Rol> roles=new List<Rol>();
-            List<Hotel> hoteles=new List<Hotel>();
+            String username = "";
+            String password = "";
+            int intentosFallidosLogin = 0; 
+            List<Rol> roles = new List<Rol>();
+            List<Hotel> hoteles = new List<Hotel>();
 
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -49,7 +49,7 @@ namespace FrbaHotel.Repositorios
                 password = reader.GetString(reader.GetOrdinal("Password"));
                 activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
                 intentosFallidosLogin = reader.GetInt32(reader.GetOrdinal("IntentosFallidosLogin"));
-                idIdentidad = reader.GetInt32(reader.GetOrdinal("IdIdentidad"));
+                idIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
                 identidad = repoIdentidad.getById(idIdentidad);
             }
 
@@ -77,8 +77,6 @@ namespace FrbaHotel.Repositorios
                 int idRol = reader.GetInt32(reader.GetOrdinal("idRol"));
                 RepositorioRol repoRol = new RepositorioRol();
                 roles.Add(repoRol.getById(idRol));
-
-
             }
 
             sqlConnection.Close();
@@ -97,20 +95,17 @@ namespace FrbaHotel.Repositorios
             //Colecto los hoteles
             while (reader.Read())
             {
-                //lleno el hotel con el getbyID
-                
+                //lleno el hotel con el getbyID                
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 RepositorioHotel repoHotel = new RepositorioHotel();
-                hoteles.Add(repoHotel.getById(idHotel));
-                
-
+                hoteles.Add(repoHotel.getById(idHotel));         
             }
 
             sqlConnection.Close();
     
             //Armo el usuario completo
-            usuario = new Usuario(idUsuario,identidad,username,password,intentosFallidosLogin,activo,roles,hoteles);
-            usuario = null;
+            usuario = new Usuario(idUsuario, identidad, username, password, intentosFallidosLogin, activo, roles, hoteles);
+            //usuario = null;
 
             return usuario;
         }

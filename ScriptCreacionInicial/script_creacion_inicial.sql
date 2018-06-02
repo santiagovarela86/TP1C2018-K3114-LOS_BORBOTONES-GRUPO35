@@ -170,7 +170,7 @@ CREATE TABLE LOS_BORBOTONES.Usuario (
 	idUsuario				INT			IDENTITY(1,1)	NOT NULL,
 	Username				VARCHAR(45),
 	Password				VARCHAR(45),
-	IntentosFallidosLogin	VARCHAR(45)	DEFAULT 0,
+	IntentosFallidosLogin	INT			DEFAULT 0,
 	Activo					BIT			DEFAULT 1,
 	idIdentidad				INT			NOT NULL,
 )
