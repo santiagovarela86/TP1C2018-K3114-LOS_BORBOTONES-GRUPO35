@@ -36,7 +36,8 @@ namespace FrbaHotel.Modelo
             this.cierresTemporales = cierresTemporales;
         }
 
-        public int getIdHotel(){
+        public int getIdHotel()
+        {
             return this.idHotel;
         }
 
@@ -50,15 +51,18 @@ namespace FrbaHotel.Modelo
             return this.direccion;
         }
 
-        public String getNombre(){
+        public String getNombre()
+        {
             return this.nombre;
         }
 
-        public String getMail(){
+        public String getMail()
+        {
             return this.mail;
         }
 
-        public String getTelefono(){
+        public String getTelefono()
+        {
             return this.telefono;
         }
 
@@ -67,11 +71,13 @@ namespace FrbaHotel.Modelo
             return this.fechaInicioActividades;
         }
 
-        public List<Reserva> getReservas(){
+        public List<Reserva> getReservas()
+        {
             return this.reservas;
         }
 
-        public List<Regimen> getRegimenes(){
+        public List<Regimen> getRegimenes()
+        {
             return this.regimenes;
         }
 
@@ -80,7 +86,8 @@ namespace FrbaHotel.Modelo
             return this.habitaciones;
         }
 
-        public List<CierreTemporal> getCierresTemporales(){
+        public List<CierreTemporal> getCierresTemporales()
+        {
             return this.cierresTemporales;
         }
 

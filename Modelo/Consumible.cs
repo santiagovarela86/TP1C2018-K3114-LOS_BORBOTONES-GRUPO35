@@ -51,6 +51,6 @@ namespace FrbaHotel.Modelo
         public int Codigo { get { return this.getCodigo(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
         public float Precio { get { return this.getPrecio(); } }
-        
+
     }
 }

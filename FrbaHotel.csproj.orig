@@ -73,33 +73,39 @@
     <Compile Include="AbmHabitacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmHotel\CreateHotel.cs">
+    <Compile Include="AbmHotel\AbmHotel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHotel\CreateHotel.Designer.cs">
-      <DependentUpon>CreateHotel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmHotel\DropHotel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmHotel\DropHotel.Designer.cs">
-      <DependentUpon>DropHotel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmHotel\SearchHotel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmHotel\SearchHotel.Designer.cs">
-      <DependentUpon>SearchHotel.cs</DependentUpon>
-    </Compile>
+<<<<<<< HEAD
     <Compile Include="AbmRegimen\Form1.cs">
+=======
+    <Compile Include="AbmRegimen\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\AltaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AltaRol.Designer.cs">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\ModificacionRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\ModificacionRol.Designer.cs">
+      <DependentUpon>ModificacionRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\Form1.cs">
+>>>>>>> master
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmRegimen\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\ListadoRoles.cs" />
-    <Compile Include="AbmRol\ListadoRoles.Designer.cs">
-      <DependentUpon>ListadoRoles.cs</DependentUpon>
+    <Compile Include="AbmRol\ABMRoles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\ABMRoles.Designer.cs">
+      <DependentUpon>ABMRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="CancelarReserva\Form1.cs">
       <SubType>Form</SubType>
@@ -133,8 +139,39 @@
     <Compile Include="Login\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+<<<<<<< HEAD
+=======
+    <Compile Include="Login\FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modelo\Categoria.cs" />
+    <Compile Include="Modelo\CierreTemporal.cs" />
+    <Compile Include="Modelo\Cliente.cs" />
+    <Compile Include="Modelo\Consumible.cs" />
+    <Compile Include="Modelo\Direccion.cs" />
+    <Compile Include="Modelo\Estadia.cs" />
+    <Compile Include="Modelo\EstadoReserva.cs" />
+    <Compile Include="Modelo\Factura.cs" />
+>>>>>>> master
     <Compile Include="Modelo\Funcionalidad.cs" />
+    <Compile Include="Modelo\Habitacion.cs" />
+    <Compile Include="Modelo\Hotel.cs" />
+    <Compile Include="Modelo\Identidad.cs" />
+    <Compile Include="Modelo\ItemFactura.cs" />
+    <Compile Include="Modelo\Regimen.cs" />
+    <Compile Include="Modelo\Reserva.cs" />
     <Compile Include="Modelo\Rol.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Modelo\TipoHabitacion.cs" />
+    <Compile Include="Modelo\Usuario.cs" />
+    <Compile Include="Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+>>>>>>> master
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrarConsumible\Form1.cs">
@@ -151,10 +188,24 @@
     </Compile>
     <Compile Include="Repositorios\RepositorioFuncionalidad.cs" />
     <Compile Include="Repositorios\Repositorio.cs" />
-    <Compile Include="Repositorios\RepositorioHotel.cs" />
     <Compile Include="Repositorios\RepositorioRol.cs" />
+<<<<<<< HEAD
+    <EmbeddedResource Include="AbmHotel\AbmHotel.resx">
+      <DependentUpon>AbmHotel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\ListadoRoles.resx">
       <DependentUpon>ListadoRoles.cs</DependentUpon>
+=======
+    <Compile Include="Repositorios\RepositorioUsuario.cs" />
+    <EmbeddedResource Include="AbmRol\ABMRoles.resx">
+      <DependentUpon>ABMRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AltaRol.resx">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\ModificacionRol.resx">
+      <DependentUpon>ModificacionRol.cs</DependentUpon>
+>>>>>>> master
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

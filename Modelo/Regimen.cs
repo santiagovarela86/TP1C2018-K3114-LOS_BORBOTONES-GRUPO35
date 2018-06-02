@@ -25,7 +25,8 @@ namespace FrbaHotel.Modelo
             this.estado = estado;
         }
 
-        public int getIdRegimen() {
+        public int getIdRegimen()
+        {
             return this.idRegimen;
         }
 

@@ -21,7 +21,7 @@ namespace FrbaHotel.Modelo
         private List<Direccion> direcciones = new List<Direccion>();
 
         public Identidad(int idIdentidad, String tipoIdentidad, String nombre, String apellido, String tipoDocumento, String numeroDocumento,
-            String mail, DateTime fechaNacimiento, String nacionalidad, String telefono, List<Direccion> direcciones) 
+            String mail, DateTime fechaNacimiento, String nacionalidad, String telefono, List<Direccion> direcciones)
         {
             this.idIdentidad = idIdentidad;
             this.tipoIdentidad = tipoIdentidad;

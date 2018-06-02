@@ -67,6 +67,6 @@ namespace FrbaHotel.Modelo
         public Usuario UsuarioCheckOut { get { return this.getUsuarioCheckOut(); } }
         public DateTime FechaEntrada { get { return this.getFechaEntrada(); } }
         public DateTime FechaSalida { get { return this.getFechaSalida(); } }
-        public Boolean Facturada { get { return this.getFacturada(); } }        
+        public Boolean Facturada { get { return this.getFacturada(); } }
     }
 }
