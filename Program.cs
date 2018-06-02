@@ -20,7 +20,8 @@ namespace FrbaHotel
             //Comento la ejecucion del "Formulario Principal"
             //Application.Run(new Form1());
             //Para probar el ABM de Roles
-            Application.Run(new ABMRoles());
+            //Application.Run(new ABMRoles());
+            Application.Run(new PantallaPrincipal());
         }
     }
 }
