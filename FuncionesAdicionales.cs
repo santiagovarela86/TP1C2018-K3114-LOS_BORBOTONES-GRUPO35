@@ -7,14 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaHotel.Modelo;
 
 namespace FrbaHotel
 {
     public partial class FuncionesAdicionales : Form
     {
-        public FuncionesAdicionales()
+        Usuario usuarioLogueado = null;
+
+        public FuncionesAdicionales(Usuario usuarioLogueado)
         {
             InitializeComponent();
+            this.usuarioLogueado = usuarioLogueado;
         }
 
         private void button4_Click(object sender, EventArgs e)

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaHotel.Login;
+using FrbaHotel.Modelo;
 
 namespace FrbaHotel
 {
@@ -25,14 +26,16 @@ namespace FrbaHotel
 
         private void button2_Click(object sender, EventArgs e)
         {
-            using (FormLogin form = new FormLogin())
+            using (FormLogin formularioLogin = new FormLogin())
             {
-                var result = form.ShowDialog();
+                var resultFormLogin = formularioLogin.ShowDialog();
 
-                if (result == DialogResult.OK)
+                if (resultFormLogin == DialogResult.OK)
                 {
+                    Usuario usuarioLogueado = formularioLogin.usuario;
+
                     //ABRO EL SUBFORMULARIO DE FUNCIONES ADICIONALES
-                    using (FuncionesAdicionales subForm = new FuncionesAdicionales())
+                    using (FuncionesAdicionales subForm = new FuncionesAdicionales(usuarioLogueado))
                     {
                         var resultSubForm = subForm.ShowDialog();
                     }

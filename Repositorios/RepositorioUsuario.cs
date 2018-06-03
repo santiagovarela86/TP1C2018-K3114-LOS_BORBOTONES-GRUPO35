@@ -255,7 +255,7 @@ namespace FrbaHotel.Repositorios
         //getByQuery que va a filtrar por lo que desee buscar el administrador en el listado
         // despues agregar el nombre y el apellido de la identidad
 
-        public List<Usuario> getByQuery(String username, KeyValuePair<String, Boolean> estado, Hotel hotel,Rol rol)
+        public List<Usuario> getByQuery(String username, KeyValuePair<String, Boolean> estado, Hotel hotel, Rol rol)
         {
             List<Usuario> usuarios = new List<Usuario>();
             String query = "SELECT u.idUsuario FROM LOS_BORBOTONES.Usuario u";
@@ -361,32 +361,51 @@ namespace FrbaHotel.Repositorios
         public Usuario AutenticarUsuario(String username, String password)
         {
             string passwordEncriptada = this.EncriptarSHA256(password);
+            Usuario usuario = null;
 
-            //Configuraciones de la consulta
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
-
-            //traigo la informacion verificando usuario y password
-            sqlCommand.Parameters.AddWithValue("@usuario", username);
-            sqlCommand.Parameters.AddWithValue("@pass", passwordEncriptada);
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idUsuario FROM LOS_BORBOTONES.Usuario where Username = @usuario and Password= @pass";
-
-            sqlConnection.Open();
-
-            reader = sqlCommand.ExecuteReader();
-
-            if (reader.Read())
+            //VALIDO SI EXISTE PRIMERO EL USUARIO
+            if (this.getAll().Exists(usr => usr.getUsername().Equals(username)))
             {
-                sqlConnection.Close();                
-                return this.getById(reader.GetInt32(reader.GetOrdinal("idUsuario")));
-            } else {
-                sqlConnection.Close();
+                usuario = this.getByUsername(username);
+
+                //SI LA PASSWORD ESTA BIEN Y EL USUARIO NO ESTA BLOQUEADO
+                if (usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                {
+                    return usuario;
+                }
+                else
+                {
+                    //SI HUBO UN ERROR DE CREDENCIALES Y EL USUARIO TODAVIA NO ESTA BLOQUEADO
+                    if (!usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                    {
+                        //ESTO FALTA DESARROLLARLO
+                        /*
+                        usuario.incrementarIntentosFallidosLogin();
+                        
+                        if (usuario.getIntentosFallidosLogin() >= 3)
+                        {
+                            usuario.setActivo(false);
+                        }
+                        
+                        repositorioUsuario.update(usuario); //GRABA LOS CAMBIOS EN LA BASE
+                        */
+
+                        throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
+                    }
+                    //LUEGO SI EL USUARIO ESTA BLOQUEADO
+                    else if (usuario.getIntentosFallidosLogin() >= 3 || usuario.getActivo())
+                    {
+                        throw new UsuarioBloqueadoException("El usuario esta bloqueado o deshabilitado");
+                    }
+                }
+            }
+            else
+            {
+                //EL USUARIO NO EXISTE
                 throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
             }
+
+            return usuario;
         }
     }
 }
