@@ -358,9 +358,35 @@ namespace FrbaHotel.Repositorios
             return output.ToString();
         }
 
-        public Boolean AutenticarUsuario(String username, String password)
+        public Usuario AutenticarUsuario(String username, String password)
         {
-            return true;
+            string passwordEncriptada = this.EncriptarSHA256(password);
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //traigo la informacion verificando usuario y password
+            sqlCommand.Parameters.AddWithValue("@usuario", username);
+            sqlCommand.Parameters.AddWithValue("@pass", passwordEncriptada);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idUsuario FROM LOS_BORBOTONES.Usuario where Username = @usuario and Password= @pass";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                sqlConnection.Close();                
+                return this.getById(reader.GetInt32(reader.GetOrdinal("idUsuario")));
+            } else {
+                sqlConnection.Close();
+                throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
+            }
         }
     }
 }

@@ -168,8 +168,8 @@ GO
 CREATE TABLE LOS_BORBOTONES.Usuario (
 
 	idUsuario				INT			IDENTITY(1,1)	NOT NULL,
-	Username				VARCHAR(45),
-	Password				VARCHAR(45),
+	Username				VARCHAR(255),
+	Password				VARCHAR(255),
 	IntentosFallidosLogin	INT			DEFAULT 0,
 	Activo					BIT			DEFAULT 1,
 	idIdentidad				INT			NOT NULL,
@@ -633,11 +633,11 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- defini solo Usuarios admin y guest, por ahora
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
-	VALUES ('admin','1234', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE Nombre like 'admin' and TipoIdentidad = 'Usuario'));
+	VALUES ('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE Nombre like 'admin' and TipoIdentidad = 'Usuario'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
-	VALUES ('guest','01', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE nombre like 'guest' and TipoIdentidad = 'Usuario'));
+	VALUES ('guest','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE nombre like 'guest' and TipoIdentidad = 'Usuario'));
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga Rol_X_Usuario

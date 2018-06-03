@@ -48,15 +48,15 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                apellido = reader.SafeGetString(reader.GetOrdinal("Apellido"));                
+                apellido = reader.SafeGetString(reader.GetOrdinal("Apellido"));
                 tipoIdentidad = reader.GetString(reader.GetOrdinal("TipoIdentidad"));
                 tipoDocumento = reader.GetString(reader.GetOrdinal("TipoDocumento"));
                 numeroDocumento = reader.GetString(reader.GetOrdinal("NumeroDocumento"));
                 mail = reader.GetString(reader.GetOrdinal("Mail"));
                 nacionalidad = reader.SafeGetString(reader.GetOrdinal("Nacionalidad"));
                 telefono = reader.GetString(reader.GetOrdinal("Telefono"));
-                fechaNacimiento = reader.SafeGetDateTime(reader.GetOrdinal("FechaNacimiento"));                
-                direcciones.Add(repoDireccion.getByIdIdentidad(idIdentidad));                
+                fechaNacimiento = reader.SafeGetDateTime(reader.GetOrdinal("FechaNacimiento"));
+                direcciones.Add(repoDireccion.getByIdIdentidad(idIdentidad));
             }
 
             //Cierro Primera Consulta

@@ -28,35 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.ABMUsuario = new System.Windows.Forms.Button();
+            this.ABMCliente = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.ABMRol = new System.Windows.Forms.Button();
+            this.ABMHotel = new System.Windows.Forms.Button();
+            this.ABMHabitacion = new System.Windows.Forms.Button();
+            this.RegistrarEstadía = new System.Windows.Forms.Button();
+            this.RegistrarConsumible = new System.Windows.Forms.Button();
+            this.FacturarEstadía = new System.Windows.Forms.Button();
+            this.GenerarListadoEstadístico = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button3
+            // ABMUsuario
             // 
-            this.button3.Location = new System.Drawing.Point(138, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(120, 41);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "ABM Usuario";
-            this.button3.UseVisualStyleBackColor = true;
+            this.ABMUsuario.Location = new System.Drawing.Point(138, 12);
+            this.ABMUsuario.Name = "ABMUsuario";
+            this.ABMUsuario.Size = new System.Drawing.Size(120, 41);
+            this.ABMUsuario.TabIndex = 1;
+            this.ABMUsuario.Text = "ABM Usuario";
+            this.ABMUsuario.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // ABMCliente
             // 
-            this.button2.Location = new System.Drawing.Point(264, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 41);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "ABM Clientes";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ABMCliente.Location = new System.Drawing.Point(264, 12);
+            this.ABMCliente.Name = "ABMCliente";
+            this.ABMCliente.Size = new System.Drawing.Size(120, 41);
+            this.ABMCliente.TabIndex = 2;
+            this.ABMCliente.Text = "ABM Clientes";
+            this.ABMCliente.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
@@ -68,101 +68,102 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button1
+            // ABMRol
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 41);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "ABM Rol";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ABMRol.Location = new System.Drawing.Point(12, 12);
+            this.ABMRol.Name = "ABMRol";
+            this.ABMRol.Size = new System.Drawing.Size(120, 41);
+            this.ABMRol.TabIndex = 0;
+            this.ABMRol.Text = "ABM Rol";
+            this.ABMRol.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // ABMHotel
             // 
-            this.button5.Location = new System.Drawing.Point(390, 12);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(120, 41);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "ABM Hotel";
-            this.button5.UseVisualStyleBackColor = true;
+            this.ABMHotel.Location = new System.Drawing.Point(390, 12);
+            this.ABMHotel.Name = "ABMHotel";
+            this.ABMHotel.Size = new System.Drawing.Size(120, 41);
+            this.ABMHotel.TabIndex = 3;
+            this.ABMHotel.Text = "ABM Hotel";
+            this.ABMHotel.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // ABMHabitacion
             // 
-            this.button6.Location = new System.Drawing.Point(516, 12);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(120, 41);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "ABM Habitacion";
-            this.button6.UseVisualStyleBackColor = true;
+            this.ABMHabitacion.Location = new System.Drawing.Point(516, 12);
+            this.ABMHabitacion.Name = "ABMHabitacion";
+            this.ABMHabitacion.Size = new System.Drawing.Size(120, 41);
+            this.ABMHabitacion.TabIndex = 4;
+            this.ABMHabitacion.Text = "ABM Habitacion";
+            this.ABMHabitacion.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // RegistrarEstadía
             // 
-            this.button7.Location = new System.Drawing.Point(73, 59);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(120, 41);
-            this.button7.TabIndex = 5;
-            this.button7.Text = "Registrar Estadía";
-            this.button7.UseVisualStyleBackColor = true;
+            this.RegistrarEstadía.Location = new System.Drawing.Point(73, 59);
+            this.RegistrarEstadía.Name = "RegistrarEstadía";
+            this.RegistrarEstadía.Size = new System.Drawing.Size(120, 41);
+            this.RegistrarEstadía.TabIndex = 5;
+            this.RegistrarEstadía.Text = "Registrar Estadía";
+            this.RegistrarEstadía.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // RegistrarConsumible
             // 
-            this.button8.Location = new System.Drawing.Point(199, 59);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(120, 41);
-            this.button8.TabIndex = 6;
-            this.button8.Text = "Registrar Consumibles";
-            this.button8.UseVisualStyleBackColor = true;
+            this.RegistrarConsumible.Location = new System.Drawing.Point(199, 59);
+            this.RegistrarConsumible.Name = "RegistrarConsumible";
+            this.RegistrarConsumible.Size = new System.Drawing.Size(120, 41);
+            this.RegistrarConsumible.TabIndex = 6;
+            this.RegistrarConsumible.Text = "Registrar Consumibles";
+            this.RegistrarConsumible.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // FacturarEstadía
             // 
-            this.button9.Location = new System.Drawing.Point(325, 59);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(120, 41);
-            this.button9.TabIndex = 7;
-            this.button9.Text = "Facturar Estadía";
-            this.button9.UseVisualStyleBackColor = true;
+            this.FacturarEstadía.Location = new System.Drawing.Point(325, 59);
+            this.FacturarEstadía.Name = "FacturarEstadía";
+            this.FacturarEstadía.Size = new System.Drawing.Size(120, 41);
+            this.FacturarEstadía.TabIndex = 7;
+            this.FacturarEstadía.Text = "Facturar Estadía";
+            this.FacturarEstadía.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // GenerarListadoEstadístico
             // 
-            this.button10.Location = new System.Drawing.Point(450, 59);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(120, 41);
-            this.button10.TabIndex = 8;
-            this.button10.Text = "Listado Estadístico";
-            this.button10.UseVisualStyleBackColor = true;
+            this.GenerarListadoEstadístico.Location = new System.Drawing.Point(450, 59);
+            this.GenerarListadoEstadístico.Name = "GenerarListadoEstadístico";
+            this.GenerarListadoEstadístico.Size = new System.Drawing.Size(120, 41);
+            this.GenerarListadoEstadístico.TabIndex = 8;
+            this.GenerarListadoEstadístico.Text = "Listado Estadístico";
+            this.GenerarListadoEstadístico.UseVisualStyleBackColor = true;
             // 
             // FuncionesAdicionales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(645, 154);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.GenerarListadoEstadístico);
+            this.Controls.Add(this.FacturarEstadía);
+            this.Controls.Add(this.RegistrarConsumible);
+            this.Controls.Add(this.RegistrarEstadía);
+            this.Controls.Add(this.ABMHabitacion);
+            this.Controls.Add(this.ABMHotel);
+            this.Controls.Add(this.ABMRol);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.ABMCliente);
+            this.Controls.Add(this.ABMUsuario);
             this.Name = "FuncionesAdicionales";
             this.Text = "Gestión de Datos TP 2018 1C - LOS_BORBOTONES - FUNCIONES ADICIONALES";
+            this.Load += new System.EventHandler(this.FuncionesAdicionales_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button ABMUsuario;
+        private System.Windows.Forms.Button ABMCliente;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button ABMRol;
+        private System.Windows.Forms.Button ABMHotel;
+        private System.Windows.Forms.Button ABMHabitacion;
+        private System.Windows.Forms.Button RegistrarEstadía;
+        private System.Windows.Forms.Button RegistrarConsumible;
+        private System.Windows.Forms.Button FacturarEstadía;
+        private System.Windows.Forms.Button GenerarListadoEstadístico;
     }
 }

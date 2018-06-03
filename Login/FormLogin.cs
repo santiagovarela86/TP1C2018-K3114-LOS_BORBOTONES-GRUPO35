@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using FrbaHotel.Repositorios;
+using FrbaHotel.Excepciones;
+using FrbaHotel.Modelo;
 
 namespace FrbaHotel.Login
 {
@@ -22,13 +24,15 @@ namespace FrbaHotel.Login
         private void BotonLoginClick(object sender, EventArgs e)
         {
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            Usuario usuario = null;
 
-            if (repoUsuario.AutenticarUsuario(txtUsername.Text, txtPassword.Text)){
-                this.DialogResult = DialogResult.OK;
-            } else 
+            try {
+                usuario = repoUsuario.AutenticarUsuario(txtUsername.Text, txtPassword.Text);
+            } catch (ErrorDeAutenticacionException exc)
             {
                 //Logica del error de logueo
             }
+
 
             /*
             try

@@ -21,5 +21,12 @@ namespace FrbaHotel
         {
             this.Close();
         }
+
+        private void FuncionesAdicionales_Load(object sender, EventArgs e)
+        {
+            //CUANDO CARGA ESTE FORMULARIO
+            //DEBO VERIFICAR LOS ROLES QUE TENGO Y SEGUN LOS ROLES QUE TENGA
+            //HABILITAR Y/O DESHABILITAR BOTONES DE LAS FUNCIONALIDADES
+        }
     }
 }

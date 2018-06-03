@@ -75,7 +75,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         public void Test_Repo_Usuario_getByQuery()
-        {
+        {        
             //RepositorioRol repositorioRol = new RepositorioRol();
 
             //SIN FILTRO
