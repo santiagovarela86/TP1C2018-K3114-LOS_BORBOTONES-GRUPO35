@@ -17,12 +17,13 @@ namespace FrbaHotel.Login
 {
     public partial class FormLogin : Form
     {
-        public Usuario usuario = null;
+        private Usuario usuarioLogueado = null;
 
         public FormLogin()
         {
             InitializeComponent();
         }
+
         private void BotonLoginClick(object sender, EventArgs e)
         {
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
@@ -30,7 +31,7 @@ namespace FrbaHotel.Login
             try
             {
                 //CREDENCIALES CORRECTAS
-                usuario = repoUsuario.AutenticarUsuario(txtUsername.Text, txtPassword.Text);
+                usuarioLogueado = repoUsuario.AutenticarUsuario(txtUsername.Text, txtPassword.Text);
                 this.DialogResult = DialogResult.OK;
             }
             catch (ErrorDeAutenticacionException exc)
@@ -41,6 +42,11 @@ namespace FrbaHotel.Login
             {
                 MessageBox.Show(exc1.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public Usuario getUsuarioLogueado()
+        {
+            return this.usuarioLogueado;
         }
     }
 }

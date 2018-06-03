@@ -393,7 +393,7 @@ namespace FrbaHotel.Repositorios
                         throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
                     }
                     //LUEGO SI EL USUARIO ESTA BLOQUEADO
-                    else if (usuario.getIntentosFallidosLogin() >= 3 || usuario.getActivo())
+                    else if (usuario.getIntentosFallidosLogin() >= 3 || !usuario.getActivo())
                     {
                         throw new UsuarioBloqueadoException("El usuario esta bloqueado o deshabilitado");
                     }

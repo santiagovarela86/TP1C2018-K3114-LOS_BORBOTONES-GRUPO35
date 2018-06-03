@@ -32,7 +32,7 @@ namespace FrbaHotel
 
                 if (resultFormLogin == DialogResult.OK)
                 {
-                    Usuario usuarioLogueado = formularioLogin.usuario;
+                    Usuario usuarioLogueado = formularioLogin.getUsuarioLogueado();
 
                     //ABRO EL SUBFORMULARIO DE FUNCIONES ADICIONALES
                     using (FuncionesAdicionales subForm = new FuncionesAdicionales(usuarioLogueado))
