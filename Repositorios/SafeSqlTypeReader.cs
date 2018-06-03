@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.Modelo
 {
-    public static class LectorSql
+    public static class SafeSqlTypeReader
     {
         //Metodo de extensión del SqlDataReader
         //Si es un campo String y hay null devuelvo String vacío
@@ -25,6 +25,15 @@ namespace FrbaHotel.Modelo
             if (!reader.IsDBNull(colIndex))
                 return reader.GetDateTime(colIndex);
             return new DateTime();
+        }
+
+        //Metodo de extensión del SqlDataReader
+        //Si es un campo Int32 y hay null devuelvo 0
+        public static int SafeGetInt32(this SqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetInt32(colIndex);
+            return 0;
         }
     }
 }

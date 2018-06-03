@@ -9,7 +9,6 @@ namespace FrbaHotel.Modelo
     public class Direccion
     {
         private int idDireccion = 0;
-        private Identidad identidad = null;
         private String pais = "";
         private String ciudad = "";
         private String calle = "";
@@ -17,11 +16,10 @@ namespace FrbaHotel.Modelo
         private int piso = 0;
         private String departamento = "";
 
-        public Direccion(int idDireccion, Identidad identidad, String pais, String ciudad,
+        public Direccion(int idDireccion, String pais, String ciudad,
             String calle, int numeroCalle, int piso, String departamento)
         {
             this.idDireccion = idDireccion;
-            this.identidad = identidad;
             this.pais = pais;
             this.ciudad = ciudad;
             this.calle = calle;
@@ -33,11 +31,6 @@ namespace FrbaHotel.Modelo
         public int getIdDireccion()
         {
             return this.idDireccion;
-        }
-
-        public Identidad getIdentidad()
-        {
-            return this.identidad;
         }
 
         public String getPais()
@@ -77,7 +70,6 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdDireccion { get { return this.getIdDireccion(); } }
-        public Identidad Identidad { get { return this.getIdentidad(); } }
         public String Pais { get { return this.getPais(); } }
         public String Ciudad { get { return this.getCiudad(); } }
         public String Calle { get { return this.getCalle(); } }

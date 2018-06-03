@@ -9,7 +9,6 @@ namespace FrbaHotel.Repositorios {
 
     public class RepositorioHotel : Repositorio<Hotel>
     {
-        private RepositorioDireccion repositorioDireccion;
         private RepositorioHabitacion repositorioHabitacion;
 
         public override void create(Hotel hotel)
@@ -91,7 +90,7 @@ namespace FrbaHotel.Repositorios {
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
-                "SELECT idHotel,Nombre,Mail,Telefono,FechaInicioActividades,idCategoria FROM LOS_BORBOTONES.Hotel AS HOT WHERE HOT.idHotel = @idHotel";
+                "SELECT idHotel,Nombre,Mail,Telefono,FechaInicioActividades,idCategoria,idDireccion FROM LOS_BORBOTONES.Hotel AS HOT WHERE HOT.idHotel = @idHotel";
 
             sqlConnection.Open();
 
@@ -102,21 +101,21 @@ namespace FrbaHotel.Repositorios {
                 RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
                 RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
                 RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
+                RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
+
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 String nombre = reader.GetString(reader.GetOrdinal("Nombre"));
                 String mail = reader.SafeGetString(reader.GetOrdinal("Mail"));
                 String telefono = reader.SafeGetString(reader.GetOrdinal("Telefono"));
                 DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicioActividades"));
                 int idCategoria = reader.GetInt32(reader.GetOrdinal("idCategoria"));
+                int idDireccion = reader.GetInt32(reader.GetOrdinal("idDireccion"));
 
                 Categoria categoria = repositorioCategoria.getById(idCategoria);
 
-                //EN EL REPOSITORIO DIRECCION HAY QUE HACER UN GET BY ID DE LA DIRECCION...
-                //EN LA ENTIDAD HOTEL SE GUARDA EL INT AL ID DE SU DIRECCION
-                //LA DIRECCION NO TIENE EL ID DEL HOTEL
-                //Direccion direccion = repositorioDireccion.getByIdHotel(id);
+                Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
+                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
 
                 //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
 
@@ -124,7 +123,7 @@ namespace FrbaHotel.Repositorios {
 
                 //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
 
-                hotel = new Hotel(idHotel, categoria, null, nombre, mail, telefono,
+                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
                                 fechaInicio, null, null, null, null);
             }
 
