@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
-using System.Security.Cryptography;
+using FrbaHotel.Repositorios;
 
 namespace FrbaHotel.Login
 {
@@ -21,20 +21,28 @@ namespace FrbaHotel.Login
         }
         private void BotonLoginClick(object sender, EventArgs e)
         {
-            
-            try
-            {
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
 
+            if (repoUsuario.AutenticarUsuario(txtUsername.Text, txtPassword.Text)){
+                this.DialogResult = DialogResult.OK;
+            } else 
+            {
+                //Logica del error de logueo
+            }
+
+            /*
+            try
+            {                                                                                                                               
                 int intentos = -1;//no existe usuario
                 Boolean estado = false;//no habilitado
 
                 //pasarle el usuario al formulario principal seguro para mostrar el nombre ahi en pantalla.
-                Principal.user=txtUsername.Text;
+                //Principal.user=txtUsername.Text;
                 
                 //encripto la clave
-                string Encriptada = EncriptarSHA256(txtPassword.Text);
+                RepositorioUsuario repoUsuario = new RepositorioUsuario();
+                string Encriptada = repoUsuario.EncriptarSHA256(txtPassword.Text);
                 string user=txtUsername.Text;
-
 
                 //Configuraciones de la consulta
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -77,7 +85,7 @@ namespace FrbaHotel.Login
                             sqlCommand.ExecuteNonQuery();
                          
                             //le digo al Principal que ya estamos logueados
-                            Principal.logeado = true;
+                            //Principal.logeado = true;
 
                             // Volvemos al menu principal que ya deberia tener los datos de usuario
                             Close();
@@ -135,24 +143,7 @@ namespace FrbaHotel.Login
                 if (respuesta == DialogResult.OK)
                     MessageBox.Show("Error realizando el login", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            */
         }
-
-        
-        public string EncriptarSHA256(string input)
-        {
-            SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();
-
-            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-            byte[] hashedBytes = provider.ComputeHash(inputBytes);
-
-            StringBuilder output = new StringBuilder();
-
-            for (int i = 0; i < hashedBytes.Length; i++)
-                output.Append(hashedBytes[i].ToString("x2").ToLower());
-
-            return output.ToString();
-        }
-
-        
     }
 }

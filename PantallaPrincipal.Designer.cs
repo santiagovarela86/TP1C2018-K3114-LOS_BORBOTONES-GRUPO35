@@ -45,28 +45,29 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(152, 12);
+            this.button3.Location = new System.Drawing.Point(185, 12);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(120, 41);
-            this.button3.TabIndex = 2;
+            this.button3.TabIndex = 1;
             this.button3.Text = "Editar una reserva...";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(290, 12);
+            this.button2.Location = new System.Drawing.Point(352, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(120, 41);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 2;
             this.button2.Text = "Funciones Adicionales";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(152, 70);
+            this.button4.Location = new System.Drawing.Point(185, 62);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(120, 41);
-            this.button4.TabIndex = 4;
+            this.button4.TabIndex = 3;
             this.button4.Text = "Salir";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -75,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(422, 125);
+            this.ClientSize = new System.Drawing.Size(484, 115);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
