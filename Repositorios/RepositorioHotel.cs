@@ -7,14 +7,9 @@ using FrbaHotel.Modelo;
 
 namespace FrbaHotel.Repositorios {
 
-
-
-
-
     public class RepositorioHotel : Repositorio<Hotel>
     {
-
-        private RepositorioCategoria repositorioCategoria;
+        
         private RepositorioDireccion repositorioDireccion;
         private RepositorioRegimen repositorioRegimen;
         private RepositorioCierreTemporal repositorioCierreTemporal;
@@ -90,7 +85,6 @@ namespace FrbaHotel.Repositorios {
 
         public override Hotel getById(int id)
         {
-            
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -100,7 +94,7 @@ namespace FrbaHotel.Repositorios {
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
-                "SELECT idHotel,Nombre,Mail,Telefono,FechaInicioActividad FROM LOS_BORBOTONES.Hotel AS HOT WHERE HOT.idHotel = @idHotel";
+                "SELECT idHotel,Nombre,Mail,Telefono,FechaInicioActividades,idCategoria FROM LOS_BORBOTONES.Hotel AS HOT WHERE HOT.idHotel = @idHotel";
 
             sqlConnection.Open();
 
@@ -108,21 +102,31 @@ namespace FrbaHotel.Repositorios {
 
             if (reader.Read())
             {
-                int idHotel= reader.GetInt32(reader.GetOrdinal("idHotel"));
+                RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+                int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 String nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                String mail = reader.GetString(reader.GetOrdinal("Mail"));
-                String telefono = reader.GetString(reader.GetOrdinal("Telefono"));
-                DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicioActividad"));
+                String mail = reader.SafeGetString(reader.GetOrdinal("Mail"));
+                String telefono = reader.SafeGetString(reader.GetOrdinal("Telefono"));
+                DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicioActividades"));
+                int idCategoria = reader.GetInt32(reader.GetOrdinal("idCategoria"));
 
-                Categoria categoria = repositorioCategoria.getByHotelId(id);
+                Categoria categoria = repositorioCategoria.getById(idCategoria);
+
+                //EN EL REPOSITORIO DIRECCION HAY QUE HACER UN GET BY ID DE LA DIRECCION...
+                //EN LA ENTIDAD HOTEL SE GUARDA EL INT AL ID DE SU DIRECCION
+                //LA DIRECCION NO TIENE EL ID DEL HOTEL
                 //Direccion direccion = repositorioDireccion.getByIdHotel(id);
-                List<Regimen> regimenes = repositorioRegimen.getByHotelId(id, hotel);
+
+                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
+
                 List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+
                 List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
+
                 List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
 
-                hotel = new Hotel(idHotel, categoria, null, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
+                hotel = new Hotel(idHotel, null, null, nombre, mail, telefono,
+                                fechaInicio, reservas, null, habitaciones, cierresTemporales);
             }
 
             //Cierro Primera Consulta

@@ -20,27 +20,8 @@ namespace TestingFrbaHotel
             Assert.AreEqual("Usuario", identidadAdmin.getTipoIdentidad());
             Assert.AreEqual("Cliente", identidadUnCliente.getTipoIdentidad());
 
-            /*
-            Usuario admin = repositorioUsuario.getByUsername("admin");
-            Usuario guest = repositorioUsuario.getByUsername("guest");
-
-            Assert.IsTrue(admin.getActivo());
-            Assert.IsTrue(guest.getActivo());
-
-            Assert.AreEqual(0, admin.getIntentosFallidosLogin());
-            Assert.AreEqual(0, guest.getIntentosFallidosLogin());
-
-            Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("Administrador")));
-            Assert.IsTrue(guest.getRoles().Exists(rol => rol.getNombre().Equals("Guest")));
-
-            //FALTA VALIDAR QUE TRAIGA LOS HOTELES
-            Assert.AreEqual(5, admin.getHoteles().Count);
-            Assert.AreEqual(2, guest.getHoteles().Count);
-
-            //FALTA VALIDAR QUE TRAIGA LA IDENTIDAD
-            Assert.IsTrue(admin.getIdentidad().getMail().Equals("admin@frba_utn.com"));
-            Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("33417682"));
-             * */
+            Assert.AreEqual(1, identidadAdmin.getDirecciones().Count);
+            Assert.AreEqual(1, identidadUnCliente.getDirecciones().Count);
         }
 
         [TestMethod]
@@ -89,7 +70,7 @@ namespace TestingFrbaHotel
         Identidad identidadAdmin = repositorioIdentidad.("Lanata");
 
     }
-         *             */
+        */
 
         [TestMethod]
         public void Test_Repo_Identidad_getByQuery()

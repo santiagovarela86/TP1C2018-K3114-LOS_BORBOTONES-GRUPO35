@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios
 {
@@ -29,29 +30,27 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
-        public override Categoria getById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void update(Categoria t)
         {
             throw new NotImplementedException();
         }
 
-        public Categoria getByHotelId(int id) {
+        //NO EXISTE EL CAMPO IDHOTEL EN LA ENTIDAD CATEGORIA
+        //LO QUE HAY QUE HACER ACA ES UN GET BY ID Y DESDE EL REPOSITORIO HOTEL AL ARMARLO
+        //LLAMAR A ESTE REPOSITORIO Y OBTENER SU CATEGORIA POR ID (el id es una columna en la tabla hotel)
+        public override Categoria getById(int idCategoria) {
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            Categoria categoria=null;
+            Categoria categoria = null;
 
-            sqlCommand.Parameters.AddWithValue("@idHotel", id);
+            sqlCommand.Parameters.AddWithValue("@idCategoria", idCategoria);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idCategoria,Estrellas,RecargaEstrellas FROM LOS_BORBOTONES.Categoria AS CAT WHERE CAT.idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria categoria WHERE categoria.idCategoria = @idCategoria";
 
             sqlConnection.Open();
 
@@ -60,10 +59,15 @@ namespace FrbaHotel.Repositorios
             if (reader.Read())
             {
                 int estrellas = reader.GetInt32(reader.GetOrdinal("Estrellas"));
-                int recargaEstrellas = reader.GetInt32(reader.GetOrdinal("RecargaEstrellas"));
-                int idCategoria = reader.GetInt32(reader.GetOrdinal("RecargaEstrellas"));
+                float recargaEstrellas = reader.GetFloat(reader.GetOrdinal("RecargaEstrellas"));
                 categoria = new Categoria(idCategoria, estrellas, recargaEstrellas);
             }
+            else
+            {
+                //Si no encuentro elemento con ese ID tiro una excepción
+                throw new NoExisteIDException("No existe categoria con el ID asociado");
+            }
+
             //Cierro Primera Consulta
             sqlConnection.Close();
 

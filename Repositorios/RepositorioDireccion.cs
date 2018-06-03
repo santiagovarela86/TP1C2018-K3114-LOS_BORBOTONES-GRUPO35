@@ -40,7 +40,7 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
-        //NO EXISTE EL CAMBIO IDHOTEL EN LA ENTIDAD DIRECCION
+        //NO EXISTE EL CAMPO IDHOTEL EN LA ENTIDAD DIRECCION
         //LO QUE HAY QUE HACER ACA ES UN GET BY ID Y DESDE EL REPOSITORIO HOTEL AL ARMARLO
         //LLAMAR A ESTE REPOSITORIO Y OBTENER SU DIRECCION POR ID (el id es una columna en la tabla hotel)
         /*

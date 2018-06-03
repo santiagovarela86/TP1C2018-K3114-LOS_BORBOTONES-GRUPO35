@@ -9,16 +9,17 @@ namespace FrbaHotel.Modelo
     public class Regimen
     {
         private int idRegimen = 0;
-        private Hotel hotel = null;
+        //private Hotel hotel = null;
         private int codigoRegimen = 0; //QUE DIFERENCIA HAY CON EL ID REGIMEN?
         private String descripcion = "";
         private float precio = 0;
         private String estado = "";
 
-        public Regimen(int idRegimen, Hotel hotel, int codigoRegimen, String descripcion, float precio, String estado)
+        //public Regimen(int idRegimen, Hotel hotel, int codigoRegimen, String descripcion, float precio, String estado)
+        public Regimen(int idRegimen, int codigoRegimen, String descripcion, float precio, String estado)
         {
             this.idRegimen = idRegimen;
-            this.hotel = hotel;
+            //this.hotel = hotel;
             this.codigoRegimen = codigoRegimen;
             this.descripcion = descripcion;
             this.precio = precio;
@@ -30,10 +31,12 @@ namespace FrbaHotel.Modelo
             return this.idRegimen;
         }
 
+        /*
         public Hotel getHotel()
         {
             return this.hotel;
         }
+        */
 
         public int getCodigoRegimen()
         {
@@ -62,7 +65,7 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdRegimen { get { return this.getIdRegimen(); } }
-        public Hotel Hotel { get { return this.getHotel(); } }
+        //public Hotel Hotel { get { return this.getHotel(); } }
         public int CodigoRegimen { get { return this.getCodigoRegimen(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
         public float Precio { get { return this.getPrecio(); } }
