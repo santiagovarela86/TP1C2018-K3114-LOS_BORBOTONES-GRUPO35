@@ -157,8 +157,8 @@ CREATE TABLE LOS_BORBOTONES.Direccion (
 	Pais			VARCHAR(45)		DEFAULT 'Argentina',
 	Ciudad			NVARCHAR(255),
 	Calle			NVARCHAR(255),
-	NumeroCalle		NUMERIC(18,0),
-	Piso			NVARCHAR(50),
+	NumeroCalle		INT,
+	Piso			INT,
 	Depto			NVARCHAR(50),
 	idIdentidad		INT,	--se quito la especificacion not null
 )
