@@ -9,7 +9,10 @@ namespace FrbaHotel.Repositorios {
 
     public class RepositorioHotel : Repositorio<Hotel>
     {
-        private RepositorioHabitacion repositorioHabitacion;
+        RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+        RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
+        RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
+        RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
 
         public override void create(Hotel hotel)
         {
@@ -98,11 +101,6 @@ namespace FrbaHotel.Repositorios {
 
             if (reader.Read())
             {
-                RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
-                RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
-                RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
-                RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
-
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 String nombre = reader.GetString(reader.GetOrdinal("Nombre"));
                 String mail = reader.SafeGetString(reader.GetOrdinal("Mail"));
@@ -115,7 +113,7 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
+                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
 
                 //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
 
@@ -124,7 +122,7 @@ namespace FrbaHotel.Repositorios {
                 //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
 
                 hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, null, null, null, null);
+                                fechaInicio, null, regimenes, null, null);
             }
 
             //Cierro Primera Consulta

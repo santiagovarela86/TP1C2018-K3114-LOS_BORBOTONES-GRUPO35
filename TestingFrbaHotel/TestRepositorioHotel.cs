@@ -22,14 +22,14 @@ namespace TestingFrbaHotel
             Assert.AreEqual(1, hotel1.getCategoria().getEstrellas());
             Assert.IsTrue(hotel1.getDireccion().getCiudad().Contains("Bs. As. Oeste"));
 
-            //VALIDAR LISTA DE RESERVAS
+            Assert.AreEqual(4, hotel1.getRegimenes().Count);
+            Assert.IsTrue(hotel1.getRegimenes().Exists(r => r.getDescripcion().Equals("All inclusive")));
 
-            //VALIDAR LISTA DE REGIMENES
+            //VALIDAR LISTA DE RESERVAS
 
             //VALIDAR LISTA DE CIERRES TEMPORALES
 
             //VALIDAR LISTA DE HABITACIONES
-
 
         }
         /*
