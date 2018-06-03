@@ -35,9 +35,6 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
-        //NO EXISTE EL CAMPO IDHOTEL EN LA ENTIDAD CATEGORIA
-        //LO QUE HAY QUE HACER ACA ES UN GET BY ID Y DESDE EL REPOSITORIO HOTEL AL ARMARLO
-        //LLAMAR A ESTE REPOSITORIO Y OBTENER SU CATEGORIA POR ID (el id es una columna en la tabla hotel)
         public override Categoria getById(int idCategoria) {
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -59,7 +56,7 @@ namespace FrbaHotel.Repositorios
             if (reader.Read())
             {
                 int estrellas = reader.GetInt32(reader.GetOrdinal("Estrellas"));
-                float recargaEstrellas = reader.GetFloat(reader.GetOrdinal("RecargaEstrellas"));
+                decimal recargaEstrellas = reader.GetDecimal(reader.GetOrdinal("RecargaEstrellas"));
                 categoria = new Categoria(idCategoria, estrellas, recargaEstrellas);
             }
             else

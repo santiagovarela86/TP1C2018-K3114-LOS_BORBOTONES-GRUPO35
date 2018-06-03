@@ -198,7 +198,7 @@ CREATE TABLE LOS_BORBOTONES.Categoria (
 
 	idCategoria			INT		IDENTITY(1,1)	NOT NULL,
 	Estrellas			INT,
-	RecargaEstrellas	NUMERIC(18,0)
+	RecargaEstrellas	NUMERIC(18,2)
 )
 GO
 

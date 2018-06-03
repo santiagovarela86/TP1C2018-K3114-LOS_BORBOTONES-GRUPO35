@@ -10,9 +10,9 @@ namespace FrbaHotel.Modelo
     {
         private int idCategoria = 0;
         private int estrellas = 0;
-        private float recargaEstrellas = 0;
+        private decimal recargaEstrellas = 0;
 
-        public Categoria(int idCategoria, int estrellas, float recargaEstrellas)
+        public Categoria(int idCategoria, int estrellas, decimal recargaEstrellas)
         {
             this.idCategoria = idCategoria;
             this.estrellas = estrellas;
@@ -29,7 +29,7 @@ namespace FrbaHotel.Modelo
             return estrellas;
         }
 
-        public float getRecargaEstrellas()
+        public decimal getRecargaEstrellas()
         {
             return recargaEstrellas;
         }
@@ -37,6 +37,6 @@ namespace FrbaHotel.Modelo
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdCategoria { get { return this.getIdCategoria(); } }
         public int Estrellas { get { return this.getEstrellas(); } }
-        public float RecargaEstrellas { get { return this.getRecargaEstrellas(); } }
+        public decimal RecargaEstrellas { get { return this.getRecargaEstrellas(); } }
     }
 }

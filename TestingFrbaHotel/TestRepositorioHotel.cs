@@ -20,12 +20,16 @@ namespace TestingFrbaHotel
             Assert.AreEqual(2018, hotel1.getFechaInicioActividades().Year);
 
             Assert.AreEqual(1, hotel1.getCategoria().getEstrellas());
-            Assert.AreEqual("Bs. As. Oeste", hotel1.getDireccion().getCiudad());
+            //Assert.AreEqual("Bs. As. Oeste", hotel1.getDireccion().getCiudad());
 
             //VALIDAR LISTA DE RESERVAS
+
             //VALIDAR LISTA DE REGIMENES
+
             //VALIDAR LISTA DE CIERRES TEMPORALES
+
             //VALIDAR LISTA DE HABITACIONES
+
 
         }
         /*

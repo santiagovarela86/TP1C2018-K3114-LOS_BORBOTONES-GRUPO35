@@ -9,10 +9,7 @@ namespace FrbaHotel.Repositorios {
 
     public class RepositorioHotel : Repositorio<Hotel>
     {
-        
         private RepositorioDireccion repositorioDireccion;
-        private RepositorioRegimen repositorioRegimen;
-        private RepositorioCierreTemporal repositorioCierreTemporal;
         private RepositorioHabitacion repositorioHabitacion;
 
         public override void create(Hotel hotel)
@@ -103,6 +100,8 @@ namespace FrbaHotel.Repositorios {
             if (reader.Read())
             {
                 RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+                RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
+                RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 String nombre = reader.GetString(reader.GetOrdinal("Nombre"));
                 String mail = reader.SafeGetString(reader.GetOrdinal("Mail"));
@@ -119,14 +118,14 @@ namespace FrbaHotel.Repositorios {
 
                 List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
 
-                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
 
-                List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
+                //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
 
-                List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
+                //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
 
-                hotel = new Hotel(idHotel, null, null, nombre, mail, telefono,
-                                fechaInicio, reservas, null, habitaciones, cierresTemporales);
+                hotel = new Hotel(idHotel, categoria, null, nombre, mail, telefono,
+                                fechaInicio, null, null, null, null);
             }
 
             //Cierro Primera Consulta

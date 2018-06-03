@@ -64,9 +64,9 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {  
                 int idRegimen = reader.GetInt32(reader.GetOrdinal("idRegimen"));
-                int codigo = reader.GetInt32(reader.GetOrdinal("Codigo"));
+                String codigo = reader.GetString(reader.GetOrdinal("Codigo"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                float precio = reader.GetFloat(reader.GetOrdinal("Precio"));
+                decimal precio = reader.GetDecimal(reader.GetOrdinal("Precio"));
                 String estado = reader.GetString(reader.GetOrdinal("Estado"));
 
                 regimenes.Add(new Regimen(idRegimen, codigo, descripcion, precio, estado));
