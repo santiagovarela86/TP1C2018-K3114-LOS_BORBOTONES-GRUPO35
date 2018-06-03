@@ -73,6 +73,15 @@
     <Compile Include="AbmHabitacion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHotel\CreateHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\DropHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\SearchHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmRegimen\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
