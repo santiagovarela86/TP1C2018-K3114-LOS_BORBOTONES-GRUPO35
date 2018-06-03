@@ -8,7 +8,7 @@ using FrbaHotel.Modelo;
 
 namespace FrbaHotel.Repositorios
 {
-    class RepositorioDireccion : Repositorio<Direccion>
+    public class RepositorioDireccion : Repositorio<Direccion>
     {
         public override void create(Direccion t)
         {
@@ -40,7 +40,11 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
-        public Direccion getByHotelId(int id)
+        //NO EXISTE EL CAMBIO IDHOTEL EN LA ENTIDAD DIRECCION
+        //LO QUE HAY QUE HACER ACA ES UN GET BY ID Y DESDE EL REPOSITORIO HOTEL AL ARMARLO
+        //LLAMAR A ESTE REPOSITORIO Y OBTENER SU DIRECCION POR ID (el id es una columna en la tabla hotel)
+        /*
+        public Direccion getByIdHotel(int id)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -75,6 +79,7 @@ namespace FrbaHotel.Repositorios
 
             return direccion;
         }
+        */
 
         public Direccion getByIdIdentidad(int id)
         {
@@ -106,6 +111,7 @@ namespace FrbaHotel.Repositorios
                 String departamento = reader.GetString(reader.GetOrdinal("Depto"));
                 direccion = new Direccion(idDireccion, null, pais, ciudad, calle, numeroCalle, piso, departamento);
             }
+
             //Cierro Primera Consulta
             sqlConnection.Close();
 

@@ -115,13 +115,13 @@ namespace FrbaHotel.Repositorios {
                 DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicioActividad"));
 
                 Categoria categoria = repositorioCategoria.getByHotelId(id);
-                Direccion direccion = repositorioDireccion.getByHotelId(id);
+                //Direccion direccion = repositorioDireccion.getByIdHotel(id);
                 List<Regimen> regimenes = repositorioRegimen.getByHotelId(id, hotel);
                 List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
                 List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
                 List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
 
-                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
+                hotel = new Hotel(idHotel, categoria, null, nombre, mail, telefono,
                                 fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
             }
 

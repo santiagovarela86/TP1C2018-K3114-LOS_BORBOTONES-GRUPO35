@@ -13,25 +13,13 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Direccion_Creacion_Direccion()
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            Usuario admin = repositorioUsuario.getByUsername("admin");
-            Usuario guest = repositorioUsuario.getByUsername("guest");
+            RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
+            Direccion unaDireccion = repositorioDireccion.getByIdIdentidad(28587);
+            Direccion otraDireccion = repositorioDireccion.getByIdIdentidad(48664);
 
-            Assert.IsTrue(admin.getActivo());
-            Assert.IsTrue(guest.getActivo());
-
-            Assert.AreEqual(0, admin.getIntentosFallidosLogin());
-            Assert.AreEqual(0, guest.getIntentosFallidosLogin());
-
-            Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("Administrador")));
-            Assert.IsTrue(guest.getRoles().Exists(rol => rol.getNombre().Equals("Guest")));
-
-            Assert.IsTrue(admin.getIdentidad().getMail().Equals("admin@frba_utn.com"));
-            Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("33417682"));
-
-            //FALTA VALIDAR QUE TRAIGA LOS HOTELES
-            //Assert.AreEqual(5, admin.getHoteles().Count);
-            //Assert.AreEqual(2, guest.getHoteles().Count);
+            Assert.AreEqual("Y", unaDireccion.getDepartamento());
+            Assert.AreEqual(1, otraDireccion.getPiso());
+            Assert.AreEqual("", otraDireccion.getCiudad());
         }
         /*
 
