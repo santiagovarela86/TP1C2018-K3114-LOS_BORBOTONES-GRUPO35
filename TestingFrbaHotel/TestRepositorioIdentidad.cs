@@ -8,12 +8,19 @@ using FrbaHotel.Excepciones;
 namespace TestingFrbaHotel
 {
     [TestClass]
-    public class TestRepositorioUsuario
+    public class TestRepositorioIdentidad
     {
         [TestMethod]
-        public void Test_Repo_Usuario_Creacion_Usuario()
+        public void Test_Repo_Identidad_Creacion_Identidad()
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
+            RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
+            Identidad identidadAdmin = repositorioIdentidad.getById(1);
+            Identidad identidadUnCliente = repositorioIdentidad.getById(10);
+
+            Assert.AreEqual("Usuario", identidadAdmin.getTipoIdentidad());
+            Assert.AreEqual("Cliente", identidadUnCliente.getTipoIdentidad());
+
+            /*
             Usuario admin = repositorioUsuario.getByUsername("admin");
             Usuario guest = repositorioUsuario.getByUsername("guest");
 
@@ -26,32 +33,38 @@ namespace TestingFrbaHotel
             Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("Administrador")));
             Assert.IsTrue(guest.getRoles().Exists(rol => rol.getNombre().Equals("Guest")));
 
+            //FALTA VALIDAR QUE TRAIGA LOS HOTELES
+            Assert.AreEqual(5, admin.getHoteles().Count);
+            Assert.AreEqual(2, guest.getHoteles().Count);
+
+            //FALTA VALIDAR QUE TRAIGA LA IDENTIDAD
             Assert.IsTrue(admin.getIdentidad().getMail().Equals("admin@frba_utn.com"));
             Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("33417682"));
-
-            //FALTA VALIDAR QUE TRAIGA LOS HOTELES
-            //Assert.AreEqual(5, admin.getHoteles().Count);
-            //Assert.AreEqual(2, guest.getHoteles().Count);
+             * */
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NoExisteIDException), "No existe usuario con el ID asociado")]
-        public void Test_Repo_Usuario_getById()
+        [ExpectedException(typeof(NoExisteIDException), "No existe identidad con el ID asociado")]
+        public void Test_Repo_Identidad_getById()
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            Usuario usuario = repositorioUsuario.getById(50);
+            RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
+            Identidad identidad = repositorioIdentidad.getById(999999999);
         }
 
+        /*
+         * NO ESTA IMPLEMENTADO
+         * 
         [TestMethod]
-        public void Test_Repo_Usuario_getAll() 
+        public void Test_Repo_Identidad_getAll() 
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            List<Usuario> usuarios = repositorioUsuario.getAll();
-            Assert.AreEqual(2, usuarios.Count);
+            RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
+            List<Identidad> identidades = repositorioIdentidad.getAll();
+            Assert.AreEqual(1000, identidades.Count);
         }
+        */
 
         [TestMethod]
-        public void Test_Repo_Usuario_exists()
+        public void Test_Repo_Identidad_exists()
         {
             //HAY QUE PROGRAMAR EL EXISTS...
 
@@ -65,16 +78,21 @@ namespace TestingFrbaHotel
             //Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(NoExisteNombreException), "No existe usuario con el Nombre asociado")]
-        public void Test_Repo_Usuario_getByUsername()
-        {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            Usuario admin = repositorioUsuario.getByUsername("Lanata");
-        }
+        /*
+    [TestMethod]
+    [ExpectedException(typeof(NoExisteNombreException), "No existe identidad con el Nombre asociado")]
+    public void Test_Repo_Identidad_getByUsername()
+    {
+        //NO ESTA PROGRAMADO
+
+        RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
+        Identidad identidadAdmin = repositorioIdentidad.("Lanata");
+
+    }
+         *             */
 
         [TestMethod]
-        public void Test_Repo_Usuario_getByQuery()
+        public void Test_Repo_Identidad_getByQuery()
         {
             //RepositorioRol repositorioRol = new RepositorioRol();
 

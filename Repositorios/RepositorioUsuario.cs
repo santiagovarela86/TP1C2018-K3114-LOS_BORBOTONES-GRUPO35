@@ -97,15 +97,15 @@ namespace FrbaHotel.Repositorios
             {
                 //lleno el hotel con el getbyID                
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
-                RepositorioHotel repoHotel = new RepositorioHotel();
-                hoteles.Add(repoHotel.getById(idHotel));         
+                //RepositorioHotel repoHotel = new RepositorioHotel();
+                //hoteles.Add(repoHotel.getById(idHotel));         
             }
 
             sqlConnection.Close();
     
             //Armo el usuario completo
+            //usuario = new Usuario(idUsuario, identidad, username, password, intentosFallidosLogin, activo, roles, hoteles);
             usuario = new Usuario(idUsuario, identidad, username, password, intentosFallidosLogin, activo, roles, hoteles);
-            //usuario = null;
 
             return usuario;
         }

@@ -28,7 +28,6 @@ namespace FrbaHotel.Repositorios
             String telefono = "";
             List<Direccion> direcciones = new List<Direccion>();
             RepositorioDireccion repoDireccion = new RepositorioDireccion();
-            
 
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -49,23 +48,22 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                apellido = reader.GetString(reader.GetOrdinal("Apellido"));
+                apellido = reader.SafeGetString(reader.GetOrdinal("Apellido"));                
                 tipoIdentidad = reader.GetString(reader.GetOrdinal("TipoIdentidad"));
                 tipoDocumento = reader.GetString(reader.GetOrdinal("TipoDocumento"));
                 numeroDocumento = reader.GetString(reader.GetOrdinal("NumeroDocumento"));
                 mail = reader.GetString(reader.GetOrdinal("Mail"));
-                nacionalidad = reader.GetString(reader.GetOrdinal("Nacionalidad"));
+                nacionalidad = reader.SafeGetString(reader.GetOrdinal("Nacionalidad"));
                 telefono = reader.GetString(reader.GetOrdinal("Telefono"));
-                fechaNacimiento = reader.GetDateTime(reader.GetOrdinal("FechaNacimiento"));                
-                direcciones.Add(repoDireccion.getByIdIdentidad(idIdentidad));
-                
+                fechaNacimiento = reader.SafeGetDateTime(reader.GetOrdinal("FechaNacimiento"));                
+                direcciones.Add(repoDireccion.getByIdIdentidad(idIdentidad));                
             }
 
             //Cierro Primera Consulta
             sqlConnection.Close();
 
             //Si no encuentro elemento con ese ID tiro una excepción
-            if (identidad.Equals(null)) throw new NoExisteIDException("No existe identidad con el ID asociado");
+            if (nombre.Equals("")) throw new NoExisteIDException("No existe identidad con el ID asociado");
 
             //Armo la identidad
             identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDocumento, numeroDocumento, mail, fechaNacimiento, nacionalidad, telefono, direcciones);
