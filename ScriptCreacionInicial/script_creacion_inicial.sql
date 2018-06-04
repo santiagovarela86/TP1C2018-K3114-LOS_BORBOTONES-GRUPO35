@@ -572,6 +572,12 @@ ADD CONSTRAINT FK_Usuario_EstadoReserva FOREIGN KEY(idUsuario) REFERENCES LOS_BO
 ALTER TABLE LOS_BORBOTONES.EstadoReserva
 ADD CONSTRAINT FK_Reserva_EstadoReserva FOREIGN KEY(idReserva) REFERENCES LOS_BORBOTONES.Reserva(idReserva)
 
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+--------------------------------------FIN CREACION----------------------------------------------------
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Creacion Procedimiento Migracion Tabla Maestra
 
@@ -653,7 +659,10 @@ INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, TipoDocumento, Numer
 	   VALUES('Usuario', 'guest', 'DNI', '33417682',  'soporte2@frba_utn.com')
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 -- defini solo Usuarios admin y guest, por ahora
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
 	VALUES ('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE Nombre like 'admin' and TipoIdentidad = 'Usuario'));
@@ -662,7 +671,7 @@ GO
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
 	VALUES ('guest','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE nombre like 'guest' and TipoIdentidad = 'Usuario'));
 GO
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 --Carga Rol_X_Usuario
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
 VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'administrador'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'admin'));
@@ -671,6 +680,81 @@ GO
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
 VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'guest'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'guest'));
 GO
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--TEST CASES: Carga de Hoteles con sus habitaciones y reservas
+SET IDENTITY_INSERT LOS_BORBOTONES.Direccion ON
+INSERT INTO LOS_BORBOTONES.Direccion (idDireccion,Pais,Ciudad,Calle,NumeroCalle)
+VALUES (1,'SQL-PAIS','SQL-CIUDAD','SQL-CALLE',123);
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Direccion OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Categoria ON
+INSERT INTO LOS_BORBOTONES.Categoria(idCategoria,Estrellas,RecargaEstrellas)
+VALUES (1,5,10);
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Categoria OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Hotel ON
+INSERT INTO LOS_BORBOTONES.Hotel (idHotel, Nombre,Mail,Telefono,FechaInicioActividades,idCategoria,idDireccion)
+VALUES (1,'SQL-NOMBRE','SQL-MAIL','SQL-TELEFONO',GETDATE(),1,1)
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Hotel OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.TipoHabitacion ON
+INSERT INTO LOS_BORBOTONES.TipoHabitacion(idTipoHabitacion, Codigo,Descripcion,Porcentual)
+VALUES (1,'SQL-CODIGO-1','SQL-DESCRIPCION-1','SQL-PORCENTUAL-1')
+GO
+INSERT INTO LOS_BORBOTONES.TipoHabitacion(idTipoHabitacion, Codigo,Descripcion,Porcentual)
+VALUES (2,'SQL-CODIGO-2','SQL-DESCRIPCION-2','SQL-PORCENTUAL-2')
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.TipoHabitacion OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Habitacion ON
+INSERT INTO LOS_BORBOTONES.Habitacion(idHabitacion, Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion)
+VALUES (1,1,11,1,'SQL-UBICACION-HAB-1',1,1)
+GO
+INSERT INTO LOS_BORBOTONES.Habitacion(idHabitacion, Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion)
+VALUES (2,1,12,1,'SQL-UBICACION-HAB-2',1,2)
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Habitacion OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Regimen ON
+INSERT INTO LOS_BORBOTONES.Regimen(idRegimen, Codigo,Descripcion,Precio,Estado,idHotel)
+VALUES (1,'SQL-CODIGO-REG-1','SQL-DESCRIPCION-REG-1',10,'SQL-ESTADO-REG-1',1)
+GO
+INSERT INTO LOS_BORBOTONES.Regimen(idRegimen, Codigo,Descripcion,Precio,Estado,idHotel)
+VALUES (2,'SQL-CODIGO-REG-2','SQL-DESCRIPCION-REG-2',20,'SQL-ESTADO-REG-2',1)
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Regimen OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Identidad ON
+INSERT INTO LOS_BORBOTONES.Identidad(idIdentidad,TipoIdentidad, Nombre, TipoDocumento, NumeroDocumento, Mail)
+	   VALUES(3,'SQL-NOMBRE', 'SQL-GUEST', 'SQL-DNI', 'SQL-NUMERO',  'SQL-MAIL')
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Identidad OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Cliente ON
+INSERT INTO LOS_BORBOTONES.Cliente(idCliente, Activo,idIdentidad)
+VALUES (1,1,3)
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Cliente OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Estadia ON
+INSERT INTO LOS_BORBOTONES.Estadia(idEstadia, FechaEntrada,FechaSalida,idUsuarioIn,idUsuarioOut)
+VALUES (1,GETDATE(),GETDATE(),1,1);
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Estadia OFF
+
+SET IDENTITY_INSERT LOS_BORBOTONES.Reserva ON
+INSERT INTO LOS_BORBOTONES.Reserva(idReserva, CodigoReserva,FechaCreacion,FechaDesde,FechaHasta,DiasAlojados,idHotel,idEstadia,idRegimen,idIdentidad)
+VALUES (1,1,GETDATE(),GETDATE(),GETDATE(),1,1,1,1,3);
+GO
+
+INSERT INTO LOS_BORBOTONES.Reserva(idReserva, CodigoReserva,FechaCreacion,FechaDesde,FechaHasta,DiasAlojados,idHotel,idEstadia,idRegimen,idIdentidad)
+VALUES (2,2,GETDATE(),GETDATE(),GETDATE(),1,1,1,2,3);
+GO
+SET IDENTITY_INSERT LOS_BORBOTONES.Reserva OFF
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Identidad
