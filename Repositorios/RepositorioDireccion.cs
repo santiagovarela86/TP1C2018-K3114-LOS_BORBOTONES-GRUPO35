@@ -10,7 +10,7 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioDireccion : Repositorio<Direccion>
     {
-        public override void create(Direccion t)
+        public override int create(Direccion t)
         {
             throw new System.NotImplementedException();
         }
@@ -30,9 +30,34 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
-        public override void update(Direccion t)
+        public override void update(Direccion direccion)
         {
-            throw new System.NotImplementedException();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+
+            sqlCommand.Parameters.AddWithValue("@pais", direccion.Pais);
+            sqlCommand.Parameters.AddWithValue("@ciudad", direccion.Ciudad);
+            sqlCommand.Parameters.AddWithValue("@calle", direccion.Calle);
+            sqlCommand.Parameters.AddWithValue("@numeroCalle", direccion.NumeroCalle);
+            sqlCommand.Parameters.AddWithValue("@piso", direccion.Piso);
+            sqlCommand.Parameters.AddWithValue("@departamento", direccion.Departamento);
+            sqlCommand.Parameters.AddWithValue("@idDireccion", direccion.IdDireccion);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Direccion SET Pais= @pais, Ciudad= @ciudad ," +
+                " Calle=@calle, NumeroCalle= @numeroCalle, Piso=@piso, Departamento=@departamento" +
+                "WHERE idDireccion= @idDireccion";
+
+            sqlConnection.Open();
+
+            //Checkear excepcion si no existe u ocurrio algun problema con el update
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
         }
 
         public override Direccion getById(int idDireccion)

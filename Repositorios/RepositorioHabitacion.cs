@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FrbaHotel.Repositorios
 {
@@ -15,7 +12,7 @@ namespace FrbaHotel.Repositorios
 
         private RepositorioTipoHabitacion repositorioTipoHabitacion;
 
-        public override void create(Habitacion t)
+        public override int create(Habitacion t)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +39,7 @@ namespace FrbaHotel.Repositorios
 
         public override void update(Habitacion t)
         {
-            throw new NotImplementedException();
+
         }
 
 

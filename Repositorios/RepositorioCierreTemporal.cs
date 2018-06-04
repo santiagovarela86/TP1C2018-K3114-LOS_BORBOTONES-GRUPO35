@@ -9,7 +9,7 @@ namespace FrbaHotel.Repositorios
 {
     class RepositorioCierreTemporal : Repositorio<CierreTemporal>
     {
-        public override void create(CierreTemporal t)
+        public override int create(CierreTemporal t)
         {
             throw new NotImplementedException();
         }

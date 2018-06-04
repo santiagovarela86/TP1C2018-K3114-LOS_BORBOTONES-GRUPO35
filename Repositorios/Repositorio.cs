@@ -10,7 +10,7 @@ namespace FrbaHotel.Repositorios
     {
         public abstract T getById(int id);
         public abstract List<T> getAll();
-        public abstract void create(T t);
+        public abstract int create(T t);
         public abstract void delete(T t);
         public abstract void update(T t);
         public abstract Boolean exists(T t);

@@ -109,7 +109,7 @@ namespace FrbaHotel.Repositorios
             return roles;
         }
 
-        override public void create(Rol rol)
+        override public int create(Rol rol)
         {
             if (this.exists(rol))
             {
@@ -117,6 +117,8 @@ namespace FrbaHotel.Repositorios
             } else {
                 //Creo un nuevo registro
             }
+
+            throw new NotImplementedException();
         }
 
         override public void update(Rol rol)

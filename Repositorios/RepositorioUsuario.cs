@@ -138,7 +138,7 @@ namespace FrbaHotel.Repositorios
             return usuarios;
         }
 
-        override public void create(Usuario usuario)
+        override public int create(Usuario usuario)
         {
             if (this.exists(usuario))
             {
@@ -148,6 +148,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new NotImplementedException();
         }
 
         override public void update(Usuario usuario)

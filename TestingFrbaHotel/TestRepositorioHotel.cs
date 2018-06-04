@@ -2,8 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
-using System.Collections.Generic;
-using FrbaHotel.Excepciones;
+using System.Diagnostics;
 
 namespace TestingFrbaHotel
 {
@@ -14,16 +13,37 @@ namespace TestingFrbaHotel
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
             RepositorioHotel repositorioHotel = new RepositorioHotel();
-            Hotel hotel1 = repositorioHotel.getById(7);
+            String hotelNombre = "HotelTest";
+            String hotelMail = "test@gmail.com";
+            String hotelTelefono = "123123";
+            DateTime hotelFechaInicioDeActividad = DateTime.Now;
+            int categoriaEstrellas = 5;
+            decimal categoriaRecargaEstrellas = 10;
+            String dirPais = "AR";
+            String dirCiudad = "BUE";
+            String dirCalle = "Medrano";
+            int dirCalleNumero = 979;
+            Categoria categoria1 = new Categoria(0, categoriaEstrellas, categoriaRecargaEstrellas);
+            Direccion direccion1 = new Direccion(0, dirPais, dirCiudad, dirCalle, dirCalleNumero, 0, null);
+            Hotel hotel1 = new Hotel(0, categoria1, direccion1, hotelNombre, hotelMail, hotelTelefono, hotelFechaInicioDeActividad, null, null, null,null);
 
-            Assert.AreEqual("Balcarce2520", hotel1.getNombre());
-            Assert.AreEqual(2018, hotel1.getFechaInicioActividades().Year);
+            int savedHotelId= repositorioHotel.create(hotel1);
 
-            Assert.AreEqual(1, hotel1.getCategoria().getEstrellas());
-            Assert.IsTrue(hotel1.getDireccion().getCiudad().Contains("Bs. As. Oeste"));
+            Hotel hotelSearched= repositorioHotel.getById(savedHotelId);
+            Assert.AreEqual(hotelNombre, hotelSearched.getNombre());
 
-            Assert.AreEqual(4, hotel1.getRegimenes().Count);
-            Assert.IsTrue(hotel1.getRegimenes().Exists(r => r.getDescripcion().Equals("All inclusive")));
+            Assert.AreEqual(savedHotelId, hotelSearched.getIdHotel());
+            Assert.AreEqual(hotelMail, hotelSearched.getMail());
+            Assert.AreEqual(hotelTelefono, hotelSearched.getTelefono());
+            Debug.Assert(Math.Abs((hotelFechaInicioDeActividad - hotelSearched.getFechaInicioActividades()).TotalSeconds) < 1);
+            Assert.AreEqual(categoriaEstrellas, hotelSearched.getCategoria().getEstrellas());
+            Assert.AreEqual(categoriaRecargaEstrellas, hotelSearched.getCategoria().getRecargaEstrellas());
+            Assert.AreEqual(dirPais, hotelSearched.getDireccion().getPais());
+            Assert.AreEqual(dirCiudad, hotelSearched.getDireccion().getCiudad());
+            Assert.AreEqual(dirCalle, hotelSearched.getDireccion().getCalle());
+            Assert.AreEqual(dirCalleNumero, hotelSearched.getDireccion().getNumeroCalle());
+            Assert.AreEqual(0, hotelSearched.getDireccion().getPiso());
+
 
             //VALIDAR LISTA DE RESERVAS
 
