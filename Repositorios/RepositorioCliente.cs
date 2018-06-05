@@ -230,14 +230,14 @@ namespace FrbaHotel.Repositorios
             return getById(idCliente);
         }
 
-        public List<Cliente> getByQuery(String nombre,String apellido,Int32 dni, KeyValuePair<String, Boolean> estado)
+        public List<Cliente> getByQuery(String nombre,String apellido,String tipoDoc,String dni, KeyValuePair<String, Boolean> estado, String mail)
         {
             List<Cliente> clientes = new List<Cliente>();
             //hago join con identidad ya que de ahi vendran los filtros como nombre apellido y dni
             String query = "SELECT c.idCliente FROM LOS_BORBOTONES.Cliente c INNER JOIN LOS_BORBOTONES.Identidad i ON c.idIdentidad = i.idIdentidad";
 
             //Consulta SIN FILTRO
-            if (nombre.Equals("") && apellido.Equals("") && dni==0 && estado.Key == null)
+            if (nombre.Equals("") && apellido.Equals("") && tipoDoc.Equals("") && dni.Equals("") && estado.Key == null && mail.Equals(""))
             {
                 clientes = this.getAll();
             }
@@ -284,8 +284,22 @@ namespace FrbaHotel.Repositorios
                     }
                     sqlCommand.Parameters.AddWithValue("@Apellido", "%" + apellido + "%");
                 }
+                //AGREGO FILTRO tipoDoc
+                if (!tipoDoc.Equals(""))
+                {
+                    if (primerCriterioWhere)
+                    {
+                        query = query + " WHERE i.Apellido LIKE @TipoDoc";
+                        primerCriterioWhere = false;
+                    }
+                    else
+                    {
+                        query = query + " AND i.Apellido LIKE @TipoDoc";
+                    }
+                    sqlCommand.Parameters.AddWithValue("@TipoDoc", "%" + tipoDoc + "%");
+                }
                 //AGREGO FILTRO DNI
-                if (dni!=0)
+                if (!dni.Equals(""))
                 {
                     if (primerCriterioWhere)
                     {
@@ -312,6 +326,21 @@ namespace FrbaHotel.Repositorios
                         query = query + " AND c.Activo = @Estado";
                     }
                     sqlCommand.Parameters.AddWithValue("@Estado", Convert.ToInt32(estado.Value));
+                }
+
+                //AGREGO FILTRO MAIL
+                if (!mail.Equals(""))
+                {
+                    if (primerCriterioWhere)
+                    {
+                        query = query + " WHERE i.NumeroDocumento LIKE @Mail";
+                        primerCriterioWhere = false;
+                    }
+                    else
+                    {
+                        query = query + " AND i.NumeroDocumento LIKE @Mail";
+                    }
+                    sqlCommand.Parameters.AddWithValue("@Mail", "%" + mail + "%");
                 }
 
                 //HAGO LA CONSULTA
