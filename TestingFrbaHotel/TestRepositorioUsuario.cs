@@ -27,7 +27,7 @@ namespace TestingFrbaHotel
             Assert.IsTrue(guest.getRoles().Exists(rol => rol.getNombre().Equals("Guest")));
 
             Assert.IsTrue(admin.getIdentidad().getMail().Equals("admin@frba_utn.com"));
-            Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("33417682"));
+            Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("18217283"));
 
             //FALTA VALIDAR QUE TRAIGA LOS HOTELES
             //Assert.AreEqual(5, admin.getHoteles().Count);
@@ -43,11 +43,11 @@ namespace TestingFrbaHotel
         }
 
         [TestMethod]
-        public void Test_Repo_Usuario_getAll() 
+        public void Test_Repo_Usuario_getAll()
         {
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             List<Usuario> usuarios = repositorioUsuario.getAll();
-            Assert.AreEqual(2, usuarios.Count);
+            Assert.AreEqual(3, usuarios.Count);
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         public void Test_Repo_Usuario_getByQuery()
-        {        
+        {
             //RepositorioRol repositorioRol = new RepositorioRol();
 
             //SIN FILTRO

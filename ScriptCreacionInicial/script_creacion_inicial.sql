@@ -1,7 +1,182 @@
 ---------------------------------------------- Creacion del Modelo de Datos --------------------------------------------------------------------
 USE GD1C2018
 GO
+---------------------------------------------- DROPEO DE FK CONSTRAINTS ----------------------------------------------
+
+-- Tabla Funcionalidad_X_Rol 
+IF OBJECT_ID('LOS_BORBOTONES.FK_Funcionalidad_Rol', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Funcionalidad_X_Rol
+	DROP CONSTRAINT FK_Funcionalidad_Rol 
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Rol_Funcionalidad', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Funcionalidad_X_Rol
+	DROP CONSTRAINT FK_Rol_Funcionalidad 
+GO
+
+-- Tabla Direccion
+IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Direccion', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Direccion
+	DROP CONSTRAINT FK_Identidad_Direccion 
+GO
+
+-- Tabla Usuario
+IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Usuario', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Usuario
+	DROP CONSTRAINT FK_Identidad_Usuario 
+GO
+
+-- Tabla Rol_X_Usuario
+	IF OBJECT_ID('LOS_BORBOTONES.FK_Rol_Usuario', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Rol_X_Usuario
+	DROP CONSTRAINT FK_Rol_Usuario 
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Usuario_Rol', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Rol_X_Usuario
+	DROP CONSTRAINT FK_Usuario_Rol 
+GO
+
+-- Tabla Cliente
+IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Cliente', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Cliente
+	DROP CONSTRAINT FK_Identidad_Cliente 
+GO
+
+-- Tabla Hotel
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Categoria', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Hotel
+	DROP CONSTRAINT FK_Hotel_Categoria 
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Direccion', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Hotel
+	DROP CONSTRAINT FK_Hotel_Direccion 
+GO
+
+-- Tabla Hotel_X_Usuario
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Usuario', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Hotel_X_Usuario
+	DROP CONSTRAINT FK_Hotel_Usuario
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Usuario_Hotel', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Hotel_X_Usuario
+	DROP CONSTRAINT FK_Usuario_Hotel
+GO
+
+-- Tabla CierreTemporal
+IF OBJECT_ID('LOS_BORBOTONES.FK_CierreTemporal_Hotel', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.CierreTemporal
+	DROP CONSTRAINT FK_CierreTemporal_Hotel 
+GO
+
+-- Tabla Regimen
+IF OBJECT_ID('LOS_BORBOTONES.FK_Regimen_Hotel', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Regimen
+	DROP CONSTRAINT FK_Regimen_Hotel 
+GO
+
+-- Tabla Habitacion
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Habitacion', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Habitacion
+	DROP CONSTRAINT FK_Hotel_Habitacion 
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_TipoHabitacion', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Habitacion
+	DROP CONSTRAINT FK_Hotel_TipoHabitacion
+GO
+
+-- Tabla Estadia
+IF OBJECT_ID('LOS_BORBOTONES.FK_Usuario_CheckIn', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Estadia
+	DROP CONSTRAINT FK_Usuario_CheckIn 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Usuario_CheckOut', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Estadia
+	DROP CONSTRAINT FK_Usuario_CheckOut
+GO
+	
+-- Tabla Reserva
+IF OBJECT_ID('LOS_BORBOTONES.FK_Estadia_Reserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva
+	DROP CONSTRAINT FK_Estadia_Reserva 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Regimen_Reserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva
+	DROP CONSTRAINT FK_Regimen_Reserva 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Reserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva
+	DROP CONSTRAINT FK_Identidad_Reserva
+GO
+	
+-- Tabla  Reserva_X_Habitacion_X_Cliente 
+IF OBJECT_ID('LOS_BORBOTONES.FK_Reserva_Habitacion_Cliente', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente
+	DROP CONSTRAINT FK_Reserva_Habitacion_Cliente 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Habitacion_X_Cliente_X_Reserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente
+	DROP CONSTRAINT FK_Habitacion_X_Cliente_X_Reserva
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Cliente_X_Habitacion_Reserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente
+	DROP CONSTRAINT FK_Cliente_X_Habitacion_Reserva 
+GO
+	
+-- Tabla Factura
+IF OBJECT_ID('LOS_BORBOTONES.FK_Estadia_Factura', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Factura
+	DROP CONSTRAINT FK_Estadia_Factura 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Reserva_Factura', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Factura
+	DROP CONSTRAINT FK_Reserva_Factura 
+GO
+	
+-- Tabla ItemFactura
+IF OBJECT_ID('LOS_BORBOTONES.FK_ItemFactura_Factura', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.ItemFactura
+	DROP CONSTRAINT FK_ItemFactura_Factura
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_itemFactura_Consumible', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.ItemFactura
+	DROP CONSTRAINT FK_itemFactura_Consumible 
+GO
+	
+-- Tabla Estadia_X_Consumible 
+IF OBJECT_ID('LOS_BORBOTONES.FK_Estadia_Consumible', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Estadia_X_Consumible
+	DROP CONSTRAINT FK_Estadia_Consumible 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Consumible_Estadia', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Estadia_X_Consumible
+	DROP CONSTRAINT FK_Consumible_Estadia 
+GO
+	
+-- Tabla EstadoReserva
+IF OBJECT_ID('LOS_BORBOTONES.FK_Usuario_EstadoReserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.EstadoReserva
+	DROP CONSTRAINT FK_Usuario_EstadoReserva 
+GO
+	
+IF OBJECT_ID('LOS_BORBOTONES.FK_Reserva_EstadoReserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.EstadoReserva
+	DROP CONSTRAINT FK_Reserva_EstadoReserva 
+GO
+
 ---------------------------------------------- Eliminacion de Tablas ----------------------------------------------------------------------------
+
 IF OBJECT_ID('LOS_BORBOTONES.Inconsistencias','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Inconsistencias;
 GO
@@ -104,6 +279,7 @@ DROP TABLE LOS_BORBOTONES.ReservaTemporal;
 GO
 
 ---------------------------------------------------------------------- Eliminacion de schema LOS_BORBOTONES --------------------------------------------------------------------------
+
 IF EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'LOS_BORBOTONES')
     DROP SCHEMA LOS_BORBOTONES;
 GO
@@ -245,7 +421,7 @@ CREATE TABLE LOS_BORBOTONES.Regimen (
 	Codigo			VARCHAR(45)		DEFAULT 'RC117',		
 	Descripcion		NVARCHAR(255),
 	Precio			NUMERIC(18,2),
-	Estado			VARCHAR(45),
+	Activo			BIT,
 	idHotel			INT				NOT NULL,
 )
 GO
@@ -650,37 +826,48 @@ INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'GenerarListadoEstadistico'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Recepcionista'));
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Carga Usuarios en la tabla Identidad
-INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, TipoDocumento, NumeroDocumento, Mail)
-	   VALUES('Usuario', 'admin', 'DNI', '30213210',  'admin@frba_utn.com')
+-- Genero Identidad de los Usuarios
+
+INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
+	   VALUES('Usuario', 'Jose', 'Perez', 'DNI', '30213210',  'admin@frba_utn.com', '1968-01-09 00:00:00.000', 'ARGENTINO')
 GO
 
-INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, TipoDocumento, NumeroDocumento, Mail)
-	   VALUES('Usuario', 'guest', 'DNI', '33417682',  'soporte2@frba_utn.com')
+INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
+	   VALUES('Usuario', 'Alberto', 'Mandinga', 'DNI', '18217283',  'soporte2@frba_utn.com', '1998-05-05 00:00:00.000', 'PERUANO')
 GO
 
+INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
+	   VALUES('Usuario', 'Carolina', 'Mengoche', 'DNI', '17309573',  'recepcionista@frba_utn.com', '1988-09-11 00:00:00.000', 'COLOMBIANO')
+GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
--- defini solo Usuarios admin y guest, por ahora
+-- La password es 1234 para todos los usuarios
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
-	VALUES ('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE Nombre like 'admin' and TipoIdentidad = 'Usuario'));
+	VALUES ('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '30213210' and TipoIdentidad = 'Usuario'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
-	VALUES ('guest','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE nombre like 'guest' and TipoIdentidad = 'Usuario'));
+	VALUES ('guest','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '18217283' and TipoIdentidad = 'Usuario'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
+	VALUES ('recepcionista','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '17309573' and TipoIdentidad = 'Usuario'));
 GO
 
 --Carga Rol_X_Usuario
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
-VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'administrador'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'admin'));
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'administrador'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'admin'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
-VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'guest'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'guest'));
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'guest'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'guest'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'recepcionista'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'recepcionista'));
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 --TEST CASES: Carga de Hoteles con sus habitaciones y reservas
 SET IDENTITY_INSERT LOS_BORBOTONES.Direccion ON
 INSERT INTO LOS_BORBOTONES.Direccion (idDireccion,Pais,Ciudad,Calle,NumeroCalle)
@@ -754,6 +941,7 @@ INSERT INTO LOS_BORBOTONES.Reserva(idReserva, CodigoReserva,FechaCreacion,FechaD
 VALUES (2,2,GETDATE(),GETDATE(),GETDATE(),1,1,1,2,3);
 GO
 SET IDENTITY_INSERT LOS_BORBOTONES.Reserva OFF
+*/
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -836,8 +1024,8 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Regimen
 -- en principio se puso como Estado Disponible a todos los regimenes y por default codigo = RC117
-INSERT INTO LOS_BORBOTONES.Regimen(Descripcion, Precio, Estado, idHotel)
-		SELECT  DISTINCT m.Regimen_Descripcion, m.Regimen_Precio, 'Disponible', h.idHotel
+INSERT INTO LOS_BORBOTONES.Regimen(Descripcion, Precio, Activo, idHotel)
+		SELECT  DISTINCT m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
 GO
 

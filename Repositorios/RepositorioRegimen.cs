@@ -55,7 +55,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHotel", idHotel);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idRegimen,Codigo,Descripcion,Precio,Estado FROM LOS_BORBOTONES.Regimen AS REG WHERE REG.idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT idRegimen,Codigo,Descripcion,Precio,Activo FROM LOS_BORBOTONES.Regimen AS REG WHERE REG.idHotel = @idHotel";
 
             sqlConnection.Open();
 
@@ -67,7 +67,7 @@ namespace FrbaHotel.Repositorios
                 String codigo = reader.GetString(reader.GetOrdinal("Codigo"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
                 decimal precio = reader.GetDecimal(reader.GetOrdinal("Precio"));
-                String estado = reader.GetString(reader.GetOrdinal("Estado"));
+                Boolean estado = reader.GetBoolean(reader.GetOrdinal("Activo"));
 
                 regimenes.Add(new Regimen(idRegimen, codigo, descripcion, precio, estado));
             }
