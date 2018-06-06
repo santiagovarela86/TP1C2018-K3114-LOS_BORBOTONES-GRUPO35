@@ -28,9 +28,40 @@ namespace FrbaHotel
 
         private void FuncionesAdicionales_Load(object sender, EventArgs e)
         {
-            //CUANDO CARGA ESTE FORMULARIO
-            //DEBO VERIFICAR LOS ROLES QUE TENGO Y SEGUN LOS ROLES QUE TENGA
-            //HABILITAR Y/O DESHABILITAR BOTONES DE LAS FUNCIONALIDADES
+            ABMRol.Enabled = false;
+            ABMUsuario.Enabled = false;
+            ABMCliente.Enabled = false;
+            ABMHotel.Enabled = false;
+            ABMHabitacion.Enabled = false;
+            RegistrarEstadia.Enabled = false;
+            RegistrarConsumible.Enabled = false;
+            FacturarEstadia.Enabled = false;
+            GenerarListadoEstadistico.Enabled = false;
+            RegistrarConsumible.Enabled = false;
+            
+            try
+            {
+                this.HabilitarFuncionalidades(usuarioLogueado);
+            } catch (Exception exc){
+                MessageBox.Show(exc.Message, "Error al obtener los roles del usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void HabilitarFuncionalidades(Usuario usuarioLogueado)
+        {
+            //SE SUPONE QUE PARA SIMPLIFICAR AHORA EL USUARIO VA A TENER UN SOLO ROL
+            List<Funcionalidad> funcionalidades = usuarioLogueado.getRoles().First().getFuncionalidades();
+
+            ABMRol.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMRol.Name));
+            ABMUsuario.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMUsuario.Name));
+            ABMCliente.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMCliente.Name));
+            ABMHotel.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMHotel.Name));
+            ABMHabitacion.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMHabitacion.Name));
+            RegistrarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarEstadia.Name));
+            RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
+            FacturarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(FacturarEstadia.Name));
+            GenerarListadoEstadistico.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(GenerarListadoEstadistico.Name));
+            RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
         }
     }
 }
