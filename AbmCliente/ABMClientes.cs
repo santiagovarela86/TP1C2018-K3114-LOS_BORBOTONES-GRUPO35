@@ -46,10 +46,10 @@ namespace FrbaHotel.AbmCliente
             tipoDoc.Add("CUIT");
             tipoDoc.Add("LE");
             tipoDoc.Add("LC");
-            comboBoxEstados.ValueMember = "Value";
-            comboBoxEstados.DisplayMember = "Key";
-            comboBoxEstados.DataSource = tipoDoc;
-            comboBoxEstados.SelectedValue = "";
+            comboBoxTipoDoc.ValueMember = "Value";
+            comboBoxTipoDoc.DisplayMember = "Key";
+            comboBoxTipoDoc.DataSource = tipoDoc;
+            comboBoxTipoDoc.SelectedValue = "";
 
         }
 
