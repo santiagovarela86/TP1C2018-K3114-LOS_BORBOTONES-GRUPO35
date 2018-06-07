@@ -50,7 +50,7 @@ namespace FrbaHotel.AbmRol
             this.ListadoRoles_Load(sender, e);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buscar_Click(object sender, EventArgs e)
         {
             String nombreRol = textBox1.Text;
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();

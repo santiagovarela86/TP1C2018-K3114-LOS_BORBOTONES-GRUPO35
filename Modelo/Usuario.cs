@@ -76,12 +76,24 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdUsuario { get { return this.getIdUsuario(); } }
-        public Identidad Identidad { get { return this.getIdentidad(); } }
         public String Username { get { return this.getUsername(); } }
-        public String Password { get { return this.getPassword(); } }
+        //PARA SIMPLIFICAR SE MUESTRA UN SOLO ROL
+        public String Rol { get { return this.getRoles().First().getNombre(); } }
+        public String Nombre { get { return this.getIdentidad().getNombre(); } }
+        public String Apellido { get { return this.getIdentidad().getApellido(); } }
+        public String TipoDoc { get { return this.getIdentidad().getTipoDocumento(); } }
+        public String NroDoc { get { return this.getIdentidad().getNumeroDocumento(); } }
+        public String Mail { get { return this.getIdentidad().getMail(); } }
+        public String Telefono { get { return this.getIdentidad().getTelefono(); } }
+        //ACA ASUMO QUE TENGO UNA SOLA DIRECCION EN EL USUARIO
+        //public String Direccion { get { return this.getIdentidad().getDirecciones().First().getDireccionSimple(); } }
+        //FALTA TERMINAR LA OBTENCION DE LA DIRECCION EN EL MODELO. VERIFICAR SU ASIGNACION EN LA BASE (ES OBLIGATORIO CARGAR UN USUARIO CON SU IDENTIDAD Y DIRECCION)
+        public String FechaNac { get { return this.getIdentidad().getFechaNacimiento().ToString(); } }
+        //ACA ASUMO QUE TRABAJA EN UN SOLO HOTEL
+        //public String Hotel { get { return this.getHoteles().First().getNombre(); } }
+        //FALTA TERMINAR LA OBTENCION DEL HOTEL EN EL MODELO. VERIFICAR SU ASIGNACION EN LA BASE (ES OBLIGATORIO CARGAR UN USUARIO CON SU HOTEL)
+
         public int IntentosFallidosLogin { get { return this.getIntentosFallidosLogin(); } }
         public Boolean Activo { get { return this.getActivo(); } }
-        public List<Rol> Roles { get { return this.getRoles(); } }
-        public List<Hotel> Hoteles { get { return this.getHoteles(); } }
     }
 }

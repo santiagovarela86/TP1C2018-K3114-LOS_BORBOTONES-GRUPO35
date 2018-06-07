@@ -13,10 +13,10 @@ namespace FrbaHotel.Modelo
         private String codigoRegimen = "";
         private String descripcion = "";
         private decimal precio = 0;
-        private String estado = "";
+        Boolean estado = true;
 
         //public Regimen(int idRegimen, Hotel hotel, int codigoRegimen, String descripcion, float precio, String estado)
-        public Regimen(int idRegimen, String codigoRegimen, String descripcion, decimal precio, String estado)
+        public Regimen(int idRegimen, String codigoRegimen, String descripcion, decimal precio, Boolean estado)
         {
             this.idRegimen = idRegimen;
             //this.hotel = hotel;
@@ -53,7 +53,7 @@ namespace FrbaHotel.Modelo
             return this.precio;
         }
 
-        public String getEstado()
+        public Boolean getActivo()
         {
             return this.estado;
         }
@@ -69,6 +69,6 @@ namespace FrbaHotel.Modelo
         public String CodigoRegimen { get { return this.getCodigoRegimen(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
         public decimal Precio { get { return this.getPrecio(); } }
-        public String Estado { get { return this.getEstado(); } }
+        public Boolean Activo { get { return this.getActivo(); } }
     }
 }

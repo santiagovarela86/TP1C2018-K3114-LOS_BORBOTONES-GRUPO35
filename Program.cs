@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaHotel.AbmRol;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace FrbaHotel
 {
@@ -17,11 +19,33 @@ namespace FrbaHotel
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Comento la ejecucion del "Formulario Principal"
-            //Application.Run(new Form1());
-            //Para probar el ABM de Roles
-            //Application.Run(new ABMRoles());
-            Application.Run(new PantallaPrincipal());
+
+            //VERIFICO QUE LA BASE ESTE ARRIBA
+            if (IsServerConnected(ConfigurationManager.AppSettings["BaseLocal"]))
+            {
+                Application.Run(new PantallaPrincipal());
+            }
+            else
+            {
+                MessageBox.Show("Inicie la instancia SQLSERVER2012 para comenzar", "Error de conexión con la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }            
+        }
+
+        //METODO QUE VERIFICA QUE ESTE LEVANTADA LA BASE DE DATOS AL COMENZAR
+        private static bool IsServerConnected(string connectionString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
+            }
         }
     }
 }

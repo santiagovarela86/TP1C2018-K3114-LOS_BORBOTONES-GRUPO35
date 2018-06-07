@@ -10,25 +10,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaHotel.AbmUsuario
+namespace FrbaHotel.AbmCliente
 {
-    public partial class ABMUsuarios : Form
+    public partial class ABMClientes : Form
     {
-        public ABMUsuarios()
+        public ABMClientes()
         {
             InitializeComponent();
         }
-        private void ListadoUsuarios_Load(object sender, EventArgs e)
+
+        private void ListadoClientes_Load(object sender, EventArgs e)
         {
             textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
             comboBoxEstados.SelectedValue = "";
-            comboBoxRoles.SelectedValue = "";
-            comboBoxHoteles.SelectedValue = "";
-            dataGridView1.DataSource = new List<Usuario>();
+            comboBoxTipoDoc.SelectedValue = "";
+            dataGridView1.DataSource = new List<Cliente>();
             this.button4.Enabled = false;
             this.button5.Enabled = false;
 
-            dataGridView1.DataSource = new List<Usuario>();
+            dataGridView1.DataSource = new List<Cliente>();
 
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
             estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
@@ -38,59 +41,61 @@ namespace FrbaHotel.AbmUsuario
             comboBoxEstados.DataSource = estados;
             comboBoxEstados.SelectedValue = "";
 
-            RepositorioRol repositorioRol = new RepositorioRol();
-            comboBoxRoles.ValueMember = "idRol";
-            comboBoxRoles.DisplayMember = "Nombre";
-            comboBoxRoles.DataSource = repositorioRol.getAll();
-            comboBoxRoles.SelectedValue = "";
+            List<String> tipoDoc = new List<String>();
+            tipoDoc.Add("DNI");
+            tipoDoc.Add("CUIT");
+            tipoDoc.Add("LE");
+            tipoDoc.Add("LC");
+            comboBoxTipoDoc.ValueMember = "Value";
+            comboBoxTipoDoc.DisplayMember = "Key";
+            comboBoxTipoDoc.DataSource = tipoDoc;
+            comboBoxTipoDoc.SelectedValue = "";
 
-            /*RepositorioHotel repositorioHotel = new RepositorioHotel();
-            comboBoxHoteles.ValueMember = "idHotel";
-            comboBoxHoteles.DisplayMember = "Nombre";
-            comboBoxHoteles.DataSource = repositorioRol.getAll();
-            comboBoxHoteles.SelectedValue = "";*/
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.ListadoUsuarios_Load(sender, e);
+            this.ListadoClientes_Load(sender, e);
         }
 
-        private void buscar_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            String username = textBox1.Text;
+            String nombre = textBox1.Text;
+            String apellido = textBox2.Text;
+            String mail = textBox3.Text;
+            String nroDoc = textBox4.Text;
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
-            Rol rol = null;
-            Hotel hotel = null;
-
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
+            String tipoDoc = "";
+            RepositorioCliente repositorioClientes = new RepositorioCliente();
 
             if (comboBoxEstados.SelectedItem != null)
             {
                 estado = (KeyValuePair<String, Boolean>)comboBoxEstados.SelectedItem;
             }
 
-            if (comboBoxRoles.SelectedItem != null)
+            if (comboBoxTipoDoc.SelectedItem != null)
             {
-                rol = (Rol)comboBoxRoles.SelectedItem;
-            }
-            if (comboBoxHoteles.SelectedItem != null)
-            {
-                hotel = (Hotel)comboBoxHoteles.SelectedItem;
+                tipoDoc = (String)comboBoxTipoDoc.SelectedItem;
             }
 
-            List<Usuario> usuarios = repositorioUsuario.getByQuery(username, estado, hotel,rol);
+            List<Cliente> clientes = repositorioClientes.getByQuery(nombre,apellido,tipoDoc,nroDoc,estado,mail);
 
-            dataGridView1.DataSource = usuarios;
+            dataGridView1.DataSource = clientes;
             dataGridView1.ClearSelection();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            //aca va el alta
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            //aca va la modificacion
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //aca va la baja
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -98,5 +103,6 @@ namespace FrbaHotel.AbmUsuario
             this.button4.Enabled = true;
             this.button5.Enabled = true;
         }
+
     }
 }

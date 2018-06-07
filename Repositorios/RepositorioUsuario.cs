@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace FrbaHotel.Repositorios
 {
@@ -256,7 +257,7 @@ namespace FrbaHotel.Repositorios
         //getByQuery que va a filtrar por lo que desee buscar el administrador en el listado
         // despues agregar el nombre y el apellido de la identidad
 
-        public List<Usuario> getByQuery(String username, KeyValuePair<String, Boolean> estado, Hotel hotel,Rol rol)
+        public List<Usuario> getByQuery(String username, KeyValuePair<String, Boolean> estado, Hotel hotel, Rol rol)
         {
             List<Usuario> usuarios = new List<Usuario>();
             String query = "SELECT u.idUsuario FROM LOS_BORBOTONES.Usuario u";
@@ -302,12 +303,12 @@ namespace FrbaHotel.Repositorios
                 {
                     if (primerCriterioWhere)
                     {
-                        query = query + " WHERE u.Nombre LIKE @Nombre";
+                        query = query + " WHERE u.Username LIKE @Nombre";
                         primerCriterioWhere = false;
                     }
                     else
                     {
-                        query = query + " AND u.Nombre LIKE @Nombre";
+                        query = query + " AND u.Username LIKE @Nombre";
                     }
                     sqlCommand.Parameters.AddWithValue("@Nombre", "%" + username + "%");
                 }
@@ -342,6 +343,71 @@ namespace FrbaHotel.Repositorios
             }
 
             return usuarios;
+        }
+
+        public string EncriptarSHA256(string input)
+        {
+            SHA256CryptoServiceProvider provider = new SHA256CryptoServiceProvider();
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashedBytes = provider.ComputeHash(inputBytes);
+
+            StringBuilder output = new StringBuilder();
+
+            for (int i = 0; i < hashedBytes.Length; i++)
+                output.Append(hashedBytes[i].ToString("x2").ToLower());
+
+            return output.ToString();
+        }
+
+        public Usuario AutenticarUsuario(String username, String password)
+        {
+            string passwordEncriptada = this.EncriptarSHA256(password);
+            Usuario usuario = null;
+
+            //VALIDO SI EXISTE PRIMERO EL USUARIO
+            if (this.getAll().Exists(usr => usr.getUsername().Equals(username)))
+            {
+                usuario = this.getByUsername(username);
+
+                //SI LA PASSWORD ESTA BIEN Y EL USUARIO NO ESTA BLOQUEADO
+                if (usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                {
+                    return usuario;
+                }
+                else
+                {
+                    //SI HUBO UN ERROR DE CREDENCIALES Y EL USUARIO TODAVIA NO ESTA BLOQUEADO
+                    if (!usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                    {
+                        //ESTO FALTA DESARROLLARLO
+                        /*
+                        usuario.incrementarIntentosFallidosLogin();
+                        
+                        if (usuario.getIntentosFallidosLogin() >= 3)
+                        {
+                            usuario.setActivo(false);
+                        }
+                        
+                        repositorioUsuario.update(usuario); //GRABA LOS CAMBIOS EN LA BASE
+                        */
+
+                        throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
+                    }
+                    //LUEGO SI EL USUARIO ESTA BLOQUEADO
+                    else if (usuario.getIntentosFallidosLogin() >= 3 || !usuario.getActivo())
+                    {
+                        throw new UsuarioBloqueadoException("El usuario esta bloqueado o deshabilitado");
+                    }
+                }
+            }
+            else
+            {
+                //EL USUARIO NO EXISTE
+                throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
+            }
+
+            return usuario;
         }
     }
 }

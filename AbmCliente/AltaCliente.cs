@@ -1,5 +1,4 @@
-﻿using FrbaHotel.Repositorios;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,50 +8,50 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaHotel.AbmUsuario
+namespace FrbaHotel.AbmCliente
 {
-    public partial class AltaUsuario : Form
+    public partial class AltaCliente : Form
     {
-        public AltaUsuario()
+        public AltaCliente()
         {
             InitializeComponent();
         }
+        
         private void button1_Click(object sender, EventArgs e)
         {
-            this.AltaUsuario_Load(sender, e);
+            this.AltaCliente_Load(sender, e);
         }
         private void button2_Click(object sender, EventArgs e)
         {
             //GENERAR ALTA (no pido el estado ya que va como activo al momento de crearlo)
 
             //traigo los valores
-            String username = textBox1.Text;
-            String password = textBox2.Text;
+            String nacionalidad = textBox2.Text;
             String nombre = textBox3.Text;
             String apellido = textBox4.Text;
             String nroDoc = textBox5.Text;
             String mail = textBox6.Text;
             String telefono = textBox7.Text;
             String calle = textBox8.Text;
-            String localidad = textBox15.Text;
-            String pais = textBox16.Text;
+            String localidad = textBox9.Text;
+            String paisOrigen = textBox10.Text;
             DateTime fechaNacimiento = dateTime.Value;
             String nroCalle = textBox12.Text;
             String nroPiso = textBox13.Text;
             String depto = textBox14.Text;
             String tipoDoc = "";
-
+            
             if (comboBoxTipoDoc.SelectedItem != null)
             {
                 tipoDoc = (String)comboBoxTipoDoc.SelectedItem;
             }
-            //validar que el username sea unico y encriptar clave
+            //Validar que mail sea unico asi como tipo y numero de documento tambien
+
         }
 
-        private void AltaUsuario_Load(object sender, EventArgs e)
+        private void AltaCliente_Load(object sender, EventArgs e)
         {
             //vacio todos los campos porque es el limpiar
-            textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
             textBox4.Text = "";
@@ -60,23 +59,13 @@ namespace FrbaHotel.AbmUsuario
             textBox6.Text = "";
             textBox7.Text = "";
             textBox8.Text = "";
+            textBox9.Text = "";
+            textBox10.Text = "";
             textBox12.Text = "";
             textBox13.Text = "";
             textBox14.Text = "";
-            textBox15.Text = "";
-            textBox16.Text = "";
-       
+
             
-            //cargo rol
-            RepositorioRol repositorioRol = new RepositorioRol();
-            dataGridView1.DataSource = repositorioRol.getAll();
-            dataGridView1.ClearSelection();
-            
-            //cargo hotel
-            /*RepositorioHotel repositorioHotel = new RepositorioHotel();
-            dataGridView2.DataSource = repositorioHotel.getAll();
-            dataGridView2.ClearSelection();
-            */
             comboBoxTipoDoc.SelectedValue = "";
             dateTime.ResetText();
 
@@ -90,6 +79,7 @@ namespace FrbaHotel.AbmUsuario
             comboBoxTipoDoc.DataSource = tipoDoc;
             comboBoxTipoDoc.SelectedValue = "";
 
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -97,9 +87,10 @@ namespace FrbaHotel.AbmUsuario
             this.Close();
         }
 
-        private void label9_Click(object sender, EventArgs e)
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }
     }
 }
+

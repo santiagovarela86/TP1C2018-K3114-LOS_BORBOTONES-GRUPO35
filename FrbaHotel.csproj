@@ -61,6 +61,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbmCliente\ABMClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\ABMClientes.Designer.cs">
+      <DependentUpon>ABMClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCliente\AltaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\AltaCliente.Designer.cs">
+      <DependentUpon>AltaCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmCliente\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,14 +136,16 @@
     <Compile Include="CancelarReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Excepciones\NoExisteIDException.cs" />
-    <Compile Include="Excepciones\NoExisteNombreException.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Excepciones\UsuarioBloqueadoException.cs" />
+    <Compile Include="Excepciones\ErrorDeAutenticacionException.cs" />
+    <Compile Include="FuncionesAdicionales.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FuncionesAdicionales.Designer.cs">
+      <DependentUpon>FuncionesAdicionales.cs</DependentUpon>
     </Compile>
+    <Compile Include="Excepciones\NoExisteIDException.cs" />
+    <Compile Include="Excepciones\NoExisteNombreException.cs" />
     <Compile Include="GenerarModificacionReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,12 +156,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Login\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Login\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\FormLogin.cs">
@@ -169,6 +177,9 @@
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />
     <Compile Include="Modelo\ItemFactura.cs" />
+    <Compile Include="Repositorios\RepositorioEstadia.cs" />
+    <Compile Include="Repositorios\RepositorioEstadoReserva.cs" />
+    <Compile Include="Repositorios\RepositorioReserva.cs" />
     <Compile Include="Repositorios\SafeSqlTypeReader.cs" />
     <Compile Include="Modelo\Regimen.cs" />
     <Compile Include="Modelo\Reserva.cs" />
@@ -180,9 +191,6 @@
     </Compile>
     <Compile Include="PantallaPrincipal.Designer.cs">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Principal.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -211,6 +219,12 @@
     <Compile Include="Repositorios\RepositorioRol.cs" />
     <Compile Include="Repositorios\RepositorioTipoHabitacion.cs" />
     <Compile Include="Repositorios\RepositorioUsuario.cs" />
+    <EmbeddedResource Include="AbmCliente\ABMClientes.resx">
+      <DependentUpon>ABMClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCliente\AltaCliente.resx">
+      <DependentUpon>AltaCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\ABMRoles.resx">
       <DependentUpon>ABMRoles.cs</DependentUpon>
     </EmbeddedResource>
@@ -225,6 +239,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\AltaUsuario.resx">
       <DependentUpon>AltaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FuncionesAdicionales.resx">
+      <DependentUpon>FuncionesAdicionales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PantallaPrincipal.resx">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>

@@ -14,8 +14,8 @@ namespace TestingFrbaHotel
         public void Test_Repo_Direccion_Creacion_Direccion()
         {
             RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
-            Direccion unaDireccion = repositorioDireccion.getByIdIdentidad(28587);
-            Direccion otraDireccion = repositorioDireccion.getByIdIdentidad(48664);
+            Direccion unaDireccion = repositorioDireccion.getByIdIdentidad(28588);
+            Direccion otraDireccion = repositorioDireccion.getByIdIdentidad(48665);
 
             Assert.AreEqual("Y", unaDireccion.getDepartamento());
             Assert.AreEqual(1, otraDireccion.getPiso());
