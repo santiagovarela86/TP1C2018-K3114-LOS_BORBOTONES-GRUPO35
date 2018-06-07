@@ -301,12 +301,12 @@ namespace FrbaHotel.Repositorios
                 {
                     if (primerCriterioWhere)
                     {
-                        query = query + " WHERE u.Nombre LIKE @Nombre";
+                        query = query + " WHERE u.Username LIKE @Nombre";
                         primerCriterioWhere = false;
                     }
                     else
                     {
-                        query = query + " AND u.Nombre LIKE @Nombre";
+                        query = query + " AND u.Username LIKE @Nombre";
                     }
                     sqlCommand.Parameters.AddWithValue("@Nombre", "%" + username + "%");
                 }
