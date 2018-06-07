@@ -56,7 +56,7 @@ namespace FrbaHotel.AbmUsuario
             this.ListadoUsuarios_Load(sender, e);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buscar_Click(object sender, EventArgs e)
         {
             String username = textBox1.Text;
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
