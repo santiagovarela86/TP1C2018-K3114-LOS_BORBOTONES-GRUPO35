@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaHotel.Modelo;
+using FrbaHotel.AbmRol;
+using FrbaHotel.AbmUsuario;
+using FrbaHotel.AbmHotel;
 
 namespace FrbaHotel
 {
@@ -49,7 +52,7 @@ namespace FrbaHotel
 
         private void HabilitarFuncionalidades(Usuario usuarioLogueado)
         {
-            //SE SUPONE QUE PARA SIMPLIFICAR AHORA EL USUARIO VA A TENER UN SOLO ROL
+            //SE SUPONE QUE PARA SIMPLIFICAR EL USUARIO VA A TENER UN SOLO ROL
             List<Funcionalidad> funcionalidades = usuarioLogueado.getRoles().First().getFuncionalidades();
 
             ABMRol.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMRol.Name));
@@ -62,6 +65,32 @@ namespace FrbaHotel
             FacturarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(FacturarEstadia.Name));
             GenerarListadoEstadistico.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(GenerarListadoEstadistico.Name));
             RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
+        }
+
+        private void ABMRol_Click(object sender, EventArgs e)
+        {
+            using (ABMRoles formularioABMRoles = new ABMRoles())
+            {
+                var resultFormABMRoles = formularioABMRoles.ShowDialog();
+
+                if (resultFormABMRoles == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
+
+        private void ABMUsuario_Click(object sender, EventArgs e)
+        {
+            using (ABMUsuarios formularioABMUsuarios = new ABMUsuarios())
+            {
+                var resultFormABMUsuarios = formularioABMUsuarios.ShowDialog();
+
+                if (resultFormABMUsuarios == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
         }
     }
 }

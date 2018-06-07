@@ -48,6 +48,7 @@
             this.ABMUsuario.TabIndex = 1;
             this.ABMUsuario.Text = "ABM Usuario";
             this.ABMUsuario.UseVisualStyleBackColor = true;
+            this.ABMUsuario.Click += new System.EventHandler(this.ABMUsuario_Click);
             // 
             // ABMCliente
             // 
@@ -76,6 +77,7 @@
             this.ABMRol.TabIndex = 0;
             this.ABMRol.Text = "ABM Rol";
             this.ABMRol.UseVisualStyleBackColor = true;
+            this.ABMRol.Click += new System.EventHandler(this.ABMRol_Click);
             // 
             // ABMHotel
             // 
