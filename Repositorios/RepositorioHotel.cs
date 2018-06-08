@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
+using FrbaHotel.AbmHotel.request;
 
 namespace FrbaHotel.Repositorios {
 
@@ -15,6 +16,81 @@ namespace FrbaHotel.Repositorios {
         RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
 
 
+        public List<Hotel> searchHotel(SearchHotelRequest request) {
+
+            List<Hotel> hoteles = new List<Hotel>();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText =
+                "SELECT DISTINCT(HOT.idHotel),HOT.Nombre,HOT.Mail,HOT.Telefono,HOT.FechaInicioActividades,HOT.idCategoria,HOT.idDireccion FROM LOS_BORBOTONES.Hotel AS HOT" +
+                " JOIN LOS_BORBOTONES.Categoria AS CAT ON CAT.idCategoria= HOT.idCategoria" +
+                " JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion" + getCondiciones(request,sqlCommand) + ";";
+            
+
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+                String nombre = reader.GetString(reader.GetOrdinal("Nombre"));
+                String mail = reader.SafeGetString(reader.GetOrdinal("Mail"));
+                String telefono = reader.SafeGetString(reader.GetOrdinal("Telefono"));
+                DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicioActividades"));
+                int idCategoria = reader.GetInt32(reader.GetOrdinal("idCategoria"));
+                int idDireccion = reader.GetInt32(reader.GetOrdinal("idDireccion"));
+
+                Categoria categoria = repositorioCategoria.getById(idCategoria);
+
+                Direccion direccion = repositorioDireccion.getById(idDireccion);
+
+                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
+
+                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
+                                fechaInicio, null, regimenes, null, null);
+                hoteles.Add(hotel);
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+            return hoteles;
+
+        }
+
+
+        private String getCondiciones(SearchHotelRequest request, SqlCommand sqlCommand)
+        {
+
+            List<String> condiciones = new List<String>();
+            if (request.NombreHotel != null)
+            {
+                condiciones.Add("HOT.Nombre LIKE @hotNombreHotel + '%'");
+                sqlCommand.Parameters.AddWithValue("@hotNombreHotel", request.NombreHotel);
+
+            }
+            if (request.Ciudad != null) {
+                condiciones.Add("DIR.Ciudad=@dirCiudad");
+                sqlCommand.Parameters.AddWithValue("@dirCiudad", request.Ciudad);
+
+            }
+            if (request.Pais != null) {
+                condiciones.Add("DIR.Pais=@dirPais");
+                sqlCommand.Parameters.AddWithValue("@dirPais", request.Pais);
+            }
+            if (request.Estrellas != null) {
+                condiciones.Add("CAT.Estrellas=@catEstrellas");
+                sqlCommand.Parameters.AddWithValue("@catEstrellas", request.Estrellas);
+            }
+            return " WHERE " + string.Join(" AND ", condiciones.ToArray());
+
+        }
         public override int create(Hotel hotel)
         {
 
@@ -88,7 +164,54 @@ namespace FrbaHotel.Repositorios {
 
         public override List<Hotel> getAll()
         {
-            throw new System.NotImplementedException();
+            List<Hotel> hoteles = new List<Hotel>();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            Hotel hotel = null;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText =
+                "SELECT idHotel,Nombre,Mail,Telefono,FechaInicioActividades,idCategoria,idDireccion FROM LOS_BORBOTONES.Hotel AS HOT;";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+                String nombre = reader.GetString(reader.GetOrdinal("Nombre"));
+                String mail = reader.SafeGetString(reader.GetOrdinal("Mail"));
+                String telefono = reader.SafeGetString(reader.GetOrdinal("Telefono"));
+                DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicioActividades"));
+                int idCategoria = reader.GetInt32(reader.GetOrdinal("idCategoria"));
+                int idDireccion = reader.GetInt32(reader.GetOrdinal("idDireccion"));
+
+                Categoria categoria = repositorioCategoria.getById(idCategoria);
+
+                Direccion direccion = repositorioDireccion.getById(idDireccion);
+
+                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
+
+                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+
+                //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
+
+                //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
+
+                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
+                                fechaInicio, null, regimenes, null, null);
+                hoteles.Add(hotel);
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+
+            return hoteles;
         }
 
         public override Hotel getById(int id)

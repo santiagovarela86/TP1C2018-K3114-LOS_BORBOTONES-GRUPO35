@@ -90,7 +90,7 @@ namespace FrbaHotel.Repositorios
             return estadosReservas;
         }
 
-        override public void create(EstadoReserva estadoReserva)
+        override public int create(EstadoReserva estadoReserva)
         {
             if (this.exists(estadoReserva))
             {
@@ -100,6 +100,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new System.NotImplementedException();
         }
 
         override public void update(EstadoReserva estadoReserva)

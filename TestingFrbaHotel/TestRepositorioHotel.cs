@@ -3,24 +3,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System.Diagnostics;
+using System.Collections.Generic;
+using FrbaHotel.AbmHotel.request;
 
 namespace TestingFrbaHotel
 {
     [TestClass]
     public class TestRepositorioHotel
     {
+        String hotelNombre = "HotelTest";
+        String dirCiudad = "BUE";
+        String dirPais = "AR";
+        int categoriaEstrellas = 5;
+
+
         [TestMethod]
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
             RepositorioHotel repositorioHotel = new RepositorioHotel();
-            String hotelNombre = "HotelTest";
             String hotelMail = "test@gmail.com";
             String hotelTelefono = "123123";
             DateTime hotelFechaInicioDeActividad = DateTime.Now;
-            int categoriaEstrellas = 5;
             decimal categoriaRecargaEstrellas = 10;
-            String dirPais = "AR";
-            String dirCiudad = "BUE";
             String dirCalle = "Medrano";
             int dirCalleNumero = 979;
             Categoria categoria1 = new Categoria(0, categoriaEstrellas, categoriaRecargaEstrellas);
@@ -52,6 +56,66 @@ namespace TestingFrbaHotel
             //VALIDAR LISTA DE HABITACIONES
 
         }
+
+
+        [TestMethod]
+        public void Test_Repo_Hotel_searchHotel()
+        {
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            Test_Repo_Hotel_Creacion_Hotel();
+
+            //POR NOMBRE
+            SearchHotelRequest request = new SearchHotelRequest(hotelNombre, null, null, null);
+            List<Hotel> hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach(var hotel in hoteles){ Assert.IsTrue(hotel.Nombre.Equals(hotelNombre));}
+
+            //POR ESTRELLAS
+            request = new SearchHotelRequest(null, categoriaEstrellas, null, null);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas)); }
+
+            //POR CIUDAD
+            request = new SearchHotelRequest(null, null, dirCiudad, null);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getDireccion().Ciudad.Equals(dirCiudad)); }
+
+
+            //POR PAIS
+            request = new SearchHotelRequest(null, null, null, dirPais);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais)); }
+
+
+            //POR NOMBRE, CIUDAD, PAIS , ESTRELLAS
+            request = new SearchHotelRequest(hotelNombre, categoriaEstrellas, dirCiudad, dirPais);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) {
+                Assert.IsTrue(hotel.Nombre.Equals(hotelNombre));
+                Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas));
+                Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais));
+                Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais));
+            }
+
+
+        }
+
+        [TestMethod]
+        public void Test_Repo_Hotel_getAll()
+        {
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            Test_Repo_Hotel_Creacion_Hotel();
+            Test_Repo_Hotel_Creacion_Hotel();
+            Test_Repo_Hotel_Creacion_Hotel();
+            List<Hotel> hoteles = repositorioHotel.getAll();
+            Assert.IsTrue(hoteles.Count > 2);
+        }
+
+
         /*
 
         [TestMethod]
@@ -62,13 +126,6 @@ namespace TestingFrbaHotel
             Usuario usuario = repositorioUsuario.getById(50);
         }
 
-        [TestMethod]
-        public void Test_Repo_Hotel_getAll() 
-        {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            List<Usuario> usuarios = repositorioUsuario.getAll();
-            Assert.AreEqual(2, usuarios.Count);
-        }
 
         [TestMethod]
         public void Test_Repo_Hotel_exists()

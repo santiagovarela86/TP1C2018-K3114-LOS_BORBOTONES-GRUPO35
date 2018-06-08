@@ -106,7 +106,7 @@ namespace FrbaHotel.Repositorios
             return reservas;
         }
 
-        override public void create(Reserva reserva)
+        override public int create(Reserva reserva)
         {
             if (this.exists(reserva))
             {
@@ -116,6 +116,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new System.NotImplementedException();
         }
 
         override public void update(Reserva reserva)
