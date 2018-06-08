@@ -367,7 +367,7 @@ GO
 --Tabla Cliente
 CREATE TABLE LOS_BORBOTONES.Cliente (
 
-	idCliente		INT				IDENTITY(4,1)	NOT NULL, --debido a que se cargaron 3 usuarios en identidad y para establecer una correspondencia entre id identidad y idcliente
+	idCliente		INT				IDENTITY(1,1)	NOT NULL, --debido a que se cargaron 3 usuarios en identidad y para establecer una correspondencia entre id identidad y idcliente
 	Activo			BIT,
 	idIdentidad		INT				NOT NULL,
 )
@@ -1132,8 +1132,8 @@ FROM  LOS_BORBOTONES.Hotel h
 	INNER JOIN LOS_BORBOTONES.Identidad i
 		ON m.Cliente_Pasaporte_Nro = i.NumeroDocumento
 	INNER JOIN LOS_BORBOTONES.Cliente c 
-		ON c.idCliente  = i.idIdentidad AND c.Activo = 1
-ORDER BY c.idCliente
+		ON c.idIdentidad  = i.idIdentidad AND c.Activo = 1
+ORDER BY m.Reserva_Codigo, c.idCliente
 GO								
 		
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
