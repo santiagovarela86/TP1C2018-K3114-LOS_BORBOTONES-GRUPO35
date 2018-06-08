@@ -115,6 +115,19 @@ namespace TestingFrbaHotel
             Assert.IsTrue(hoteles.Count > 2);
         }
 
+        [TestMethod]
+        public void Test_Repo_Hotel_crear_bajaTemporalError()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void Test_Repo_Hotel_crear_bajaTemporalOk()
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         /*
 

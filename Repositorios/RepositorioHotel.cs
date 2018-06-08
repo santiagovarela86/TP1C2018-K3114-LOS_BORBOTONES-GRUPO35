@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
 using FrbaHotel.AbmHotel.request;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios {
 
@@ -16,6 +17,22 @@ namespace FrbaHotel.Repositorios {
         RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
 
 
+
+        public void bajaTemporal(BajaTemporal request)
+        {
+            Hotel hotel = getById(request.IdHotel);
+            List<Reserva> reservas = hotel.getReservas();
+            foreach(var reserva in reservas)
+            {
+                bool overlap = reserva.FechaDesde < request.FechaHasta && request.FechaDesde < reserva.FechaHasta;
+                if (overlap)
+                {
+                    throw new RequestInvalidoException("No es posible dar de baja temporal el hotel. Existen reservas para la fecha la cual se quiere dar de baja el hotel");
+                }
+            }
+
+
+        }
         public List<Hotel> searchHotel(SearchHotelRequest request) {
 
             List<Hotel> hoteles = new List<Hotel>();
