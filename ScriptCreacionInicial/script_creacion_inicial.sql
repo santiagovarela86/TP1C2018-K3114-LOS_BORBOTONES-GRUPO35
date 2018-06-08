@@ -110,9 +110,9 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Regimen_Reserva', 'F') IS NOT NULL
 	DROP CONSTRAINT FK_Regimen_Reserva 
 GO
 	
-IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Reserva', 'F') IS NOT NULL
+IF OBJECT_ID('LOS_BORBOTONES.FK_Cliente_Reserva', 'F') IS NOT NULL
 	ALTER TABLE LOS_BORBOTONES.Reserva
-	DROP CONSTRAINT FK_Identidad_Reserva
+	DROP CONSTRAINT FK_Cliente_Reserva
 GO
 	
 -- Tabla  Reserva_X_Habitacion_X_Cliente 
@@ -367,7 +367,7 @@ GO
 --Tabla Cliente
 CREATE TABLE LOS_BORBOTONES.Cliente (
 
-	idCliente		INT				IDENTITY(1,1)	NOT NULL,
+	idCliente		INT				IDENTITY(4,1)	NOT NULL, --debido a que se cargaron 3 usuarios en identidad y para establecer una correspondencia entre id identidad y idcliente
 	Activo			BIT,
 	idIdentidad		INT				NOT NULL,
 )
@@ -474,8 +474,7 @@ CREATE TABLE LOS_BORBOTONES.Reserva (
 	idHotel			INT				NOT NULL,
 	idEstadia		INT				NOT NULL,
 	idRegimen		INT				NOT NULL,
-	--idCliente		INT				NOT NULL,
-	idIdentidad		INT				NOT NULL,
+	idCliente		INT				NOT NULL,
 )
 GO
 
@@ -491,7 +490,7 @@ GO
 -- Tabla Factura
 CREATE TABLE LOS_BORBOTONES.Factura (
 
-	idFactura			INT			IDENTITY(00001, 1)		NOT NULL,
+	idFactura			INT			IDENTITY(1, 1)		NOT NULL,
 	NumeroFactura		NUMERIC(18,0),
 	FechaFacturacion	DATETIME,
 	Total				NUMERIC(18,2),
@@ -561,7 +560,7 @@ GO
 --------------------------------------------- Creacion de constraint PK para la base de datos ----------------------------------------------------------------------------------------
 -- Tabla Rol
 ALTER TABLE LOS_BORBOTONES.Rol
-ADD CONSTRAINT PK_Rol_idRol PRIMARY KEY (idRol)
+ADD CONSTRAINT PK_Rol_idRol PRIMARY KEY (idRol) 
 
 -- Tabla Funcionalidad
 ALTER TABLE LOS_BORBOTONES.Funcionalidad
@@ -707,8 +706,7 @@ ALTER TABLE LOS_BORBOTONES.Reserva
 ADD CONSTRAINT FK_Regimen_Reserva FOREIGN KEY(idRegimen) REFERENCES LOS_BORBOTONES.Regimen(idRegimen) ON DELETE CASCADE ON UPDATE CASCADE
 
 ALTER TABLE LOS_BORBOTONES.Reserva
---ADD CONSTRAINT FK_Cliente_Reserva FOREIGN KEY(idCliente) REFERENCES LOS_BORBOTONES.Cliente(idCliente)
-ADD CONSTRAINT FK_Identidad_Reserva FOREIGN KEY(idIdentidad) REFERENCES LOS_BORBOTONES.Identidad(idIdentidad)
+ADD CONSTRAINT FK_Cliente_Reserva FOREIGN KEY(idCliente) REFERENCES LOS_BORBOTONES.Cliente(idCliente) 
 
 -- Tabla  Reserva_X_Habitacion_X_Cliente 
 ALTER TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente
@@ -725,7 +723,7 @@ ALTER TABLE LOS_BORBOTONES.Factura
 ADD CONSTRAINT FK_Estadia_Factura FOREIGN KEY(idEstadia) REFERENCES LOS_BORBOTONES.Estadia(idEstadia) ON DELETE CASCADE ON UPDATE CASCADE
 
 ALTER TABLE LOS_BORBOTONES.Factura
-ADD CONSTRAINT FK_Reserva_Factura FOREIGN KEY(idReserva) REFERENCES LOS_BORBOTONES.Reserva(idReserva)
+ADD CONSTRAINT FK_Reserva_Factura FOREIGN KEY(idReserva) REFERENCES LOS_BORBOTONES.Reserva(idReserva) 
 
 -- Tabla ItemFactura
 ALTER TABLE LOS_BORBOTONES.ItemFactura
@@ -750,7 +748,7 @@ ADD CONSTRAINT FK_Reserva_EstadoReserva FOREIGN KEY(idReserva) REFERENCES LOS_BO
 
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
---------------------------------------FIN CREACION----------------------------------------------------
+--------------------------------------FIN CREACION----------------------------------------
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
@@ -1039,11 +1037,12 @@ INSERT INTO LOS_BORBOTONES.CierreTemporal(Descripcion, idHotel)
 		WHERE FechaInicioActividades <= GETDATE() 
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Migracion Estadia
+-- Migracion Estadia (*)
 -- Mejorarlo con una funcion
  --El campo Facturada por defecto, inicia en 1
+-- para una misma estadia, habia dos una con fecha entrada y salida NULL, se descartaron los NULL
 
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, idUsuarioIn, idUsuarioOut) 
+INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, idUsuarioIn, idUsuarioOut)
 		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), 1, 1
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
 		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio < GETDATE()
@@ -1090,7 +1089,6 @@ INSERT INTO LOS_BORBOTONES.TipoHabitacion(Codigo, Descripcion, Porcentual)
 		SELECT DISTINCT  Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion, Habitacion_Tipo_Porcentual
 		FROM gd_esquema.maestra
 		WHERE Habitacion_Tipo_Codigo IS NOT NULL
-		--GROUP BY Habitacion_Tipo_Codigo, Habitacion_Tipo_Descripcion, Habitacion_Tipo_Porcentual;
 
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1106,16 +1104,11 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Migracion Reserva
 --PARA LA MIGRACION DE LA RESERVA, GENERE UNA TABLA TEMPORAL, PARA TRABAJAR LOS JOIN SOLO CON LOS DATOS ESPECIFICOS DE LA MAESTRA, 
-
--- TUVE QUE MODIFICAR LA FK ID_CLIENTE_COMPRADOR POR UNA FK A LA TABLA IDENTIDAD, PARA PODER VALIDAR POR NUMERO DE DOCUMENTO Y ASI SIMPLIFICAR Y TRAER VALORES COHERENTES
-
--- SI ESTAMOS DE ACUERDO, HABRIA QUE MODIFICAR EL DER (LA FK CLIENTE DE LA TABLA RESERVA POR LA FK IDENTIDAD)
-
  ----------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
---Migracion Reserva
+--Reserva
 
--- Crear tabla temporal con los valores actuales de la tabla maestra que necesito para reserva y campos para que vincular las fk : hotel, regimen, estadia e identidad
+-- Crear tabla temporal con los valores actuales de la tabla maestra que necesito para reserva y campos para que vincular las fk : hotel, regimen, estadia y cliente
 
 SET IDENTITY_INSERT LOS_BORBOTONES.ReservaTemporal ON
 -- insertando los datos actuales de la tabla reservaTemporal
@@ -1126,15 +1119,11 @@ WHERE p.Estadia_Fecha_Inicio IS NOT NULL
 ORDER BY p.Reserva_Codigo;
 GO
 
--- comprobando
-SELECT DISTINCT * FROM LOS_BORBOTONES.ReservaTemporal
-ORDER BY Reserva_Codigo
-GO
-
-INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion,  DiasAlojados, idHotel, idEstadia, idRegimen, idIdentidad)
-SELECT m.Reserva_Codigo, m.Reserva_Fecha_Inicio, m.Reserva_Cant_Noches, h.idHotel, e.idEstadia, r.idRegimen, i.idIdentidad
+--Migracion Reserva
+INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
+SELECT m.Reserva_Codigo, GETDATE(), m.Reserva_Fecha_Inicio, DATEADD(DAY, m.Reserva_Cant_Noches, m.Reserva_Fecha_Inicio), m.Reserva_Cant_Noches, h.idHotel, e.idEstadia, r.idRegimen, c.idCliente
 FROM  LOS_BORBOTONES.Hotel h 
-	INNER JOIN  LOS_BORBOTONES.ReservaTemporal m
+	INNER JOIN LOS_BORBOTONES.ReservaTemporal m
 		ON CONCAT(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre  
 	INNER JOIN LOS_BORBOTONES.Estadia e
 		ON m.Estadia_Fecha_Inicio = e.FechaEntrada AND m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
@@ -1142,58 +1131,97 @@ FROM  LOS_BORBOTONES.Hotel h
 		ON m.Regimen_Descripcion = r.Descripcion AND r.idHotel = h.idHotel
 	INNER JOIN LOS_BORBOTONES.Identidad i
 		ON m.Cliente_Pasaporte_Nro = i.NumeroDocumento
-ORDER BY m.Reserva_Codigo
+	INNER JOIN LOS_BORBOTONES.Cliente c 
+		ON c.idCliente  = i.idIdentidad AND c.Activo = 1
+ORDER BY c.idCliente
 GO								
-				
-
--------------------------------------------------------------------------------------------- ----------------------------------------------------------------------
---Migracion Factura
-/*
-INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, e.idEstadia, r.idReserva)
-		SELECT DISTINCT m.Factura_Nro, m.Factura_Fecha, m.Factura_Total, e.idEstadia, r.idReserva
-		FROM  LOS_BORBOTONES.Estadia e
-		JOIN gd_esquema.maestra m ON  m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
-		JOIN LOS_BORBOTONES.Reserva r ON  m.Reserva_Codigo = r.CodigoReserva
 		
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Migracion Factura (*)
+
+--la tabla maestra, para los campos Factura_Nro, y Factura_Fecha trae muchos campos NULL, pero que corresponden  a  codigos de reserva
+-- o sea, tengo una reserva con x codigo y fecha y nro de factura NULL, y tengo ese mismo codigo de reserva con fecha_factura y codigo factura NULL
+--Las opciones serian: crear una tabla con las inconsistencias de factura, aunque por logica, una factura sin numero y sin fecha no deberia considerarlas
+-- con mas razon si el codigo de reserva no se pierde.
+-- otra opcion es hacer la restriccion de los null
+
+-- agregar values puntos y tipo de pago
+
+--OJO EL CAMPO  TOTAL DE FACTURA DE LA TABLA MAESTRA TRAE VALORES INCORRECTOS
+-- TOTAL DE FACTURA = regimen de estadia + ... + (ITEM_FACTURA DE CONSUMIBLE * PRECIO) + ... excepto que el regimen sea ALL INCLUSIVE, donde no se cobran los consumibles
+
+
+--itemFactura Cantidad es igual al precio del consumible
+
+INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, e.idEstadia, r.idReserva)
+		SELECT DISTINCT  m.Factura_Nro, m.Factura_Fecha, m.Factura_Total, e.idEstadia, r.idReserva
+		FROM  LOS_BORBOTONES.Estadia e
+		JOIN gd_esquema.maestra m 
+			ON  m.Estadia_Fecha_Inicio = e.FechaEntrada AND m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
+		JOIN LOS_BORBOTONES.Reserva r 
+			ON  m.Reserva_Codigo = r.CodigoReserva AND r.idEstadia = e.idEstadia
+			WHERE m.Factura_Nro IS NOT NULL
+		ORDER BY  m.Factura_Nro, m.Factura_Fecha, e.idEstadia, r.idReserva
 GO
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 --ItemFactura
 
-INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto)
-		SELECT m.Item_Factura_Cantidad, m.Item_Factura_Monto
-		FROM gd_esquema.maestra m;
+INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura, idConsumible)
+		SELECT DISTINCT  m.Item_Factura_Monto, m.Item_Factura_Cantidad, f.FechaFacturacion, f.idFactura, c.idConsumible
+		FROM LOS_BORBOTONES.Factura f 
+		JOIN gd_esquema.maestra m
+			ON m.Factura_Nro = f.NumeroFactura
+		JOIN LOS_BORBOTONES.Consumible c
+			ON m.Consumible_Codigo = c.Codigo
+	ORDER BY f.idFactura, f.FechaFacturacion;
 
 GO
 
-
------------------------------------
-
+--LUEGO DE MIGRAR ITEM_FACTURA, SE DEBE PENSAR EN UN PROCEDIMIENTO QUE UPDATEE EL VALOR DE TOTAL DE LA TABLA FACTURA
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --Carga EstadoReserva
 
-INSERT INTO LOS_BORBOTONES.EstadoReserva (TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	VALUES ('RC', GETDATE(), 'RESERVA CORRECTA', (SELECT idUsuario FROM LOS_BORBOTONES.Usuario), (SELECT idReserva FROM LOS_BORBOTONES.Reserva));
+INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 1, r.idReserva
+		FROM LOS_BORBOTONES.Reserva r
+		JOIN LOS_BORBOTONES.Identidad i
+			ON i.TipoIdentidad = 'Usuario'
+		JOIN LOS_BORBOTONES.Usuario u
+			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
+		WHERE r.FechaDesde < GETDATE()
+ORDER BY r.idReserva, r.FechaCreacion
 GO
 
-INSERT INTO LOS_BORBOTONES.EstadoReserva (TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	VALUES ('RM', GETDATE(), 'RESERVA MODIFICADA', (SELECT idUsuario FROM LOS_BORBOTONES.Usuario), (SELECT idReserva FROM LOS_BORBOTONES.Reserva));
+INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+		SELECT DISTINCT 'RM', r.FechaCreacion, 'Reserva Modificada', 1, r.idReserva
+		FROM LOS_BORBOTONES.Reserva r
+		JOIN LOS_BORBOTONES.Identidad i
+			ON i.TipoIdentidad = 'Usuario'
+		JOIN LOS_BORBOTONES.Usuario u
+			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
+	WHERE r.FechaDesde BETWEEN r.fechaCreacion AND r.fechaDesde
+ORDER BY r.idReserva, r.FechaCreacion
 GO
 
-INSERT INTO LOS_BORBOTONES.EstadoReserva (TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	VALUES ('RCR', GETDATE(),'RESERVA CANCELADA POR RECEPCION', (SELECT idUsuario FROM LOS_BORBOTONES.Usuario), (SELECT idReserva FROM LOS_BORBOTONES.Reserva));
+INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+		SELECT DISTINCT 'RCR', r.FechaCreacion, 'Reserva Cancelada por Recepcion', 3 , r.idReserva
+		FROM LOS_BORBOTONES.Reserva r
+		JOIN LOS_BORBOTONES.Identidad i
+			ON i.TipoIdentidad = 'Usuario'
+		JOIN LOS_BORBOTONES.Usuario u
+			ON i.idIdentidad = u.idUsuario  AND u.Username = 'recepcionista'
+		WHERE r.FechaDesde LIKE convert(datetime, '2017-01-01 00:00:00.000', 121)
+ORDER BY r.idReserva, r.FechaCreacion
 GO
 
-INSERT INTO LOS_BORBOTONES.EstadoReserva (TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	VALUES ('RCC', GETDATE(), 'RESERVA CANCELADA POR CLIENTE', (SELECT idUsuario FROM LOS_BORBOTONES.Usuario), (SELECT idReserva FROM LOS_BORBOTONES.Reserva));
-GO
-
-INSERT INTO LOS_BORBOTONES.EstadoReserva (TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	VALUES ('RA', GETDATE(), 'RESERVA ABONADA', (SELECT idUsuario FROM LOS_BORBOTONES.Usuario), (SELECT idReserva FROM LOS_BORBOTONES.Reserva));	
-GO
-
-
-*/
-
-
-
-		
+INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+		SELECT DISTINCT 'RCC', r.FechaCreacion, 'Reserva Cancelada por Cliente', 2 , r.idReserva
+		FROM LOS_BORBOTONES.Reserva r
+		JOIN LOS_BORBOTONES.Identidad i
+			ON i.TipoIdentidad = 'Usuario'
+		JOIN LOS_BORBOTONES.Usuario u
+			ON i.idIdentidad = u.idUsuario AND u.Username = 'guest'
+		WHERE CodigoReserva = 77460
+ORDER BY r.idReserva, r.FechaCreacion
