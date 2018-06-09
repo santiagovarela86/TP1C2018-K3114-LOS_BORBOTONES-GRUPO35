@@ -10,9 +10,35 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioDireccion : Repositorio<Direccion>
     {
-        public override int create(Direccion t)
+        public override int create(Direccion direccion)
         {
-            throw new System.NotImplementedException();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            int idDireccionInserted = 0;
+
+            sqlCommand.Parameters.AddWithValue("@pais", direccion.Pais);
+            sqlCommand.Parameters.AddWithValue("@ciudad", direccion.Ciudad);
+            sqlCommand.Parameters.AddWithValue("@calle", direccion.Calle);
+            sqlCommand.Parameters.AddWithValue("@numeroCalle", direccion.NumeroCalle);
+            sqlCommand.Parameters.AddWithValue("@piso", direccion.Piso);
+            sqlCommand.Parameters.AddWithValue("@departamento", direccion.Departamento);
+            sqlCommand.Parameters.AddWithValue("@idDireccion", direccion.IdDireccion);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "INSERT INTO  LOS_BORBOTONES.Direccion( Pais,Ciudad,Calle,NumeroCalle,Piso,Depto) OUTPUT INSERTED.idDireccion VALUES (@pais,@ciudad,@calle,@numeroCalle,@piso,@departamento);";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read()){
+                idDireccionInserted = reader.GetInt32(reader.GetOrdinal("idDireccion"));
+            }
+            
+            sqlConnection.Close();
+            return idDireccionInserted;
         }
 
         public override void delete(Direccion t)
