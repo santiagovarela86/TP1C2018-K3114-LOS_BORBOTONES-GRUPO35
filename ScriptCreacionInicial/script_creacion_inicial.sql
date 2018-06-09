@@ -175,7 +175,7 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Reserva_EstadoReserva', 'F') IS NOT NULL
 	DROP CONSTRAINT FK_Reserva_EstadoReserva 
 GO
 
----------------------------------------------- Eliminacion de Tablas ----------------------------------------------------------------------------
+---------------------------------------------- Dropeo de Tablas ----------------------------------------------------------------------------
 
 IF OBJECT_ID('LOS_BORBOTONES.Inconsistencias','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Inconsistencias;
@@ -318,15 +318,15 @@ GO
 CREATE TABLE LOS_BORBOTONES.Identidad (
 
 	idIdentidad				INT				IDENTITY(1,1)		NOT NULL,
-	TipoIdentidad			VARCHAR(45),		
-	Nombre					NVARCHAR(255),
-	Apellido				NVARCHAR(255),
-	TipoDocumento			VARCHAR(45),
-	NumeroDocumento			VARCHAR(45),
-	Mail					NVARCHAR(255),
-	FechaNacimiento			DATETIME,
+	TipoIdentidad			VARCHAR(45)		NOT NULL,		
+	Nombre					NVARCHAR(255)	NOT NULL,
+	Apellido				NVARCHAR(255)	NOT NULL,
+	TipoDocumento			VARCHAR(45)		NOT NULL,
+	NumeroDocumento			VARCHAR(45)		NOT NULL,
+	Mail					NVARCHAR(255)	NOT NULL, --el mail debe ser unico
+	FechaNacimiento			DATETIME		NOT NULL,
 	Nacionalidad			NVARCHAR(255),
-	Telefono				VARCHAR(45)		DEFAULT 0,
+	Telefono				VARCHAR(45)		DEFAULT 0			NOT NULL,
 )
 GO
 
@@ -334,25 +334,25 @@ GO
 CREATE TABLE LOS_BORBOTONES.Direccion (
 
 	idDireccion		INT				IDENTITY(1,1)				NOT NULL,
-	Pais			VARCHAR(45)		DEFAULT 'Argentina',
+	Pais			VARCHAR(45)		DEFAULT 'Argentina'			NOT NULL,
 	Ciudad			NVARCHAR(255),
-	Calle			NVARCHAR(255),
-	NumeroCalle		INT,
+	Calle			NVARCHAR(255)	NOT NULL,
+	NumeroCalle		INT				NOT NULL,
 	Piso			INT,
 	Depto			NVARCHAR(50),
-	idIdentidad		INT,	--se quito la especificacion not null
+	idIdentidad		INT,	
 )
 GO
 
 --Tabla Usuario 
 CREATE TABLE LOS_BORBOTONES.Usuario (
 
-	idUsuario				INT			IDENTITY(1,1)	NOT NULL,
-	Username				VARCHAR(255),
-	Password				VARCHAR(255),
-	IntentosFallidosLogin	INT			DEFAULT 0, --se modifica tipo de dato
-	Activo					BIT			DEFAULT 1,
-	idIdentidad				INT			NOT NULL,
+	idUsuario				INT				IDENTITY(1,1)	NOT NULL,
+	Username				VARCHAR(255)	NOT NULL,
+	Password				VARCHAR(255)	NOT NULL,
+	IntentosFallidosLogin	INT				DEFAULT 0, 
+	Activo					BIT				DEFAULT 1,
+	idIdentidad				INT				NOT NULL,
 )
 GO
 
@@ -376,8 +376,8 @@ GO
 --Tabla Categoria
 CREATE TABLE LOS_BORBOTONES.Categoria (
 
-	idCategoria			INT		IDENTITY(1,1)	NOT NULL,
-	Estrellas			INT,
+	idCategoria			INT				IDENTITY(1,1)	NOT NULL,
+	Estrellas			INT				NOT NULL,
 	RecargaEstrellas	NUMERIC(18,2)
 )
 GO
@@ -385,8 +385,8 @@ GO
 -- Tabla Hotel
 CREATE TABLE LOS_BORBOTONES.Hotel (
 
-	idHotel					INT					IDENTITY(1,1)		  NOT NULL	UNIQUE, 
-	Nombre					NVARCHAR(255),
+	idHotel					INT					IDENTITY(1,1)	NOT NULL	UNIQUE, 
+	Nombre					NVARCHAR(255)		NOT NULL,
 	Mail					NVARCHAR(255),
 	Telefono				VARCHAR(45),
 	FechaInicioActividades	DATETIME,
@@ -407,9 +407,9 @@ GO
 CREATE TABLE LOS_BORBOTONES.CierreTemporal (
 
 	idEstadoHotel	INT				IDENTITY(1,1)	NOT NULL,
-	FechaInicio		VARCHAR(45),
-	FechaFin		VARCHAR(45),
-	Descripcion		VARCHAR(45),
+	FechaInicio		VARCHAR(45)		NOT NULL,
+	FechaFin		VARCHAR(45)		NOT NULL,
+	Descripcion		VARCHAR(45)		NOT NULL,
 	idHotel			INT				NOT NULL,	
 )
 GO
@@ -418,7 +418,7 @@ GO
 CREATE TABLE LOS_BORBOTONES.Regimen (
 	
 	idRegimen		INT				IDENTITY(1,1)	NOT NULL,
-	Codigo			VARCHAR(45)		DEFAULT 'RC117',		
+	Codigo			VARCHAR(45)		NOT NULL,		
 	Descripcion		NVARCHAR(255),
 	Precio			NUMERIC(18,2),
 	Activo			BIT,
@@ -430,9 +430,9 @@ GO
 CREATE TABLE LOS_BORBOTONES.TipoHabitacion (
 
 	idTipoHabitacion	INT				IDENTITY(1,1)	NOT NULL,
-	Codigo				VARCHAR(45),
-	Descripcion			VARCHAR(45),
-	Porcentual			VARCHAR(45),	
+	Codigo				VARCHAR(45)		NOT NULL,
+	Descripcion			VARCHAR(45)		NOT NULL,
+	Porcentual			VARCHAR(45)		NOT NULL,	
 )
 GO
 
@@ -441,9 +441,9 @@ CREATE TABLE LOS_BORBOTONES.Habitacion (
 
 	idHabitacion		INT				IDENTITY(1,1)	NOT NULL,
 	Activa				BIT				DEFAULT 1,
-	Numero				NUMERIC(18,0),
-	Piso				NUMERIC(18,0),
-	Ubicacion			NVARCHAR(50),
+	Numero				NUMERIC(18,0)	NOT NULL,
+	Piso				NUMERIC(18,0)	NOT NULL,
+	Ubicacion			NVARCHAR(50)	NOT NULL,
 	idHotel				INT				NOT NULL,
 	idTipoHabitacion	INT				NOT NULL,	
 )
@@ -452,9 +452,10 @@ GO
 -- Tabla Estadia
 CREATE TABLE LOS_BORBOTONES.Estadia (
 
-	idEstadia		INT			IDENTITY(1,1)	NOT NULL		UNIQUE,
-	FechaEntrada	DATETIME,
-	FechaSalida		DATETIME,
+	idEstadia		INT			IDENTITY(1,1)	NOT NULL	UNIQUE,
+	FechaEntrada	DATETIME	NOT NULL,
+	FechaSalida		DATETIME	NOT NULL,
+	CantidadNoches	NUMERIC(18,0),
 	Facturada		BIT			DEFAULT 1,
 	idUsuarioIn		INT			NOT NULL,
 	idUsuarioOut	INT			NOT NULL,
@@ -465,11 +466,11 @@ GO
 -- Tabla Reserva
 CREATE TABLE LOS_BORBOTONES.Reserva (
 
-	idReserva		INT				IDENTITY(0001,1)	NOT NULL	UNIQUE,
-	CodigoReserva	NUMERIC(18,0),
+	idReserva		INT				IDENTITY(1,1)	NOT NULL	UNIQUE,
+	CodigoReserva	NUMERIC(18,0)	NOT NULL,
 	FechaCreacion	DATETIME,
-	FechaDesde		DATETIME,
-	FechaHasta		DATETIME,
+	FechaDesde		DATETIME		NOT NULL,
+	FechaHasta		DATETIME		NOT NULL,
 	DiasAlojados	NUMERIC(18,0),
 	idHotel			INT				NOT NULL,
 	idEstadia		INT				NOT NULL,
@@ -490,14 +491,14 @@ GO
 -- Tabla Factura
 CREATE TABLE LOS_BORBOTONES.Factura (
 
-	idFactura			INT			IDENTITY(1, 1)		NOT NULL,
-	NumeroFactura		NUMERIC(18,0),
-	FechaFacturacion	DATETIME,
-	Total				NUMERIC(18,2),
+	idFactura			INT					IDENTITY(1, 1)		NOT NULL,
+	NumeroFactura		NUMERIC(18,0)		NOT NULL,
+	FechaFacturacion	DATETIME			NOT NULL,
+	Total				NUMERIC(18,2)		NOT NULL,
 	Puntos				INT,
 	TipoPago			VARCHAR(45),
-	idEstadia			INT				NOT NULL,
-	idReserva			INT				NOT NULL,
+	idEstadia			INT					NOT NULL,
+	idReserva			INT					NOT NULL,
 )
 GO
 
@@ -505,9 +506,9 @@ GO
 CREATE TABLE LOS_BORBOTONES.Consumible (
 
 	idConsumible		INT				IDENTITY(1,1)	NOT NULL,
-	Codigo				NUMERIC(18,0),
-	Descripcion			NVARCHAR(255),
-	Precio				NUMERIC(18,2),
+	Codigo				NUMERIC(18,0)	NOT NULL,
+	Descripcion			NVARCHAR(255)	NOT NULL,
+	Precio				NUMERIC(18,2)	NOT NULL,
 )
 GO
 
@@ -515,8 +516,8 @@ GO
 CREATE TABLE LOS_BORBOTONES.ItemFactura (
 
 		idItemFactura		INT				IDENTITY(1,1)	NOT NULL,
-		Cantidad			NUMERIC(18,0),
-		Monto				NUMERIC(18,2),
+		Cantidad			NUMERIC(18,0)	NOT NULL,
+		Monto				NUMERIC(18,2)	NOT NULL,
 		FechaCreacion		DATETIME		DEFAULT GETDATE(),
 		idFactura			INT				NOT NULL,
 		idConsumible		INT				NOT NULL,		
@@ -526,7 +527,7 @@ GO
 -- Tabla Asociacion Estadia - Consumible
 CREATE TABLE LOS_BORBOTONES.Estadia_X_Consumible (
 
-	idEstadia		INT,
+	idEstadia		INT		NOT NULL,
 	idConsumible	INT		NOT NULL,
 )
 GO
@@ -534,26 +535,27 @@ GO
 -- Tabla EstadoReserva
 CREATE TABLE LOS_BORBOTONES.EstadoReserva (
 
-	idEstado		INT			IDENTITY(1,1)	NOT NULL,
+	idEstado		INT				IDENTITY(1,1)	NOT NULL,
 	TipoEstado		VARCHAR(45),
-	Fecha			VARCHAR(45),
+	Fecha			VARCHAR(45)		NOT NULL,
 	Descripcion		VARCHAR(45),
-	idUsuario		INT			NOT NULL,
-	idReserva		INT			NOT NULL,
+	idUsuario		INT				NOT NULL,
+	idReserva		INT				NOT NULL,
 )
 GO
 
 -- creando la tabla temporal RESERVA
 CREATE TABLE LOS_BORBOTONES.ReservaTemporal (
-	  Reserva_Codigo  NUMERIC(18,0) IDENTITY(1001, 1) 	UNIQUE 	NOT NULL
-	  ,Reserva_Fecha_Inicio DATETIME
-      ,Reserva_Cant_Noches NUMERIC(18,0)
-	  ,Hotel_Calle NVARCHAR(255)
-	  ,Hotel_Nro_Calle NVARCHAR(255)
-	  ,Estadia_Fecha_Inicio DATETIME
-	  ,Estadia_Cant_Noches INT
-      ,Regimen_Descripcion NVARCHAR(255)
-      ,Cliente_Pasaporte_Nro VARCHAR(45)
+
+	  Reserva_Codigo  NUMERIC(18,0) IDENTITY(1001, 1) 	UNIQUE 	NOT NULL,
+	  Reserva_Fecha_Inicio DATETIME,
+      Reserva_Cant_Noches NUMERIC(18,0),
+	  Hotel_Calle NVARCHAR(255),
+	  Hotel_Nro_Calle NVARCHAR(255),
+	  Estadia_Fecha_Inicio DATETIME,
+	  Estadia_Cant_Noches INT,
+      Regimen_Descripcion NVARCHAR(255),
+      Cliente_Pasaporte_Nro VARCHAR(45),
 );
 GO
 
@@ -758,6 +760,7 @@ ADD CONSTRAINT FK_Reserva_EstadoReserva FOREIGN KEY(idReserva) REFERENCES LOS_BO
 SELECT * INTO LOS_BORBOTONES.Inconsistencias FROM gd_esquema.Maestra WHERE 1 = 2; --se guardan en una tabla las inconsistencias
 
 CREATE INDEX IDX_DIRECCION01 ON LOS_BORBOTONES.Direccion (Calle); --se crea indice a la tabla Direccion, el campo Calle
+CREATE INDEX IDX_IDENTIDAD01 ON LOS_BORBOTONES.Identidad (Mail); -- se crea un indice a la tabla Identidad el campo Mail
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga de  Roles Iniciales
 
@@ -865,86 +868,11 @@ INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
 	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'recepcionista'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'recepcionista'));
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
---TEST CASES: Carga de Hoteles con sus habitaciones y reservas
-SET IDENTITY_INSERT LOS_BORBOTONES.Direccion ON
-INSERT INTO LOS_BORBOTONES.Direccion (idDireccion,Pais,Ciudad,Calle,NumeroCalle)
-VALUES (1,'SQL-PAIS','SQL-CIUDAD','SQL-CALLE',123);
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Direccion OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Categoria ON
-INSERT INTO LOS_BORBOTONES.Categoria(idCategoria,Estrellas,RecargaEstrellas)
-VALUES (1,5,10);
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Categoria OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Hotel ON
-INSERT INTO LOS_BORBOTONES.Hotel (idHotel, Nombre,Mail,Telefono,FechaInicioActividades,idCategoria,idDireccion)
-VALUES (1,'SQL-NOMBRE','SQL-MAIL','SQL-TELEFONO',GETDATE(),1,1)
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Hotel OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.TipoHabitacion ON
-INSERT INTO LOS_BORBOTONES.TipoHabitacion(idTipoHabitacion, Codigo,Descripcion,Porcentual)
-VALUES (1,'SQL-CODIGO-1','SQL-DESCRIPCION-1','SQL-PORCENTUAL-1')
-GO
-INSERT INTO LOS_BORBOTONES.TipoHabitacion(idTipoHabitacion, Codigo,Descripcion,Porcentual)
-VALUES (2,'SQL-CODIGO-2','SQL-DESCRIPCION-2','SQL-PORCENTUAL-2')
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.TipoHabitacion OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Habitacion ON
-INSERT INTO LOS_BORBOTONES.Habitacion(idHabitacion, Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion)
-VALUES (1,1,11,1,'SQL-UBICACION-HAB-1',1,1)
-GO
-INSERT INTO LOS_BORBOTONES.Habitacion(idHabitacion, Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion)
-VALUES (2,1,12,1,'SQL-UBICACION-HAB-2',1,2)
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Habitacion OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Regimen ON
-INSERT INTO LOS_BORBOTONES.Regimen(idRegimen, Codigo,Descripcion,Precio,Estado,idHotel)
-VALUES (1,'SQL-CODIGO-REG-1','SQL-DESCRIPCION-REG-1',10,'SQL-ESTADO-REG-1',1)
-GO
-INSERT INTO LOS_BORBOTONES.Regimen(idRegimen, Codigo,Descripcion,Precio,Estado,idHotel)
-VALUES (2,'SQL-CODIGO-REG-2','SQL-DESCRIPCION-REG-2',20,'SQL-ESTADO-REG-2',1)
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Regimen OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Identidad ON
-INSERT INTO LOS_BORBOTONES.Identidad(idIdentidad,TipoIdentidad, Nombre, TipoDocumento, NumeroDocumento, Mail)
-	   VALUES(3,'SQL-NOMBRE', 'SQL-GUEST', 'SQL-DNI', 'SQL-NUMERO',  'SQL-MAIL')
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Identidad OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Cliente ON
-INSERT INTO LOS_BORBOTONES.Cliente(idCliente, Activo,idIdentidad)
-VALUES (1,1,3)
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Cliente OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Estadia ON
-INSERT INTO LOS_BORBOTONES.Estadia(idEstadia, FechaEntrada,FechaSalida,idUsuarioIn,idUsuarioOut)
-VALUES (1,GETDATE(),GETDATE(),1,1);
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Estadia OFF
-
-SET IDENTITY_INSERT LOS_BORBOTONES.Reserva ON
-INSERT INTO LOS_BORBOTONES.Reserva(idReserva, CodigoReserva,FechaCreacion,FechaDesde,FechaHasta,DiasAlojados,idHotel,idEstadia,idRegimen,idIdentidad)
-VALUES (1,1,GETDATE(),GETDATE(),GETDATE(),1,1,1,1,3);
-GO
-
-INSERT INTO LOS_BORBOTONES.Reserva(idReserva, CodigoReserva,FechaCreacion,FechaDesde,FechaHasta,DiasAlojados,idHotel,idEstadia,idRegimen,idIdentidad)
-VALUES (2,2,GETDATE(),GETDATE(),GETDATE(),1,1,1,2,3);
-GO
-SET IDENTITY_INSERT LOS_BORBOTONES.Reserva OFF
-*/
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Identidad
-
+--telefono quedo por defecto en 0
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
 	   SELECT  DISTINCT	'Cliente', Cliente_Nombre, Cliente_Apellido, 'Pasaporte', Cliente_Pasaporte_Nro,  Cliente_Mail, Cliente_Fecha_Nac, Cliente_Nacionalidad
 		FROM gd_esquema.Maestra
@@ -952,7 +880,7 @@ GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 -- MIGRACION Direccion 
-
+--los que no tienen idIdentidad, son los hoteles
 INSERT INTO LOS_BORBOTONES.Direccion(Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
 (
 	SELECT  NULL, m.Cliente_Dom_Calle, m.Cliente_Nro_Calle, m.Cliente_Piso, m.Cliente_Depto, i.idIdentidad
@@ -1011,6 +939,7 @@ GO
 INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario (idHotel, idUsuario)
 VALUES ((SELECT idHotel FROM LOS_BORBOTONES.Hotel WHERE Nombre like '%Justo14%'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'guest'));
 GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga CLIENTE
 --por defecto los clientes aparecen con Activo = 1
@@ -1021,39 +950,65 @@ INSERT INTO LOS_BORBOTONES.Cliente(idIdentidad, Activo)
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Regimen
--- en principio se puso como Estado Disponible a todos los regimenes y por default codigo = RC117
-INSERT INTO LOS_BORBOTONES.Regimen(Descripcion, Precio, Activo, idHotel)
-		SELECT  DISTINCT m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
+
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
+		SELECT  DISTINCT 'RGAI', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+		WHERE  m.Regimen_Descripcion = 'All inclusive'
+GO
+
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
+		SELECT  DISTINCT 'RGAIM', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
+		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+		WHERE  m.Regimen_Descripcion = 'All Inclusive moderado'
+GO
+
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
+		SELECT  DISTINCT 'RGPC', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
+		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+		WHERE  m.Regimen_Descripcion = 'Pension Completa'
+GO
+
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
+		SELECT  DISTINCT 'RGMP', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
+		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+		WHERE  m.Regimen_Descripcion = 'Media Pensión'
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga CierreTemporal
 --las fechas estan en el DER como tipo VARCHAR, se quedan asi? o como DATETIME
 -- Se define por el momento Descripcion = 'Mantenimiento'
-INSERT INTO LOS_BORBOTONES.CierreTemporal(Descripcion, idHotel)
-		SELECT  DISTINCT 'Mantenimiento', idHotel
+
+INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
+		SELECT  DISTINCT '2016-12-29 00:00:00.000', '2016-12-31 00:00:00.000' , 'Mantenimiento', idHotel
 		FROM LOS_BORBOTONES.Hotel
-		WHERE FechaInicioActividades <= GETDATE() 
 GO
+
+INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
+		SELECT  DISTINCT '2021-01-01 00:00:00.000', '2021-01-05 00:00:00.000' , 'Ampliacion', idHotel
+		FROM LOS_BORBOTONES.Hotel
+GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Migracion Estadia (*)
 -- Mejorarlo con una funcion
  --El campo Facturada por defecto, inicia en 1
 -- para una misma estadia, habia dos una con fecha entrada y salida NULL, se descartaron los NULL
+--en la tabla maestra esta el campo Estadia_Cant_Noches, que no esta en el DER, habria que agregarlo
 
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, idUsuarioIn, idUsuarioOut)
-		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), 1, 1
+INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
+		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 1, 1
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
 		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio < GETDATE()
-		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio)
+		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
 GO
 
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, idUsuarioIn, idUsuarioOut) 
-		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), 2, 2
+INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut) 
+		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 2, 2
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
 		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio > GETDATE()
-		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio)
+		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Migracion Consumible
@@ -1164,6 +1119,135 @@ INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, e.idE
 		ORDER BY  m.Factura_Nro, m.Factura_Fecha, e.idEstadia, r.idReserva
 GO
 
+SELECT  DISTINCT f.NumeroFactura, f.Total, sum(c.Precio * i.Cantidad) AS TotalEnConsumibles, sum(g.Precio * r.DiasAlojados) AS TotalEnEstadia, r.idReserva, g.Descripcion
+		FROM  LOS_BORBOTONES.Factura f
+		JOIN  LOS_BORBOTONES.Reserva r
+			ON  f.idReserva = r.idReserva
+		JOIN  LOS_BORBOTONES.Estadia e
+			ON   r.idEstadia = e.idEstadia
+		JOIN LOS_BORBOTONES.Regimen g
+			ON r.idRegimen = g.idRegimen
+		JOIN LOS_BORBOTONES.ItemFactura i
+			ON f.idFactura = i.idFactura
+		JOIN LOS_BORBOTONES.Consumible c
+			ON i.idConsumible = c.idConsumible
+		WHERE  f.idFactura = i.idFactura
+		group BY f.NumeroFactura, f.Total, r.idReserva, g.Descripcion
+		--ORDER BY f.NumeroFactura, f.Total, r.idReserva, g.Descripcion
+GO
+/*
+-- en desarrollo
+SELECT @@CURSOR_ROWS
+DECLARE factura_cursor CURSOR FOR
+
+SELECT  DISTINCT f.NumeroFactura, f.Total, e.idEstadia, r.idReserva, g.idRegimen, c.idConsumible
+		FROM  LOS_BORBOTONES.Factura f
+		JOIN  LOS_BORBOTONES.Reserva r
+			ON  f.idReserva = r.idReserva
+		JOIN  LOS_BORBOTONES.Estadia e
+			ON   r.idEstadia = e.idEstadia
+		JOIN LOS_BORBOTONES.Regimen g
+			ON r.idRegimen = g.idRegimen
+		JOIN LOS_BORBOTONES.ItemFactura i
+			ON f.idFactura = i.idFactura
+		JOIN LOS_BORBOTONES.Consumible c
+			ON i.idConsumible = c.idConsumible
+		WHERE g.Descripcion = 'All inclusive'
+		ORDER BY f.NumeroFactura, f.Total, e.idEstadia, r.idReserva, g.idRegimen
+OPEN factura_cursor 
+FETCH NEXT FROM factura_cursor 
+SELECT @@CURSOR_ROWS
+CLOSE factura_cursor
+DEALLOCATE factura_cursor
+		*/
+------------------------------------------------------en desarrollo
+/*
+CREATE PROCEDURE SP_CALCULAR_TOTAL_FACTURA
+AS
+BEGIN
+	declare @combo char(8);
+	declare @combocantidad integer;
+	
+	declare @NumeroFactura NUMERIC(18,0);
+	declare @Total NUMERIC(18,2);
+	
+	declare  cFacturas cursor for --CURSOR PARA RECORRER LAS FACTURAS
+		select NumeroFactura, Total
+		from LOS_BORBOTONES.Factura;
+		 where para hacer una prueba acotada
+		where fact_tipo = 'A' and
+				fact_sucursal = '0003' and
+				fact_numero='00092476';^
+	
+		open cFacturas
+		
+		fetch next from cFacturas
+		into @NumeroFactura, @Total
+		
+		while @@FETCH_STATUS = 0
+		begin	
+			declare  cConsumible cursor for
+			select idConsumible --ACA NECESITAMOS UN CURSOR PORQUE PUEDE HABER MAS DE UN CONSUMIBLE EN UNA FACTURA
+			from LOS_BORBOTONES.ItemFactura join LOS_BORBOTONES.Consumible C1 on (idConsumible = C1.idConsumible)
+			where Cantidad >= C1.Cantidad and 
+				  idFactura = @NumeroFactura 
+			group by C1.idConsumible
+			having COUNT(*) = (select COUNT(*) from LOS_BORBOTONES.Consumible as C2 where C2.idConsumible= C1.idConsumible)
+			
+			open cConsumible
+			fetch next from cConsumible into @combo
+			while @@FETCH_STATUS = 0 
+			begin
+	  					
+				select @combocantidad= MIN(FLOOR((Cantidad/c1.Cantidad)))
+				from LOS_BORBOTONES.ItemFactura join LOS_BORBOTONES.Consumible C1 on (idConsumible = C1.idConsumible)
+				where Cantidad >= C1.Cantidad and
+					  idFactura = @NumeroFactura 
+					  
+					  c1.idConsumible = @combo	--SACAMOS CUANTOS COMBOS PUEDO ARMAR COMO MÁXIMO (POR ESO EL MIN)
+				
+				--INSERTAMOS LA FILA DEL COMBO CON EL PRECIO QUE CORRESPONDE
+				insert into LOS_BORBOTONES.Factura (NumeroFactura, item_sucursal, item_numero, item_producto, item_cantidad, item_precio)
+				select @FacturaNumero, @combo, @combocantidad, (@combocantidad * (select Precio from LOS_BORBOTONES.Consumible where Codigo = @combo));				
+
+				update LOS_BORBOTONES.Factura  
+				set 
+				Cantidad = i1.Cantidad - (@combocantidad * (select Cantidad from LOS_BORBOTONES.ItemFactura
+																		where i1.idConsumible = idConsumible
+																			  and Descripcion=@combo)),
+				ITEM_PRECIO = (i1.Cantidas - (@combocantidad * (select Cantidad from LOS_BORBOTONES.Consumible
+															where i1.idConsumible = idConsumible 
+																  and Descripcion=@combo))) * 	
+													(select Precio from LOS_BORBOTONES.Consumible where idConsumible = I1.idConsumible)											  															  
+				from LOS_BORBOTONES.ItemFactura I1, Consumible C1, Factura I2
+				where 
+					  I2.NumeroFactura = @fact_nro and
+					  I1.idFactura = @fact_tipo AND
+					  I1.idConsumible = C1.idConsumible AND
+					  C1.Descripcion = @combo
+					  
+				delete from LOS_BORBOTONES.Factura
+				where 
+					  NumeroFactura = @fact_nro and
+						Total = @Total and
+					  item_cantidad = 0
+				
+				fetch next from cproducto into @combo
+			end
+			close cProducto;
+			deallocate cProducto;
+			
+			fetch next from cFacturas into @fact_nro, @Total
+			end
+			close cFacturas;
+			deallocate cFacturas;
+	end
+go 	*/
+--if(g.Descripcion = 'All inclusive')
+-- f.total = g.Precio * e.CantidadNoches --> no se cargan consumibles
+-- else
+-- 	f.total = g.Precio * e.CantidadNoches + c.Precio * i.Cantidad
+	
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 --ItemFactura
 
@@ -1184,23 +1268,23 @@ GO
 --Carga EstadoReserva
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 1, r.idReserva
+		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 3, r.idReserva
 		FROM LOS_BORBOTONES.Reserva r
 		JOIN LOS_BORBOTONES.Identidad i
 			ON i.TipoIdentidad = 'Usuario'
 		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
+			ON i.idIdentidad = u.idUsuario  AND u.Username = 'recepcionista'
 		WHERE r.FechaDesde < GETDATE()
 ORDER BY r.idReserva, r.FechaCreacion
 GO
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RM', r.FechaCreacion, 'Reserva Modificada', 1, r.idReserva
+		SELECT DISTINCT 'RM', r.FechaCreacion, 'Reserva Modificada', 3, r.idReserva
 		FROM LOS_BORBOTONES.Reserva r
 		JOIN LOS_BORBOTONES.Identidad i
 			ON i.TipoIdentidad = 'Usuario'
 		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
+			ON i.idIdentidad = u.idUsuario  AND u.Username = 'recepcionista'
 	WHERE r.FechaDesde BETWEEN r.fechaCreacion AND r.fechaDesde
 ORDER BY r.idReserva, r.FechaCreacion
 GO
