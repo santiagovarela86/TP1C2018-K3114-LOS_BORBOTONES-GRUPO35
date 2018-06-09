@@ -20,11 +20,12 @@ namespace FrbaHotel.AbmHotel.request
             this.ciudad = ciudad;
             this.pais = pais;
         }
+        /*
         public string Pais { get => pais; set => pais = value; }
         public string Ciudad { get => ciudad; set => ciudad = value; }
         public string NombreHotel { get => nombreHotel; set => nombreHotel = value; }
         public int? Estrellas { get => estrellas; set => estrellas = value; }
-
+        */
     }
 
 

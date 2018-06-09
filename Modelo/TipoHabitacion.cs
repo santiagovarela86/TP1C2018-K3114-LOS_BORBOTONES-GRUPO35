@@ -15,7 +15,7 @@ namespace FrbaHotel.Modelo
 
         public TipoHabitacion(int idTipoHabitacion, String codigo, decimal porcentual, String descripcion)
         {
-            this.IdTipoHabitacion = idTipoHabitacion;
+            this.idTipoHabitacion = idTipoHabitacion;
             this.codigo = codigo;
             this.porcentual = porcentual;
             this.descripcion = descripcion;
@@ -41,12 +41,16 @@ namespace FrbaHotel.Modelo
             return this.descripcion;
         }
 
+        public void setIdTipoHabitacion(int idTipoHabitacion)
+        {
+            this.idTipoHabitacion = idTipoHabitacion;
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
 
         public String Codigo { get { return this.getCodigo(); } }
         public decimal Porcentual { get { return this.getPorcentual(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
-
-        public int IdTipoHabitacion { get => idTipoHabitacion; set => idTipoHabitacion = value; }
+        public int IdTipoHabitacion { get { return this.getIdTipoHabitacion(); } }
     }
 }

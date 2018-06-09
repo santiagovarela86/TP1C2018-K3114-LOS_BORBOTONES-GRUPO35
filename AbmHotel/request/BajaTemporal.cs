@@ -20,10 +20,11 @@ namespace FrbaHotel.AbmHotel.request
             this.fechaHasta = fechaHasta;
             this.descripcion = descripcion;
         }
-
+        /*
         public DateTime FechaDesde { get => fechaDesde; set => fechaDesde = value; }
         public DateTime FechaHasta { get => fechaHasta; set => fechaHasta = value; }
         public int IdHotel { get => idHotel; set => idHotel = value; }
         public string Descripcion { get => descripcion; set => descripcion = value; }
+        */
     }
 }
