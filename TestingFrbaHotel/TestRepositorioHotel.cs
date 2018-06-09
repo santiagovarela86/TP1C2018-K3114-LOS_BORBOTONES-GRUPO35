@@ -159,8 +159,8 @@ namespace TestingFrbaHotel
             Assert.IsTrue(cierresTemporales.Count > 0);
             foreach (var cierre in cierresTemporales)
             {
-                Assert.Equals(cierre.Descripcion, descripcion);
-                Assert.Equals(cierre.IdHotel, idHotel);
+                Assert.AreEqual(cierre.Descripcion, descripcion);
+                Assert.AreEqual(cierre.IdHotel, idHotel);
             }
         }
 

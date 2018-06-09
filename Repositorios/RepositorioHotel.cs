@@ -11,14 +11,13 @@ namespace FrbaHotel.Repositorios {
 
     public class RepositorioHotel : Repositorio<Hotel>
     {
-        RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
-        RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
-        RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
-        RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
 
 
 
         public int crearBajaTemporal(BajaTemporal request){
+
+            RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
+            RepositorioReserva repositorioReserva = new RepositorioReserva();
             Hotel hotel = getById(request.IdHotel);
             List<Reserva> reservas = hotel.getReservas();
             foreach(var reserva in reservas){
@@ -33,6 +32,12 @@ namespace FrbaHotel.Repositorios {
 
         public List<Hotel> searchHotel(SearchHotelRequest request) {
 
+            RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+            RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
+            RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
+            RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
+            RepositorioReserva repositorioReserva = new RepositorioReserva();
+
             List<Hotel> hoteles = new List<Hotel>();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -46,8 +51,6 @@ namespace FrbaHotel.Repositorios {
                 " JOIN LOS_BORBOTONES.Categoria AS CAT ON CAT.idCategoria= HOT.idCategoria" +
                 " JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion" + getCondiciones(request,sqlCommand) + ";";
             
-
-
             sqlConnection.Open();
 
             reader = sqlCommand.ExecuteReader();
@@ -70,8 +73,9 @@ namespace FrbaHotel.Repositorios {
 
                 List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
 
+                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
                 Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, null, regimenes, null, cierresTemporales);
+                                fechaInicio, reservas, regimenes, null, cierresTemporales);
                 hoteles.Add(hotel);
             }
 
@@ -181,6 +185,13 @@ namespace FrbaHotel.Repositorios {
 
         public override List<Hotel> getAll()
         {
+
+            RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+            RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
+            RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
+            RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
+            RepositorioReserva repositorioReserva = new RepositorioReserva();
+
             List<Hotel> hoteles = new List<Hotel>();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -213,14 +224,14 @@ namespace FrbaHotel.Repositorios {
 
                 List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
 
-                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
 
                 //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
 
-                //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
+                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
 
                 hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, null, regimenes, null, null);
+                                fechaInicio, reservas, regimenes, null, null);
                 hoteles.Add(hotel);
             }
 
@@ -233,6 +244,13 @@ namespace FrbaHotel.Repositorios {
 
         public override Hotel getById(int id)
         {
+
+            RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+            RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
+            RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
+            RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
+            RepositorioReserva repositorioReserva = new RepositorioReserva();
+
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -268,10 +286,10 @@ namespace FrbaHotel.Repositorios {
 
                 //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
 
-                //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
+                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
 
                 hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, null, regimenes, null, cierresTemporales);
+                                fechaInicio, reservas, regimenes, null, cierresTemporales);
             }
 
             //Cierro Primera Consulta
