@@ -134,7 +134,6 @@ namespace FrbaHotel.Repositorios {
                                         "ROLLBACK TRANSACTION " +
                                         "END CATCH";
 
-            //TO DO migrar inserts ajenos de hotel a su respectivo repositorio
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();

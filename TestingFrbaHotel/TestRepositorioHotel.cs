@@ -11,8 +11,6 @@ namespace TestingFrbaHotel
     [TestClass]
     public class TestRepositorioHotel
     {
-
-
         RepositorioHotel repositorioHotel = new RepositorioHotel();
 
         String hotelNombre = "HotelTest";

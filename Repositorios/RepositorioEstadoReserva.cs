@@ -34,7 +34,8 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva = @idReserva";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva = @idReserva" +
+                " ORDER BY idEstadoReserva DESC;";
 
             sqlConnection.Open();
 
