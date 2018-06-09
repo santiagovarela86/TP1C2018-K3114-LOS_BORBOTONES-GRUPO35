@@ -11,6 +11,7 @@ using FrbaHotel.Modelo;
 using FrbaHotel.AbmRol;
 using FrbaHotel.AbmUsuario;
 using FrbaHotel.AbmHotel;
+using FrbaHotel.AbmCliente;
 
 namespace FrbaHotel
 {
@@ -87,6 +88,19 @@ namespace FrbaHotel
                 var resultFormABMUsuarios = formularioABMUsuarios.ShowDialog();
 
                 if (resultFormABMUsuarios == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
+
+        private void ABMCliente_Click(object sender, EventArgs e)
+        {
+            using (ABMClientes formularioABMClientes = new ABMClientes())
+            {
+                var resultFormABMClientes = formularioABMClientes.ShowDialog();
+
+                if (resultFormABMClientes == DialogResult.OK)
                 {
                     //Hago algo con el return value
                 }
