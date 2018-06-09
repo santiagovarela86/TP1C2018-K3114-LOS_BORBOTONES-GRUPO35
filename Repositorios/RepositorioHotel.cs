@@ -178,9 +178,9 @@ namespace FrbaHotel.Repositorios {
             throw new System.NotImplementedException();
         }
 
-        public override bool exists(Hotel t)
+        public override bool exists(Hotel hotel)
         {
-            throw new System.NotImplementedException();
+            return this.getById(hotel.getIdHotel()) !=null;
         }
 
         public override List<Hotel> getAll()
@@ -301,6 +301,8 @@ namespace FrbaHotel.Repositorios {
 
         public override void update(Hotel hotel)
         {
+
+            if (this.exists(hotel)) { 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -347,6 +349,8 @@ namespace FrbaHotel.Repositorios {
 
             //Cierro Primera Consulta
             sqlConnection.Close();
+            }
+            throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
         }
     }
 }
