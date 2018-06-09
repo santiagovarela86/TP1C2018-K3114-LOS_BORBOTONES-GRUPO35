@@ -7,14 +7,41 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.Repositorios
 {
-    class RepositorioHabitacion : Repositorio<Habitacion>
+    public class RepositorioHabitacion : Repositorio<Habitacion>
     {
 
         private RepositorioTipoHabitacion repositorioTipoHabitacion;
 
-        public override int create(Habitacion t)
+        public override int create(Habitacion habitacion)
         {
-            throw new NotImplementedException();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            int idHabitacion = 0;
+
+            sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.Activa);
+            sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
+            sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.Piso);
+            sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.Ubicacion);
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.TipoHabitacion.getIdTipoHabitacion());
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "INSERT INTO  LOS_BORBOTONES.Habitacion(Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion) OUTPUT INSERTED.idHabitacion" +
+                " VALUES (@habActiva,@habNumero,@habPiso,@habUbicacion,@habIdHotel,@habIdTipoHabitacion);";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                idHabitacion = reader.GetInt32(reader.GetOrdinal("idHabitacion"));
+            }
+
+            sqlConnection.Close();
+            return idHabitacion;
         }
 
         public override void delete(Habitacion t)
@@ -43,7 +70,8 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public List<Habitacion> getByHotelId(int id){
+        public List<Habitacion> getByHotelId(int idHotel)
+        {
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -52,7 +80,7 @@ namespace FrbaHotel.Repositorios
 
             List<Habitacion> habitaciones = new List<Habitacion>();
 
-            sqlCommand.Parameters.AddWithValue("@idHotel", id);
+            sqlCommand.Parameters.AddWithValue("@idHotel", idHotel);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = "SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB WHERE HAB.idHotel = @idHotel";
@@ -72,7 +100,7 @@ namespace FrbaHotel.Repositorios
                 String ubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
                 TipoHabitacion tipoHabitacion = repositorioTipoHabitacion.getById(idTipoHabitacion);
 
-                habitaciones.Add(new Habitacion(idHabitacion,tipoHabitacion,activa,numero,piso,ubicacion));
+                habitaciones.Add(new Habitacion(idHabitacion,tipoHabitacion,activa,numero,piso,ubicacion,idHotel));
             }
             //Cierro Primera Consulta
             sqlConnection.Close();

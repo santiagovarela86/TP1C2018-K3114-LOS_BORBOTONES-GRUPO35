@@ -5,6 +5,7 @@ using FrbaHotel.Repositorios;
 using System.Diagnostics;
 using System.Collections.Generic;
 using FrbaHotel.AbmHotel.request;
+using TestingFrbaHotel.ModelBuilder;
 
 namespace TestingFrbaHotel
 {
@@ -13,38 +14,27 @@ namespace TestingFrbaHotel
     {
         RepositorioHotel repositorioHotel = new RepositorioHotel();
 
-        String hotelNombre = "HotelTest";
-        String dirCiudad = "BUE";
-        String dirPais = "AR";
-        int categoriaEstrellas = 5;
-        String hotelMail = "test@gmail.com";
-        String hotelTelefono = "123123";
-        DateTime hotelFechaInicioDeActividad = DateTime.Now;
-        decimal categoriaRecargaEstrellas = 10;
-        String dirCalle = "Medrano";
-        int dirCalleNumero = 979;
-
 
         [TestMethod]
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
-            Hotel hotel1 = buildHotel();
+            Hotel hotel1 = HotelBuilder.buildHotel();
 
             int savedHotelId= repositorioHotel.create(hotel1);
 
             Hotel hotelSearched= repositorioHotel.getById(savedHotelId);
-            Assert.AreEqual(hotelNombre, hotelSearched.getNombre());
+            Assert.AreEqual(hotel1.Nombre, hotelSearched.getNombre());
 
             Assert.AreEqual(savedHotelId, hotelSearched.getIdHotel());
-            Assert.AreEqual(hotelMail, hotelSearched.getMail());
-            Assert.AreEqual(hotelTelefono, hotelSearched.getTelefono());
-            Debug.Assert(Math.Abs((hotelFechaInicioDeActividad - hotelSearched.getFechaInicioActividades()).TotalSeconds) < 1);
-            Assert.AreEqual(categoriaEstrellas, hotelSearched.getCategoria().getEstrellas());
-            Assert.AreEqual(categoriaRecargaEstrellas, hotelSearched.getCategoria().getRecargaEstrellas());
-            Assert.AreEqual(dirPais, hotelSearched.getDireccion().getPais());
-            Assert.AreEqual(dirCiudad, hotelSearched.getDireccion().getCiudad());
-            Assert.AreEqual(dirCalle, hotelSearched.getDireccion().getCalle());
-            Assert.AreEqual(dirCalleNumero, hotelSearched.getDireccion().getNumeroCalle());
+            Assert.AreEqual(hotel1.Mail, hotelSearched.getMail());
+            Assert.AreEqual(hotel1.Telefono, hotelSearched.getTelefono());
+            Debug.Assert(Math.Abs((hotel1.FechaInicioActividades - hotelSearched.getFechaInicioActividades()).TotalSeconds) < 1);
+            Assert.AreEqual(hotel1.Categoria.Estrellas, hotelSearched.getCategoria().getEstrellas());
+            Assert.AreEqual(hotel1.Categoria.RecargaEstrellas, hotelSearched.getCategoria().getRecargaEstrellas());
+            Assert.AreEqual(hotel1.Direccion.Pais, hotelSearched.getDireccion().getPais());
+            Assert.AreEqual(hotel1.Direccion.Ciudad, hotelSearched.getDireccion().getCiudad());
+            Assert.AreEqual(hotel1.Direccion.Calle, hotelSearched.getDireccion().getCalle());
+            Assert.AreEqual(hotel1.Direccion.NumeroCalle, hotelSearched.getDireccion().getNumeroCalle());
             Assert.AreEqual(0, hotelSearched.getDireccion().getPiso());
 
 
@@ -56,32 +46,30 @@ namespace TestingFrbaHotel
 
         }
 
-        private Hotel buildHotel()
-        {
-            Categoria categoria1 = new Categoria(0, categoriaEstrellas, categoriaRecargaEstrellas);
-            Direccion direccion1 = new Direccion(0, dirPais, dirCiudad, dirCalle, dirCalleNumero, 0, null);
-            return  new Hotel(0, categoria1, direccion1, hotelNombre, hotelMail, hotelTelefono, hotelFechaInicioDeActividad, null, null, null, null);
-
-        }
+       
         [TestMethod]
         public void Test_Repo_Hotel_searchHotel()
         {
-
-            int savedHotelId = repositorioHotel.create(buildHotel());
+            Hotel hotelSaved = HotelBuilder.buildHotel();
+            int savedHotelId = repositorioHotel.create(hotelSaved);
 
             //POR NOMBRE
-            SearchHotelRequest request = new SearchHotelRequest(hotelNombre, null, null, null);
+            String hotNombre = hotelSaved.Nombre;
+            SearchHotelRequest request = new SearchHotelRequest(hotNombre, null, null, null);
             List<Hotel> hoteles = repositorioHotel.searchHotel(request);
             Assert.IsTrue(hoteles.Count > 0);
-            foreach(var hotel in hoteles){ Assert.IsTrue(hotel.Nombre.Equals(hotelNombre));}
+            foreach(var hotel in hoteles){ Assert.IsTrue(hotel.Nombre.Equals(hotNombre));}
 
             //POR ESTRELLAS
+            int categoriaEstrellas = hotelSaved.Categoria.Estrellas;
             request = new SearchHotelRequest(null, categoriaEstrellas, null, null);
             hoteles = repositorioHotel.searchHotel(request);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas)); }
 
             //POR CIUDAD
+            String dirCiudad = hotelSaved.Direccion.Ciudad;
+
             request = new SearchHotelRequest(null, null, dirCiudad, null);
             hoteles = repositorioHotel.searchHotel(request);
             Assert.IsTrue(hoteles.Count > 0);
@@ -89,6 +77,8 @@ namespace TestingFrbaHotel
 
 
             //POR PAIS
+            String dirPais = hotelSaved.Direccion.Pais;
+
             request = new SearchHotelRequest(null, null, null, dirPais);
             hoteles = repositorioHotel.searchHotel(request);
             Assert.IsTrue(hoteles.Count > 0);
@@ -96,11 +86,11 @@ namespace TestingFrbaHotel
 
 
             //POR NOMBRE, CIUDAD, PAIS , ESTRELLAS
-            request = new SearchHotelRequest(hotelNombre, categoriaEstrellas, dirCiudad, dirPais);
+            request = new SearchHotelRequest(hotNombre, categoriaEstrellas, dirCiudad, dirPais);
             hoteles = repositorioHotel.searchHotel(request);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) {
-                Assert.IsTrue(hotel.Nombre.Equals(hotelNombre));
+                Assert.IsTrue(hotel.Nombre.Equals(hotNombre));
                 Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas));
                 Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais));
                 Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais));
@@ -112,7 +102,8 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Hotel_getAll()
         {
-            Hotel hotel = buildHotel();
+
+            Hotel hotel = HotelBuilder.buildHotel();
 
             repositorioHotel.create(hotel);
             repositorioHotel.create(hotel);
@@ -126,19 +117,21 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Hotel_exists_OK()
         {
-            Hotel hotel = buildHotel();
-            int savedidHotel= repositorioHotel.create(hotel);
-            hotel.IdHotel = savedidHotel;
 
-            Assert.IsTrue(repositorioHotel.exists(hotel));
+            Hotel hotelSaved = HotelBuilder.buildHotel();
+            int savedidHotel= repositorioHotel.create(hotelSaved);
+            hotelSaved.IdHotel = savedidHotel;
+
+            Assert.IsTrue(repositorioHotel.exists(hotelSaved));
 
         }
 
         [TestMethod]
         public void Test_Repo_Hotel_not_exists()
         {
-            Hotel hotel = buildHotel();
-         
+
+            Hotel hotel = HotelBuilder.buildHotel();
+
             hotel.IdHotel = 99999999;
             Assert.IsFalse(repositorioHotel.exists(hotel));
 
@@ -175,7 +168,7 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
         {
-            Hotel hotel = buildHotel();
+            Hotel hotel = HotelBuilder.buildHotel();
             int idsavedHotel= repositorioHotel.create(hotel);
             hotel = repositorioHotel.getById(idsavedHotel);
 
