@@ -18,21 +18,19 @@ namespace FrbaHotel.Repositorios {
 
 
 
-        public void bajaTemporal(BajaTemporal request)
-        {
+        public int crearBajaTemporal(BajaTemporal request){
             Hotel hotel = getById(request.IdHotel);
             List<Reserva> reservas = hotel.getReservas();
-            foreach(var reserva in reservas)
-            {
+            foreach(var reserva in reservas){
                 bool overlap = reserva.FechaDesde < request.FechaHasta && request.FechaDesde < reserva.FechaHasta;
-                if (overlap)
-                {
+                if (overlap){
                     throw new RequestInvalidoException("No es posible dar de baja temporal el hotel. Existen reservas para la fecha la cual se quiere dar de baja el hotel");
                 }
-            }
-
-
+                           }
+            CierreTemporal cierreTemporal = new CierreTemporal(0, request.FechaDesde, request.FechaHasta, request.Descripcion, request.IdHotel);
+            return repositorioCierreTemporal.create(cierreTemporal);
         }
+
         public List<Hotel> searchHotel(SearchHotelRequest request) {
 
             List<Hotel> hoteles = new List<Hotel>();
@@ -70,8 +68,10 @@ namespace FrbaHotel.Repositorios {
 
                 List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
 
+                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
+
                 Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, null, regimenes, null, null);
+                                fechaInicio, null, regimenes, null, cierresTemporales);
                 hoteles.Add(hotel);
             }
 
@@ -264,14 +264,14 @@ namespace FrbaHotel.Repositorios {
 
                 List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
 
-                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
 
                 //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
 
                 //List<Reserva> reservas = null;  //TO DO FETCH  RESERVAS USANDO SU RESPECTIVO REPOSITORIO PASANDO EL ID DE HOTEL
 
                 hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, null, regimenes, null, null);
+                                fechaInicio, null, regimenes, null, cierresTemporales);
             }
 
             //Cierro Primera Consulta

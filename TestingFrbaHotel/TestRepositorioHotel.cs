@@ -11,25 +11,26 @@ namespace TestingFrbaHotel
     [TestClass]
     public class TestRepositorioHotel
     {
+
+
+        RepositorioHotel repositorioHotel = new RepositorioHotel();
+
         String hotelNombre = "HotelTest";
         String dirCiudad = "BUE";
         String dirPais = "AR";
         int categoriaEstrellas = 5;
+        String hotelMail = "test@gmail.com";
+        String hotelTelefono = "123123";
+        DateTime hotelFechaInicioDeActividad = DateTime.Now;
+        decimal categoriaRecargaEstrellas = 10;
+        String dirCalle = "Medrano";
+        int dirCalleNumero = 979;
 
 
         [TestMethod]
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
-            RepositorioHotel repositorioHotel = new RepositorioHotel();
-            String hotelMail = "test@gmail.com";
-            String hotelTelefono = "123123";
-            DateTime hotelFechaInicioDeActividad = DateTime.Now;
-            decimal categoriaRecargaEstrellas = 10;
-            String dirCalle = "Medrano";
-            int dirCalleNumero = 979;
-            Categoria categoria1 = new Categoria(0, categoriaEstrellas, categoriaRecargaEstrellas);
-            Direccion direccion1 = new Direccion(0, dirPais, dirCiudad, dirCalle, dirCalleNumero, 0, null);
-            Hotel hotel1 = new Hotel(0, categoria1, direccion1, hotelNombre, hotelMail, hotelTelefono, hotelFechaInicioDeActividad, null, null, null,null);
+            Hotel hotel1 = buildHotel();
 
             int savedHotelId= repositorioHotel.create(hotel1);
 
@@ -57,12 +58,18 @@ namespace TestingFrbaHotel
 
         }
 
+        private Hotel buildHotel()
+        {
+            Categoria categoria1 = new Categoria(0, categoriaEstrellas, categoriaRecargaEstrellas);
+            Direccion direccion1 = new Direccion(0, dirPais, dirCiudad, dirCalle, dirCalleNumero, 0, null);
+            return  new Hotel(0, categoria1, direccion1, hotelNombre, hotelMail, hotelTelefono, hotelFechaInicioDeActividad, null, null, null, null);
 
+        }
         [TestMethod]
         public void Test_Repo_Hotel_searchHotel()
         {
-            RepositorioHotel repositorioHotel = new RepositorioHotel();
-            Test_Repo_Hotel_Creacion_Hotel();
+
+            int savedHotelId = repositorioHotel.create(buildHotel());
 
             //POR NOMBRE
             SearchHotelRequest request = new SearchHotelRequest(hotelNombre, null, null, null);
@@ -107,10 +114,11 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Hotel_getAll()
         {
-            RepositorioHotel repositorioHotel = new RepositorioHotel();
-            Test_Repo_Hotel_Creacion_Hotel();
-            Test_Repo_Hotel_Creacion_Hotel();
-            Test_Repo_Hotel_Creacion_Hotel();
+            Hotel hotel = buildHotel();
+
+            repositorioHotel.create(hotel);
+            repositorioHotel.create(hotel);
+            repositorioHotel.create(hotel);
             List<Hotel> hoteles = repositorioHotel.getAll();
             Assert.IsTrue(hoteles.Count > 2);
         }
@@ -121,10 +129,39 @@ namespace TestingFrbaHotel
             throw new NotImplementedException();
         }
 
+
         [TestMethod]
-        public void Test_Repo_Hotel_crear_bajaTemporalOk()
+        public void Test_Repo_Hotel_crear_bajaTemporalConReservasEnHotelOk()
         {
             throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
+        {
+            Hotel hotel = buildHotel();
+            int idsavedHotel= repositorioHotel.create(hotel);
+            hotel = repositorioHotel.getById(idsavedHotel);
+
+
+            Assert.IsTrue(hotel.getCierresTemporales().Count == 0);
+
+            String descripcion = "CIERRE TEMPORAL DE TEST1";
+
+            DateTime fechaInicio = DateTime.Now.AddDays(-3);
+            DateTime fechaFin = DateTime.Now;
+            int idHotel = hotel.getIdHotel();
+            BajaTemporal request = new BajaTemporal(idHotel, fechaInicio, fechaFin, descripcion);
+            repositorioHotel.crearBajaTemporal(request);
+            repositorioHotel.crearBajaTemporal(request);
+            Hotel hotelBuscadoConCierresTemporales = repositorioHotel.getById(idHotel);
+
+            List<CierreTemporal> cierresTemporales = hotelBuscadoConCierresTemporales.getCierresTemporales();
+            Assert.IsTrue(cierresTemporales.Count > 0);
+            foreach (var cierre in cierresTemporales)
+            {
+                Assert.Equals(cierre.Descripcion, descripcion);
+                Assert.Equals(cierre.IdHotel, idHotel);
+            }
         }
 
 

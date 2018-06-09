@@ -9,9 +9,78 @@ namespace FrbaHotel.Repositorios
 {
     class RepositorioCierreTemporal : Repositorio<CierreTemporal>
     {
-        public override int create(CierreTemporal t)
+        public override int create(CierreTemporal cierreTemporal)
         {
-            throw new NotImplementedException();
+            int idEstadoHotel = 0;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@cierreFechaInicio", cierreTemporal.FechaInicio);
+            sqlCommand.Parameters.AddWithValue("@cierreFechaFin", cierreTemporal.FechaFin);
+            sqlCommand.Parameters.AddWithValue("@cierreDescripcion", cierreTemporal.Descripcion);
+            sqlCommand.Parameters.AddWithValue("@cierreidHotel", cierreTemporal.IdHotel);
+            sqlCommand.CommandText =
+                "INSERT INTO LOS_BORBOTONES.CierreTemporal (FechaInicio,FechaFin,Descripcion,idHotel) OUTPUT INSERTED.idEstadoHotel VALUES(@cierreFechaInicio,@cierreFechaFin,@cierreDescripcion,@cierreidHotel);";
+
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                idEstadoHotel = reader.GetInt32(reader.GetOrdinal("idEstadoHotel"));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return idEstadoHotel;
+
+        }
+
+
+        public List<CierreTemporal> getByIdHotel(int idHotel)
+        {
+            List<CierreTemporal> cierreTemporales = new List<CierreTemporal>();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@cierreidHotel", idHotel);
+            sqlCommand.CommandText =
+                "SELECT CIERRE.idEstadoHotel,CIERRE.FechaInicio,CIERRE.FechaFin,CIERRE.Descripcion,CIERRE.idHotel FROM LOS_BORBOTONES.CierreTemporal " +
+                " WHERE CIERRE.idHotel = @cierreidHotel;";
+
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idEstadoHotel = reader.GetInt32(reader.GetOrdinal("CIERRE.idEstadoHotel"));
+                DateTime fechaInicio= reader.GetDateTime(reader.GetOrdinal("CIERRE.FechaInicio"));
+                DateTime fechaFin = reader.GetDateTime(reader.GetOrdinal("CIERRE.FechaFin"));
+                String descripcion= reader.SafeGetString(reader.GetOrdinal("CIERRE.Descripcion"));
+                int cierreidHotel = reader.GetInt32(reader.GetOrdinal("CIERRE.idHotel"));
+
+                CierreTemporal cierreTemporal = new CierreTemporal(idEstadoHotel,fechaInicio,fechaFin,descripcion,cierreidHotel);
+                cierreTemporales.Add(cierreTemporal);
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return cierreTemporales;
+
         }
 
         public override void delete(CierreTemporal t)
@@ -52,7 +121,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHotel", id);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idCierreTemporal,FechaInicio,FechaFin,Descripcion FROM LOS_BORBOTONES.CierreTemporal AS CIERRE WHERE CIERRE.idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT idEstadoHotel,FechaInicio,FechaFin,Descripcion,idHotel FROM LOS_BORBOTONES.CierreTemporal WHERE idHotel = @idHotel";
 
             sqlConnection.Open();
 
@@ -60,12 +129,13 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                int idCierreTemporal = reader.GetInt32(reader.GetOrdinal("idCierreTemporal"));
-                DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicio"));
-                DateTime fechaFin = reader.GetDateTime(reader.GetOrdinal("FechaFin"));
+                int idCierreTemporal = reader.GetInt32(reader.GetOrdinal("idEstadoHotel"));
+                DateTime fechaInicio = reader.SafeGetDateTime(reader.GetOrdinal("FechaInicio"));
+                DateTime fechaFin = reader.SafeGetDateTime(reader.GetOrdinal("FechaFin"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
+                int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
 
-                cierresTemporales.Add(new CierreTemporal(idCierreTemporal, fechaInicio, fechaFin, descripcion));
+                cierresTemporales.Add(new CierreTemporal(idCierreTemporal, fechaInicio, fechaFin, descripcion,idHotel));
             }
             //Cierro Primera Consulta
             sqlConnection.Close();
