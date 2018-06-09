@@ -135,6 +135,24 @@ namespace TestingFrbaHotel
         {
             throw new NotImplementedException();
         }
+
+        [TestMethod]
+        public void Test_Repo_Hotel_UpdateCompleto_OKSinReservas()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void Test_Repo_Hotel_UpdateCompleto_OKConReservas()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void Test_Repo_Hotel_UpdateCompleto_Error_AlQuitarRegimenConReservas()
+        {
+            throw new NotImplementedException();
+        }
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
         {
