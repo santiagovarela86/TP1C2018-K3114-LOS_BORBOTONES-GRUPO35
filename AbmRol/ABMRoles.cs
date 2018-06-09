@@ -21,15 +21,7 @@ namespace FrbaHotel.AbmRol
 
         private void ListadoRoles_Load(object sender, EventArgs e)
         {
-            textBox1.Text = "";
-            comboBoxEstados.SelectedValue = "";
-            comboBoxFuncionalidades.SelectedValue = "";
             dataGridView1.DataSource = new List<Rol>();
-            this.button4.Enabled = false;
-            this.button5.Enabled = false;
-            
-            dataGridView1.DataSource = new List<Rol>();
-
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
             estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
             estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
@@ -39,15 +31,28 @@ namespace FrbaHotel.AbmRol
             comboBoxEstados.SelectedValue = "";
 
             RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
-            comboBoxFuncionalidades.ValueMember = "idFuncionalidad";
-            comboBoxFuncionalidades.DisplayMember = "descripcion";
+            comboBoxFuncionalidades.ValueMember = "IdFuncionalidad";
+            comboBoxFuncionalidades.DisplayMember = "Descripcion";
             comboBoxFuncionalidades.DataSource = repositorioFuncionalidad.getAll();
             comboBoxFuncionalidades.SelectedValue = "";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.ListadoRoles_Load(sender, e);
+            this.limpiarBusquedaYResultados();
+        }
+
+        private void limpiarBusquedaYResultados()
+        {
+            dataGridView1.DataSource = new List<Rol>();
+            textBox1.Text = "";
+            comboBoxEstados.SelectedValue = "";
+            comboBoxFuncionalidades.SelectedValue = "";
+            this.button4.Enabled = false;
+            this.button5.Enabled = false;
+
+            //this.comboBoxFuncionalidades.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
+            //this.comboBoxEstados.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
         }
 
         private void buscar_Click(object sender, EventArgs e)
@@ -111,10 +116,16 @@ namespace FrbaHotel.AbmRol
             }
         }
 
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            this.button4.Enabled = true;
-            this.button5.Enabled = true;
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.button4.Enabled = true;
+                this.button5.Enabled = true;
+            }
         }
     }
 }

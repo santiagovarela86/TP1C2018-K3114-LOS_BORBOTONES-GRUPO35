@@ -94,7 +94,6 @@
             this.comboBoxFuncionalidades.Name = "comboBoxFuncionalidades";
             this.comboBoxFuncionalidades.Size = new System.Drawing.Size(135, 21);
             this.comboBoxFuncionalidades.TabIndex = 5;
-            this.comboBoxFuncionalidades.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
             // 
             // label3
             // 
@@ -114,7 +113,6 @@
             this.comboBoxEstados.Name = "comboBoxEstados";
             this.comboBoxEstados.Size = new System.Drawing.Size(107, 21);
             this.comboBoxEstados.TabIndex = 3;
-            this.comboBoxEstados.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
             // 
             // label2
             // 
@@ -140,7 +138,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.TextChanged += new System.EventHandler(this.buscar_Click);
             // 
             // groupBox2
             // 
@@ -170,7 +167,7 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(547, 150);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // groupBox3
             // 
