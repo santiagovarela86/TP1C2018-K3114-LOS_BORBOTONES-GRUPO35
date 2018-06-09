@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="ModelBuilder\HabitacionBuilder.cs" />
     <Compile Include="ModelBuilder\HotelBuilder.cs" />
+    <Compile Include="ModelBuilder\TipoHabitacionBuilder.cs" />
     <Compile Include="TestRepositorioHabitacion.cs" />
     <Compile Include="TestRepositorioHotel.cs" />
     <Compile Include="TestRepositorioDireccion.cs" />

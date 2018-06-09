@@ -59,7 +59,7 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdHabitacion { get { return this.getIdHabitacion(); } }
+       
         public TipoHabitacion TipoHabitacion { get { return this.getTipoHabitacion(); } }
         public Boolean Activa { get { return this.getActiva(); } }
         public int Numero { get { return this.getNumero(); } }
@@ -67,5 +67,6 @@ namespace FrbaHotel.Modelo
         public String Ubicacion { get { return this.getUbicacion(); } }
 
         public int IdHotel { get => idHotel; set => idHotel = value; }
+        public int IdHabitacion { get => idHabitacion; set => idHabitacion = value; }
     }
 }

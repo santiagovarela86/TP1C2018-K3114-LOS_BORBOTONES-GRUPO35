@@ -10,11 +10,35 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.Repositorios
 {
-    class RepositorioTipoHabitacion : Repositorio<TipoHabitacion>
+    public class RepositorioTipoHabitacion : Repositorio<TipoHabitacion>
     {
-        public override int create(TipoHabitacion t)
+        public override int create(TipoHabitacion tipoHab)
         {
-            throw new NotImplementedException();
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            int idTipoHabitacion = 0;
+
+            sqlCommand.Parameters.AddWithValue("@Codigo", tipoHab.Codigo);
+            sqlCommand.Parameters.AddWithValue("@Descripcion", tipoHab.Descripcion);
+            sqlCommand.Parameters.AddWithValue("@Porcentual", tipoHab.Porcentual);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "INSERT INTO LOS_BORBOTONES.TipoHabitacion( Codigo,Descripcion,Porcentual) OUTPUT INSERTED.idTipoHabitacion VALUES (@Codigo,@Descripcion,@Porcentual);";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                idTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
+            }
+
+            sqlConnection.Close();
+            return idTipoHabitacion;
         }
 
         public override void delete(TipoHabitacion t)
@@ -54,8 +78,8 @@ namespace FrbaHotel.Repositorios
             if (reader.Read())
             {
                 int idTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
-                int codigo = reader.GetInt32(reader.GetOrdinal("Codigo"));
-                float porcentual = reader.GetFloat(reader.GetOrdinal("Porcentual"));
+                String codigo = reader.SafeGetString(reader.GetOrdinal("Codigo"));
+                decimal porcentual = reader.GetDecimal(reader.GetOrdinal("Porcentual"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
 
                 tipoHabitacion= new TipoHabitacion(idTipoHabitacion,codigo,porcentual,descripcion);
