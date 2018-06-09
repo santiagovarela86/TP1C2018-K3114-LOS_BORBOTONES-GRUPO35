@@ -113,7 +113,7 @@ namespace FrbaHotel.Repositorios
             return clientes;
         }
 
-        override public void create(Cliente cliente)
+        override public int create(Cliente cliente)
         {
             if (this.exists(cliente))
             {
@@ -123,6 +123,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new NotImplementedException();
         }
 
         override public void update(Cliente cliente)

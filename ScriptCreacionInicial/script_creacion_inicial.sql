@@ -407,8 +407,8 @@ GO
 CREATE TABLE LOS_BORBOTONES.CierreTemporal (
 
 	idEstadoHotel	INT				IDENTITY(1,1)	NOT NULL,
-	FechaInicio		VARCHAR(45)		NOT NULL,
-	FechaFin		VARCHAR(45)		NOT NULL,
+	FechaInicio		DATETIME		NOT NULL,
+	FechaFin		DATETIME		NOT NULL,
 	Descripcion		VARCHAR(45)		NOT NULL,
 	idHotel			INT				NOT NULL,	
 )

@@ -12,7 +12,7 @@ namespace FrbaHotel.Repositorios
 {
     class RepositorioTipoHabitacion : Repositorio<TipoHabitacion>
     {
-        public override void create(TipoHabitacion t)
+        public override int create(TipoHabitacion t)
         {
             throw new NotImplementedException();
         }

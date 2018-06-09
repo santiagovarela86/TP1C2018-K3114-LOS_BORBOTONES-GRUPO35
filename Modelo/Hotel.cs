@@ -97,7 +97,7 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdHotel { get { return this.getIdHotel(); } }
+        public int IdHotel { get { return this.getIdHotel(); } set { this.idHotel = value; } }
         public Categoria Categoria { get { return this.getCategoria(); } }
         public Direccion Direccion { get { return this.getDireccion(); } }
         public String Nombre { get { return this.getNombre(); } }
@@ -108,5 +108,6 @@ namespace FrbaHotel.Modelo
         public List<Regimen> Regimenes { get { return this.getRegimenes(); } }
         public List<Habitacion> Habitaciones { get { return this.getHabitaciones(); } }
         public List<CierreTemporal> CierresTemporales { get { return this.getCierresTemporales(); } }
+        
     }
 }

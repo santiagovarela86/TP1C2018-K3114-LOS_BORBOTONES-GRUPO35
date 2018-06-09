@@ -5,9 +5,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FrbaHotel.Repositorios
 {
@@ -89,7 +86,7 @@ namespace FrbaHotel.Repositorios
             return estadias;
         }
 
-        override public void create(Estadia estadia)
+        override public int create(Estadia estadia)
         {
             if (this.exists(estadia))
             {
@@ -99,6 +96,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new System.NotImplementedException();
         }
 
         override public void update(Estadia estadia)

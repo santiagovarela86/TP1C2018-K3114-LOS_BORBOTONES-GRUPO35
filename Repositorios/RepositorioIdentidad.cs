@@ -70,7 +70,7 @@ namespace FrbaHotel.Repositorios
             return identidad;
         }
 
-        override public void create(Identidad identidad)
+        override public int create(Identidad identidad)
         {
             if (this.exists(identidad))
             {
@@ -80,6 +80,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new NotImplementedException();
         }
 
         override public void update(Identidad identidad)

@@ -13,8 +13,65 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioReserva : Repositorio<Reserva>
     {
+
+
+
+
+        public List<Reserva> getByIdHotel(int idHotel)
+        {
+
+            RepositorioHotel repoHotel = new RepositorioHotel();
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
+            RepositorioCliente repoCliente = new RepositorioCliente();
+            RepositorioEstadia repoEstadia = new RepositorioEstadia();
+            RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+
+            List<Reserva> reservas = new List<Reserva>();
+            
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            
+            sqlCommand.Parameters.AddWithValue("@idHotel", idHotel);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva WHERE idHotel = @idHotel";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                int codigoReserva = reader.GetInt32(reader.GetOrdinal("CodigoReserva"));
+                int diasAlojados = reader.GetInt32(reader.GetOrdinal("DiasAlojados"));
+                DateTime fechaDesde = reader.SafeGetDateTime(reader.GetOrdinal("FechaDesde"));
+                DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
+                DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
+                Hotel hotel = repoHotel.getById(reader.GetOrdinal("IdHotel"));
+                Regimen regimen = repoRegimen.getById(reader.GetOrdinal("IdRegimen"));
+                Estadia estadia = repoEstadia.getById(reader.GetOrdinal("IdEstadia"));
+                Cliente cliente = repoCliente.getById(reader.GetOrdinal("IdCliente"));
+                List<EstadoReserva> estados= repoEstadoReserva.getByIdReserva(idReserva);
+                Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+                reservas.Add(reserva);
+            }
+            sqlConnection.Close();
+
+            return reservas;
+
+        }
         override public Reserva getById(int idReserva)
         {
+
+            RepositorioHotel repoHotel = new RepositorioHotel();
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
+            RepositorioCliente repoCliente = new RepositorioCliente();
+            RepositorioEstadia repoEstadia = new RepositorioEstadia();
+            RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+
             //Elementos de la Reserva a devolver
             Reserva reserva;
 
@@ -28,14 +85,7 @@ namespace FrbaHotel.Repositorios
             DateTime fechaDesde = new DateTime();
             DateTime fechaHasta = new DateTime();
             List<EstadoReserva> estados = new List<EstadoReserva>();
-
-            //repositorios que voy a necesitar
-            RepositorioHotel repoHotel = new RepositorioHotel();
-            RepositorioRegimen repoRegimen = new RepositorioRegimen();
-            RepositorioCliente repoCliente = new RepositorioCliente();
-            RepositorioEstadia repoEstadia = new RepositorioEstadia();
-            RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
-
+            
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -106,16 +156,10 @@ namespace FrbaHotel.Repositorios
             return reservas;
         }
 
-        override public void create(Reserva reserva)
+        override public int create(Reserva reserva)
         {
-            if (this.exists(reserva))
-            {
-                //Error
-            }
-            else
-            {
-                //Creo un nuevo registro
-            }
+            throw new NotImplementedException();
+
         }
 
         override public void update(Reserva reserva)

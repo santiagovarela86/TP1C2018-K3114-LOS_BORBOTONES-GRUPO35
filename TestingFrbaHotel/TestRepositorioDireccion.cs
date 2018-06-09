@@ -2,9 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
-using System.Collections.Generic;
-using FrbaHotel.Excepciones;
-
 namespace TestingFrbaHotel
 {
     [TestClass]
@@ -13,13 +10,26 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Direccion_Creacion_Direccion()
         {
+            String ciudad = "BUE";
+            String pais= "AR";
+            String calle = "MEDRANO";
+            int numeroCalle = 123;
+            int piso =1;
+            String departamento = "A";
             RepositorioDireccion repositorioDireccion = new RepositorioDireccion();
-            Direccion unaDireccion = repositorioDireccion.getByIdIdentidad(28588);
-            Direccion otraDireccion = repositorioDireccion.getByIdIdentidad(48665);
+            Direccion direccion = new Direccion(0, pais, ciudad, calle, numeroCalle, piso, departamento);
+            int idDireccionInserted = repositorioDireccion.create(direccion);
+            Direccion direccionBuscada = repositorioDireccion.getById(idDireccionInserted);
 
-            Assert.AreEqual("Y", unaDireccion.getDepartamento());
-            Assert.AreEqual(1, otraDireccion.getPiso());
-            Assert.AreEqual("", otraDireccion.getCiudad());
+            Assert.AreEqual(ciudad, direccionBuscada.getCiudad());
+            Assert.AreEqual(pais, direccionBuscada.getPais());
+            Assert.AreEqual(calle, direccionBuscada.getCalle());
+            Assert.AreEqual(numeroCalle, direccionBuscada.getNumeroCalle());
+            Assert.AreEqual(piso, direccionBuscada.getPiso());
+            Assert.AreEqual(departamento, direccionBuscada.getDepartamento());
+            Assert.IsTrue(direccionBuscada.getIdDireccion() !=0);
+
+
         }
         /*
 

@@ -10,7 +10,7 @@ namespace FrbaHotel.Repositorios
 {
     class RepositorioCategoria : Repositorio<Categoria>
     {
-        public override void create(Categoria t)
+        public override int create(Categoria t)
         {
             throw new NotImplementedException();
         }
@@ -30,9 +30,28 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
-        public override void update(Categoria t)
+        public override void update(Categoria categoria)
         {
-            throw new NotImplementedException();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            
+            sqlCommand.Parameters.AddWithValue("@estrellas", categoria.Estrellas);
+            sqlCommand.Parameters.AddWithValue("@recargaEstrellas", categoria.RecargaEstrellas);
+            sqlCommand.Parameters.AddWithValue("@idCategoria", categoria.IdCategoria);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Categoria SET Pais= @estrellas, Ciudad= @recargaEstrellas," +
+                "WHERE idCategoria= @idCategoria";
+
+            sqlConnection.Open();
+
+            //Checkear excepcion si no existe u ocurrio algun problema con el update
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
         }
 
         public override Categoria getById(int idCategoria) {

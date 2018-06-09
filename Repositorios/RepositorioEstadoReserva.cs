@@ -13,8 +13,57 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioEstadoReserva : Repositorio<EstadoReserva>
     {
+
+
+        public List<EstadoReserva> getByIdReserva(int idReserva)
+        {
+
+
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            RepositorioReserva repoReserva = new RepositorioReserva();
+
+            List<EstadoReserva> estadoReservas= new List<EstadoReserva>();
+            
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva = @idReserva" +
+                " ORDER BY idEstadoReserva DESC;";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstadoReserva"));
+                Usuario usuario = repoUsuario.getById(reader.GetOrdinal("IdUsuario"));
+                Reserva reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
+                DateTime fecha = reader.SafeGetDateTime(reader.GetOrdinal("Fecha"));
+                String tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
+                String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
+                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
+
+            }
+            
+            sqlConnection.Close();
+            
+            return estadoReservas;
+        }
+
         override public EstadoReserva getById(int idEstadoReserva)
         {
+            
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            RepositorioReserva repoReserva = new RepositorioReserva();
+
             //Elementos del EstadoReserva a devolver
             EstadoReserva estadoReserva;
             Usuario usuario = null;
@@ -22,9 +71,7 @@ namespace FrbaHotel.Repositorios
             String tipoEstado = "";
             DateTime fecha = new DateTime();
             String descripcion = "";
-
-            RepositorioUsuario repoUsuario = new RepositorioUsuario();
-            RepositorioReserva repoReserva = new RepositorioReserva();
+            
             
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -90,7 +137,7 @@ namespace FrbaHotel.Repositorios
             return estadosReservas;
         }
 
-        override public void create(EstadoReserva estadoReserva)
+        override public int create(EstadoReserva estadoReserva)
         {
             if (this.exists(estadoReserva))
             {
@@ -100,6 +147,8 @@ namespace FrbaHotel.Repositorios
             {
                 //Creo un nuevo registro
             }
+
+            throw new System.NotImplementedException();
         }
 
         override public void update(EstadoReserva estadoReserva)

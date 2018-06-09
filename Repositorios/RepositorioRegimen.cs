@@ -13,7 +13,7 @@ namespace FrbaHotel.Repositorios
     class RepositorioRegimen : Repositorio<Regimen>
     {
         //NO SE VA A HACER ABM DEL REGIMEN POR LO QUE SOLO HABRIA QUE HACER METODOS DE LECTURA
-        public override void create(Regimen t)
+        public override int create(Regimen t)
         {
             throw new NotImplementedException();
         }

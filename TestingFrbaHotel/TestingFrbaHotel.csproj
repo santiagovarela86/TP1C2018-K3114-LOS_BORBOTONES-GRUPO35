@@ -50,6 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ModelBuilder\HabitacionBuilder.cs" />
+    <Compile Include="ModelBuilder\HotelBuilder.cs" />
+    <Compile Include="TestRepositorioHabitacion.cs" />
     <Compile Include="TestRepositorioHotel.cs" />
     <Compile Include="TestRepositorioDireccion.cs" />
     <Compile Include="TestRepositorioIdentidad.cs" />
@@ -69,6 +72,7 @@
       <Link>App.config</Link>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

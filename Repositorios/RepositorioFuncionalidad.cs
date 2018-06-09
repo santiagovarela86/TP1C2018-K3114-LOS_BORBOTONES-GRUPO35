@@ -80,7 +80,7 @@ namespace FrbaHotel.Repositorios
             return funcionalidades;
         }
 
-        override public void create(Funcionalidad funcionalidad)
+        override public int create(Funcionalidad funcionalidad)
         {
             if (this.exists(funcionalidad))
             {
@@ -88,6 +88,9 @@ namespace FrbaHotel.Repositorios
             } else {
                 //Creo un nuevo registro
             }
+
+
+            throw new NotImplementedException();
         }
 
         override public void update(Funcionalidad funcionalidad)

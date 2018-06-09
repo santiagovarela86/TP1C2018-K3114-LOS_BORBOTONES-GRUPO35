@@ -2,28 +2,41 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
+using System.Diagnostics;
 using System.Collections.Generic;
-using FrbaHotel.Excepciones;
+using FrbaHotel.AbmHotel.request;
+using TestingFrbaHotel.ModelBuilder;
 
 namespace TestingFrbaHotel
 {
     [TestClass]
     public class TestRepositorioHotel
     {
+        RepositorioHotel repositorioHotel = new RepositorioHotel();
+
+
         [TestMethod]
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
-            RepositorioHotel repositorioHotel = new RepositorioHotel();
-            Hotel hotel1 = repositorioHotel.getById(7);
+            Hotel hotel1 = HotelBuilder.buildHotel();
 
-            Assert.AreEqual("Balcarce2520", hotel1.getNombre());
-            Assert.AreEqual(2018, hotel1.getFechaInicioActividades().Year);
+            int savedHotelId= repositorioHotel.create(hotel1);
 
-            Assert.AreEqual(1, hotel1.getCategoria().getEstrellas());
-            Assert.IsTrue(hotel1.getDireccion().getCiudad().Contains("Bs. As. Oeste"));
+            Hotel hotelSearched= repositorioHotel.getById(savedHotelId);
+            Assert.AreEqual(hotel1.Nombre, hotelSearched.getNombre());
 
-            Assert.AreEqual(4, hotel1.getRegimenes().Count);
-            Assert.IsTrue(hotel1.getRegimenes().Exists(r => r.getDescripcion().Equals("All inclusive")));
+            Assert.AreEqual(savedHotelId, hotelSearched.getIdHotel());
+            Assert.AreEqual(hotel1.Mail, hotelSearched.getMail());
+            Assert.AreEqual(hotel1.Telefono, hotelSearched.getTelefono());
+            Debug.Assert(Math.Abs((hotel1.FechaInicioActividades - hotelSearched.getFechaInicioActividades()).TotalSeconds) < 1);
+            Assert.AreEqual(hotel1.Categoria.Estrellas, hotelSearched.getCategoria().getEstrellas());
+            Assert.AreEqual(hotel1.Categoria.RecargaEstrellas, hotelSearched.getCategoria().getRecargaEstrellas());
+            Assert.AreEqual(hotel1.Direccion.Pais, hotelSearched.getDireccion().getPais());
+            Assert.AreEqual(hotel1.Direccion.Ciudad, hotelSearched.getDireccion().getCiudad());
+            Assert.AreEqual(hotel1.Direccion.Calle, hotelSearched.getDireccion().getCalle());
+            Assert.AreEqual(hotel1.Direccion.NumeroCalle, hotelSearched.getDireccion().getNumeroCalle());
+            Assert.AreEqual(0, hotelSearched.getDireccion().getPiso());
+
 
             //VALIDAR LISTA DE RESERVAS
 
@@ -32,66 +45,153 @@ namespace TestingFrbaHotel
             //VALIDAR LISTA DE HABITACIONES
 
         }
-        /*
 
+       
         [TestMethod]
-        [ExpectedException(typeof(NoExisteIDException), "No existe usuario con el ID asociado")]
-        public void Test_Repo_Hotel_getById()
+        public void Test_Repo_Hotel_searchHotel()
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            Usuario usuario = repositorioUsuario.getById(50);
+            Hotel hotelSaved = HotelBuilder.buildHotel();
+            int savedHotelId = repositorioHotel.create(hotelSaved);
+
+            //POR NOMBRE
+            String hotNombre = hotelSaved.Nombre;
+            SearchHotelRequest request = new SearchHotelRequest(hotNombre, null, null, null);
+            List<Hotel> hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach(var hotel in hoteles){ Assert.IsTrue(hotel.Nombre.Equals(hotNombre));}
+
+            //POR ESTRELLAS
+            int categoriaEstrellas = hotelSaved.Categoria.Estrellas;
+            request = new SearchHotelRequest(null, categoriaEstrellas, null, null);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas)); }
+
+            //POR CIUDAD
+            String dirCiudad = hotelSaved.Direccion.Ciudad;
+
+            request = new SearchHotelRequest(null, null, dirCiudad, null);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getDireccion().Ciudad.Equals(dirCiudad)); }
+
+
+            //POR PAIS
+            String dirPais = hotelSaved.Direccion.Pais;
+
+            request = new SearchHotelRequest(null, null, null, dirPais);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais)); }
+
+
+            //POR NOMBRE, CIUDAD, PAIS , ESTRELLAS
+            request = new SearchHotelRequest(hotNombre, categoriaEstrellas, dirCiudad, dirPais);
+            hoteles = repositorioHotel.searchHotel(request);
+            Assert.IsTrue(hoteles.Count > 0);
+            foreach (var hotel in hoteles) {
+                Assert.IsTrue(hotel.Nombre.Equals(hotNombre));
+                Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas));
+                Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais));
+                Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais));
+            }
+
+
         }
 
         [TestMethod]
-        public void Test_Repo_Hotel_getAll() 
+        public void Test_Repo_Hotel_getAll()
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            List<Usuario> usuarios = repositorioUsuario.getAll();
-            Assert.AreEqual(2, usuarios.Count);
+
+            Hotel hotel = HotelBuilder.buildHotel();
+
+            repositorioHotel.create(hotel);
+            repositorioHotel.create(hotel);
+            repositorioHotel.create(hotel);
+            List<Hotel> hoteles = repositorioHotel.getAll();
+            Assert.IsTrue(hoteles.Count > 2);
+        }
+
+   
+
+        [TestMethod]
+        public void Test_Repo_Hotel_exists_OK()
+        {
+
+            Hotel hotelSaved = HotelBuilder.buildHotel();
+            int savedidHotel= repositorioHotel.create(hotelSaved);
+            hotelSaved.IdHotel = savedidHotel;
+
+            Assert.IsTrue(repositorioHotel.exists(hotelSaved));
+
         }
 
         [TestMethod]
-        public void Test_Repo_Hotel_exists()
+        public void Test_Repo_Hotel_not_exists()
         {
-            //HAY QUE PROGRAMAR EL EXISTS...
 
-            //RepositorioRol repositorioRol = new RepositorioRol();
-            //Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
+            Hotel hotel = HotelBuilder.buildHotel();
 
-            //Assert.IsFalse(repositorioRol.exists(new Rol(50, "Dummy", false, null)));
+            hotel.IdHotel = 99999999;
+            Assert.IsFalse(repositorioHotel.exists(hotel));
 
-            //Assert.IsTrue(repositorioRol.exists(rolAdministrador));
-
-            //Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NoExisteNombreException), "No existe usuario con el Nombre asociado")]
-        public void Test_Repo_Hotel_getByUsername()
+        public void Test_Repo_Hotel_crear_bajaTemporalError()
         {
-            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-            Usuario admin = repositorioUsuario.getByUsername("Lanata");
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void Test_Repo_Hotel_crear_bajaTemporalConReservasEnHotelOk()
+        {
+            throw new NotImplementedException();
         }
 
         [TestMethod]
-        public void Test_Repo_Hotel_getByQuery()
+        public void Test_Repo_Hotel_UpdateCompleto_OKSinReservas()
         {
-            //RepositorioRol repositorioRol = new RepositorioRol();
-
-            //SIN FILTRO
-            //Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO NOMBRE
-            //Assert.AreEqual(1, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO ESTADO
-            //Assert.AreEqual(3, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
-
-            //FILTRO NOMBRE Y ESTADO
-            //Assert.AreEqual(0, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>("", false), null).Count);
-
-            //FALTA FILTRO FUNCIONALIDAD
+            throw new NotImplementedException();
         }
-        */
+
+        [TestMethod]
+        public void Test_Repo_Hotel_UpdateCompleto_OKConReservas()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void Test_Repo_Hotel_UpdateCompleto_Error_AlQuitarRegimenConReservas()
+        {
+            throw new NotImplementedException();
+        }
+        [TestMethod]
+        public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
+        {
+            Hotel hotel = HotelBuilder.buildHotel();
+            int idsavedHotel= repositorioHotel.create(hotel);
+            hotel = repositorioHotel.getById(idsavedHotel);
+
+
+            Assert.IsTrue(hotel.getCierresTemporales().Count == 0);
+
+            String descripcion = "CIERRE TEMPORAL DE TEST1";
+
+            DateTime fechaInicio = DateTime.Now.AddDays(-3);
+            DateTime fechaFin = DateTime.Now;
+            int idHotel = hotel.getIdHotel();
+            BajaTemporal request = new BajaTemporal(idHotel, fechaInicio, fechaFin, descripcion);
+            repositorioHotel.crearBajaTemporal(request);
+            repositorioHotel.crearBajaTemporal(request);
+            Hotel hotelBuscadoConCierresTemporales = repositorioHotel.getById(idHotel);
+
+            List<CierreTemporal> cierresTemporales = hotelBuscadoConCierresTemporales.getCierresTemporales();
+            Assert.IsTrue(cierresTemporales.Count > 0);
+            foreach (var cierre in cierresTemporales)
+            {
+                Assert.AreEqual(cierre.Descripcion, descripcion);
+                Assert.AreEqual(cierre.IdHotel, idHotel);
+            }
+        }
     }
 }
