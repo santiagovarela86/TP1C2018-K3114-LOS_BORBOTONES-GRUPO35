@@ -9,13 +9,13 @@ namespace FrbaHotel.Modelo
     public class TipoHabitacion
     {
         private int idTipoHabitacion = 0;
-        private int codigo = 0;
-        private float porcentual = 0;
+        private String codigo = "";
+        private decimal porcentual = 0;
         private String descripcion = "";
 
-        public TipoHabitacion(int idTipoHabitacion, int codigo, float porcentual, String descripcion)
+        public TipoHabitacion(int idTipoHabitacion, String codigo, decimal porcentual, String descripcion)
         {
-            this.idTipoHabitacion = idTipoHabitacion;
+            this.IdTipoHabitacion = idTipoHabitacion;
             this.codigo = codigo;
             this.porcentual = porcentual;
             this.descripcion = descripcion;
@@ -23,15 +23,15 @@ namespace FrbaHotel.Modelo
 
         public int getIdTipoHabitacion()
         {
-            return this.idTipoHabitacion;
+            return this.IdTipoHabitacion;
         }
 
-        public int getCodigo()
+        public String getCodigo()
         {
             return this.codigo;
         }
 
-        public float getPorcentual()
+        public decimal getPorcentual()
         {
             return this.porcentual;
         }
@@ -42,10 +42,11 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdTipoHabitacion { get { return this.getIdTipoHabitacion(); } }
-        public int Codigo { get { return this.getCodigo(); } }
-        public float Porcentual { get { return this.getPorcentual(); } }
+
+        public String Codigo { get { return this.getCodigo(); } }
+        public decimal Porcentual { get { return this.getPorcentual(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
 
+        public int IdTipoHabitacion { get => idTipoHabitacion; set => idTipoHabitacion = value; }
     }
 }

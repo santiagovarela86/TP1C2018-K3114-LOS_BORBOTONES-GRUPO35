@@ -432,7 +432,7 @@ CREATE TABLE LOS_BORBOTONES.TipoHabitacion (
 	idTipoHabitacion	INT				IDENTITY(1,1)	NOT NULL,
 	Codigo				VARCHAR(45)		NOT NULL,
 	Descripcion			VARCHAR(45)		NOT NULL,
-	Porcentual			VARCHAR(45)		NOT NULL,	
+	Porcentual			NUMERIC(18,2)	NOT NULL,	
 )
 GO
 
@@ -441,8 +441,8 @@ CREATE TABLE LOS_BORBOTONES.Habitacion (
 
 	idHabitacion		INT				IDENTITY(1,1)	NOT NULL,
 	Activa				BIT				DEFAULT 1,
-	Numero				NUMERIC(18,0)	NOT NULL,
-	Piso				NUMERIC(18,0)	NOT NULL,
+	Numero				INT	NOT NULL,
+	Piso				INT	NOT NULL,
 	Ubicacion			NVARCHAR(50)	NOT NULL,
 	idHotel				INT				NOT NULL,
 	idTipoHabitacion	INT				NOT NULL,	
