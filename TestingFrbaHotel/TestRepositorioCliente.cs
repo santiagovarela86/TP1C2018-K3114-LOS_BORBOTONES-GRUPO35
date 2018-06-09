@@ -13,28 +13,6 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Cliente_Creacion_Cliente()
         {
-            /*
-            RepositorioCliente repositorioCliente = new RepositorioCliente();
-            Cliente cliente1 = repositorioCliente.getById(20990);
-            KeyValuePair<String, Boolean> kvp = new KeyValuePair<string, bool>();
-            List<Cliente> cliente2 = repositorioCliente.getByQuery("EGISTO", "Torres", "", "", kvp, "").
-                //repositorioCliente.getByQuery("EGISTO", "Torres", "", "", null, "").
-
-            //TEST BASICO
-            Assert.IsTrue(cliente1.getIdentidad().getNombre().Equals("DALIA"));
-            Assert.IsTrue(cliente1.getIdentidad().getApellido().Equals("Saavedra"));
-            Assert.IsTrue(cliente1.getIdentidad().getFechaNacimiento().Year.Equals(1953));
-
-            Assert.IsTrue(cliente1.getIdentidad().getNombre().Equals("DALIA"));
-            Assert.IsTrue(cliente1.getIdentidad().getNombre().Equals("DALIA"));
-            Assert.IsTrue(cliente1.getIdentidad().getNombre().Equals("DALIA"));
-            */
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(NoExisteIDException), "No existe Cliente con el ID asociado")]
-        public void Test_Repo_Cliente_getById()
-        {
             RepositorioCliente repositorioCliente = new RepositorioCliente();
             Cliente dalia = repositorioCliente.getById(20990);
 
@@ -43,6 +21,16 @@ namespace TestingFrbaHotel
             Assert.IsTrue(dalia.getIdentidad().getApellido().Equals("Saavedra"));
             Assert.IsTrue(dalia.getIdentidad().getFechaNacimiento().Year.Equals(1953));
         }
+
+        /*
+        [TestMethod]
+        [ExpectedException(typeof(NoExisteIDException), "No existe Cliente con el ID asociado")]
+        public void Test_Repo_Cliente_getByIdFalla()
+        {
+
+        }
+        */
+        
         /*
         [TestMethod]
         public void Test_Repo_Cliente_getAll()

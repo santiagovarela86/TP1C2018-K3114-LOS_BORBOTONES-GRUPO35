@@ -26,7 +26,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteIDException), "No existe identidad con el ID asociado")]
-        public void Test_Repo_Identidad_getById()
+        public void Test_Repo_Identidad_getByIdFalla()
         {
             RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
             Identidad identidad = repositorioIdentidad.getById(999999999);
@@ -44,6 +44,7 @@ namespace TestingFrbaHotel
         }
         */
 
+        /*
         [TestMethod]
         public void Test_Repo_Identidad_exists()
         {
@@ -58,20 +59,21 @@ namespace TestingFrbaHotel
 
             //Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
         }
-
+        */
         /*
-    [TestMethod]
-    [ExpectedException(typeof(NoExisteNombreException), "No existe identidad con el Nombre asociado")]
-    public void Test_Repo_Identidad_getByUsername()
-    {
-        //NO ESTA PROGRAMADO
+        [TestMethod]
+        [ExpectedException(typeof(NoExisteNombreException), "No existe identidad con el Nombre asociado")]
+        public void Test_Repo_Identidad_getByUsername()
+        {
+            //NO ESTA PROGRAMADO
 
-        RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
-        Identidad identidadAdmin = repositorioIdentidad.("Lanata");
+            RepositorioIdentidad repositorioIdentidad = new RepositorioIdentidad();
+            Identidad identidadAdmin = repositorioIdentidad.("Lanata");
 
-    }
+        }
         */
 
+        /*
         [TestMethod]
         public void Test_Repo_Identidad_getByQuery()
         {
@@ -91,5 +93,6 @@ namespace TestingFrbaHotel
 
             //FALTA FILTRO FUNCIONALIDAD
         }
+        */
     }
 }
