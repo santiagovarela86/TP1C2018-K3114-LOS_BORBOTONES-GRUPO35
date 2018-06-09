@@ -20,32 +20,21 @@ namespace FrbaHotel
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //VERIFICO QUE LA BASE ESTE ARRIBA
-            if (IsServerConnected(ConfigurationManager.AppSettings["BaseLocal"]))
+            try
             {
-                Application.Run(new PantallaPrincipal());
-            }
-            else
-            {
-                MessageBox.Show("Inicie la instancia SQLSERVER2012 para comenzar", "Error de conexión con la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }            
-        }
-
-        //METODO QUE VERIFICA QUE ESTE LEVANTADA LA BASE DE DATOS AL COMENZAR
-        private static bool IsServerConnected(string connectionString)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["BaseLocal"]))
                 {
                     connection.Open();
-                    return true;
+                    connection.Close();
                 }
-                catch (SqlException)
-                {
-                    return false;
-                }
+
+                Application.Run(new PantallaPrincipal());
             }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Error de conexión con la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }
