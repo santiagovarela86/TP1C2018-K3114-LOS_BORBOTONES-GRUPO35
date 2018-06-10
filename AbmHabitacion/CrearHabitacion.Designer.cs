@@ -1,0 +1,183 @@
+﻿namespace FrbaHotel.AbmHabitacion
+{
+    partial class CrearHabitacion
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.labelNumero = new System.Windows.Forms.Label();
+            this.textNumero = new System.Windows.Forms.TextBox();
+            this.labelPiso = new System.Windows.Forms.Label();
+            this.textPiso = new System.Windows.Forms.TextBox();
+            this.labelDescripcion = new System.Windows.Forms.Label();
+            this.textDescripcion = new System.Windows.Forms.TextBox();
+            this.labelHotel = new System.Windows.Forms.Label();
+            this.comboBoxHotel = new System.Windows.Forms.ComboBox();
+            this.labelUbicacion = new System.Windows.Forms.Label();
+            this.comboBoxUbicacion = new System.Windows.Forms.ComboBox();
+            this.labelTipoHabitacion = new System.Windows.Forms.Label();
+            this.comboBoxTipoHabitacion = new System.Windows.Forms.ComboBox();
+            this.SuspendLayout();
+            // 
+            // labelNumero
+            // 
+            this.labelNumero.AutoSize = true;
+            this.labelNumero.Location = new System.Drawing.Point(10, 37);
+            this.labelNumero.Name = "labelNumero";
+            this.labelNumero.Size = new System.Drawing.Size(44, 13);
+            this.labelNumero.TabIndex = 3;
+            this.labelNumero.Text = "Numero";
+            // 
+            // textNumero
+            // 
+            this.textNumero.Location = new System.Drawing.Point(61, 34);
+            this.textNumero.Name = "textNumero";
+            this.textNumero.Size = new System.Drawing.Size(100, 20);
+            this.textNumero.TabIndex = 2;
+            // 
+            // labelPiso
+            // 
+            this.labelPiso.AutoSize = true;
+            this.labelPiso.Location = new System.Drawing.Point(212, 37);
+            this.labelPiso.Name = "labelPiso";
+            this.labelPiso.Size = new System.Drawing.Size(27, 13);
+            this.labelPiso.TabIndex = 5;
+            this.labelPiso.Text = "Piso";
+            // 
+            // textPiso
+            // 
+            this.textPiso.Location = new System.Drawing.Point(292, 34);
+            this.textPiso.Name = "textPiso";
+            this.textPiso.Size = new System.Drawing.Size(100, 20);
+            this.textPiso.TabIndex = 4;
+            // 
+            // labelDescripcion
+            // 
+            this.labelDescripcion.AutoSize = true;
+            this.labelDescripcion.Location = new System.Drawing.Point(212, 152);
+            this.labelDescripcion.Name = "labelDescripcion";
+            this.labelDescripcion.Size = new System.Drawing.Size(63, 13);
+            this.labelDescripcion.TabIndex = 7;
+            this.labelDescripcion.Text = "Descripcion";
+          
+            // 
+            // textDescripcion
+            // 
+            this.textDescripcion.Location = new System.Drawing.Point(292, 149);
+            this.textDescripcion.Name = "textDescripcion";
+            this.textDescripcion.Size = new System.Drawing.Size(100, 20);
+            this.textDescripcion.TabIndex = 6;
+            // 
+            // labelHotel
+            // 
+            this.labelHotel.AutoSize = true;
+            this.labelHotel.Location = new System.Drawing.Point(10, 96);
+            this.labelHotel.Name = "labelHotel";
+            this.labelHotel.Size = new System.Drawing.Size(35, 13);
+            this.labelHotel.TabIndex = 13;
+            this.labelHotel.Text = "Hotel:";
+            // 
+            // comboBoxHotel
+            // 
+            this.comboBoxHotel.Location = new System.Drawing.Point(61, 93);
+            this.comboBoxHotel.Name = "comboBoxHotel";
+            this.comboBoxHotel.Size = new System.Drawing.Size(100, 21);
+            this.comboBoxHotel.TabIndex = 12;
+            // 
+            // labelUbicacion
+            // 
+            this.labelUbicacion.AutoSize = true;
+            this.labelUbicacion.Location = new System.Drawing.Point(212, 96);
+            this.labelUbicacion.Name = "labelUbicacion";
+            this.labelUbicacion.Size = new System.Drawing.Size(58, 13);
+            this.labelUbicacion.TabIndex = 15;
+            this.labelUbicacion.Text = "Ubicacion:";
+            // 
+            // comboBoxUbicacion
+            // 
+            this.comboBoxUbicacion.Location = new System.Drawing.Point(292, 93);
+            this.comboBoxUbicacion.Name = "comboBoxUbicacion";
+            this.comboBoxUbicacion.Size = new System.Drawing.Size(100, 21);
+            this.comboBoxUbicacion.TabIndex = 14;
+            // 
+            // labelTipoHabitacion
+            // 
+            this.labelTipoHabitacion.AutoSize = true;
+            this.labelTipoHabitacion.Location = new System.Drawing.Point(10, 152);
+            this.labelTipoHabitacion.Name = "labelTipoHabitacion";
+            this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
+            this.labelTipoHabitacion.TabIndex = 17;
+            this.labelTipoHabitacion.Text = "Tipo : ";
+            // 
+            // comboBoxTipoHabitacion
+            // 
+            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(61, 146);
+            this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
+            this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
+            this.comboBoxTipoHabitacion.TabIndex = 16;
+            // 
+            // CrearHabitacion
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(427, 309);
+            this.Controls.Add(this.labelTipoHabitacion);
+            this.Controls.Add(this.comboBoxTipoHabitacion);
+            this.Controls.Add(this.labelUbicacion);
+            this.Controls.Add(this.comboBoxUbicacion);
+            this.Controls.Add(this.labelHotel);
+            this.Controls.Add(this.comboBoxHotel);
+            this.Controls.Add(this.labelDescripcion);
+            this.Controls.Add(this.textDescripcion);
+            this.Controls.Add(this.labelPiso);
+            this.Controls.Add(this.textPiso);
+            this.Controls.Add(this.labelNumero);
+            this.Controls.Add(this.textNumero);
+            this.Name = "CrearHabitacion";
+            this.Text = "CrearHabitacion";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label labelNumero;
+        private System.Windows.Forms.TextBox textNumero;
+        private System.Windows.Forms.Label labelPiso;
+        private System.Windows.Forms.TextBox textPiso;
+        private System.Windows.Forms.Label labelUbicacion;
+        private System.Windows.Forms.ComboBox comboBoxUbicacion;
+        private System.Windows.Forms.Label labelHotel;
+        private System.Windows.Forms.ComboBox comboBoxHotel;
+        private System.Windows.Forms.Label labelDescripcion;
+        private System.Windows.Forms.TextBox textDescripcion;
+        private System.Windows.Forms.Label labelTipoHabitacion;
+        private System.Windows.Forms.ComboBox comboBoxTipoHabitacion;
+
+
+    }
+}

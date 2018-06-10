@@ -133,12 +133,6 @@ namespace FrbaHotel.AbmHotel
             // 
             // estrellasComboBox
             // 
-            this.estrellasComboBox.Items.AddRange(new object[] {
-            1,
-            2,
-            3,
-            4,
-            5});
             this.estrellasComboBox.Location = new System.Drawing.Point(421, 38);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
