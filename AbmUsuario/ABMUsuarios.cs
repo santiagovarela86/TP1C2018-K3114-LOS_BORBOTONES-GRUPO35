@@ -56,11 +56,6 @@ namespace FrbaHotel.AbmUsuario
             dataGridView1.DataSource = new List<Usuario>();
             this.button4.Enabled = false;
             this.button5.Enabled = false;
-
-            //this.comboBoxHoteles.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
-            //this.comboBoxRoles.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
-            //this.textBox1.TextChanged += new System.EventHandler(this.buscar_Click);
-            //this.comboBoxEstados.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
         }
 
         private void buscar_Click(object sender, EventArgs e)
@@ -110,6 +105,17 @@ namespace FrbaHotel.AbmUsuario
                 this.button4.Enabled = true;
                 this.button5.Enabled = true;
             }
+        }
+
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
