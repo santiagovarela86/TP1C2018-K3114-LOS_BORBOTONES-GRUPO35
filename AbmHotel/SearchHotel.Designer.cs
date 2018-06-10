@@ -20,9 +20,8 @@ namespace FrbaHotel.AbmHotel
         private TextBox paisText;
 
         private GroupBox groupBox1;
-        private Button buscarHotel;
 
-        private DataGrid registroHoteles;
+        private DataGridView registroHoteles;
         private Button buttonBbuscarHoteles;
 
 
@@ -62,8 +61,7 @@ namespace FrbaHotel.AbmHotel
             this.ciudadText = new System.Windows.Forms.TextBox();
             this.paisLabel = new System.Windows.Forms.Label();
             this.paisText = new System.Windows.Forms.TextBox();
-            this.buscarHotel = new System.Windows.Forms.Button();
-            this.registroHoteles = new System.Windows.Forms.DataGrid();
+            this.registroHoteles = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.registroHoteles)).BeginInit();
             this.SuspendLayout();
@@ -95,7 +93,6 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.paisText);
             this.groupBox1.Controls.Add(this.nombreLabel);
             this.groupBox1.Controls.Add(this.nombreText);
-            this.groupBox1.Controls.Add(this.buscarHotel);
             this.groupBox1.Controls.Add(this.registroHoteles);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
@@ -115,7 +112,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // buttonBbuscarHoteles
             // 
-            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(201, 484);
+            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(200, 156);
             this.buttonBbuscarHoteles.Name = "buttonBbuscarHoteles";
             this.buttonBbuscarHoteles.Size = new System.Drawing.Size(161, 23);
             this.buttonBbuscarHoteles.TabIndex = 0;
@@ -167,20 +164,22 @@ namespace FrbaHotel.AbmHotel
             this.paisText.Size = new System.Drawing.Size(117, 20);
             this.paisText.TabIndex = 6;
             // 
-            // buscarHotel
-            // 
-            this.buscarHotel.Location = new System.Drawing.Point(201, 156);
-            this.buscarHotel.Name = "buscarHotel";
-            this.buscarHotel.Size = new System.Drawing.Size(161, 23);
-            this.buscarHotel.TabIndex = 0;
-            this.buscarHotel.Text = "Buscar";
-            // 
             // registroHoteles
             // 
-            this.registroHoteles.DataMember = "";
-            this.registroHoteles.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-            this.registroHoteles.Location = new System.Drawing.Point(26, 203);
+            this.registroHoteles.AllowUserToAddRows = false;
+            this.registroHoteles.AllowUserToDeleteRows = false;
+            this.registroHoteles.AllowUserToOrderColumns = true;
+            this.registroHoteles.AllowUserToResizeRows = false;
+            this.registroHoteles.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.registroHoteles.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.registroHoteles.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.registroHoteles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.registroHoteles.Location = new System.Drawing.Point(25, 185);
+            this.registroHoteles.MultiSelect = false;
             this.registroHoteles.Name = "registroHoteles";
+            this.registroHoteles.ReadOnly = true;
+            this.registroHoteles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.registroHoteles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.registroHoteles.Size = new System.Drawing.Size(513, 257);
             this.registroHoteles.TabIndex = 0;
             // 
