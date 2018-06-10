@@ -28,10 +28,6 @@ namespace FrbaHotel.Modelo
             this.idHotel = idHotel;
         }
 
-        public int getIdHabitacion()
-        {
-            return idHabitacion;
-        }
 
         public TipoHabitacion getTipoHabitacion()
         {
