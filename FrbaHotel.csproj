@@ -180,6 +180,13 @@
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />
     <Compile Include="Modelo\ItemFactura.cs" />
+    <Compile Include="RegistrarConsumible\Consumibles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarConsumible\Consumibles.Designer.cs">
+      <DependentUpon>Consumibles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repositorios\RepositorioConsumibles.cs" />
     <Compile Include="Repositorios\RepositorioEstadia.cs" />
     <Compile Include="Repositorios\RepositorioEstadoReserva.cs" />
     <Compile Include="Repositorios\RepositorioReserva.cs" />
@@ -261,6 +268,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RegistrarConsumible\Consumibles.resx">
+      <DependentUpon>Consumibles.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
