@@ -80,7 +80,11 @@ namespace FrbaHotel.AbmCliente
 
             List<Cliente> clientes = repositorioClientes.getByQuery(nombre,apellido,tipoDoc,nroDoc,estado,mail);
 
+            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
+            dataGridView1.RowHeadersVisible = false;
+
             dataGridView1.DataSource = clientes;
+            dataGridView1.RowHeadersVisible = true;
             dataGridView1.ClearSelection();
         }
 
