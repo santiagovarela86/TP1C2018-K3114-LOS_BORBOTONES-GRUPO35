@@ -106,5 +106,18 @@ namespace FrbaHotel
                 }
             }
         }
+
+        private void ABMHotel_Click(object sender, EventArgs e)
+        {
+            using (SearchHotel formularioABMHotel = new SearchHotel())
+            {
+                var resultFormABMHotel = formularioABMHotel.ShowDialog();
+
+                if (resultFormABMHotel == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
     }
 }

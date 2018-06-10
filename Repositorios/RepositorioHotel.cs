@@ -11,7 +11,6 @@ namespace FrbaHotel.Repositorios {
     public class RepositorioHotel : Repositorio<Hotel>
     {
 
-
         public int crearBajaTemporal(CierreTemporal cierreTemporal){
 
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
@@ -84,8 +83,6 @@ namespace FrbaHotel.Repositorios {
             return hoteles;
 
         }
-
-
 
         private String getCondiciones(String nombreHotel, int? estrellas, String ciudad, String pais, SqlCommand sqlCommand)
         {

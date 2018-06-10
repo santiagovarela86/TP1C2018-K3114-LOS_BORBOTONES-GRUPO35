@@ -56,6 +56,7 @@ namespace FrbaHotel.AbmHotel
             this.nombreLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.estrellasLabel = new System.Windows.Forms.Label();
+            this.buttonBbuscarHoteles = new System.Windows.Forms.Button();
             this.estrellasComboBox = new System.Windows.Forms.ComboBox();
             this.ciudadLabel = new System.Windows.Forms.Label();
             this.ciudadText = new System.Windows.Forms.TextBox();
@@ -63,7 +64,6 @@ namespace FrbaHotel.AbmHotel
             this.paisText = new System.Windows.Forms.TextBox();
             this.buscarHotel = new System.Windows.Forms.Button();
             this.registroHoteles = new System.Windows.Forms.DataGrid();
-            this.buttonBbuscarHoteles = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.registroHoteles)).BeginInit();
             this.SuspendLayout();
@@ -112,6 +112,15 @@ namespace FrbaHotel.AbmHotel
             this.estrellasLabel.Size = new System.Drawing.Size(49, 13);
             this.estrellasLabel.TabIndex = 11;
             this.estrellasLabel.Text = "Estrellas:";
+            // 
+            // buttonBbuscarHoteles
+            // 
+            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(201, 484);
+            this.buttonBbuscarHoteles.Name = "buttonBbuscarHoteles";
+            this.buttonBbuscarHoteles.Size = new System.Drawing.Size(161, 23);
+            this.buttonBbuscarHoteles.TabIndex = 0;
+            this.buttonBbuscarHoteles.Text = "Buscar";
+            this.buttonBbuscarHoteles.Click += new System.EventHandler(this.button_buscarHoteles);
             // 
             // estrellasComboBox
             // 
@@ -162,9 +171,9 @@ namespace FrbaHotel.AbmHotel
             // 
             this.buscarHotel.Location = new System.Drawing.Point(201, 156);
             this.buscarHotel.Name = "buscarHotel";
-            this.buscarHotel.Text = "Buscar";
             this.buscarHotel.Size = new System.Drawing.Size(161, 23);
             this.buscarHotel.TabIndex = 0;
+            this.buscarHotel.Text = "Buscar";
             // 
             // registroHoteles
             // 
@@ -174,15 +183,6 @@ namespace FrbaHotel.AbmHotel
             this.registroHoteles.Name = "registroHoteles";
             this.registroHoteles.Size = new System.Drawing.Size(513, 257);
             this.registroHoteles.TabIndex = 0;
-            // 
-            // buscarHoteles
-            // 
-            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(201, 484);
-            this.buttonBbuscarHoteles.Name = "buscarHoteles";
-            this.buttonBbuscarHoteles.Text = "Buscar";
-            this.buttonBbuscarHoteles.Size = new System.Drawing.Size(161, 23);
-            this.buttonBbuscarHoteles.TabIndex = 0;
-            this.buttonBbuscarHoteles.Click += new System.EventHandler(this.button_buscarHoteles);
             // 
             // SearchHotel
             // 

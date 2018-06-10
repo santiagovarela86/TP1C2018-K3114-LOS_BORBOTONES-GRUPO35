@@ -88,6 +88,9 @@
             this.ABMHotel.TabIndex = 3;
             this.ABMHotel.Text = "ABM Hotel";
             this.ABMHotel.UseVisualStyleBackColor = true;
+            this.ABMHotel.Click += new System.EventHandler(this.ABMHotel_Click);
+
+            
             // 
             // ABMHabitacion
             // 

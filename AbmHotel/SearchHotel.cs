@@ -25,15 +25,22 @@ namespace FrbaHotel.AbmHotel
 
         private void button_buscarHoteles(object sender, EventArgs e)
         {
-            String nombre = nombreText.Text;
-            int estrellas = (int)estrellasComboBox.SelectedItem;
-            String pais = paisText.Text;
-            String ciudad = ciudadText.Text;
+            String nombre =validateStringFields(nombreText.Text);
+
+            int? estrellas = null;
+            if (estrellasComboBox.SelectedItem != null) { estrellas = (int)estrellasComboBox.SelectedItem; };
+            String pais = validateStringFields(paisText.Text);
+            String ciudad = validateStringFields(ciudadText.Text);
             RepositorioHotel repositorioHotel = new RepositorioHotel();
 
             List<Hotel> hoteles= repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
+            registroHoteles.DataSource = hoteles;
         }
 
+        private String validateStringFields(String field)
+        {
+            return field == "" ? null : field;
+        }
 
 
     }
