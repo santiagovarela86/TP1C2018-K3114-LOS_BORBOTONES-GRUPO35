@@ -1,10 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios
 {
@@ -152,6 +152,9 @@ namespace FrbaHotel.Repositorios
                 String departamento = reader.SafeGetString(reader.GetOrdinal("Depto"));
                 direccion = new Direccion(idDireccion, pais, ciudad, calle, numeroCalle, piso, departamento);
             }
+
+            //ESTO DEBERIA PINCHAR ACA SI NO PUEDE OBTENER LA DIRECCION
+            if (direccion.Equals(null)) throw new NoExisteIDException("No existe Direccion con el ID asociado");
 
             //Cierro Primera Consulta
             sqlConnection.Close();

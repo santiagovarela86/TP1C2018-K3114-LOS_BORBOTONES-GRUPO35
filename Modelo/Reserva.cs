@@ -13,15 +13,15 @@ namespace FrbaHotel.Modelo
         private Estadia estadia = null;
         private Regimen regimen = null;
         private Cliente cliente = null;
-        private int codigoReserva = 0;
-        private int diasAlojados = 0;
+        private decimal codigoReserva = 0;
+        private decimal diasAlojados = 0;
         private DateTime fechaCreacion = new DateTime();
         private DateTime fechaDesde = new DateTime();
         private DateTime fechaHasta = new DateTime();
         private List<EstadoReserva> estados = new List<EstadoReserva>();
 
-        public Reserva(int idReserva, Hotel hotel, Estadia estadia, Regimen regimen, Cliente cliente, int codigoReserva,
-            int diasAlojados, DateTime fechaCreacion, DateTime fechaDesde, DateTime fechaHasta, List<EstadoReserva> estados)
+        public Reserva(int idReserva, Hotel hotel, Estadia estadia, Regimen regimen, Cliente cliente, decimal codigoReserva,
+            decimal diasAlojados, DateTime fechaCreacion, DateTime fechaDesde, DateTime fechaHasta, List<EstadoReserva> estados)
         {
             this.idReserva = idReserva;
             this.hotel = hotel;
@@ -61,12 +61,12 @@ namespace FrbaHotel.Modelo
             return this.cliente;
         }
 
-        public int getCodigoReserva()
+        public decimal getCodigoReserva()
         {
             return this.codigoReserva;
         }
 
-        public int getDiasAlojados()
+        public decimal getDiasAlojados()
         {
             return this.diasAlojados;
         }
@@ -102,8 +102,8 @@ namespace FrbaHotel.Modelo
         public Estadia Estadia { get { return this.getEstadia(); } }
         public Regimen Regimen { get { return this.getRegimen(); } }
         public Cliente Cliente { get { return this.getCliente(); } }
-        public int CodigoReserva { get { return this.getCodigoReserva(); } }
-        public int DiasAlojados { get { return this.getDiasAlojados(); } }
+        public decimal CodigoReserva { get { return this.getCodigoReserva(); } }
+        public decimal DiasAlojados { get { return this.getDiasAlojados(); } }
         public DateTime FechaCreacion { get { return this.getFechaCreacion(); } }
         public DateTime FechaDesde { get { return this.getFechaDesde(); } }
         public DateTime FechaHasta { get { return this.getFechaHasta(); } }

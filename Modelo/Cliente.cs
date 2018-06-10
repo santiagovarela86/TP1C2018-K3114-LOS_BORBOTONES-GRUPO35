@@ -54,11 +54,8 @@ namespace FrbaHotel.Modelo
         public String NroDoc { get { return this.getIdentidad().getNumeroDocumento(); } }
         public String Mail { get { return this.getIdentidad().getMail(); } }
         public String Telefono { get { return this.getIdentidad().getTelefono(); } }
-
         //ACA ASUMO QUE TENGO UNA SOLA DIRECCION EN EL USUARIO
-        //public String Direccion { get { return this.getIdentidad().getDirecciones().First().getDireccionSimple(); } }
-        //FALTA TERMINAR LA OBTENCION DE LA DIRECCION EN EL MODELO. VERIFICAR SU ASIGNACION EN LA BASE (ES OBLIGATORIO CARGAR UN USUARIO CON SU IDENTIDAD Y DIRECCION)
-
+        public String Direccion { get { return this.getIdentidad().getDirecciones().First().getDireccionCompleta(); } }
         public String Nacionalidad { get { return this.getIdentidad().getNacionalidad(); } }
         public String FechaNac { get { return this.getIdentidad().getFechaNacimiento().ToString(); } }
         public Boolean Activo { get { return this.getActivo(); } }

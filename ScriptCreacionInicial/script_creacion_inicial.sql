@@ -826,6 +826,7 @@ GO
 INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'GenerarListadoEstadistico'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Recepcionista'));
 GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Genero Identidad de los Usuarios
 
@@ -839,6 +840,21 @@ GO
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
 	   VALUES('Usuario', 'Carolina', 'Mengoche', 'DNI', '17309573',  'recepcionista@frba_utn.com', '1988-09-11 00:00:00.000', 'COLOMBIANO')
+GO
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Genero Direccion de los Usuarios
+
+INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
+	VALUES ('Argentina','Capital Federal', 'Mexico', 645, 23, 'C', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '30213210' and TipoIdentidad = 'Usuario'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
+	VALUES ('Argentina','Entre Rios', 'San Benito', 2345, 2, 'D', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '18217283' and TipoIdentidad = 'Usuario'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
+	VALUES ('Argentina','Dock Sud', 'Boulevard San Martin', 576, 0, '', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '17309573' and TipoIdentidad = 'Usuario'));
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
