@@ -9,9 +9,9 @@ namespace TestingFrbaHotel
     [TestClass]
     public class TestRepositorioHabitacion
     {
-        /* ESTE TEST PINCHA
+        
         [TestMethod]
-        public void create_OK()
+        public void Test_Repo_Habitacion_create_OK()
         {
             RepositorioHabitacion  repositorioHabitacion = new RepositorioHabitacion();
             RepositorioHotel repositorioHotel = new RepositorioHotel();
@@ -19,7 +19,6 @@ namespace TestingFrbaHotel
             Hotel hotel = HotelBuilder.buildHotel();
             TipoHabitacion tipoHabitacion = TipoHabitacionBuilder.build();
             int idTipoHabitacion= repositorioTipoHabitacion.create(tipoHabitacion);
-            //tipoHabitacion.idTipoHabitacion = idTipoHabitacion;
             tipoHabitacion.setIdTipoHabitacion(idTipoHabitacion);
             int idHotel = repositorioHotel.create(hotel);
             hotel.IdHotel = idHotel;
@@ -50,7 +49,7 @@ namespace TestingFrbaHotel
 
 
         }
-        */
+        
 
     }
 }

@@ -68,6 +68,10 @@ namespace FrbaHotel.Modelo
         {
             this.idHabitacion = idHabitacion;
         }
+        public void setIdHotel(int idHotel)
+        {
+            this.idHotel = idHotel;
+        }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
        

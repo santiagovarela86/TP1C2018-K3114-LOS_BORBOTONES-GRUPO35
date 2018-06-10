@@ -48,6 +48,11 @@ namespace FrbaHotel.Modelo
             return this.idHotel;
         }
 
+        public void setIdHotel(int idHotel)
+        {
+            this.idHotel = idHotel;
+        }
+
         public Boolean esNuevo()
         {
             return idCierreTemporal.Equals(0);

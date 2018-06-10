@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
-//using FrbaHotel.AbmHotel.request;
+using FrbaHotel.AbmHotel.request;
 using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios {
@@ -13,25 +13,23 @@ namespace FrbaHotel.Repositorios {
     {
 
 
-        /*
-        public int crearBajaTemporal(BajaTemporal request){
+        public int crearBajaTemporal(CierreTemporal cierreTemporal){
 
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
             RepositorioReserva repositorioReserva = new RepositorioReserva();
-            Hotel hotel = getById(request.IdHotel);
+            Hotel hotel = getById(cierreTemporal.IdHotel);
             List<Reserva> reservas = hotel.getReservas();
             foreach(var reserva in reservas){
-                bool overlap = reserva.FechaDesde < request.FechaHasta && request.FechaDesde < reserva.FechaHasta;
+                bool overlap = reserva.FechaDesde < cierreTemporal.FechaFin && cierreTemporal.FechaInicio < reserva.FechaHasta;
                 if (overlap){
                     throw new RequestInvalidoException("No es posible dar de baja temporal el hotel. Existen reservas para la fecha la cual se quiere dar de baja el hotel");
                 }
                            }
-            CierreTemporal cierreTemporal = new CierreTemporal(0, request.FechaDesde, request.FechaHasta, request.Descripcion, request.IdHotel);
+
             return repositorioCierreTemporal.create(cierreTemporal);
         }
-        */
+       
 
-        /*
         public List<Hotel> searchHotel(SearchHotelRequest request) {
 
             RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
@@ -87,9 +85,7 @@ namespace FrbaHotel.Repositorios {
 
         }
 
-         * */
 
-        /*
 
         private String getCondiciones(SearchHotelRequest request, SqlCommand sqlCommand)
         {
@@ -117,8 +113,6 @@ namespace FrbaHotel.Repositorios {
             return " WHERE " + string.Join(" AND ", condiciones.ToArray());
 
         }
-         * 
-         * */
 
 
         public override int create(Hotel hotel)

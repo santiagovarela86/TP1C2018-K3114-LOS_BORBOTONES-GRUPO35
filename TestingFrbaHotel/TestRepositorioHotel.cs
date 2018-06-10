@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using FrbaHotel.AbmHotel;
 using TestingFrbaHotel.ModelBuilder;
+using FrbaHotel.AbmHotel.request;
 
 namespace TestingFrbaHotel
 {
@@ -46,7 +47,6 @@ namespace TestingFrbaHotel
 
         }
 
-       /*
         [TestMethod]
         public void Test_Repo_Hotel_searchHotel()
         {
@@ -98,7 +98,6 @@ namespace TestingFrbaHotel
 
 
         }
-        * */
 
         [TestMethod]
         public void Test_Repo_Hotel_getAll()
@@ -166,7 +165,7 @@ namespace TestingFrbaHotel
         {
             throw new NotImplementedException();
         }
-        /*
+        
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
         {
@@ -182,7 +181,7 @@ namespace TestingFrbaHotel
             DateTime fechaInicio = DateTime.Now.AddDays(-3);
             DateTime fechaFin = DateTime.Now;
             int idHotel = hotel.getIdHotel();
-            BajaTemporal request = new BajaTemporal(idHotel, fechaInicio, fechaFin, descripcion);
+            CierreTemporal request = new CierreTemporal(0, fechaInicio, fechaFin, descripcion,idHotel);
             repositorioHotel.crearBajaTemporal(request);
             repositorioHotel.crearBajaTemporal(request);
             Hotel hotelBuscadoConCierresTemporales = repositorioHotel.getById(idHotel);
@@ -195,6 +194,6 @@ namespace TestingFrbaHotel
                 Assert.AreEqual(cierre.IdHotel, idHotel);
             }
         }
-         * */
+        
     }
 }
