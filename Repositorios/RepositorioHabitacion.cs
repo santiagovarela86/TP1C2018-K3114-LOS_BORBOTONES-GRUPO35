@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using FrbaHotel.Repositorios;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios
 {
@@ -20,6 +21,10 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
             int idHabitacion = 0;
+
+            if(this.exists(habitacion)){
+                throw new RequestInvalidoException("Ya existe una habitacion con el mismo numero en el hotel");
+            }
 
             sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.Activa);
             sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
@@ -45,14 +50,48 @@ namespace FrbaHotel.Repositorios
             return idHabitacion;
         }
 
+
+        public void bajaLogica(Habitacion habitacion)
+        {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.Activa);
+            sqlCommand.Parameters.AddWithValue("@habidHabitacion", habitacion.IdHabitacion);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva WHERE idHabitacion=@habidHabitacion";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+            sqlConnection.Close();
+        }
         public override void delete(Habitacion t)
         {
             throw new NotImplementedException();
         }
 
-        public override bool exists(Habitacion t)
+        public override bool exists(Habitacion habitacion)
         {
-            throw new NotImplementedException();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.IdHotel);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Habitacion "+
+                " WHERE Numero=@habNumero AND idHotel=@habIdHotel;";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+            bool exists=reader.Read();
+            sqlConnection.Close();
+            return exists;
         }
 
         public override List<Habitacion> getAll()

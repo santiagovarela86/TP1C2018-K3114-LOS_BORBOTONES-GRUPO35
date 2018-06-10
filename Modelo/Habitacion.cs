@@ -73,6 +73,11 @@ namespace FrbaHotel.Modelo
             this.idHotel = idHotel;
         }
 
+        public void setActiva(bool activa)
+        {
+            this.activa = activa;
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
        
         public TipoHabitacion TipoHabitacion { get { return this.getTipoHabitacion(); } }

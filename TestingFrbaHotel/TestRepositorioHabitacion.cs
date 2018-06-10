@@ -45,11 +45,64 @@ namespace TestingFrbaHotel
             //ASSERT idHotel
             Assert.AreEqual(habitacion.IdHotel, habitacionSearched.IdHotel);
 
-            //IN_PROGRESS. Gabriel
+        }
+
+
+        [TestMethod]
+        public void Test_Repo_Habitacion_exists_OK()
+        {
+            RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            RepositorioTipoHabitacion repositorioTipoHabitacion = new RepositorioTipoHabitacion();
+            Hotel hotel = HotelBuilder.buildHotel();
+            TipoHabitacion tipoHabitacion = TipoHabitacionBuilder.build();
+            int idTipoHabitacion = repositorioTipoHabitacion.create(tipoHabitacion);
+            tipoHabitacion.setIdTipoHabitacion(idTipoHabitacion);
+            int idHotel = repositorioHotel.create(hotel);
+            hotel.IdHotel = idHotel;
+            Habitacion habitacion = HabitacionBuilder.buildHabitacion(tipoHabitacion, idHotel);
+
+            int idHabitacion = repositorioHabitacion.create(habitacion);
+            habitacion.setIdHabitacion(idHabitacion);
+            Habitacion habitacionSearched = repositorioHabitacion.getById(idHabitacion);
+
+            Assert.IsTrue(repositorioHabitacion.exists(habitacionSearched));
+
+        }
+
+
+        [TestMethod]
+        public void Test_Repo_Habitacion_bajaLogica_OK()
+        {
+            RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            RepositorioTipoHabitacion repositorioTipoHabitacion = new RepositorioTipoHabitacion();
+            Hotel hotel = HotelBuilder.buildHotel();
+            TipoHabitacion tipoHabitacion = TipoHabitacionBuilder.build();
+            int idTipoHabitacion = repositorioTipoHabitacion.create(tipoHabitacion);
+            tipoHabitacion.setIdTipoHabitacion(idTipoHabitacion);
+            int idHotel = repositorioHotel.create(hotel);
+            hotel.IdHotel = idHotel;
+            Habitacion habitacion = HabitacionBuilder.buildHabitacion(tipoHabitacion, idHotel);
+
+            int idHabitacion = repositorioHabitacion.create(habitacion);
+            habitacion.setIdHabitacion(idHabitacion);
+            Habitacion habitacionSearched = repositorioHabitacion.getById(idHabitacion);
+            Assert.IsTrue(habitacionSearched.Activa);
+
+            habitacionSearched.setActiva(false);
+            repositorioHabitacion.bajaLogica(habitacionSearched);
+            habitacionSearched = repositorioHabitacion.getById(idHabitacion);
+            Assert.IsFalse(habitacionSearched.Activa);
+
+            habitacionSearched.setActiva(true);
+            repositorioHabitacion.bajaLogica(habitacionSearched);
+            habitacionSearched = repositorioHabitacion.getById(idHabitacion);
+            Assert.IsTrue(habitacionSearched.Activa);
+
 
 
         }
-        
 
     }
 }
