@@ -30,16 +30,10 @@ namespace FrbaHotel.AbmCliente
             comboBoxEstados.DataSource = estados;
             comboBoxEstados.SelectedValue = "";
 
-            //ESTO SE TIENE QUE OBTENER DINAMICAMENTE CON UNA QUERY DE OBTENER TODOS LOS TIPO DE DOCUMENTO
-            List<String> tipoDoc = new List<String>();
-            tipoDoc.Add("DNI");
-            tipoDoc.Add("CUIT");
-            tipoDoc.Add("LE");
-            tipoDoc.Add("LC");
-
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
             comboBoxTipoDoc.ValueMember = "Value";
             comboBoxTipoDoc.DisplayMember = "Key";
-            comboBoxTipoDoc.DataSource = tipoDoc;
+            comboBoxTipoDoc.DataSource = repoIdentidad.getAllTiposDocsClientes();
             comboBoxTipoDoc.SelectedValue = "";
         }
 

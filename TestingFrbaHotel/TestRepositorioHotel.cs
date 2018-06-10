@@ -103,7 +103,7 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Hotel_getAll()
         {
-
+            //ESTE TEST DA TIMEOUT
             Hotel hotel = HotelBuilder.buildHotel();
 
             repositorioHotel.create(hotel);
