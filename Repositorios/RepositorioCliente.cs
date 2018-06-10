@@ -23,7 +23,6 @@ namespace FrbaHotel.Repositorios
             Boolean activo = false;
             List<Reserva> reservas = new List<Reserva>();
 
-
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -85,6 +84,73 @@ namespace FrbaHotel.Repositorios
             return cliente;
         }
 
+        //OPTIMIZO EL GETALL
+        //NO TRAE LAS RESERVAS, POR EL MOMENTO
+        //ASUMO QUE TENGO UNA SOLA DIRECCION SI TENGO MAS DE UNA ESTO ANDARIA MAL
+        override public List<Cliente> getAll()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();            
+            
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            //ASUMO QUE TENGO UNA SOLA DIRECCION SI TENGO MAS DE UNA ESTO ANDARIA MAL
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @" SELECT * 
+                                        FROM LOS_BORBOTONES.Cliente c
+                                        INNER JOIN LOS_BORBOTONES.Identidad i
+                                        ON i.idIdentidad = c.idIdentidad
+                                        INNER JOIN LOS_BORBOTONES.Direccion d
+                                        ON d.idIdentidad = i.idIdentidad";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                //ASUMO QUE TENGO UNA SOLA DIRECCION SI TENGO MAS DE UNA ESTO ANDARIA MAL
+                Direccion direccion = new Direccion(reader.GetInt32(reader.GetOrdinal("idDireccion")),
+                                                    reader.GetString(reader.GetOrdinal("Pais")), 
+                                                    reader.SafeGetString(reader.GetOrdinal("Ciudad")), 
+                                                    reader.GetString(reader.GetOrdinal("calle")), 
+                                                    reader.GetInt32(reader.GetOrdinal("NumeroCalle")), 
+                                                    reader.SafeGetInt32(reader.GetOrdinal("Piso")), 
+                                                    reader.SafeGetString(reader.GetOrdinal("Depto")));   
+             
+                //ASUMO QUE TENGO UNA SOLA DIRECCION SI TENGO MAS DE UNA ESTO ANDARIA MAL
+                List<Direccion> direcciones = new List<Direccion>();
+                direcciones.Add(direccion);
+
+                Identidad identidad = new Identidad(reader.GetInt32(reader.GetOrdinal("idIdentidad")), 
+                                                    reader.GetString(reader.GetOrdinal("TipoIdentidad")), 
+                                                    reader.GetString(reader.GetOrdinal("Nombre")), 
+                                                    reader.SafeGetString(reader.GetOrdinal("Apellido")), 
+                                                    reader.GetString(reader.GetOrdinal("TipoDocumento")), 
+                                                    reader.GetString(reader.GetOrdinal("NumeroDocumento")), 
+                                                    reader.GetString(reader.GetOrdinal("Mail")), 
+                                                    reader.SafeGetDateTime(reader.GetOrdinal("FechaNacimiento")), 
+                                                    reader.SafeGetString(reader.GetOrdinal("Nacionalidad")), 
+                                                    reader.GetString(reader.GetOrdinal("Telefono")), 
+                                                    direcciones);
+
+                clientes.Add(new Cliente(reader.GetInt32(reader.GetOrdinal("idCliente")),
+                                        identidad,
+                                        reader.GetBoolean(reader.GetOrdinal("Activo")),
+                                        new List<Reserva>()));
+            }
+
+            sqlConnection.Close();
+            return clientes;
+        }
+
+        /*
         override public List<Cliente> getAll()
         {
             List<Cliente> clientes = new List<Cliente>();
@@ -112,6 +178,7 @@ namespace FrbaHotel.Repositorios
 
             return clientes;
         }
+        */
 
         override public int create(Cliente cliente)
         {
@@ -236,6 +303,7 @@ namespace FrbaHotel.Repositorios
         {
             List<Cliente> clientes = new List<Cliente>();
             //hago join con identidad ya que de ahi vendran los filtros como nombre apellido y dni
+            //String query = "SELECT c.idCliente FROM LOS_BORBOTONES.Cliente c INNER JOIN LOS_BORBOTONES.Identidad i ON c.idIdentidad = i.idIdentidad";
             String query = "SELECT c.idCliente FROM LOS_BORBOTONES.Cliente c INNER JOIN LOS_BORBOTONES.Identidad i ON c.idIdentidad = i.idIdentidad";
 
             //Consulta SIN FILTRO
