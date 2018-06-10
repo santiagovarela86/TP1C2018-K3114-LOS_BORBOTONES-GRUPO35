@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using FrbaHotel.AbmHotel;
 using TestingFrbaHotel.ModelBuilder;
-using FrbaHotel.AbmHotel.request;
 
 namespace TestingFrbaHotel
 {
@@ -55,23 +54,20 @@ namespace TestingFrbaHotel
 
             //POR NOMBRE
             String hotNombre = hotelSaved.Nombre;
-            SearchHotelRequest request = new SearchHotelRequest(hotNombre, null, null, null);
-            List<Hotel> hoteles = repositorioHotel.searchHotel(request);
+            List<Hotel> hoteles = repositorioHotel.getByQuery(hotNombre, null, null, null);
             Assert.IsTrue(hoteles.Count > 0);
             foreach(var hotel in hoteles){ Assert.IsTrue(hotel.Nombre.Equals(hotNombre));}
 
             //POR ESTRELLAS
             int categoriaEstrellas = hotelSaved.Categoria.Estrellas;
-            request = new SearchHotelRequest(null, categoriaEstrellas, null, null);
-            hoteles = repositorioHotel.searchHotel(request);
+            hoteles = repositorioHotel.getByQuery(null, categoriaEstrellas, null, null);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas)); }
 
             //POR CIUDAD
             String dirCiudad = hotelSaved.Direccion.Ciudad;
 
-            request = new SearchHotelRequest(null, null, dirCiudad, null);
-            hoteles = repositorioHotel.searchHotel(request);
+            hoteles = repositorioHotel.getByQuery(null, null, dirCiudad, null);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getDireccion().Ciudad.Equals(dirCiudad)); }
 
@@ -79,15 +75,13 @@ namespace TestingFrbaHotel
             //POR PAIS
             String dirPais = hotelSaved.Direccion.Pais;
 
-            request = new SearchHotelRequest(null, null, null, dirPais);
-            hoteles = repositorioHotel.searchHotel(request);
+            hoteles = repositorioHotel.getByQuery(null, null, null, dirPais);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getDireccion().Pais.Equals(dirPais)); }
 
 
             //POR NOMBRE, CIUDAD, PAIS , ESTRELLAS
-            request = new SearchHotelRequest(hotNombre, categoriaEstrellas, dirCiudad, dirPais);
-            hoteles = repositorioHotel.searchHotel(request);
+            hoteles = repositorioHotel.getByQuery(null, null, null, dirPais);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) {
                 Assert.IsTrue(hotel.Nombre.Equals(hotNombre));

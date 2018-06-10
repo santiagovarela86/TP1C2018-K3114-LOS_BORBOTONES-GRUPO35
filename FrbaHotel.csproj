@@ -91,9 +91,11 @@
     <Compile Include="AbmHotel\DropHotel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmHotel\request\SearchHotelRequest.cs" />
     <Compile Include="AbmHotel\SearchHotel.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHotel\SearchHotel.Designer.cs">
+      <DependentUpon>SearchHotel.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRegimen\Form1.cs">
       <SubType>Form</SubType>
