@@ -110,8 +110,11 @@ namespace FrbaHotel.Repositorios {
                 condiciones.Add("CAT.Estrellas=@catEstrellas");
                 sqlCommand.Parameters.AddWithValue("@catEstrellas", estrellas);
             }
-            return " WHERE " + string.Join(" AND ", condiciones.ToArray());
-
+            if (condiciones.Count != 0)
+            {
+                return " WHERE " + string.Join(" AND ", condiciones.ToArray());
+            }
+            return "";
         }
 
 
