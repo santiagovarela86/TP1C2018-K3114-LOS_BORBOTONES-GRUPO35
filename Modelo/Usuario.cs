@@ -86,13 +86,11 @@ namespace FrbaHotel.Modelo
         public String Mail { get { return this.getIdentidad().getMail(); } }
         public String Telefono { get { return this.getIdentidad().getTelefono(); } }
         //ACA ASUMO QUE TENGO UNA SOLA DIRECCION EN EL USUARIO
-        //public String Direccion { get { return this.getIdentidad().getDirecciones().First().getDireccionSimple(); } }
-        //FALTA TERMINAR LA OBTENCION DE LA DIRECCION EN EL MODELO. VERIFICAR SU ASIGNACION EN LA BASE (ES OBLIGATORIO CARGAR UN USUARIO CON SU IDENTIDAD Y DIRECCION)
+        public String Direccion { get { return this.getIdentidad().getDirecciones().First().getDireccionSimple(); } }
         public String FechaNac { get { return this.getIdentidad().getFechaNacimiento().ToString(); } }
         //ACA ASUMO QUE TRABAJA EN UN SOLO HOTEL
         //public String Hotel { get { return this.getHoteles().First().getNombre(); } }
-        //FALTA TERMINAR LA OBTENCION DEL HOTEL EN EL MODELO. VERIFICAR SU ASIGNACION EN LA BASE (ES OBLIGATORIO CARGAR UN USUARIO CON SU HOTEL)
-
+        //FALTA TERMINAR LA OBTENCION DEL HOTEL EN EL MODELO.
         public int IntentosFallidosLogin { get { return this.getIntentosFallidosLogin(); } }
         public Boolean Activo { get { return this.getActivo(); } }
     }

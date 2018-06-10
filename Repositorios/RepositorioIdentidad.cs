@@ -117,5 +117,35 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
+
+        public List<String> getAllTiposDocsClientes()
+        {
+            List<String> listaTiposDocs = new List<String>();
+            
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT DISTINCT TipoDocumento FROM LOS_BORBOTONES.Identidad WHERE TipoIdentidad = 'Cliente'";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                listaTiposDocs.Add(reader.GetString(reader.GetOrdinal("TipoDocumento")));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return listaTiposDocs;
+        }
     }
 }

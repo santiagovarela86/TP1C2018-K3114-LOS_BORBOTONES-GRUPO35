@@ -45,8 +45,8 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
-                int codigoReserva = reader.GetInt32(reader.GetOrdinal("CodigoReserva"));
-                int diasAlojados = reader.GetInt32(reader.GetOrdinal("DiasAlojados"));
+                decimal codigoReserva = reader.GetDecimal(reader.GetOrdinal("CodigoReserva"));
+                decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
                 DateTime fechaDesde = reader.SafeGetDateTime(reader.GetOrdinal("FechaDesde"));
                 DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
                 DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));

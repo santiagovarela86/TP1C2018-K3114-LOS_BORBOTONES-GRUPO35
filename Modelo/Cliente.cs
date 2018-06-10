@@ -48,8 +48,17 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdCliente { get { return this.getIdCliente(); } }
-        public Identidad Identidad { get { return this.getIdentidad(); } }
+        public String Nombre { get { return this.getIdentidad().getNombre(); } }
+        public String Apellido { get { return this.getIdentidad().getApellido(); } }
+        public String TipoDoc { get { return this.getIdentidad().getTipoDocumento(); } }
+        public String NroDoc { get { return this.getIdentidad().getNumeroDocumento(); } }
+        public String Mail { get { return this.getIdentidad().getMail(); } }
+        public String Telefono { get { return this.getIdentidad().getTelefono(); } }
+        //ACA ASUMO QUE TENGO UNA SOLA DIRECCION EN EL USUARIO
+        public String Direccion { get { return this.getIdentidad().getDirecciones().First().getDireccionCompleta(); } }
+        public String Nacionalidad { get { return this.getIdentidad().getNacionalidad(); } }
+        public String FechaNac { get { return this.getIdentidad().getFechaNacimiento().ToString(); } }
         public Boolean Activo { get { return this.getActivo(); } }
-        public List<Reserva> Reservas { get { return this.getReservas(); } }
+
     }
 }

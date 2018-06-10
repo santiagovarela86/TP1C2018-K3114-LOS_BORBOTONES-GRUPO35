@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.botonBuscar = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -58,7 +58,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.botonBuscar);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.comboBoxTipoDoc);
             this.groupBox1.Controls.Add(this.label4);
@@ -80,15 +80,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtros de búsqueda";
             // 
-            // button2
+            // botonBuscar
             // 
-            this.button2.Location = new System.Drawing.Point(473, 102);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Buscar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.botonBuscar.Location = new System.Drawing.Point(473, 102);
+            this.botonBuscar.Name = "botonBuscar";
+            this.botonBuscar.Size = new System.Drawing.Size(75, 23);
+            this.botonBuscar.TabIndex = 7;
+            this.botonBuscar.Text = "Buscar";
+            this.botonBuscar.UseVisualStyleBackColor = true;
+            this.botonBuscar.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -108,7 +108,7 @@
             this.comboBoxTipoDoc.Location = new System.Drawing.Point(257, 62);
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
             this.comboBoxTipoDoc.Size = new System.Drawing.Size(77, 21);
-            this.comboBoxTipoDoc.TabIndex = 3;
+            this.comboBoxTipoDoc.TabIndex = 4;
             // 
             // label4
             // 
@@ -161,7 +161,7 @@
             this.comboBoxEstados.Location = new System.Drawing.Point(441, 29);
             this.comboBoxEstados.Name = "comboBoxEstados";
             this.comboBoxEstados.Size = new System.Drawing.Size(107, 21);
-            this.comboBoxEstados.TabIndex = 3;
+            this.comboBoxEstados.TabIndex = 2;
             // 
             // label2
             // 
@@ -193,21 +193,21 @@
             this.textBox2.Location = new System.Drawing.Point(257, 30);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 0;
+            this.textBox2.TabIndex = 1;
             // 
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(69, 62);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(113, 20);
-            this.textBox3.TabIndex = 0;
+            this.textBox3.TabIndex = 3;
             // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(441, 63);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(107, 20);
-            this.textBox4.TabIndex = 0;
+            this.textBox4.TabIndex = 5;
             // 
             // groupBox2
             // 
@@ -236,8 +236,8 @@
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(547, 150);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            this.dataGridView1.TabIndex = 8;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // groupBox3
             // 
@@ -257,7 +257,7 @@
             this.button5.Location = new System.Drawing.Point(173, 20);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 2;
+            this.button5.TabIndex = 11;
             this.button5.Text = "Baja";
             this.button5.UseVisualStyleBackColor = true;
             // 
@@ -267,7 +267,7 @@
             this.button4.Location = new System.Drawing.Point(91, 20);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 1;
+            this.button4.TabIndex = 10;
             this.button4.Text = "Modificación";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -277,13 +277,14 @@
             this.button3.Location = new System.Drawing.Point(9, 20);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 0;
+            this.button3.TabIndex = 9;
             this.button3.Text = "Alta";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // ABMClientes
             // 
+            this.AcceptButton = this.botonBuscar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(586, 561);
@@ -318,7 +319,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboBoxEstados;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button botonBuscar;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridView1;

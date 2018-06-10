@@ -21,6 +21,24 @@ namespace FrbaHotel.AbmCliente
 
         private void ListadoClientes_Load(object sender, EventArgs e)
         {
+            dataGridView1.DataSource = new List<Cliente>();
+            List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
+            estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
+            estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
+            comboBoxEstados.ValueMember = "Value";
+            comboBoxEstados.DisplayMember = "Key";
+            comboBoxEstados.DataSource = estados;
+            comboBoxEstados.SelectedValue = "";
+
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+            comboBoxTipoDoc.ValueMember = "Value";
+            comboBoxTipoDoc.DisplayMember = "Key";
+            comboBoxTipoDoc.DataSource = repoIdentidad.getAllTiposDocsClientes();
+            comboBoxTipoDoc.SelectedValue = "";
+        }
+
+        private void limpiarBusquedaYResultados()
+        {
             textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
@@ -30,32 +48,11 @@ namespace FrbaHotel.AbmCliente
             dataGridView1.DataSource = new List<Cliente>();
             this.button4.Enabled = false;
             this.button5.Enabled = false;
-
-            dataGridView1.DataSource = new List<Cliente>();
-
-            List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
-            estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
-            estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
-            comboBoxEstados.ValueMember = "Value";
-            comboBoxEstados.DisplayMember = "Key";
-            comboBoxEstados.DataSource = estados;
-            comboBoxEstados.SelectedValue = "";
-
-            List<String> tipoDoc = new List<String>();
-            tipoDoc.Add("DNI");
-            tipoDoc.Add("CUIT");
-            tipoDoc.Add("LE");
-            tipoDoc.Add("LC");
-            comboBoxTipoDoc.ValueMember = "Value";
-            comboBoxTipoDoc.DisplayMember = "Key";
-            comboBoxTipoDoc.DataSource = tipoDoc;
-            comboBoxTipoDoc.SelectedValue = "";
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.ListadoClientes_Load(sender, e);
+            this.limpiarBusquedaYResultados();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -80,9 +77,9 @@ namespace FrbaHotel.AbmCliente
 
             List<Cliente> clientes = repositorioClientes.getByQuery(nombre,apellido,tipoDoc,nroDoc,estado,mail);
 
+            //MEJORA DE PERFORMANCE DEL DGV
             dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
             dataGridView1.RowHeadersVisible = false;
-
             dataGridView1.DataSource = clientes;
             dataGridView1.RowHeadersVisible = true;
             dataGridView1.ClearSelection();
@@ -102,10 +99,27 @@ namespace FrbaHotel.AbmCliente
             //aca va la baja
         }
 
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            this.button4.Enabled = true;
-            this.button5.Enabled = true;
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.button4.Enabled = true;
+                this.button5.Enabled = true;
+            }
         }
 
     }

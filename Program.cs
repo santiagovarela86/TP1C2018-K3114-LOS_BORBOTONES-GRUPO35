@@ -30,9 +30,13 @@ namespace FrbaHotel
 
                 Application.Run(new PantallaPrincipal());
             }
-            catch (Exception exc)
+            catch (SqlException exc1)
             {
-                MessageBox.Show(exc.Message, "Error de conexión con la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exc1.Message, "Error de conexión con la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (InvalidOperationException exc2)
+            {
+                MessageBox.Show(exc2.Message, "Error de conexión con la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
