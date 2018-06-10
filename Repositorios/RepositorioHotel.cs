@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
-using FrbaHotel.AbmHotel.request;
+//using FrbaHotel.AbmHotel.request;
 using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios {
@@ -13,7 +13,7 @@ namespace FrbaHotel.Repositorios {
     {
 
 
-
+        /*
         public int crearBajaTemporal(BajaTemporal request){
 
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
@@ -29,7 +29,9 @@ namespace FrbaHotel.Repositorios {
             CierreTemporal cierreTemporal = new CierreTemporal(0, request.FechaDesde, request.FechaHasta, request.Descripcion, request.IdHotel);
             return repositorioCierreTemporal.create(cierreTemporal);
         }
+        */
 
+        /*
         public List<Hotel> searchHotel(SearchHotelRequest request) {
 
             RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
@@ -85,6 +87,9 @@ namespace FrbaHotel.Repositorios {
 
         }
 
+         * */
+
+        /*
 
         private String getCondiciones(SearchHotelRequest request, SqlCommand sqlCommand)
         {
@@ -112,6 +117,10 @@ namespace FrbaHotel.Repositorios {
             return " WHERE " + string.Join(" AND ", condiciones.ToArray());
 
         }
+         * 
+         * */
+
+
         public override int create(Hotel hotel)
         {
 
@@ -141,8 +150,8 @@ namespace FrbaHotel.Repositorios {
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            
-      
+
+
             //HOTEL
             sqlCommand.Parameters.AddWithValue("@hotNombre", hotel.getNombre());
             sqlCommand.Parameters.AddWithValue("@hotMail", hotel.getMail());
@@ -162,14 +171,14 @@ namespace FrbaHotel.Repositorios {
             sqlConnection.Open();
 
             reader = sqlCommand.ExecuteReader();
-            if (reader.Read()){
+            if (reader.Read())
+            {
                 idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
             }
-                sqlConnection.Close();
+            sqlConnection.Close();
             return idHotel;
-            
-        }
 
+        }
     
 
         public override void delete(Hotel t)

@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using FrbaHotel.Repositorios;
 
 namespace FrbaHotel.Repositorios
 {
     public class RepositorioHabitacion : Repositorio<Habitacion>
     {
 
-        private RepositorioTipoHabitacion repositorioTipoHabitacion;
+        //private RepositorioTipoHabitacion repositorioTipoHabitacion;
 
         public override int create(Habitacion habitacion)
         {
@@ -122,10 +123,10 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Open();
 
             reader = sqlCommand.ExecuteReader();
+            RepositorioTipoHabitacion repositorioTipoHabitacion = new RepositorioTipoHabitacion();
 
             while (reader.Read())
             {
-
                 int idHabitacion = reader.GetInt32(reader.GetOrdinal("idHabitacion"));
                 int idTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
                 bool activa = reader.GetBoolean(reader.GetOrdinal("Activa"));

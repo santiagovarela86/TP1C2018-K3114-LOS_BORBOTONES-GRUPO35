@@ -12,7 +12,7 @@ namespace FrbaHotel.Modelo
         private DateTime fechaInicio = new DateTime();
         private DateTime fechaFin = new DateTime();
         private String descripcion = "";
-        private int idHotel;
+        private int idHotel = 0;
 
         public CierreTemporal(int idCierreTemporal, DateTime fechaInicio, DateTime fechaFin, String descripcion, int idHotel)
         {
@@ -43,6 +43,11 @@ namespace FrbaHotel.Modelo
             return descripcion;
         }
 
+        public int getIdHotel()
+        {
+            return this.idHotel;
+        }
+
         public Boolean esNuevo()
         {
             return idCierreTemporal.Equals(0);
@@ -53,7 +58,6 @@ namespace FrbaHotel.Modelo
         public DateTime FechaInicio { get { return this.getFechaInicio(); } }
         public DateTime FechaFin { get { return this.getFechaFin(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
-
-        public int IdHotel { get => idHotel; set => idHotel = value; }
+        public int IdHotel { get { return this.getIdHotel(); } }
     }
 }

@@ -36,7 +36,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteIDException), "No existe usuario con el ID asociado")]
-        public void Test_Repo_Usuario_getById()
+        public void Test_Repo_Usuario_getByIdFalla()
         {
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             Usuario usuario = repositorioUsuario.getById(50);
@@ -50,6 +50,7 @@ namespace TestingFrbaHotel
             Assert.AreEqual(3, usuarios.Count);
         }
 
+        /*
         [TestMethod]
         public void Test_Repo_Usuario_exists()
         {
@@ -64,15 +65,17 @@ namespace TestingFrbaHotel
 
             //Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
         }
+        */
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteNombreException), "No existe usuario con el Nombre asociado")]
-        public void Test_Repo_Usuario_getByUsername()
+        public void Test_Repo_Usuario_getByUsernameFalla()
         {
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             Usuario admin = repositorioUsuario.getByUsername("Lanata");
         }
 
+        /*
         [TestMethod]
         public void Test_Repo_Usuario_getByQuery()
         {
@@ -92,5 +95,6 @@ namespace TestingFrbaHotel
 
             //FALTA FILTRO FUNCIONALIDAD
         }
+        */
     }
 }

@@ -135,7 +135,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idIdentidad", id);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idDireccion,Pais,Ciudad,Calle,NumeroCalle,Piso,Depto FROM LOS_BORBOTONES.Direccion AS DIR WHERE DIR.idIdentidad = @idIdentidad";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Direccion AS DIR WHERE DIR.idIdentidad = @idIdentidad";
 
             sqlConnection.Open();
 

@@ -20,16 +20,7 @@ namespace FrbaHotel.AbmUsuario
         }
         private void ListadoUsuarios_Load(object sender, EventArgs e)
         {
-            textBox1.Text = "";
-            comboBoxEstados.SelectedValue = "";
-            comboBoxRoles.SelectedValue = "";
-            comboBoxHoteles.SelectedValue = "";
             dataGridView1.DataSource = new List<Usuario>();
-            this.button4.Enabled = false;
-            this.button5.Enabled = false;
-
-            dataGridView1.DataSource = new List<Usuario>();
-
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
             estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
             estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
@@ -53,7 +44,23 @@ namespace FrbaHotel.AbmUsuario
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.ListadoUsuarios_Load(sender, e);
+            this.limpiarBusquedaYResultados();
+        }
+
+        private void limpiarBusquedaYResultados()
+        {
+            textBox1.Text = "";
+            comboBoxEstados.SelectedValue = "";
+            comboBoxRoles.SelectedValue = "";
+            comboBoxHoteles.SelectedValue = "";
+            dataGridView1.DataSource = new List<Usuario>();
+            this.button4.Enabled = false;
+            this.button5.Enabled = false;
+
+            //this.comboBoxHoteles.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
+            //this.comboBoxRoles.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
+            //this.textBox1.TextChanged += new System.EventHandler(this.buscar_Click);
+            //this.comboBoxEstados.SelectedIndexChanged += new System.EventHandler(this.buscar_Click);
         }
 
         private void buscar_Click(object sender, EventArgs e)
@@ -93,10 +100,16 @@ namespace FrbaHotel.AbmUsuario
         {
         }
 
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            this.button4.Enabled = true;
-            this.button5.Enabled = true;
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.button4.Enabled = true;
+                this.button5.Enabled = true;
+            }
         }
     }
 }

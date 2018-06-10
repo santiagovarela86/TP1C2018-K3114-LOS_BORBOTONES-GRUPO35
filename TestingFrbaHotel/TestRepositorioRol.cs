@@ -26,7 +26,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteIDException), "No existe rol con el ID asociado")]
-        public void Test_Repo_Rol_getById()
+        public void Test_Repo_Rol_getByIdFalla()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getById(50);
@@ -61,7 +61,7 @@ namespace TestingFrbaHotel
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteNombreException), "No existe rol con el Nombre asociado")]
-        public void Test_Repo_Rol_getByName()
+        public void Test_Repo_Rol_getByNameFalla()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getByNombre("Lanata");

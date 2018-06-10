@@ -58,6 +58,21 @@ namespace FrbaHotel.Modelo
             return ubicacion;
         }
 
+        public int getIdHotel()
+        {
+            return this.idHotel;
+        }
+
+        public int getIdHabitacion()
+        {
+            return this.idHabitacion;
+        }
+
+        public void setIdHabitacion(int idHabitacion)
+        {
+            this.idHabitacion = idHabitacion;
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
        
         public TipoHabitacion TipoHabitacion { get { return this.getTipoHabitacion(); } }
@@ -65,8 +80,7 @@ namespace FrbaHotel.Modelo
         public int Numero { get { return this.getNumero(); } }
         public int Piso { get { return this.getPiso(); } }
         public String Ubicacion { get { return this.getUbicacion(); } }
-
-        public int IdHotel { get => idHotel; set => idHotel = value; }
-        public int IdHabitacion { get => idHabitacion; set => idHabitacion = value; }
+        public int IdHotel { get { return this.getIdHotel(); } }
+        public int IdHabitacion { get { return this.getIdHabitacion(); } }
     }
 }
