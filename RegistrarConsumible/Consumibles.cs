@@ -75,6 +75,15 @@ namespace FrbaHotel.RegistrarConsumible
         private void button3_Click(object sender, EventArgs e)
         {
             //aca va el alta, tiene que poder editar antes de guardarlo tener en cuenta eso ya que despues no hay baja ni mod.
+            using (AltaConsumible form = new AltaConsumible())
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    
+                }
+            }
         }
 
     }
