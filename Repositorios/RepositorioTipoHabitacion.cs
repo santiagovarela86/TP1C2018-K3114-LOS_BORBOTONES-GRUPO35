@@ -53,7 +53,31 @@ namespace FrbaHotel.Repositorios
 
         public override List<TipoHabitacion> getAll()
         {
-            throw new NotImplementedException();
+            List<TipoHabitacion> tipoHabitaciones = new List<TipoHabitacion>();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.TipoHabitacion";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
+                String codigo = reader.SafeGetString(reader.GetOrdinal("Codigo"));
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
+                decimal porcentual = reader.GetDecimal(reader.GetOrdinal("Porcentual"));
+
+                tipoHabitaciones.Add(new TipoHabitacion(idTipoHabitacion, codigo, porcentual, descripcion));
+            }
+
+            sqlConnection.Close();
+            return tipoHabitaciones;
         }
 
         public override TipoHabitacion getById(int id)

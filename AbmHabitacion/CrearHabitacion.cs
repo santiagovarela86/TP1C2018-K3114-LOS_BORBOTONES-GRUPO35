@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,9 @@ namespace FrbaHotel.AbmHabitacion
         public CrearHabitacion()
         {
             InitializeComponent();
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            RepositorioTipoHabitacion repositorioTipoHab = new RepositorioTipoHabitacion();
+
         }
 
      
