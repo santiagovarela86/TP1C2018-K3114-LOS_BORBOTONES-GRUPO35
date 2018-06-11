@@ -137,7 +137,7 @@ namespace TestingFrbaHotel
             Assert.IsFalse(repositorioHotel.exists(hotel));
 
         }
-
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalError()
         {
@@ -166,7 +166,7 @@ namespace TestingFrbaHotel
         {
             throw new NotImplementedException();
         }
-        /*
+      
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
         {
