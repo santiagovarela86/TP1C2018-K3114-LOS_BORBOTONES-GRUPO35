@@ -1,6 +1,12 @@
 ---------------------------------------------- Creacion del Modelo de Datos --------------------------------------------------------------------
 USE GD1C2018
 GO
+
+---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
+IF OBJECT_ID('LOS_BORBOTONES.concatenarNombreHotel', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
+GO
+
 ---------------------------------------------- DROPEO DE FK CONSTRAINTS ----------------------------------------------
 
 -- Tabla Funcionalidad_X_Rol 
@@ -273,10 +279,18 @@ IF OBJECT_ID('LOS_BORBOTONES.Reserva','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Reserva;
 GO
 
--- Tabla Temporal ReservaTemporal,  eliminando si existe
-IF OBJECT_ID('LOS_BORBOTONES.ReservaTemporal', 'U') IS NOT NULL
-DROP TABLE LOS_BORBOTONES.ReservaTemporal;
+----Tablas Temporales
+
+-- temporalReserva,  
+IF OBJECT_ID('LOS_BORBOTONES.temporalReserva', 'U') IS NOT NULL
+DROP TABLE LOS_BORBOTONES.temporalReserva;
 GO
+
+-- temporalMontoFactura
+IF OBJECT_ID('LOS_BORBOTONES.temporalMontoFactura', 'U') IS NOT NULL
+DROP TABLE LOS_BORBOTONES.temporalMontoFactura;
+GO
+
 
 ---------------------------------------------------------------------- Eliminacion de schema LOS_BORBOTONES --------------------------------------------------------------------------
 
@@ -287,6 +301,30 @@ GO
 --Creación Inicial del Esquema
 CREATE SCHEMA LOS_BORBOTONES AUTHORIZATION gdHotel2018;
 GO
+
+
+--------------------------------------FUNCIONES---------------------------------------------------------------------------------------------------------------------------------------
+--Funcion para establecer el nombre de hotel
+
+CREATE FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
+	( @nombre nvarchar(255), @numero numeric(18,0))
+
+	RETURNS nvarchar(255)
+
+AS
+
+BEGIN
+
+	DECLARE @aux nvarchar(255)
+
+	set @aux = CONVERT(nvarchar(255),@numero) 
+
+	RETURN @nombre+' '+@aux
+
+END
+GO
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------Creacion Tablas---------------------------------------------------------------------------------------------------------
 --Tabla Rol
@@ -398,7 +436,7 @@ GO
 --Tabla Asociacion Hotel - Usuario
 CREATE TABLE LOS_BORBOTONES.Hotel_X_Usuario (
 
-	idHotel			INT			NOT NULL,
+	idHotel			INT,
 	idUsuario		INT			NOT NULL,
 )
 GO
@@ -527,7 +565,7 @@ GO
 -- Tabla Asociacion Estadia - Consumible
 CREATE TABLE LOS_BORBOTONES.Estadia_X_Consumible (
 
-	idEstadia		INT		NOT NULL,
+	idEstadia		INT,
 	idConsumible	INT		NOT NULL,
 )
 GO
@@ -543,22 +581,6 @@ CREATE TABLE LOS_BORBOTONES.EstadoReserva (
 	idReserva		INT				NOT NULL,
 )
 GO
-
--- creando la tabla temporal RESERVA
-CREATE TABLE LOS_BORBOTONES.ReservaTemporal (
-
-	  Reserva_Codigo  NUMERIC(18,0) IDENTITY(1001, 1) 	UNIQUE 	NOT NULL,
-	  Reserva_Fecha_Inicio DATETIME,
-      Reserva_Cant_Noches NUMERIC(18,0),
-	  Hotel_Calle NVARCHAR(255),
-	  Hotel_Nro_Calle NVARCHAR(255),
-	  Estadia_Fecha_Inicio DATETIME,
-	  Estadia_Cant_Noches INT,
-      Regimen_Descripcion NVARCHAR(255),
-      Cliente_Pasaporte_Nro VARCHAR(45),
-);
-GO
-
 --------------------------------------------- Creacion de constraint PK para la base de datos ----------------------------------------------------------------------------------------
 -- Tabla Rol
 ALTER TABLE LOS_BORBOTONES.Rol
@@ -631,10 +653,6 @@ ADD CONSTRAINT PK_ItemFactura_idItemFactura PRIMARY KEY (idItemFactura)
 -- Tabla EstadoReserva
 ALTER TABLE LOS_BORBOTONES.EstadoReserva
 ADD CONSTRAINT PK_EstadoReserva_idEstado PRIMARY KEY (idEstado)
-
---Tabla temporal ReservaTemporal
-ALTER TABLE LOS_BORBOTONES.ReservaTemporal
-ADD CONSTRAINT PK_ReservaTemporal_Reserva_Codigo PRIMARY KEY (Reserva_Codigo)
 
 ---------------------------------------------------------- Creacion de constraint FK para la base de datos ---------------------------------------------------------------------------
 
@@ -919,12 +937,12 @@ GO
 --Se define como FechaInicioActividades, la fecha actual y como Nombre del Hotel Calle+NroCalle
  
  INSERT INTO LOS_BORBOTONES.Hotel (idCategoria, Nombre, FechaInicioActividades, idDireccion)
-	  SELECT c.idCategoria, CONCAT(d.Calle, d.NumeroCalle) AS Nombre, GETDATE(), d.idDireccion 
+	  SELECT c.idCategoria, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) AS Nombre, GETDATE(), d.idDireccion 
 	  FROM LOS_BORBOTONES.Categoria c
 	  JOIN  gd_esquema.Maestra m ON m.Hotel_CantEstrella = c.Estrellas AND m.Hotel_Recarga_Estrella = c.RecargaEstrellas
 	  JOIN LOS_BORBOTONES.Direccion d ON m.Hotel_Ciudad = d.Ciudad AND m.Hotel_Calle = d.Calle AND m.Hotel_Nro_Calle = d.NumeroCalle
 	  WHERE d.Ciudad IS NOT NULL
-	  GROUP BY c.idCategoria, d.idDireccion, CONCAT(d.Calle, d.NumeroCalle)	 
+	  GROUP BY c.idCategoria, d.idDireccion, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
 --Carga Hotel_X_Usuario
 --definir condicion: a que usuarios le corresponden que hoteles
@@ -997,12 +1015,12 @@ GO
 -- Se define por el momento Descripcion = 'Mantenimiento'
 
 INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
-		SELECT  DISTINCT '2016-12-29 00:00:00.000', '2016-12-31 00:00:00.000' , 'Mantenimiento', idHotel
+		SELECT  DISTINCT convert(datetime, '2016-12-29 00:00:00.000', 121), convert(datetime, '2016-12-31 00:00:00.000', 121) , 'Mantenimiento', idHotel
 		FROM LOS_BORBOTONES.Hotel
 GO
 
 INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
-		SELECT  DISTINCT '2021-01-01 00:00:00.000', '2021-01-05 00:00:00.000' , 'Ampliacion', idHotel
+		SELECT  DISTINCT convert(datetime, '2021-01-01 00:00:00.000', 121), convert(datetime, '2021-01-05 00:00:00.000', 121) , 'Ampliacion', idHotel
 		FROM LOS_BORBOTONES.Hotel
 GO
 
@@ -1068,7 +1086,7 @@ GO
 INSERT INTO LOS_BORBOTONES.Habitacion(Numero, Piso, Ubicacion, idHotel, idTipoHabitacion) 
 		SELECT DISTINCT m.Habitacion_Numero, m.Habitacion_Piso, m.Habitacion_Frente, h.idHotel, t.idTipoHabitacion
 		FROM LOS_BORBOTONES.Hotel h
-		JOIN gd_esquema.maestra m ON CONCAT(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre
+		JOIN gd_esquema.maestra m ON LOS_BORBOTONES.concatenarNombreHotel(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre
 		JOIN LOS_BORBOTONES.TipoHabitacion t ON m.Habitacion_Tipo_Codigo = t.Codigo
 		WHERE t.Codigo IS NOT NULL
 GO
@@ -1081,10 +1099,8 @@ GO
 
 -- Crear tabla temporal con los valores actuales de la tabla maestra que necesito para reserva y campos para que vincular las fk : hotel, regimen, estadia y cliente
 
-SET IDENTITY_INSERT LOS_BORBOTONES.ReservaTemporal ON
--- insertando los datos actuales de la tabla reservaTemporal
-INSERT INTO LOS_BORBOTONES.ReservaTemporal(Reserva_Codigo, Reserva_Fecha_Inicio, Reserva_Cant_Noches, Hotel_Calle, Hotel_Nro_Calle, Estadia_Fecha_Inicio, Estadia_Cant_Noches, Regimen_Descripcion, Cliente_Pasaporte_Nro)
 SELECT DISTINCT p.Reserva_Codigo, p.Reserva_Fecha_Inicio, p.Reserva_Cant_Noches, p.Hotel_Calle, p.Hotel_Nro_Calle, p.Estadia_Fecha_Inicio, p.Estadia_Cant_Noches, p.Regimen_Descripcion, p.Cliente_Pasaporte_Nro
+INTO LOS_BORBOTONES.temporalReserva
 FROM gd_esquema.Maestra p
 WHERE p.Estadia_Fecha_Inicio IS NOT NULL
 ORDER BY p.Reserva_Codigo;
@@ -1094,8 +1110,8 @@ GO
 INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
 SELECT m.Reserva_Codigo, GETDATE(), m.Reserva_Fecha_Inicio, DATEADD(DAY, m.Reserva_Cant_Noches, m.Reserva_Fecha_Inicio), m.Reserva_Cant_Noches, h.idHotel, e.idEstadia, r.idRegimen, c.idCliente
 FROM  LOS_BORBOTONES.Hotel h 
-	INNER JOIN LOS_BORBOTONES.ReservaTemporal m
-		ON CONCAT(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre  
+	INNER JOIN LOS_BORBOTONES.temporalReserva m
+		ON LOS_BORBOTONES.concatenarNombreHotel(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre  
 	INNER JOIN LOS_BORBOTONES.Estadia e
 		ON m.Estadia_Fecha_Inicio = e.FechaEntrada AND m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
 	INNER JOIN LOS_BORBOTONES.Regimen r
@@ -1108,24 +1124,11 @@ ORDER BY m.Reserva_Codigo, c.idCliente
 GO								
 		
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Migracion Factura (*)
+--Migracion Factura (*) trae montototal con errores, se corrige luego de migrar itemFactura
+-- se define tipoDePago Efectivo, para los clientes migrados de la tablaMaestra
 
---la tabla maestra, para los campos Factura_Nro, y Factura_Fecha trae muchos campos NULL, pero que corresponden  a  codigos de reserva
--- o sea, tengo una reserva con x codigo y fecha y nro de factura NULL, y tengo ese mismo codigo de reserva con fecha_factura y codigo factura NULL
---Las opciones serian: crear una tabla con las inconsistencias de factura, aunque por logica, una factura sin numero y sin fecha no deberia considerarlas
--- con mas razon si el codigo de reserva no se pierde.
--- otra opcion es hacer la restriccion de los null
-
--- agregar values puntos y tipo de pago
-
---OJO EL CAMPO  TOTAL DE FACTURA DE LA TABLA MAESTRA TRAE VALORES INCORRECTOS
--- TOTAL DE FACTURA = regimen de estadia + ... + (ITEM_FACTURA DE CONSUMIBLE * PRECIO) + ... excepto que el regimen sea ALL INCLUSIVE, donde no se cobran los consumibles
-
-
---itemFactura Cantidad es igual al precio del consumible
-
-INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, e.idEstadia, r.idReserva)
-		SELECT DISTINCT  m.Factura_Nro, m.Factura_Fecha, m.Factura_Total, e.idEstadia, r.idReserva
+INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, TipoPago, e.idEstadia, r.idReserva)
+		SELECT DISTINCT  m.Factura_Nro, m.Factura_Fecha, m.Factura_Total, 'Efectivo', e.idEstadia, r.idReserva
 		FROM  LOS_BORBOTONES.Estadia e
 		JOIN gd_esquema.maestra m 
 			ON  m.Estadia_Fecha_Inicio = e.FechaEntrada AND m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
@@ -1134,135 +1137,6 @@ INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, e.idE
 			WHERE m.Factura_Nro IS NOT NULL
 		ORDER BY  m.Factura_Nro, m.Factura_Fecha, e.idEstadia, r.idReserva
 GO
-
-SELECT  DISTINCT f.NumeroFactura, f.Total, sum(c.Precio * i.Cantidad) AS TotalEnConsumibles, sum(g.Precio * r.DiasAlojados) AS TotalEnEstadia, r.idReserva, g.Descripcion
-		FROM  LOS_BORBOTONES.Factura f
-		JOIN  LOS_BORBOTONES.Reserva r
-			ON  f.idReserva = r.idReserva
-		JOIN  LOS_BORBOTONES.Estadia e
-			ON   r.idEstadia = e.idEstadia
-		JOIN LOS_BORBOTONES.Regimen g
-			ON r.idRegimen = g.idRegimen
-		JOIN LOS_BORBOTONES.ItemFactura i
-			ON f.idFactura = i.idFactura
-		JOIN LOS_BORBOTONES.Consumible c
-			ON i.idConsumible = c.idConsumible
-		WHERE  f.idFactura = i.idFactura
-		group BY f.NumeroFactura, f.Total, r.idReserva, g.Descripcion
-		--ORDER BY f.NumeroFactura, f.Total, r.idReserva, g.Descripcion
-GO
-/*
--- en desarrollo
-SELECT @@CURSOR_ROWS
-DECLARE factura_cursor CURSOR FOR
-
-SELECT  DISTINCT f.NumeroFactura, f.Total, e.idEstadia, r.idReserva, g.idRegimen, c.idConsumible
-		FROM  LOS_BORBOTONES.Factura f
-		JOIN  LOS_BORBOTONES.Reserva r
-			ON  f.idReserva = r.idReserva
-		JOIN  LOS_BORBOTONES.Estadia e
-			ON   r.idEstadia = e.idEstadia
-		JOIN LOS_BORBOTONES.Regimen g
-			ON r.idRegimen = g.idRegimen
-		JOIN LOS_BORBOTONES.ItemFactura i
-			ON f.idFactura = i.idFactura
-		JOIN LOS_BORBOTONES.Consumible c
-			ON i.idConsumible = c.idConsumible
-		WHERE g.Descripcion = 'All inclusive'
-		ORDER BY f.NumeroFactura, f.Total, e.idEstadia, r.idReserva, g.idRegimen
-OPEN factura_cursor 
-FETCH NEXT FROM factura_cursor 
-SELECT @@CURSOR_ROWS
-CLOSE factura_cursor
-DEALLOCATE factura_cursor
-		*/
-------------------------------------------------------en desarrollo
-/*
-CREATE PROCEDURE SP_CALCULAR_TOTAL_FACTURA
-AS
-BEGIN
-	declare @combo char(8);
-	declare @combocantidad integer;
-	
-	declare @NumeroFactura NUMERIC(18,0);
-	declare @Total NUMERIC(18,2);
-	
-	declare  cFacturas cursor for --CURSOR PARA RECORRER LAS FACTURAS
-		select NumeroFactura, Total
-		from LOS_BORBOTONES.Factura;
-		 where para hacer una prueba acotada
-		where fact_tipo = 'A' and
-				fact_sucursal = '0003' and
-				fact_numero='00092476';^
-	
-		open cFacturas
-		
-		fetch next from cFacturas
-		into @NumeroFactura, @Total
-		
-		while @@FETCH_STATUS = 0
-		begin	
-			declare  cConsumible cursor for
-			select idConsumible --ACA NECESITAMOS UN CURSOR PORQUE PUEDE HABER MAS DE UN CONSUMIBLE EN UNA FACTURA
-			from LOS_BORBOTONES.ItemFactura join LOS_BORBOTONES.Consumible C1 on (idConsumible = C1.idConsumible)
-			where Cantidad >= C1.Cantidad and 
-				  idFactura = @NumeroFactura 
-			group by C1.idConsumible
-			having COUNT(*) = (select COUNT(*) from LOS_BORBOTONES.Consumible as C2 where C2.idConsumible= C1.idConsumible)
-			
-			open cConsumible
-			fetch next from cConsumible into @combo
-			while @@FETCH_STATUS = 0 
-			begin
-	  					
-				select @combocantidad= MIN(FLOOR((Cantidad/c1.Cantidad)))
-				from LOS_BORBOTONES.ItemFactura join LOS_BORBOTONES.Consumible C1 on (idConsumible = C1.idConsumible)
-				where Cantidad >= C1.Cantidad and
-					  idFactura = @NumeroFactura 
-					  
-					  c1.idConsumible = @combo	--SACAMOS CUANTOS COMBOS PUEDO ARMAR COMO MÁXIMO (POR ESO EL MIN)
-				
-				--INSERTAMOS LA FILA DEL COMBO CON EL PRECIO QUE CORRESPONDE
-				insert into LOS_BORBOTONES.Factura (NumeroFactura, item_sucursal, item_numero, item_producto, item_cantidad, item_precio)
-				select @FacturaNumero, @combo, @combocantidad, (@combocantidad * (select Precio from LOS_BORBOTONES.Consumible where Codigo = @combo));				
-
-				update LOS_BORBOTONES.Factura  
-				set 
-				Cantidad = i1.Cantidad - (@combocantidad * (select Cantidad from LOS_BORBOTONES.ItemFactura
-																		where i1.idConsumible = idConsumible
-																			  and Descripcion=@combo)),
-				ITEM_PRECIO = (i1.Cantidas - (@combocantidad * (select Cantidad from LOS_BORBOTONES.Consumible
-															where i1.idConsumible = idConsumible 
-																  and Descripcion=@combo))) * 	
-													(select Precio from LOS_BORBOTONES.Consumible where idConsumible = I1.idConsumible)											  															  
-				from LOS_BORBOTONES.ItemFactura I1, Consumible C1, Factura I2
-				where 
-					  I2.NumeroFactura = @fact_nro and
-					  I1.idFactura = @fact_tipo AND
-					  I1.idConsumible = C1.idConsumible AND
-					  C1.Descripcion = @combo
-					  
-				delete from LOS_BORBOTONES.Factura
-				where 
-					  NumeroFactura = @fact_nro and
-						Total = @Total and
-					  item_cantidad = 0
-				
-				fetch next from cproducto into @combo
-			end
-			close cProducto;
-			deallocate cProducto;
-			
-			fetch next from cFacturas into @fact_nro, @Total
-			end
-			close cFacturas;
-			deallocate cFacturas;
-	end
-go 	*/
---if(g.Descripcion = 'All inclusive')
--- f.total = g.Precio * e.CantidadNoches --> no se cargan consumibles
--- else
--- 	f.total = g.Precio * e.CantidadNoches + c.Precio * i.Cantidad
 	
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 --ItemFactura
@@ -1276,9 +1150,38 @@ INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura
 			ON m.Consumible_Codigo = c.Codigo
 	ORDER BY f.idFactura, f.FechaFacturacion;
 
+	
+	
+--Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
+-- El regimen All inclusive no carga consumibles en el monto total.
+
+SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, SUM(c.Precio * i.Cantidad) AS CostoConsumible, (g.Precio * e.CantidadNoches) AS CostoEstadia,
+		CASE g.Descripcion WHEN 'All Inclusive' 	THEN g.Precio * r.DiasAlojados
+		ELSE sum(c.Precio * i.Cantidad) + (g.Precio * r.DiasAlojados) END "MontoTotal"
+ INTO LOS_BORBOTONES.temporalMontoFactura
+	FROM  LOS_BORBOTONES.Factura f
+		JOIN  LOS_BORBOTONES.Reserva r
+			ON  f.idReserva = r.idReserva
+		JOIN  LOS_BORBOTONES.Estadia e
+			ON   r.idEstadia = e.idEstadia
+		JOIN LOS_BORBOTONES.Regimen g
+			ON r.idRegimen = g.idRegimen
+		JOIN LOS_BORBOTONES.ItemFactura i
+			ON f.idFactura = i.idFactura
+		JOIN LOS_BORBOTONES.Consumible c
+			ON i.idConsumible = c.idConsumible
+		WHERE  f.idFactura = i.idFactura
+	GROUP BY f.NumeroFactura, f.Total, r.idReserva, g.Descripcion, g.Precio, r.DiasAlojados, e.CantidadNoches
+	
+--se corrige el montototal de cada factura, teniendo en cuenta algunos campos de itemFactura
+	 
+UPDATE  t1
+SET t1.Total =   t2.MontoTotal
+FROM  LOS_BORBOTONES.Factura t1
+		JOIN  LOS_BORBOTONES.temporalMontoFactura t2
+		ON  t1.NumeroFactura = t2.NumeroFactura
 GO
 
---LUEGO DE MIGRAR ITEM_FACTURA, SE DEBE PENSAR EN UN PROCEDIMIENTO QUE UPDATEE EL VALOR DE TOTAL DE LA TABLA FACTURA
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --Carga EstadoReserva
