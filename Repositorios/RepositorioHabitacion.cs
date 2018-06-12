@@ -30,7 +30,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
             sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.Piso);
             sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.Ubicacion);
-            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.Hotel.IdHotel);
             sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.TipoHabitacion.getIdTipoHabitacion());
 
             sqlCommand.CommandType = CommandType.Text;
@@ -80,7 +80,7 @@ namespace FrbaHotel.Repositorios
             SqlDataReader reader;
 
             sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
-            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.Hotel.IdHotel);
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
@@ -128,7 +128,9 @@ namespace FrbaHotel.Repositorios
 
                 TipoHabitacion tipoHabitacion = repositorioTipoHabitacion.getById(idTipoHabitacion);
 
-                habitacion = new Habitacion(idHabitacion, tipoHabitacion, Activa, Numero, Piso, Ubicacion, idHotel);
+                RepositorioHotel repositorioHotel = new RepositorioHotel();
+                Hotel hotel = repositorioHotel.getById(idHotel);
+                habitacion = new Habitacion(idHabitacion, tipoHabitacion, Activa, Numero, Piso, Ubicacion, hotel);
                 
             }
 
@@ -144,7 +146,7 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public List<Habitacion> getByHotelId(int idHotel)
+        public List<Habitacion> getByHotelId(int idHotel,Hotel hotel)
         {
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -174,7 +176,7 @@ namespace FrbaHotel.Repositorios
                 String ubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
                 TipoHabitacion tipoHabitacion = repositorioTipoHabitacion.getById(idTipoHabitacion);
 
-                habitaciones.Add(new Habitacion(idHabitacion,tipoHabitacion,activa,numero,piso,ubicacion,idHotel));
+                habitaciones.Add(new Habitacion(idHabitacion, tipoHabitacion, activa, numero, piso, ubicacion, hotel));
             }
             //Cierro Primera Consulta
             sqlConnection.Close();

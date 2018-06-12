@@ -73,7 +73,6 @@
     <Compile Include="AbmCliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
-    
     <Compile Include="AbmHabitacion\ABMHabitacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +181,12 @@
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />
     <Compile Include="Modelo\ItemFactura.cs" />
+    <Compile Include="RegistrarConsumible\AltaConsumible.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarConsumible\AltaConsumible.Designer.cs">
+      <DependentUpon>AltaConsumible.cs</DependentUpon>
+    </Compile>
     <Compile Include="RegistrarConsumible\Consumibles.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +278,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RegistrarConsumible\AltaConsumible.resx">
+      <DependentUpon>AltaConsumible.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RegistrarConsumible\Consumibles.resx">
       <DependentUpon>Consumibles.cs</DependentUpon>
     </EmbeddedResource>

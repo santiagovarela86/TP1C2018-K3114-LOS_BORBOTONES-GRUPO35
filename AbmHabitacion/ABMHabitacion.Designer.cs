@@ -61,6 +61,7 @@ namespace FrbaHotel.AbmHabitacion
             this.buttonCrearHabitacion.TabIndex = 0;
             this.buttonCrearHabitacion.Text = "Crear Habitacion";
             this.buttonCrearHabitacion.UseVisualStyleBackColor = true;
+            this.buttonCrearHabitacion.Click += new System.EventHandler(this.buttonCrearHabitacion_Click);
             // 
             // buttonModificarHabitacion
             // 

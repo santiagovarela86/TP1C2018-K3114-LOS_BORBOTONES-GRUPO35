@@ -43,7 +43,7 @@ namespace TestingFrbaHotel
 
 
             //ASSERT idHotel
-            Assert.AreEqual(habitacion.IdHotel, habitacionSearched.IdHotel);
+            Assert.AreEqual(habitacion.getHotel().IdHotel, habitacionSearched.getHotel().IdHotel);
 
         }
 

@@ -89,8 +89,6 @@
             this.ABMHotel.Text = "ABM Hotel";
             this.ABMHotel.UseVisualStyleBackColor = true;
             this.ABMHotel.Click += new System.EventHandler(this.ABMHotel_Click);
-
-            
             // 
             // ABMHabitacion
             // 
@@ -100,6 +98,7 @@
             this.ABMHabitacion.TabIndex = 4;
             this.ABMHabitacion.Text = "ABM Habitacion";
             this.ABMHabitacion.UseVisualStyleBackColor = true;
+            this.ABMHabitacion.Click += new System.EventHandler(this.ABMHabitacion_Click);
             // 
             // RegistrarEstadia
             // 

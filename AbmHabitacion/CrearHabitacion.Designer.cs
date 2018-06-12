@@ -40,6 +40,8 @@
             this.comboBoxUbicacion = new System.Windows.Forms.ComboBox();
             this.labelTipoHabitacion = new System.Windows.Forms.Label();
             this.comboBoxTipoHabitacion = new System.Windows.Forms.ComboBox();
+            this.buttonCrearHabitacion = new System.Windows.Forms.Button();
+            this.checkBoxActiva = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // labelNumero
@@ -82,7 +84,6 @@
             this.labelDescripcion.Size = new System.Drawing.Size(63, 13);
             this.labelDescripcion.TabIndex = 7;
             this.labelDescripcion.Text = "Descripcion";
-          
             // 
             // textDescripcion
             // 
@@ -139,11 +140,33 @@
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
             this.comboBoxTipoHabitacion.TabIndex = 16;
             // 
+            // buttonCrearHabitacion
+            // 
+            this.buttonCrearHabitacion.Location = new System.Drawing.Point(164, 259);
+            this.buttonCrearHabitacion.Name = "buttonCrearHabitacion";
+            this.buttonCrearHabitacion.Size = new System.Drawing.Size(75, 23);
+            this.buttonCrearHabitacion.TabIndex = 18;
+            this.buttonCrearHabitacion.Text = "Crear Habitacion";
+            this.buttonCrearHabitacion.UseVisualStyleBackColor = true;
+            this.buttonCrearHabitacion.Click += new System.EventHandler(this.buttonCrearHabitacion_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBoxActiva.AutoSize = true;
+            this.checkBoxActiva.Location = new System.Drawing.Point(13, 206);
+            this.checkBoxActiva.Name = "checkBoxActiva";
+            this.checkBoxActiva.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxActiva.TabIndex = 19;
+            this.checkBoxActiva.Text = "Activa";
+            this.checkBoxActiva.UseVisualStyleBackColor = true;
+            // 
             // CrearHabitacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(427, 309);
+            this.Controls.Add(this.checkBoxActiva);
+            this.Controls.Add(this.buttonCrearHabitacion);
             this.Controls.Add(this.labelTipoHabitacion);
             this.Controls.Add(this.comboBoxTipoHabitacion);
             this.Controls.Add(this.labelUbicacion);
@@ -177,6 +200,8 @@
         private System.Windows.Forms.TextBox textDescripcion;
         private System.Windows.Forms.Label labelTipoHabitacion;
         private System.Windows.Forms.ComboBox comboBoxTipoHabitacion;
+        private System.Windows.Forms.Button buttonCrearHabitacion;
+        private System.Windows.Forms.CheckBox checkBoxActiva;
 
 
     }

@@ -16,5 +16,18 @@ namespace FrbaHotel.AbmHabitacion
         {
             InitializeComponent();
         }
+
+        private void buttonCrearHabitacion_Click(object sender, EventArgs e)
+        {
+            using (CrearHabitacion crearHabitacion = new CrearHabitacion())
+            {
+                var resultFormCrearHabitacion = crearHabitacion.ShowDialog();
+
+                if (resultFormCrearHabitacion == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
     }
 }
