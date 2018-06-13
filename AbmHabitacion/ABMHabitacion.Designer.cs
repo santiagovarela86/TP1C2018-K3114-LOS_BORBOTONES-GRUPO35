@@ -80,6 +80,7 @@ namespace FrbaHotel.AbmHabitacion
             this.buttonBajaHabitacion.TabIndex = 2;
             this.buttonBajaHabitacion.Text = "Baja Habitacion";
             this.buttonBajaHabitacion.UseVisualStyleBackColor = true;
+            this.buttonBajaHabitacion.Click += new System.EventHandler(this.buttonBajaHabitacion_Click);
             // 
             // ABMHabitacion
             // 

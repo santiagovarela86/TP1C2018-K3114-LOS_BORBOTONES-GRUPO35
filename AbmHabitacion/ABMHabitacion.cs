@@ -29,5 +29,19 @@ namespace FrbaHotel.AbmHabitacion
                 }
             }
         }
+
+        private void buttonBajaHabitacion_Click(object sender, EventArgs e)
+        {
+
+            using (BajaHabitacion bajaHabitacion = new BajaHabitacion())
+            {
+                var resultFormBajaHabitacion = bajaHabitacion.ShowDialog();
+
+                if (resultFormBajaHabitacion == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
     }
 }
