@@ -3,7 +3,7 @@ USE GD1C2018
 GO
 
 ---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
--- Nomnre del hotel
+-- Nombre del hotel
 IF OBJECT_ID('LOS_BORBOTONES.concatenarNombreHotel', 'FN') IS NOT NULL
     DROP FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
 GO
@@ -13,6 +13,15 @@ IF OBJECT_ID('LOS_BORBOTONES.fn_costoTotalEstadia', 'FN') IS NOT NULL
     DROP FUNCTION LOS_BORBOTONES.fn_costoTotalEstadia
 GO
 
+--Puntos por estadia 
+IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalEstadia', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalEstadia
+GO
+
+--Puntos por consumible 
+IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalConsumible', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible
+GO
 ---------------------------------------------- DROPEO DE FK CONSTRAINTS ----------------------------------------------
 
 -- Tabla Funcionalidad_X_Rol 
@@ -324,15 +333,43 @@ BEGIN
 END
 GO
 
---funcion escalar para calcular el costo por consumible
+--funcion escalar para calcular el costo por estadia
 
 CREATE FUNCTION LOS_BORBOTONES.fn_costoTotalEstadia(@precioRegimen numeric(18,2), @cantidadDias numeric(18,0))
-	RETURNS money
+	RETURNS numeric(18,2)
 		AS
 			BEGIN
 				DECLARE @totalEstadia numeric(18,2)
 					SET @totalEstadia = sum(@precioRegimen * @cantidadDias)
 				RETURN @totalEstadia
+			END
+GO
+
+--funcion para calcular puntos por estadia, por cliente y facturacion
+
+CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalEstadia(@CostoTotalEstadia money)
+	RETURNS money
+		AS
+			BEGIN
+				DECLARE @totalPuntoEstadia numeric(18,0)
+				DECLARE @pesoPorPunto numeric(18,2)
+					SET @pesoPorPunto = 20
+					SET @totalPuntoEstadia = @CostoTotalEstadia / @pesoPorPunto
+				RETURN @totalPuntoEstadia
+			END
+GO
+
+--funcion para calcular puntos por consumible, por cliente y facturacion
+
+CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible(@CostoTotalConsumible numeric(18,2))
+	RETURNS numeric(18,2)
+		AS
+			BEGIN
+				DECLARE @totalPuntoConsumible numeric(18,0)
+				DECLARE @pesoPorPunto numeric(18,2)
+					SET @pesoPorPunto = 10
+					SET @totalPuntoConsumible = @CostoTotalConsumible / @pesoPorPunto
+				RETURN @totalPuntoConsumible
 			END
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -576,7 +613,7 @@ GO
 -- Tabla Asociacion Estadia - Consumible
 CREATE TABLE LOS_BORBOTONES.Estadia_X_Consumible (
 
-	idEstadia		INT,
+	idEstadia		INT		NOT NULL,
 	idConsumible	INT		NOT NULL,
 )
 GO
@@ -777,12 +814,12 @@ ADD CONSTRAINT FK_Usuario_EstadoReserva FOREIGN KEY(idUsuario) REFERENCES LOS_BO
 ALTER TABLE LOS_BORBOTONES.EstadoReserva
 ADD CONSTRAINT FK_Reserva_EstadoReserva FOREIGN KEY(idReserva) REFERENCES LOS_BORBOTONES.Reserva(idReserva)
 
-------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------
---------------------------------------FIN CREACION----------------------------------------
-------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------FIN CREACION--------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Creacion Procedimiento Migracion Tabla Maestra
 
@@ -926,7 +963,7 @@ GO
 
 INSERT INTO LOS_BORBOTONES.Direccion(Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
 (
-	SELECT  NULL, m.Cliente_Dom_Calle, m.Cliente_Nro_Calle, m.Cliente_Piso, m.Cliente_Depto, i.idIdentidad
+	SELECT  'No Posee', m.Cliente_Dom_Calle, m.Cliente_Nro_Calle, m.Cliente_Piso, m.Cliente_Depto, i.idIdentidad
 	FROM gd_esquema.Maestra m, LOS_BORBOTONES.Identidad i
 	WHERE i.NumeroDocumento = m.Cliente_Pasaporte_Nro
 UNION
@@ -1007,7 +1044,7 @@ GO
 -- Migracion Estadia (*)
  --El campo Facturada por defecto, inicia en 1
 -- para una misma estadia, habia dos una con fecha entrada y salida NULL, se descartaron los NULL
---en la tabla maestra esta el campo Estadia_Cant_Noches, que no esta en el DER, se agrega en la creacion de la tabla Estadia. habria que agregarlo al DER
+-- En la tabla maestra esta el campo Estadia_Cant_Noches, que no esta en el DER, se agrega en la creacion de la tabla Estadia. habria que agregarlo al DER
 
 INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
 		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 1, 1
@@ -1020,6 +1057,13 @@ INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, id
 		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 2, 2
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
 		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio > GETDATE()
+		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
+GO
+
+INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut) 
+		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 3, 3
+		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
+		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio = GETDATE()
 		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1096,7 +1140,7 @@ INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario(idHotel, idUsuario)
 GO
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Migracion Factura (*) trae montototal con errores, se corrige luego de migrar itemFactura
+--Migracion Factura (*) trae montototal con importes inconsistentes, se corrige luego de migrar itemFactura
 -- se define tipoDePago Efectivo, para los clientes migrados de la tablaMaestra
 
 INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, TipoPago, e.idEstadia, r.idReserva)
@@ -1125,7 +1169,7 @@ INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura
 --Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
 -- El regimen All inclusive no carga consumibles en el monto total.
 
-SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, sum(c.Precio * i.Cantidad) AS total, LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) AS CostoEstadia,
+SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, sum(c.Precio * i.Cantidad) AS CostoConsumible, LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) AS CostoEstadia,
 		CASE g.Descripcion WHEN 'All Inclusive' THEN LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches)
 		ELSE sum(c.Precio * i.Cantidad) + LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) END "MontoTotal"
   INTO LOS_BORBOTONES.temporalMontoFactura
@@ -1143,10 +1187,11 @@ SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, sum(c.Precio * i.C
 		WHERE  f.idFactura = i.idFactura
 	GROUP BY f.NumeroFactura, r.idReserva, g.Descripcion, g.Precio, e.CantidadNoches	
 	
---se corrige el montototal de cada factura, teniendo en cuenta algunos campos de itemFactura
+--se corrige el montototal de cada factura, y los puntos obtenidos, de acuerdo al enunciado, teniendo en cuenta algunos campos de itemFactura
 	 
 UPDATE  t1
-SET t1.Total =   t2.MontoTotal
+SET t1.Total =   t2.MontoTotal,
+	t1.Puntos = LOS_BORBOTONES.fn_puntoTotalConsumible(t2.CostoConsumible) + LOS_BORBOTONES.fn_puntoTotalEstadia(t2.CostoEstadia)
 FROM  LOS_BORBOTONES.Factura t1
 		JOIN  LOS_BORBOTONES.temporalMontoFactura t2
 		ON  t1.NumeroFactura = t2.NumeroFactura
@@ -1154,23 +1199,7 @@ GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Asociacion Estadia_X_Consumible
--- mejorarlo cob una funcion
-/*INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible (idEstadia, idConsumible)
-VALUES ((SELECT idEstadia FROM LOS_BORBOTONES.Estadia WHERE FechaSalida = CONVERT(datetime, '2017-01-06 00:00:00.000', 121)),(SELECT idConsumible FROM LOS_BORBOTONES.Consumible WHERE Descripcion = 'Agua Mineral'));
-GO
 
-INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible (idEstadia, idConsumible)
-VALUES ((SELECT idEstadia FROM LOS_BORBOTONES.Estadia WHERE FechaSalida = CONVERT(datetime, '2017-01-06 00:00:00.000', 121)),(SELECT idConsumible FROM LOS_BORBOTONES.Consumible WHERE Descripcion = 'Whisky'));
-GO
-
-INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible (idEstadia, idConsumible)
-VALUES ((SELECT idEstadia FROM LOS_BORBOTONES.Estadia WHERE FechaSalida = CONVERT(datetime, '2017-08-19 00:00:00.000', 121)),(SELECT idConsumible FROM LOS_BORBOTONES.Consumible WHERE Descripcion = 'Coca Cola'));
-GO
-
-INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible (idEstadia, idConsumible)
-VALUES ((SELECT idEstadia FROM LOS_BORBOTONES.Estadia WHERE FechaSalida = CONVERT(datetime, '2017-08-19 00:00:00.000', 121)),(SELECT idConsumible FROM LOS_BORBOTONES.Consumible WHERE Descripcion = 'Bonbones'));
-GO
-*/
 INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible) 
 		SELECT DISTINCT f.idEstadia, i.idConsumible
 		FROM LOS_BORBOTONES.Factura f
@@ -1196,21 +1225,21 @@ INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacio
 		JOIN LOS_BORBOTONES.Hotel h
 			ON r.idHotel = h.idHotel 
 		JOIN LOS_BORBOTONES.Habitacion a
-			ON h.idHotel = a.idHotel AND m.Habitacion_Numero = a.Numero
-	ORDER BY r.idReserva, a.idHabitacion, c.idCliente	
+			ON h.idHotel = a.idHotel AND m.Habitacion_Numero = a.Numero AND m.Habitacion_Piso = a.Piso
+		JOIN LOS_BORBOTONES.TipoHabitacion t
+			ON a.idTipoHabitacion = t.idTipoHabitacion AND m.Habitacion_Tipo_Codigo = t.Codigo
+	ORDER BY a.idHabitacion, r.idReserva,  c.idCliente
 GO
-		
---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga EstadoReserva
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 3, r.idReserva
+		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 1, r.idReserva
 		FROM LOS_BORBOTONES.Reserva r
 		JOIN LOS_BORBOTONES.Identidad i
 			ON i.TipoIdentidad = 'Usuario'
 		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario  AND u.Username = 'recepcionista'
+			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
 		WHERE r.FechaDesde < GETDATE()
 ORDER BY r.idReserva, r.FechaCreacion
 GO
