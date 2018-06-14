@@ -91,6 +91,12 @@
     <Compile Include="AbmHabitacion\CrearHabitacion.Designer.cs">
       <DependentUpon>CrearHabitacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHabitacion\ModificarHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\ModificarHabitacion.Designer.cs">
+      <DependentUpon>ModificarHabitacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmHotel\CreateHotel.cs">
       <SubType>Form</SubType>
     </Compile>

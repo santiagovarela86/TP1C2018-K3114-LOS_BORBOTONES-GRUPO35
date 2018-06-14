@@ -20,6 +20,7 @@ namespace FrbaHotel.Modelo
         private List<Habitacion> habitaciones = new List<Habitacion>();
         private List<CierreTemporal> cierresTemporales = new List<CierreTemporal>();
 
+        public Hotel() { }
         public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,
             List<Reserva> reservas, List<Regimen> regimenes, List<Habitacion> habitaciones, List<CierreTemporal> cierresTemporales)
         {

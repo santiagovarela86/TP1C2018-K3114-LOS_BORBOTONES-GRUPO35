@@ -63,7 +63,7 @@
             // labelPiso
             // 
             this.labelPiso.AutoSize = true;
-            this.labelPiso.Location = new System.Drawing.Point(212, 37);
+            this.labelPiso.Location = new System.Drawing.Point(217, 37);
             this.labelPiso.Name = "labelPiso";
             this.labelPiso.Size = new System.Drawing.Size(27, 13);
             this.labelPiso.TabIndex = 5;
@@ -79,7 +79,7 @@
             // labelDescripcion
             // 
             this.labelDescripcion.AutoSize = true;
-            this.labelDescripcion.Location = new System.Drawing.Point(212, 152);
+            this.labelDescripcion.Location = new System.Drawing.Point(217, 97);
             this.labelDescripcion.Name = "labelDescripcion";
             this.labelDescripcion.Size = new System.Drawing.Size(63, 13);
             this.labelDescripcion.TabIndex = 7;
@@ -87,7 +87,7 @@
             // 
             // textDescripcion
             // 
-            this.textDescripcion.Location = new System.Drawing.Point(292, 149);
+            this.textDescripcion.Location = new System.Drawing.Point(292, 97);
             this.textDescripcion.Name = "textDescripcion";
             this.textDescripcion.Size = new System.Drawing.Size(100, 20);
             this.textDescripcion.TabIndex = 6;
@@ -95,7 +95,7 @@
             // labelHotel
             // 
             this.labelHotel.AutoSize = true;
-            this.labelHotel.Location = new System.Drawing.Point(10, 96);
+            this.labelHotel.Location = new System.Drawing.Point(13, 164);
             this.labelHotel.Name = "labelHotel";
             this.labelHotel.Size = new System.Drawing.Size(35, 13);
             this.labelHotel.TabIndex = 13;
@@ -103,15 +103,15 @@
             // 
             // comboBoxHotel
             // 
-            this.comboBoxHotel.Location = new System.Drawing.Point(61, 93);
+            this.comboBoxHotel.Location = new System.Drawing.Point(61, 161);
             this.comboBoxHotel.Name = "comboBoxHotel";
-            this.comboBoxHotel.Size = new System.Drawing.Size(100, 21);
+            this.comboBoxHotel.Size = new System.Drawing.Size(134, 21);
             this.comboBoxHotel.TabIndex = 12;
             // 
             // labelUbicacion
             // 
             this.labelUbicacion.AutoSize = true;
-            this.labelUbicacion.Location = new System.Drawing.Point(212, 96);
+            this.labelUbicacion.Location = new System.Drawing.Point(217, 164);
             this.labelUbicacion.Name = "labelUbicacion";
             this.labelUbicacion.Size = new System.Drawing.Size(58, 13);
             this.labelUbicacion.TabIndex = 15;
@@ -119,7 +119,7 @@
             // 
             // comboBoxUbicacion
             // 
-            this.comboBoxUbicacion.Location = new System.Drawing.Point(292, 93);
+            this.comboBoxUbicacion.Location = new System.Drawing.Point(292, 161);
             this.comboBoxUbicacion.Name = "comboBoxUbicacion";
             this.comboBoxUbicacion.Size = new System.Drawing.Size(100, 21);
             this.comboBoxUbicacion.TabIndex = 14;
@@ -127,7 +127,7 @@
             // labelTipoHabitacion
             // 
             this.labelTipoHabitacion.AutoSize = true;
-            this.labelTipoHabitacion.Location = new System.Drawing.Point(10, 152);
+            this.labelTipoHabitacion.Location = new System.Drawing.Point(10, 100);
             this.labelTipoHabitacion.Name = "labelTipoHabitacion";
             this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
             this.labelTipoHabitacion.TabIndex = 17;
@@ -135,7 +135,7 @@
             // 
             // comboBoxTipoHabitacion
             // 
-            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(61, 146);
+            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(61, 94);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
             this.comboBoxTipoHabitacion.TabIndex = 16;
@@ -150,10 +150,10 @@
             this.buttonCrearHabitacion.UseVisualStyleBackColor = true;
             this.buttonCrearHabitacion.Click += new System.EventHandler(this.buttonCrearHabitacion_Click);
             // 
-            // checkBox1
+            // checkBoxActiva
             // 
             this.checkBoxActiva.AutoSize = true;
-            this.checkBoxActiva.Location = new System.Drawing.Point(13, 206);
+            this.checkBoxActiva.Location = new System.Drawing.Point(16, 226);
             this.checkBoxActiva.Name = "checkBoxActiva";
             this.checkBoxActiva.Size = new System.Drawing.Size(56, 17);
             this.checkBoxActiva.TabIndex = 19;

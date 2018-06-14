@@ -182,6 +182,97 @@ namespace FrbaHotel.Repositorios
         }
 
 
+
+        public List<Habitacion> getByQuery(String numero, String piso, Hotel hotel,
+                                             String ubicacion,TipoHabitacion tipoHabitacion,bool activa )
+        {
+            List<Habitacion> habitaciones = new List<Habitacion>();
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            RepositorioTipoHabitacion repositorioTipoHabitacion = new RepositorioTipoHabitacion();
+
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText =
+                "SELECT DISTINCT(HAB.idHabitacion),HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
+                getCondiciones(numero,piso,hotel,ubicacion,tipoHabitacion,activa,sqlCommand) + ";";
+            
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                int qidHabitacion = reader.GetInt32(reader.GetOrdinal("idHabitacion"));
+                int qidTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
+                bool qactiva = reader.GetBoolean(reader.GetOrdinal("Activa"));
+                int qnumero = reader.GetInt32(reader.GetOrdinal("Numero"));
+                int qpiso = reader.GetInt32(reader.GetOrdinal("Piso"));
+                String qubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
+                TipoHabitacion qtipoHabitacion = repositorioTipoHabitacion.getById(qidTipoHabitacion);
+                Hotel qhotel = repositorioHotel.getById(hotel.getIdHotel());
+                habitaciones.Add(new Habitacion(qidHabitacion, qtipoHabitacion, qactiva, qnumero, qpiso, qubicacion, qhotel));
+           
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+            return habitaciones;
+
+        }
+
+        private String getCondiciones(String numero, String piso, Hotel hotel,
+                                             String ubicacion,TipoHabitacion tipoHabitacion,bool activa,  SqlCommand sqlCommand)
+        {
+
+            List<String> condiciones = new List<String>();
+            if (numero != null)
+            {
+                condiciones.Add("HAB.Numero = @habNumero ");
+                sqlCommand.Parameters.AddWithValue("@habNumero", numero);
+
+            }
+            if (piso != null)
+            {
+                condiciones.Add("HAB.Piso=@habPiso");
+                sqlCommand.Parameters.AddWithValue("@habPiso", piso);
+
+            }
+            if (hotel.getIdHotel() != 0)
+            {
+                condiciones.Add("HAB.idHotel=@habIdHotel");
+                sqlCommand.Parameters.AddWithValue("@habIdHotel", hotel.getIdHotel());
+
+            }
+
+            if (ubicacion != null )
+            {
+                condiciones.Add("HAB.Ubicacion=@habUbicacion");
+                sqlCommand.Parameters.AddWithValue("@habUbicacion", ubicacion);
+            }
+
+            if (tipoHabitacion.getIdTipoHabitacion() != 0)
+            {
+                condiciones.Add("HAB.idTipoHabitacion=@habidTipoHabitacion");
+                sqlCommand.Parameters.AddWithValue("@habidTipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
+            }
+            
+                condiciones.Add("HAB.Activa=@habActiva");
+                sqlCommand.Parameters.AddWithValue("@habActiva",activa);
+            
+            if (condiciones.Count != 0)
+            {
+                return " WHERE " + string.Join(" AND ", condiciones.ToArray());
+            }
+            return "";
+        }
+
         public List<Habitacion> getByHotelId(int idHotel,Hotel hotel)
         {
 

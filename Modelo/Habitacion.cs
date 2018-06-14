@@ -87,7 +87,5 @@ namespace FrbaHotel.Modelo
         public String Ubicacion { get { return this.getUbicacion(); } }
         public Hotel Hotel { get { return this.getHotel(); } }
         public int IdHabitacion { get { return this.getIdHabitacion(); } }
-
-        public String Descriptor { get { return hotel.getNombre() + "-" + Piso +"-"+ Numero; } }
     }
 }
