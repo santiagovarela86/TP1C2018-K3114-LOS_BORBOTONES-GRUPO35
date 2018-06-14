@@ -14,7 +14,7 @@ namespace TestingFrbaHotel
         public void Test_Repo_Rol_Creacion_Rol()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
-            Rol rol = repositorioRol.getByNombre("Administrador");
+            Rol rol = repositorioRol.getByNombre("AdminOriginal");
             Assert.AreEqual(5 , rol.getFuncionalidades().Count);
 
             rol = repositorioRol.getByNombre("Recepcionista");
@@ -37,7 +37,7 @@ namespace TestingFrbaHotel
         {
             RepositorioRol repositorioRol = new RepositorioRol();
 
-            Assert.AreEqual(4, repositorioRol.getAll().Count);
+            Assert.AreEqual(5, repositorioRol.getAll().Count);
 
             Assert.IsTrue(repositorioRol.getAll().Exists(r => r.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMHotel"))));
 
@@ -50,13 +50,11 @@ namespace TestingFrbaHotel
         public void Test_Repo_Rol_exists()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
-            Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
+            Rol rolAdministrador = repositorioRol.getByNombre("AdminOriginal");
 
             Assert.IsFalse(repositorioRol.exists(new Rol(50, "Dummy", false, null)));
 
             Assert.IsTrue(repositorioRol.exists(rolAdministrador));
-
-            Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
         }
 
         [TestMethod]
@@ -73,13 +71,13 @@ namespace TestingFrbaHotel
             RepositorioRol repositorioRol = new RepositorioRol();
 
             //SIN FILTRO
-            Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
+            Assert.AreEqual(5, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
 
             //FILTRO NOMBRE
-            Assert.AreEqual(1, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>(), null).Count);
+            Assert.AreEqual(1, repositorioRol.getByQuery("AdminOriginal", new KeyValuePair<String, Boolean>(), null).Count);
 
             //FILTRO ESTADO
-            Assert.AreEqual(3, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
+            Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
 
             //FILTRO NOMBRE Y ESTADO
             Assert.AreEqual(0, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>("", false), null).Count);
