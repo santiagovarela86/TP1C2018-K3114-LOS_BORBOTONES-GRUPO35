@@ -98,9 +98,14 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdHotel { get { return this.getIdHotel(); } set { this.idHotel = value; } }
-        public Categoria Categoria { get { return this.getCategoria(); } }
-        public Direccion Direccion { get { return this.getDireccion(); } }
         public String Nombre { get { return this.getNombre(); } }
+        public int Estrellas { get { return this.getCategoria().Estrellas; } }
+        public decimal RecargaEstrellas { get { return this.getCategoria().RecargaEstrellas; } }
+        public String Pais { get { return this.getDireccion().getPais(); } }
+        public String Ciudad { get { return this.getDireccion().getCiudad(); } }
+        public String Calle { get { return this.getDireccion().getCalle(); } }
+        public int NumeroCalle { get { return this.getDireccion().getNumeroCalle(); } }
+
         public String Mail { get { return this.getMail(); } }
         public String Telefono { get { return this.getTelefono(); } }
         public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
@@ -108,6 +113,6 @@ namespace FrbaHotel.Modelo
         public List<Regimen> Regimenes { get { return this.getRegimenes(); } }
         public List<Habitacion> Habitaciones { get { return this.getHabitaciones(); } }
         public List<CierreTemporal> CierresTemporales { get { return this.getCierresTemporales(); } }
-        
+
     }
 }

@@ -313,8 +313,8 @@ namespace FrbaHotel.Repositorios {
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            Direccion direccion = hotel.Direccion;
-            Categoria categoria = hotel.Categoria;
+            Direccion direccion = hotel.getDireccion();
+            Categoria categoria = hotel.getCategoria();
 
             //HOTEL
             sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.IdHotel);
