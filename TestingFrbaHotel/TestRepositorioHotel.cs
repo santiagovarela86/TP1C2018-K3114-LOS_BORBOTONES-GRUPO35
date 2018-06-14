@@ -29,12 +29,12 @@ namespace TestingFrbaHotel
             Assert.AreEqual(hotel1.Mail, hotelSearched.getMail());
             Assert.AreEqual(hotel1.Telefono, hotelSearched.getTelefono());
             Debug.Assert(Math.Abs((hotel1.FechaInicioActividades - hotelSearched.getFechaInicioActividades()).TotalSeconds) < 1);
-            Assert.AreEqual(hotel1.Categoria.Estrellas, hotelSearched.getCategoria().getEstrellas());
-            Assert.AreEqual(hotel1.Categoria.RecargaEstrellas, hotelSearched.getCategoria().getRecargaEstrellas());
-            Assert.AreEqual(hotel1.Direccion.Pais, hotelSearched.getDireccion().getPais());
-            Assert.AreEqual(hotel1.Direccion.Ciudad, hotelSearched.getDireccion().getCiudad());
-            Assert.AreEqual(hotel1.Direccion.Calle, hotelSearched.getDireccion().getCalle());
-            Assert.AreEqual(hotel1.Direccion.NumeroCalle, hotelSearched.getDireccion().getNumeroCalle());
+            Assert.AreEqual(hotel1.getCategoria().Estrellas, hotelSearched.getCategoria().getEstrellas());
+            Assert.AreEqual(hotel1.getCategoria().RecargaEstrellas, hotelSearched.getCategoria().getRecargaEstrellas());
+            Assert.AreEqual(hotel1.getDireccion().Pais, hotelSearched.getDireccion().getPais());
+            Assert.AreEqual(hotel1.getDireccion().Ciudad, hotelSearched.getDireccion().getCiudad());
+            Assert.AreEqual(hotel1.getDireccion().Calle, hotelSearched.getDireccion().getCalle());
+            Assert.AreEqual(hotel1.getDireccion().NumeroCalle, hotelSearched.getDireccion().getNumeroCalle());
             Assert.AreEqual(0, hotelSearched.getDireccion().getPiso());
 
 
@@ -59,13 +59,13 @@ namespace TestingFrbaHotel
             foreach(var hotel in hoteles){ Assert.IsTrue(hotel.Nombre.Equals(hotNombre));}
 
             //POR ESTRELLAS
-            int categoriaEstrellas = hotelSaved.Categoria.Estrellas;
+            int categoriaEstrellas = hotelSaved.getCategoria().Estrellas;
             hoteles = repositorioHotel.getByQuery(null, categoriaEstrellas, null, null);
             Assert.IsTrue(hoteles.Count > 0);
             foreach (var hotel in hoteles) { Assert.IsTrue(hotel.getCategoria().Estrellas.Equals(categoriaEstrellas)); }
 
             //POR CIUDAD
-            String dirCiudad = hotelSaved.Direccion.Ciudad;
+            String dirCiudad = hotelSaved.getDireccion().Ciudad;
 
             hoteles = repositorioHotel.getByQuery(null, null, dirCiudad, null);
             Assert.IsTrue(hoteles.Count > 0);
@@ -73,7 +73,7 @@ namespace TestingFrbaHotel
 
 
             //POR PAIS
-            String dirPais = hotelSaved.Direccion.Pais;
+            String dirPais = hotelSaved.getDireccion().Pais;
 
             hoteles = repositorioHotel.getByQuery(null, null, null, dirPais);
             Assert.IsTrue(hoteles.Count > 0);
