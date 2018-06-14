@@ -23,7 +23,7 @@ namespace FrbaHotel.Modelo
 
         public int getIdTipoHabitacion()
         {
-            return this.IdTipoHabitacion;
+            return this.idTipoHabitacion;
         }
 
         public String getCodigo()

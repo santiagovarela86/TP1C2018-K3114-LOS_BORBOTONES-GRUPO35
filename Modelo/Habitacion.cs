@@ -14,10 +14,10 @@ namespace FrbaHotel.Modelo
         private int numero = 0;
         private int piso = 0;
         private String ubicacion = "";
-        private int idHotel;
+        private Hotel hotel;
 
         public Habitacion(int idHabitacion, TipoHabitacion tipoHabitacion,
-            Boolean activa, int numero, int piso, String ubicacion,int idHotel)
+            Boolean activa, int numero, int piso, String ubicacion, Hotel hotel)
         {
             this.idHabitacion = idHabitacion;
             this.tipoHabitacion = tipoHabitacion;
@@ -25,8 +25,9 @@ namespace FrbaHotel.Modelo
             this.numero = numero;
             this.piso = piso;
             this.ubicacion = ubicacion;
-            this.idHotel = idHotel;
+            this.hotel = hotel;
         }
+
 
         public TipoHabitacion getTipoHabitacion()
         {
@@ -53,9 +54,9 @@ namespace FrbaHotel.Modelo
             return ubicacion;
         }
 
-        public int getIdHotel()
+        public Hotel getHotel()
         {
-            return this.idHotel;
+            return this.hotel;
         }
 
         public int getIdHabitacion()
@@ -67,6 +68,15 @@ namespace FrbaHotel.Modelo
         {
             this.idHabitacion = idHabitacion;
         }
+        public void setHotel(Hotel hotel)
+        {
+            this.hotel = hotel;
+        }
+
+        public void setActiva(bool activa)
+        {
+            this.activa = activa;
+        }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
        
@@ -75,7 +85,9 @@ namespace FrbaHotel.Modelo
         public int Numero { get { return this.getNumero(); } }
         public int Piso { get { return this.getPiso(); } }
         public String Ubicacion { get { return this.getUbicacion(); } }
-        public int IdHotel { get { return this.getIdHotel(); } }
+        public Hotel Hotel { get { return this.getHotel(); } }
         public int IdHabitacion { get { return this.getIdHabitacion(); } }
+
+        public String Descriptor { get { return hotel.getNombre() + "-" + Piso +"-"+ Numero; } }
     }
 }

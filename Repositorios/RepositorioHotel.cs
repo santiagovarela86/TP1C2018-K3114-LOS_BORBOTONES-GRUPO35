@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
-//using FrbaHotel.AbmHotel.request;
 using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.Repositorios {
@@ -12,27 +11,25 @@ namespace FrbaHotel.Repositorios {
     public class RepositorioHotel : Repositorio<Hotel>
     {
 
-
-        /*
-        public int crearBajaTemporal(BajaTemporal request){
+        public int crearBajaTemporal(CierreTemporal cierreTemporal){
 
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
             RepositorioReserva repositorioReserva = new RepositorioReserva();
-            Hotel hotel = getById(request.IdHotel);
+            Hotel hotel = getById(cierreTemporal.IdHotel);
             List<Reserva> reservas = hotel.getReservas();
             foreach(var reserva in reservas){
-                bool overlap = reserva.FechaDesde < request.FechaHasta && request.FechaDesde < reserva.FechaHasta;
+                bool overlap = reserva.FechaDesde < cierreTemporal.FechaFin && cierreTemporal.FechaInicio < reserva.FechaHasta;
                 if (overlap){
                     throw new RequestInvalidoException("No es posible dar de baja temporal el hotel. Existen reservas para la fecha la cual se quiere dar de baja el hotel");
                 }
                            }
-            CierreTemporal cierreTemporal = new CierreTemporal(0, request.FechaDesde, request.FechaHasta, request.Descripcion, request.IdHotel);
+
             return repositorioCierreTemporal.create(cierreTemporal);
         }
-        */
 
-        /*
-        public List<Hotel> searchHotel(SearchHotelRequest request) {
+
+        public List<Hotel> getByQuery(String nombreHotel,int? estrellas,String ciudad, String pais)
+        {
 
             RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
             RepositorioRegimen repositorioRegimen = new RepositorioRegimen();
@@ -51,7 +48,7 @@ namespace FrbaHotel.Repositorios {
             sqlCommand.CommandText =
                 "SELECT DISTINCT(HOT.idHotel),HOT.Nombre,HOT.Mail,HOT.Telefono,HOT.FechaInicioActividades,HOT.idCategoria,HOT.idDireccion FROM LOS_BORBOTONES.Hotel AS HOT" +
                 " JOIN LOS_BORBOTONES.Categoria AS CAT ON CAT.idCategoria= HOT.idCategoria" +
-                " JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion" + getCondiciones(request,sqlCommand) + ";";
+                " JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion" + getCondiciones(nombreHotel, estrellas, ciudad, pais,sqlCommand) + ";";
             
             sqlConnection.Open();
 
@@ -87,38 +84,38 @@ namespace FrbaHotel.Repositorios {
 
         }
 
-         * */
-
-        /*
-
-        private String getCondiciones(SearchHotelRequest request, SqlCommand sqlCommand)
+        private String getCondiciones(String nombreHotel, int? estrellas, String ciudad, String pais, SqlCommand sqlCommand)
         {
 
             List<String> condiciones = new List<String>();
-            if (request.NombreHotel != null)
+            if (nombreHotel != null)
             {
                 condiciones.Add("HOT.Nombre LIKE @hotNombreHotel + '%'");
-                sqlCommand.Parameters.AddWithValue("@hotNombreHotel", request.NombreHotel);
+                sqlCommand.Parameters.AddWithValue("@hotNombreHotel", nombreHotel);
 
             }
-            if (request.Ciudad != null) {
+            if (ciudad != null)
+            {
                 condiciones.Add("DIR.Ciudad=@dirCiudad");
-                sqlCommand.Parameters.AddWithValue("@dirCiudad", request.Ciudad);
+                sqlCommand.Parameters.AddWithValue("@dirCiudad", ciudad);
 
             }
-            if (request.Pais != null) {
+            if (pais != null)
+            {
                 condiciones.Add("DIR.Pais=@dirPais");
-                sqlCommand.Parameters.AddWithValue("@dirPais", request.Pais);
+                sqlCommand.Parameters.AddWithValue("@dirPais", pais);
             }
-            if (request.Estrellas != null) {
+            if (estrellas != null)
+            {
                 condiciones.Add("CAT.Estrellas=@catEstrellas");
-                sqlCommand.Parameters.AddWithValue("@catEstrellas", request.Estrellas);
+                sqlCommand.Parameters.AddWithValue("@catEstrellas", estrellas);
             }
-            return " WHERE " + string.Join(" AND ", condiciones.ToArray());
-
+            if (condiciones.Count != 0)
+            {
+                return " WHERE " + string.Join(" AND ", condiciones.ToArray());
+            }
+            return "";
         }
-         * 
-         * */
 
 
         public override int create(Hotel hotel)

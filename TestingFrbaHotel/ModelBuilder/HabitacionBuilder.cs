@@ -12,7 +12,11 @@ namespace TestingFrbaHotel.ModelBuilder
     {
         public static Habitacion buildHabitacion(TipoHabitacion tipoHabitacion, int idHotel)
         {
-            return new Habitacion(0, tipoHabitacion, true, 1, 1, "TEST: ZONA 1",idHotel);
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            Hotel hotel= HotelBuilder.buildHotel();
+            int id= repositorioHotel.create(hotel);
+            hotel.IdHotel=id;
+            return new Habitacion(0, tipoHabitacion, true, 1, 1, "TEST: ZONA 1", hotel);
         }
     }
 }
