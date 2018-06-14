@@ -35,5 +35,16 @@ namespace FrbaHotel.AbmHabitacion
             MessageBox.Show("Habitacion " + (activa?"Activada":"Desactivada"), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 
         }
+
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }
