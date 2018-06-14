@@ -40,8 +40,8 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                usuarioCheckIn = repoUsuario.getById(reader.GetOrdinal("IdUsuarioIn"));
-                usuarioCheckOut = repoUsuario.getById(reader.GetOrdinal("IdUsuarioOut"));
+                usuarioCheckIn = repoUsuario.getById(reader.GetOrdinal("idUsuarioIn"));
+                usuarioCheckOut = repoUsuario.getById(reader.GetOrdinal("idUsuarioOut"));
                 fechaEntrada = reader.GetDateTime(reader.GetOrdinal("FechaEntrada"));
                 fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
                 facturada = reader.GetBoolean(reader.GetOrdinal("Facturada"));

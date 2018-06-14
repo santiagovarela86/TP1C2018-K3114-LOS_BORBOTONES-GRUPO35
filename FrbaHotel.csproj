@@ -148,6 +148,12 @@
     <Compile Include="Excepciones\RequestInvalidoException.cs" />
     <Compile Include="Excepciones\UsuarioBloqueadoException.cs" />
     <Compile Include="Excepciones\ErrorDeAutenticacionException.cs" />
+    <Compile Include="FacturarEstadia\FacturarEstadias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FacturarEstadia\FacturarEstadias.Designer.cs">
+      <DependentUpon>FacturarEstadias.cs</DependentUpon>
+    </Compile>
     <Compile Include="FuncionesAdicionales.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -268,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\AltaUsuario.resx">
       <DependentUpon>AltaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FacturarEstadia\FacturarEstadias.resx">
+      <DependentUpon>FacturarEstadias.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FuncionesAdicionales.resx">
       <DependentUpon>FuncionesAdicionales.cs</DependentUpon>
