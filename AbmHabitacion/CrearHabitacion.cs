@@ -68,9 +68,9 @@ namespace FrbaHotel.AbmHabitacion
 
         private String validateStringFields(String field, String fieldName)
         {
-            if (field == null)
+            if (field == null || field=="")
             {
-                throw new RequestInvalidoException(fieldName + "no puede ser nulo");
+                throw new RequestInvalidoException(fieldName + " no puede ser nulo");
             }
             return field;
         }
