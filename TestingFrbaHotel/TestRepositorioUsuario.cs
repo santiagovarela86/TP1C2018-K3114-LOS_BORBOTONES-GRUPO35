@@ -50,22 +50,16 @@ namespace TestingFrbaHotel
             Assert.AreEqual(3, usuarios.Count);
         }
 
-        /*
         [TestMethod]
-        public void Test_Repo_Usuario_exists()
+        public void Test_Repo_Usuario_EncriptoBienPassAdmin()
         {
-            //HAY QUE PROGRAMAR EL EXISTS...
-
-            //RepositorioRol repositorioRol = new RepositorioRol();
-            //Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
-
-            //Assert.IsFalse(repositorioRol.exists(new Rol(50, "Dummy", false, null)));
-
-            //Assert.IsTrue(repositorioRol.exists(rolAdministrador));
-
-            //Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            Usuario adminUteniano = repoUsuario.getByUsername("admin");
+            String passwordEncriptadaSHA256 = adminUteniano.getPassword();
+            String passwordPrueba = repoUsuario.EncriptarSHA256("w23e");
+            System.Console.WriteLine(passwordPrueba);
+            Assert.AreEqual(passwordEncriptadaSHA256, passwordPrueba);
         }
-        */
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteNombreException), "No existe usuario con el Nombre asociado")]

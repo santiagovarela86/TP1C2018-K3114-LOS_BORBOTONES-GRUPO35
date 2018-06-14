@@ -829,7 +829,7 @@ CREATE INDEX IDX_IDENTIDAD01 ON LOS_BORBOTONES.Identidad (Mail); -- se crea un i
 --Carga de  Roles Iniciales
 
 INSERT INTO LOS_BORBOTONES.Rol (Nombre, Activo)
-VALUES ('Administrador', 1), ('Recepcionista', 1), ('Guest', 1), ('RolDummy', 0);
+VALUES ('AdminOriginal', 1), ('AdminDelEnunciado', 1), ('Recepcionista', 1), ('Guest', 1), ('RolDummy', 0);
 GO
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga de  Funcionalidades
@@ -840,29 +840,43 @@ VALUES ('ABMRol'), ('ABMReserva'), ('ABMUsuario'), ('ABMCliente'), ('ABMHotel'),
 GO
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Asociación Inicial Roles Funcionalidad
+--Permisos del administrador que inferimos segun el enunciado
 
 INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
-VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMRol'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Administrador'));
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMRol'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminOriginal'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
-VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMUsuario'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Administrador'));
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMUsuario'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminOriginal'));
 GO
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMHotel'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminOriginal'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMHabitacion'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminOriginal'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMRegimenEstadia'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminOriginal'));
+GO
+
+--Permisos del administrador full control que pide el enunciado para la entrega
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+SELECT f.idFuncionalidad, r.idRol
+FROM LOS_BORBOTONES.Funcionalidad f
+CROSS JOIN LOS_BORBOTONES.Rol r
+WHERE r.Nombre = 'AdminDelEnunciado';
+GO
+
+--Permisos del recepcionista
+-------------------------------------------------------------------------------
 
 INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMCliente'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Recepcionista'));
-GO
-
-INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
-VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMHotel'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Administrador'));
-GO
-
-INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
-VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMHabitacion'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Administrador'));
-GO
-
-INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
-VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMRegimenEstadia'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Administrador'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
@@ -870,12 +884,9 @@ VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripc
 GO
 
 INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
-VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMReserva'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Guest'));
-GO
-
-INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'RegistrarEstadia'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Recepcionista'));
 GO
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Estos últimos tres permisos no están validados (inferimos los roles asociados a la funcionalidad)
 
@@ -891,19 +902,31 @@ INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'GenerarListadoEstadistico'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Recepcionista'));
 GO
 
+--Permisos del guest
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMReserva'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Guest'));
+GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Genero Identidad de los Usuarios
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
-	   VALUES('Usuario', 'Jose', 'Perez', 'DNI', '30213210',  'admin@frba_utn.com', '1968-01-09 00:00:00.000', 'ARGENTINO')
+	   VALUES('Usuario', 'Jose', 'Perez', 'DNI', '30213210',  'admin2@frba_utn.com', '1968-01-09 00:00:00.000', 'ARGENTINO')
 GO
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
-	   VALUES('Usuario', 'Alberto', 'Mandinga', 'DNI', '18217283',  'soporte2@frba_utn.com', '1998-05-05 00:00:00.000', 'PERUANO')
+	   VALUES('Usuario', 'Guest', 'Guest', 'DNI', '1',  'guest@frba_utn.com', '1998-05-05 00:00:00.000', 'GUESTa')
 GO
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
 	   VALUES('Usuario', 'Carolina', 'Mengoche', 'DNI', '17309573',  'recepcionista@frba_utn.com', '1988-09-11 00:00:00.000', 'COLOMBIANO')
+GO
+
+--Identidad del admin del enunciado
+INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
+	   VALUES('Usuario', 'Pedro', 'Uteniano', 'DNI', '28450395',  'admin@frba_utn.com', '1984-02-07 00:00:00.000', 'ARGENTINO')
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -914,38 +937,53 @@ INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, De
 GO
 
 INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
-	VALUES ('Argentina','Entre Rios', 'San Benito', 2345, 2, 'D', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '18217283' and TipoIdentidad = 'Usuario'));
+	VALUES ('Guest','Guest', 'Guest', 0, 0, '', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '1' and TipoIdentidad = 'Usuario'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
 	VALUES ('Argentina','Dock Sud', 'Boulevard San Martin', 576, 0, '', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '17309573' and TipoIdentidad = 'Usuario'));
 GO
 
+--Inserto direccion del admin uteniano
+INSERT INTO LOS_BORBOTONES.Direccion (Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
+	VALUES ('Argentina','Lugano', 'Mozart', 2300, 0, '', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '28450395' and TipoIdentidad = 'Usuario'));
+GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- La password es 1234 para todos los usuarios
+-- Este es el admin que inferimos por las funcionalidades del enunciado
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
-	VALUES ('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '30213210' and TipoIdentidad = 'Usuario'));
+	VALUES ('adminOriginal','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '30213210' and TipoIdentidad = 'Usuario'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
-	VALUES ('guest','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '18217283' and TipoIdentidad = 'Usuario'));
+	VALUES ('guest','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '1' and TipoIdentidad = 'Usuario'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
 	VALUES ('recepcionista','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '17309573' and TipoIdentidad = 'Usuario'));
 GO
 
+--Este es el usuario administrador que pide el enunciado
+INSERT INTO LOS_BORBOTONES.Usuario (Username,Password, idIdentidad)
+	VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7', (SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = 'DNI' and NumeroDocumento like '28450395' and TipoIdentidad = 'Usuario'));
+GO
+
 --Carga Rol_X_Usuario
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
-	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'administrador'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'admin'));
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminOriginal'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'adminOriginal'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
-	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'guest'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'guest'));
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Guest'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'guest'));
 GO
 
 INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
-	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'recepcionista'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'recepcionista'));
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Recepcionista'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'recepcionista'));
+GO
+
+INSERT INTO LOS_BORBOTONES.Rol_X_Usuario (idRol, idUsuario)
+	VALUES ((SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'AdminDelEnunciado'),(SELECT idUsuario FROM LOS_BORBOTONES.Usuario WHERE Username = 'admin'));
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
