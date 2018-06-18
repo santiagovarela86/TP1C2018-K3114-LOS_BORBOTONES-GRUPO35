@@ -62,7 +62,7 @@ namespace TestingFrbaHotel
         public void Test_Repo_Rol_getByNameFalla()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
-            Rol rol = repositorioRol.getByNombre("Lanata");
+            Rol rol = repositorioRol.getByNombre("RolFicticio");
         }
 
         [TestMethod]

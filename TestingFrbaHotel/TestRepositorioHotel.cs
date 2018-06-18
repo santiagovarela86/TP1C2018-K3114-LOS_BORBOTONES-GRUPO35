@@ -14,7 +14,8 @@ namespace TestingFrbaHotel
     {
         RepositorioHotel repositorioHotel = new RepositorioHotel();
 
-
+        //ESTE TEST TIENE QUE BORRAR LOS HOTELES QUE CREA...
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
@@ -45,7 +46,10 @@ namespace TestingFrbaHotel
             //VALIDAR LISTA DE HABITACIONES
 
         }
+        */
 
+        //ESTE TEST TIENE QUE BORRAR LOS HOTELES QUE CREA
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_searchHotel()
         {
@@ -92,7 +96,10 @@ namespace TestingFrbaHotel
 
 
         }
+        */
 
+        //ESTE TEST NO TIENE QUE CREAR NINGUN HOTEL... CON LOS MIGRADOS ALCANZA
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_getAll()
         {
@@ -105,9 +112,11 @@ namespace TestingFrbaHotel
             List<Hotel> hoteles = repositorioHotel.getAll();
             Assert.IsTrue(hoteles.Count > 2);
         }
+        */
 
    
-
+        //IDEM ARRIBA
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_exists_OK()
         {
@@ -119,7 +128,10 @@ namespace TestingFrbaHotel
             Assert.IsTrue(repositorioHotel.exists(hotelSaved));
 
         }
+        */
 
+        //NO HACE FALTA INSTANCIAR UN HOTEL PARA VERIFICAR QUE EL ID 999999999 no existe...
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_not_exists()
         {
@@ -130,36 +142,10 @@ namespace TestingFrbaHotel
             Assert.IsFalse(repositorioHotel.exists(hotel));
 
         }
+        */
+
+        //LO QUE SE CREA EN EL TEST SE TIENE QUE BORRAR
         /*
-        [TestMethod]
-        public void Test_Repo_Hotel_crear_bajaTemporalError()
-        {
-            throw new NotImplementedException();
-        }
-        [TestMethod]
-        public void Test_Repo_Hotel_crear_bajaTemporalConReservasEnHotelOk()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void Test_Repo_Hotel_UpdateCompleto_OKSinReservas()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void Test_Repo_Hotel_UpdateCompleto_OKConReservas()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void Test_Repo_Hotel_UpdateCompleto_Error_AlQuitarRegimenConReservas()
-        {
-            throw new NotImplementedException();
-        }
-      * */
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
         {
@@ -188,6 +174,6 @@ namespace TestingFrbaHotel
                 Assert.AreEqual(cierre.IdHotel, idHotel);
             }
         }
-         
+        */
     }
 }

@@ -11,7 +11,7 @@ namespace TestingFrbaHotel
     public class TestRepositorioEstadia
     {
         [TestMethod]
-        public void Test_Repo_Estadia_LeoEstadia()
+        public void Test_Repo_Estadia_CreacionInstancia_Estadia()
         {
             RepositorioEstadia repositorioEstadia = new RepositorioEstadia();
             Estadia estadia = repositorioEstadia.getById(1);

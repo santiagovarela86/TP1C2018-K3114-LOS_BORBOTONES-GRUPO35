@@ -57,7 +57,6 @@ namespace TestingFrbaHotel
             Usuario adminUteniano = repoUsuario.getByUsername("admin");
             String passwordEncriptadaSHA256 = adminUteniano.getPassword();
             String passwordPrueba = repoUsuario.EncriptarSHA256("w23e");
-            System.Console.WriteLine(passwordPrueba);
             Assert.AreEqual(passwordEncriptadaSHA256, passwordPrueba);
         }
 
@@ -68,27 +67,5 @@ namespace TestingFrbaHotel
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             Usuario admin = repositorioUsuario.getByUsername("Lanata");
         }
-
-        /*
-        [TestMethod]
-        public void Test_Repo_Usuario_getByQuery()
-        {
-            //RepositorioRol repositorioRol = new RepositorioRol();
-
-            //SIN FILTRO
-            //Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO NOMBRE
-            //Assert.AreEqual(1, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO ESTADO
-            //Assert.AreEqual(3, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
-
-            //FILTRO NOMBRE Y ESTADO
-            //Assert.AreEqual(0, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>("", false), null).Count);
-
-            //FALTA FILTRO FUNCIONALIDAD
-        }
-        */
     }
 }

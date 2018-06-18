@@ -9,7 +9,11 @@ namespace TestingFrbaHotel
     [TestClass]
     public class TestRepositorioHabitacion
     {
-        
+
+        //LO QUE SE CREA EN LOS TEST DEBE SER DADO DE BAJA DESPUES...
+        //PARA PROBAR LA INSTANCIACION DE UNA HABITACION NO HACE FALTA CREAR UNA
+        //SE PUEDE OBTENER UNA DE LAS YA EXISTENTES
+        /*
         [TestMethod]
         public void Test_Repo_Habitacion_create_OK()
         {
@@ -46,8 +50,12 @@ namespace TestingFrbaHotel
             Assert.AreEqual(habitacion.getHotel().IdHotel, habitacionSearched.getHotel().IdHotel);
 
         }
+        */
 
-
+        //LO QUE SE CREA EN LOS TEST DEBE SER DADO DE BAJA DESPUES...
+        //PARA PROBAR LA EXISTENCIA DE UNA HABITACION NO HACE FALTA CREAR UNA
+        //SE PUEDE USAR UNA EXISTENTE
+        /*
         [TestMethod]
         public void Test_Repo_Habitacion_exists_OK()
         {
@@ -69,8 +77,13 @@ namespace TestingFrbaHotel
             Assert.IsTrue(repositorioHabitacion.exists(habitacionSearched));
 
         }
+        */
 
-
+        //LO QUE SE CREA EN LOS TEST DEBE SER DADO DE BAJA DESPUES...
+        //PARA PROBAR LA BAJA LOGICA DE UNA HABITACION NO HACE FALTA CREAR UNA
+        //SE PUEDE DAR DE BAJA UNA EXISTENTE Y LUEGO VOLVER A DARLA DE ALTA PARA NO 
+        //CAMBIAR EL ESTADO DE LA BASE
+        /*
         [TestMethod]
         public void Test_Repo_Habitacion_bajaLogica_OK()
         {
@@ -99,10 +112,8 @@ namespace TestingFrbaHotel
             repositorioHabitacion.bajaLogica(habitacionSearched);
             habitacionSearched = repositorioHabitacion.getById(idHabitacion);
             Assert.IsTrue(habitacionSearched.Activa);
-
-
-
         }
+        */
 
     }
 }
