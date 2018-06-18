@@ -106,7 +106,8 @@ namespace FrbaHotel.Modelo
         public String Nombre { get { return this.getNombre(); } }
         public String Mail { get { return this.getMail(); } }
         public String Telefono { get { return this.getTelefono(); } }
-        public String Direccion { get { return this.getDireccion().getDireccionSimple(); } }
+        public String Direccion { get { return this.getDireccion().getDireccionCorta(); } }
+        public String Ciudad { get { return this.getDireccion().getCiudad(); } }
         public String Pais { get { return this.getDireccion().getPais(); } }
         public int Estrellas { get { return this.getCategoria().Estrellas; } }
         //ACA HAY QUE HACER UN METODO QUE CONCATENE LA LISTA DE REGIMENES Y LOS MUESTRE SEPARADOS POR COMA... EJ: ("Media pensión, All inclusive, ...)

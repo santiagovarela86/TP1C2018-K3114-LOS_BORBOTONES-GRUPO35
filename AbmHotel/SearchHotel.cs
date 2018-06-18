@@ -42,6 +42,23 @@ namespace FrbaHotel.AbmHotel
             return field == "" ? null : field;
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.limpiarBusquedaYResultados();
+        }
+
+        private void limpiarBusquedaYResultados()
+        {
+            registroHoteles.DataSource = new List<Hotel>();
+            nombreText.Text = "";
+            paisText.Text = "";
+            ciudadText.Text = "";
+            estrellasComboBox.SelectedValue = "";
+            estrellasComboBox.SelectedIndex = -1;
+            this.modificarButton.Enabled = false;
+            this.cierreTemporalButton.Enabled = false;
+        }
+
         //CIERRO LA VENTANA CON ESCAPE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -53,8 +70,17 @@ namespace FrbaHotel.AbmHotel
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-       
+        private void registroHoteles_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
 
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.modificarButton.Enabled = true;
+                this.cierreTemporalButton.Enabled = true;
+            }
+        }
 
     }
 

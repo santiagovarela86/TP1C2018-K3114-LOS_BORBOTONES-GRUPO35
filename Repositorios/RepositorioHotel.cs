@@ -95,19 +95,19 @@ namespace FrbaHotel.Repositorios {
             List<String> condiciones = new List<String>();
             if (nombreHotel != null)
             {
-                condiciones.Add("HOT.Nombre LIKE @hotNombreHotel + '%'");
+                condiciones.Add("HOT.Nombre LIKE '%' + @hotNombreHotel + '%'");
                 sqlCommand.Parameters.AddWithValue("@hotNombreHotel", nombreHotel);
 
             }
             if (ciudad != null)
             {
-                condiciones.Add("DIR.Ciudad=@dirCiudad");
+                condiciones.Add("DIR.Ciudad LIKE '%' + @dirCiudad + '%'");
                 sqlCommand.Parameters.AddWithValue("@dirCiudad", ciudad);
 
             }
             if (pais != null)
             {
-                condiciones.Add("DIR.Pais=@dirPais");
+                condiciones.Add("DIR.Pais LIKE '%' + @dirPais + '%'");
                 sqlCommand.Parameters.AddWithValue("@dirPais", pais);
             }
             if (estrellas != null)
