@@ -264,8 +264,7 @@ namespace FrbaHotel.Repositorios {
             sqlCommand.Parameters.AddWithValue("@idHotel", id);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText =
-                "SELECT idHotel,Nombre,Mail,Telefono,FechaInicioActividades,idCategoria,idDireccion FROM LOS_BORBOTONES.Hotel AS HOT WHERE HOT.idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Hotel WHERE idHotel = @idHotel";
 
             sqlConnection.Open();
 
@@ -285,21 +284,29 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
+                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
+                List<Regimen> regimenes = null;
 
-                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
+                List<CierreTemporal> cierresTemporales = null;
 
                 //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
+                List<Habitacion> habitaciones = null;
 
-                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
+                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
+                List<Reserva> reservas = null;
 
                 hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, null, cierresTemporales);
+                                fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
+            }
+            else
+            {
+                //Si no encuentro elemento con ese ID tiro una excepción
+                throw new NoExisteIDException("No existe hotel con el ID asociado");
             }
 
             //Cierro Primera Consulta
             sqlConnection.Close();
-
 
             return hotel;
         }

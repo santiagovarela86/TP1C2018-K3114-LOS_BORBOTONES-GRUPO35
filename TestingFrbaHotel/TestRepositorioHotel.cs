@@ -12,7 +12,28 @@ namespace TestingFrbaHotel
     [TestClass]
     public class TestRepositorioHotel
     {
-        RepositorioHotel repositorioHotel = new RepositorioHotel();
+        [TestMethod]
+        public void Test_Repo_Hotel_CreacionInstancia_Hotel()
+        {
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            Hotel hotel = repositorioHotel.getById(13);
+            Direccion direccionHotel = hotel.getDireccion();
+            Categoria categoriaHotel = hotel.getCategoria();
+
+            Assert.AreEqual("Balcarce 2520", hotel.getNombre());
+            Assert.AreEqual("No Posee", hotel.getMail());
+            Assert.AreEqual("No Posee", hotel.getTelefono());
+            Assert.AreEqual(2018, hotel.getFechaInicioActividades().Year);
+            Assert.AreEqual(1, categoriaHotel.getEstrellas());
+            Assert.AreEqual(10, categoriaHotel.getRecargaEstrellas());
+
+            Assert.AreEqual("Argentina", direccionHotel.getPais());
+            Assert.AreEqual("Bs. As. Oeste", direccionHotel.getCiudad());
+            Assert.AreEqual("Balcarce", direccionHotel.getCalle());
+            Assert.AreEqual(2520, direccionHotel.getNumeroCalle());
+            Assert.AreEqual(0, direccionHotel.getPiso());
+            Assert.AreEqual("", direccionHotel.getDepartamento());
+        }
 
         //ESTE TEST TIENE QUE BORRAR LOS HOTELES QUE CREA...
         /*

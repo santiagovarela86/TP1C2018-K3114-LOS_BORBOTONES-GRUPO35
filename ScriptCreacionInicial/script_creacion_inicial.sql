@@ -1022,7 +1022,7 @@ INSERT INTO LOS_BORBOTONES.Direccion(Ciudad, Calle, NumeroCalle, Piso, Depto, id
 	FROM gd_esquema.Maestra m, LOS_BORBOTONES.Identidad i
 	WHERE i.NumeroDocumento = m.Cliente_Pasaporte_Nro
 UNION
-	SELECT Hotel_Ciudad, Hotel_Calle, Hotel_Nro_Calle, NULL, NULL, NULL
+	SELECT LTRIM(RTRIM(Hotel_Ciudad)), Hotel_Calle, Hotel_Nro_Calle, NULL, NULL, NULL
 	FROM gd_esquema.Maestra 
 )	
 GO

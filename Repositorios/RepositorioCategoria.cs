@@ -66,7 +66,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idCategoria", idCategoria);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria categoria WHERE categoria.idCategoria = @idCategoria";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria WHERE idCategoria = @idCategoria";
 
             sqlConnection.Open();
 
