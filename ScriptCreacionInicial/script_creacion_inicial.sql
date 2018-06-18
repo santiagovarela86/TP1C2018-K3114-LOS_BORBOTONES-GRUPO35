@@ -2,26 +2,6 @@
 USE GD1C2018
 GO
 
----------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
--- Nombre del hotel
-IF OBJECT_ID('LOS_BORBOTONES.concatenarNombreHotel', 'FN') IS NOT NULL
-    DROP FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
-GO
-
---Costo Total por estadia y regimen
-IF OBJECT_ID('LOS_BORBOTONES.fn_costoTotalEstadia', 'FN') IS NOT NULL
-    DROP FUNCTION LOS_BORBOTONES.fn_costoTotalEstadia
-GO
-
---Puntos por estadia 
-IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalEstadia', 'FN') IS NOT NULL
-    DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalEstadia
-GO
-
---Puntos por consumible 
-IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalConsumible', 'FN') IS NOT NULL
-    DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible
-GO
 ---------------------------------------------- DROPEO DE FK CONSTRAINTS ----------------------------------------------
 
 -- Tabla Funcionalidad_X_Rol 
@@ -294,12 +274,38 @@ GO
 
 -- temporalReserva,  
 IF OBJECT_ID('LOS_BORBOTONES.temporalReserva', 'U') IS NOT NULL
-DROP TABLE LOS_BORBOTONES.temporalReserva;
+	DROP TABLE LOS_BORBOTONES.temporalReserva;
 GO
 
 -- temporalMontoFactura
 IF OBJECT_ID('LOS_BORBOTONES.temporalMontoFactura', 'U') IS NOT NULL
-DROP TABLE LOS_BORBOTONES.temporalMontoFactura;
+	DROP TABLE LOS_BORBOTONES.temporalMontoFactura;
+GO
+
+---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
+--Funcion getDate()
+IF OBJECT_ID('LOS_BORBOTONES.fn_getDate', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.fn_getDate
+GO
+
+-- Nombre del hotel
+IF OBJECT_ID('LOS_BORBOTONES.concatenarNombreHotel', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
+GO
+
+--Costo Total por estadia y regimen
+IF OBJECT_ID('LOS_BORBOTONES.fn_costoTotalEstadia', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.fn_costoTotalEstadia
+GO
+
+--Puntos por estadia 
+IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalEstadia', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalEstadia
+GO
+
+--Puntos por consumible 
+IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalConsumible', 'FN') IS NOT NULL
+    DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible
 GO
 
 ---------------------------------------------------------------------- Eliminacion de schema LOS_BORBOTONES --------------------------------------------------------------------------
@@ -313,6 +319,17 @@ CREATE SCHEMA LOS_BORBOTONES AUTHORIZATION gdHotel2018;
 GO
 
 --------------------------------------FUNCIONES---------------------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------- Uso una funcion para obtener la fecha del sistema ya que no hay que usar GETDATE() -------------
+----------------------------------------------- La fecha es la misma que en el archivo de configuración de la aplicación -----------------------
+
+CREATE FUNCTION LOS_BORBOTONES.fn_getDate()
+RETURNS DATETIME AS
+BEGIN
+	RETURN '2018-06-01 00:00:00.000'
+END
+GO
+
 --Funcion para establecer el nombre de hotel
 
 CREATE FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
@@ -604,7 +621,7 @@ CREATE TABLE LOS_BORBOTONES.ItemFactura (
 		idItemFactura		INT				IDENTITY(1,1)	NOT NULL,
 		Cantidad			NUMERIC(18,0)	NOT NULL,
 		Monto				NUMERIC(18,2)	NOT NULL,
-		FechaCreacion		DATETIME		DEFAULT GETDATE(),
+		FechaCreacion		DATETIME		DEFAULT LOS_BORBOTONES.fn_getDate(),
 		idFactura			INT				NOT NULL,
 		idConsumible		INT				NOT NULL,		
 )
@@ -1021,7 +1038,7 @@ GO
 --Se define como FechaInicioActividades, la fecha actual y como Nombre del Hotel Calle+NroCalle
  
  INSERT INTO LOS_BORBOTONES.Hotel (idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion)
-	  SELECT c.idCategoria, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) AS Nombre, 'No Posee', 'No Posee', GETDATE(), d.idDireccion 
+	  SELECT c.idCategoria, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) AS Nombre, 'No Posee', 'No Posee', LOS_BORBOTONES.fn_getDate(), d.idDireccion 
 	  FROM LOS_BORBOTONES.Categoria c
 	  JOIN  gd_esquema.Maestra m ON m.Hotel_CantEstrella = c.Estrellas AND m.Hotel_Recarga_Estrella = c.RecargaEstrellas
 	  JOIN LOS_BORBOTONES.Direccion d ON m.Hotel_Ciudad = d.Ciudad AND m.Hotel_Calle = d.Calle AND m.Hotel_Nro_Calle = d.NumeroCalle
@@ -1087,21 +1104,21 @@ GO
 INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
 		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 1, 1
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
-		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio < GETDATE()
+		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio < LOS_BORBOTONES.fn_getDate()
 		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
 GO
 
 INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut) 
 		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 2, 2
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
-		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio > GETDATE()
+		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio > LOS_BORBOTONES.fn_getDate()
 		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
 GO
 
 INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut) 
 		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 3, 3
 		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
-		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio = GETDATE()
+		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio = LOS_BORBOTONES.fn_getDate()
 		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1147,7 +1164,7 @@ GO
 
 --Migracion Reserva
 INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
-SELECT m.Reserva_Codigo, GETDATE(), m.Reserva_Fecha_Inicio, DATEADD(DAY, m.Reserva_Cant_Noches, m.Reserva_Fecha_Inicio), m.Reserva_Cant_Noches, h.idHotel, e.idEstadia, r.idRegimen, c.idCliente
+SELECT m.Reserva_Codigo, LOS_BORBOTONES.fn_getDate(), m.Reserva_Fecha_Inicio, DATEADD(DAY, m.Reserva_Cant_Noches, m.Reserva_Fecha_Inicio), m.Reserva_Cant_Noches, h.idHotel, e.idEstadia, r.idRegimen, c.idCliente
 FROM  LOS_BORBOTONES.Hotel h 
 	INNER JOIN LOS_BORBOTONES.temporalReserva m
 		ON LOS_BORBOTONES.concatenarNombreHotel(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre  
@@ -1278,7 +1295,7 @@ INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuar
 			ON i.TipoIdentidad = 'Usuario'
 		JOIN LOS_BORBOTONES.Usuario u
 			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
-		WHERE r.FechaDesde < GETDATE()
+		WHERE r.FechaDesde < LOS_BORBOTONES.fn_getDate()
 ORDER BY r.idReserva, r.FechaCreacion
 GO
 
