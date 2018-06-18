@@ -68,13 +68,18 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
+                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
+                List<Regimen> regimenes = null;
 
-                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
+                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
+                List<CierreTemporal> cierresTemporales = null;
 
-                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, null, cierresTemporales);
+                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
+                List<Reserva> reservas = null;
+
+                List<Habitacion> habitaciones = null;
+
+                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
                 hoteles.Add(hotel);
             }
 
