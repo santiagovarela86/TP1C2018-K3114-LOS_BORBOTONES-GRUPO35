@@ -123,6 +123,12 @@ namespace FrbaHotel.Repositorios
                 //Error
             }
         }
+
+        override public void bajaLogica(Estadia estadia)
+        {
+            throw new NotImplementedException();
+        }
+
         override public Boolean exists(Estadia estadia)
         {
             int idEstadia = 0;

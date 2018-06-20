@@ -118,5 +118,10 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
+
+        override public void bajaLogica(TipoHabitacion tipoHabitacion)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

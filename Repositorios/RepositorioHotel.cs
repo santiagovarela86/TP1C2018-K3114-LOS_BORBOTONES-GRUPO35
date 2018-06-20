@@ -188,6 +188,11 @@ namespace FrbaHotel.Repositorios {
             throw new System.NotImplementedException();
         }
 
+        public override void bajaLogica(Hotel t)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override bool exists(Hotel hotel)
         {
             return this.getById(hotel.getIdHotel()) !=null;

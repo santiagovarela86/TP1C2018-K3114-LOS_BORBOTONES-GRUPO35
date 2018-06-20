@@ -13,6 +13,7 @@ namespace FrbaHotel.Repositorios
         public abstract int create(T t);
         public abstract void delete(T t);
         public abstract void update(T t);
+        public abstract void bajaLogica(T t);
         public abstract Boolean exists(T t);
     }
 }

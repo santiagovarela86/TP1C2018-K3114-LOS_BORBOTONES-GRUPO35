@@ -117,6 +117,11 @@ namespace FrbaHotel.Repositorios
             }
         }
 
+        override public void bajaLogica(Funcionalidad funcionalidad)
+        {
+            throw new NotImplementedException();
+        }
+
         override public Boolean exists(Funcionalidad funcionalidad)
         {
             int idFuncionalidad = 0;

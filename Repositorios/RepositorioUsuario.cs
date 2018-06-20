@@ -176,6 +176,11 @@ namespace FrbaHotel.Repositorios
             }
         }
 
+        override public void bajaLogica(Usuario usuario)
+        {
+            throw new NotImplementedException();
+        }
+
         override public Boolean exists(Usuario usuario)
         {
             int idUsuario = 0;

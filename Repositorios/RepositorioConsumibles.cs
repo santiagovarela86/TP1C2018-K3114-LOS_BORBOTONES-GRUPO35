@@ -103,6 +103,11 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
+        override public void bajaLogica(Consumible consumible)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         public List<Consumible> getByQuery(int idEstadia, String nombre, String apellido, String tipoDoc, String dni, String mail)

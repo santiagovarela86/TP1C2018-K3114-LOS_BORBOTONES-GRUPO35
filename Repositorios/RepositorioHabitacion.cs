@@ -51,7 +51,7 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public void bajaLogica(Habitacion habitacion)
+        override public void bajaLogica(Habitacion habitacion)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -178,9 +178,8 @@ namespace FrbaHotel.Repositorios
 
         public override void update(Habitacion t)
         {
-
+            throw new NotImplementedException();
         }
-
 
         public List<Habitacion> getByHotelId(int idHotel,Hotel hotel)
         {

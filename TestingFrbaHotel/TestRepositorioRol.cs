@@ -151,7 +151,12 @@ namespace TestingFrbaHotel
             Assert.IsTrue(rolTest.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMCliente")));
             Assert.IsTrue(rolTest.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMHabitacion")));
 
-            //BAJA DE ROL
+            //TESTEO LA BAJA LOGICA
+            repositorioRol.bajaLogica(rolTest);
+            rolTest = repositorioRol.getById(idRolTest);
+            Assert.AreEqual(false, rolTest.getActivo());
+
+            //ELIMINACION DE ROL PARA MANTENER CONSISTENCIA DE LA BASE Y LA COHERENCIA DE LOS TESTS
             repositorioRol.delete(rolTest);
 
             //VALIDO QUE LA CANTIDAD DE ROLES VUELVA A 5

@@ -235,6 +235,12 @@ namespace FrbaHotel.Repositorios
             }
         }
 
+        override public void bajaLogica(Rol rol)
+        {
+            rol.setActivo(false);
+            this.update(rol);
+        }
+
         override public void delete(Rol rol)
         {
             if (this.exists(rol))

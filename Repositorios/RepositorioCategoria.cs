@@ -30,6 +30,11 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
+        public override void bajaLogica(Categoria t)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void update(Categoria categoria)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];

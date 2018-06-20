@@ -56,6 +56,11 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
+        override public void bajaLogica(Direccion direccion)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void update(Direccion direccion)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];

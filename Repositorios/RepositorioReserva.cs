@@ -186,6 +186,11 @@ namespace FrbaHotel.Repositorios
             }
         }
 
+        override public void bajaLogica(Reserva reserva)
+        {
+            throw new NotImplementedException();
+        }
+
         override public Boolean exists(Reserva reserva)
         {
             int idReserva = 0;
