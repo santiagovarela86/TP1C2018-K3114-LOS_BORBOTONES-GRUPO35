@@ -11,7 +11,7 @@ namespace TestingFrbaHotel
     public class TestRepositorioUsuario
     {
         [TestMethod]
-        public void Test_Repo_Usuario_Creacion_Usuario()
+        public void Test_Repo_Usuario_CreacionInstancia_Usuario()
         {
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             Usuario admin = repositorioUsuario.getByUsername("admin");
@@ -23,11 +23,11 @@ namespace TestingFrbaHotel
             Assert.AreEqual(0, admin.getIntentosFallidosLogin());
             Assert.AreEqual(0, guest.getIntentosFallidosLogin());
 
-            Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("Administrador")));
+            Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("AdminDelEnunciado")));
             Assert.IsTrue(guest.getRoles().Exists(rol => rol.getNombre().Equals("Guest")));
 
             Assert.IsTrue(admin.getIdentidad().getMail().Equals("admin@frba_utn.com"));
-            Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("18217283"));
+            Assert.IsTrue(guest.getIdentidad().getNumeroDocumento().Equals("1"));
 
             //FALTA VALIDAR QUE TRAIGA LOS HOTELES
             //Assert.AreEqual(5, admin.getHoteles().Count);
@@ -47,25 +47,18 @@ namespace TestingFrbaHotel
         {
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             List<Usuario> usuarios = repositorioUsuario.getAll();
-            Assert.AreEqual(3, usuarios.Count);
+            Assert.AreEqual(4, usuarios.Count);
         }
 
-        /*
         [TestMethod]
-        public void Test_Repo_Usuario_exists()
+        public void Test_Repo_Usuario_EncriptoBienPassAdmin()
         {
-            //HAY QUE PROGRAMAR EL EXISTS...
-
-            //RepositorioRol repositorioRol = new RepositorioRol();
-            //Rol rolAdministrador = repositorioRol.getByNombre("Administrador");
-
-            //Assert.IsFalse(repositorioRol.exists(new Rol(50, "Dummy", false, null)));
-
-            //Assert.IsTrue(repositorioRol.exists(rolAdministrador));
-
-            //Assert.IsTrue(repositorioRol.exists(new Rol(0, "Administrador", false, null)));
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            Usuario adminUteniano = repoUsuario.getByUsername("admin");
+            String passwordEncriptadaSHA256 = adminUteniano.getPassword();
+            String passwordPrueba = repoUsuario.EncriptarSHA256("w23e");
+            Assert.AreEqual(passwordEncriptadaSHA256, passwordPrueba);
         }
-        */
 
         [TestMethod]
         [ExpectedException(typeof(NoExisteNombreException), "No existe usuario con el Nombre asociado")]
@@ -74,27 +67,5 @@ namespace TestingFrbaHotel
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             Usuario admin = repositorioUsuario.getByUsername("Lanata");
         }
-
-        /*
-        [TestMethod]
-        public void Test_Repo_Usuario_getByQuery()
-        {
-            //RepositorioRol repositorioRol = new RepositorioRol();
-
-            //SIN FILTRO
-            //Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO NOMBRE
-            //Assert.AreEqual(1, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO ESTADO
-            //Assert.AreEqual(3, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
-
-            //FILTRO NOMBRE Y ESTADO
-            //Assert.AreEqual(0, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>("", false), null).Count);
-
-            //FALTA FILTRO FUNCIONALIDAD
-        }
-        */
     }
 }

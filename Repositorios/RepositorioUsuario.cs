@@ -105,7 +105,6 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
     
             //Armo el usuario completo
-            //usuario = new Usuario(idUsuario, identidad, username, password, intentosFallidosLogin, activo, roles, hoteles);
             usuario = new Usuario(idUsuario, identidad, username, password, intentosFallidosLogin, activo, roles, hoteles);
 
             return usuario;
@@ -175,6 +174,11 @@ namespace FrbaHotel.Repositorios
             {
                 //Error
             }
+        }
+
+        override public void bajaLogica(Usuario usuario)
+        {
+            throw new NotImplementedException();
         }
 
         override public Boolean exists(Usuario usuario)

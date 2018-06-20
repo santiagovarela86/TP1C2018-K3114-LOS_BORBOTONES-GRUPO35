@@ -42,6 +42,11 @@ namespace FrbaHotel.Modelo
             return this.idHotel;
         }
 
+        public void setIdHotel(int idHotel)
+        {
+            this.idHotel = idHotel;
+        }
+
         public Categoria getCategoria()
         {
             return this.categoria;
@@ -98,22 +103,17 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdHotel { get { return this.getIdHotel(); } set { this.idHotel = value; } }
+        public int IdHotel { get { return this.getIdHotel(); } }
         public String Nombre { get { return this.getNombre(); } }
-        public int Estrellas { get { return this.getCategoria().Estrellas; } }
-        public decimal RecargaEstrellas { get { return this.getCategoria().RecargaEstrellas; } }
-        public String Pais { get { return this.getDireccion().getPais(); } }
-        public String Ciudad { get { return this.getDireccion().getCiudad(); } }
-        public String Calle { get { return this.getDireccion().getCalle(); } }
-        public int NumeroCalle { get { return this.getDireccion().getNumeroCalle(); } }
-
         public String Mail { get { return this.getMail(); } }
         public String Telefono { get { return this.getTelefono(); } }
+        public String Direccion { get { return this.getDireccion().getDireccionCorta(); } }
+        public String Ciudad { get { return this.getDireccion().getCiudad(); } }
+        public String Pais { get { return this.getDireccion().getPais(); } }
+        public int Estrellas { get { return this.getCategoria().Estrellas; } }
+        //ACA HAY QUE HACER UN METODO QUE CONCATENE LA LISTA DE REGIMENES Y LOS MUESTRE SEPARADOS POR COMA... EJ: ("Media pensión, All inclusive, ...)
+        //public String Regimenes { get { return this.getRegimenesString(); } }
         public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
-        public List<Reserva> Reservas { get { return this.getReservas(); } }
-        public List<Regimen> Regimenes { get { return this.getRegimenes(); } }
-        public List<Habitacion> Habitaciones { get { return this.getHabitaciones(); } }
-        public List<CierreTemporal> CierresTemporales { get { return this.getCierresTemporales(); } }
 
     }
 }

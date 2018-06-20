@@ -58,7 +58,6 @@
             // txtUsername
             // 
             this.txtUsername.AcceptsTab = true;
-            this.txtUsername.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
             this.txtUsername.Location = new System.Drawing.Point(73, 6);
             this.txtUsername.MaxLength = 250;
             this.txtUsername.Name = "txtUsername";

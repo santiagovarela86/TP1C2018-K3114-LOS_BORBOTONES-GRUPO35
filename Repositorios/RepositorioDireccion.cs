@@ -56,6 +56,11 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
+        override public void bajaLogica(Direccion direccion)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void update(Direccion direccion)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -98,7 +103,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idDireccion", idDireccion);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Direccion direccion WHERE direccion.idDireccion = @idDireccion";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Direccion WHERE idDireccion = @idDireccion";
 
             sqlConnection.Open();
 
@@ -114,6 +119,11 @@ namespace FrbaHotel.Repositorios
                 String departamento = reader.SafeGetString(reader.GetOrdinal("Depto"));
 
                 direccion = new Direccion(idDireccion, pais, ciudad, calle, numeroCalle, piso, departamento);
+            }
+            else
+            {
+                //Si no encuentro elemento con ese ID tiro una excepción
+                throw new NoExisteIDException("No existe dirección con el ID asociado");
             }
 
             //Cierro Primera Consulta

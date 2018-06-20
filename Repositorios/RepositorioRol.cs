@@ -67,9 +67,7 @@ namespace FrbaHotel.Repositorios
 
                 int idFuncionalidad = reader.GetInt32(reader.GetOrdinal("idFuncionalidad"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                Funcionalidad funcionalidad = new Funcionalidad(idFuncionalidad, descripcion);
-
-                funcionalidades.Add(funcionalidad);
+                funcionalidades.Add(new Funcionalidad(idFuncionalidad, descripcion));
 
             }
 
@@ -111,37 +109,173 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Rol rol)
         {
+            int idRol = 0;
+            
             if (this.exists(rol))
             {
-                //Error
-            } else {
-                //Creo un nuevo registro
+                throw new ElementoYaExisteException("Ya existe el rol que intenta crear");
+            } 
+            else 
+            {
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+                sqlCommand.Parameters.AddWithValue("@Activo", rol.getActivo());                             
+                
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Rol(Nombre, Activo)
+                    OUTPUT INSERTED.idRol
+                    VALUES(@Nombre, @Activo);
+
+                    DECLARE @idRol int;
+                    SET @idRol = SCOPE_IDENTITY();
+                ");
+
+                //AGREGO DINAMICAMENTE LAS FUNCIONALIDADES A LA CONSULTA
+                int i = 1;
+                foreach (Funcionalidad f in rol.getFuncionalidades())
+                {
+                    String paramName = "@idFuncionalidad" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol(idFuncionalidad, idRol) VALUES ({0}, @idRol)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, f.getIdFuncionalidad());
+                    i++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idRol = reader.GetInt32(reader.GetOrdinal("idRol"));
+                }
+
+                sqlConnection.Close();
             }
 
-            throw new NotImplementedException();
+            return idRol;
         }
 
+        //A ESTO LE PASO UN ROL CON UN ID EXISTENTE Y LOS ATRIBUTOS ACTUALIZADOS
         override public void update(Rol rol)
         {
             if (this.exists(rol))
             {
-                //Actualizo el registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+                sqlCommand.Parameters.AddWithValue("@Activo", rol.getActivo());
+                sqlCommand.Parameters.AddWithValue("@idRol", rol.getIdRol());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Rol
+                    SET Nombre = @Nombre, Activo = @Activo
+                    WHERE idRol = @idRol;
+                ");
+
+                //TENGO QUE BORRAR TODAS LAS RELACIONES MANY TO MANY RELACIONADAS CON EL IDROL
+                sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Funcionalidad_X_Rol WHERE idRol = @idRol;");  
+
+                //PARA LUEGO VOLVER A AGREGARLAS (COPIADO DEL CREATE)
+                //AGREGO DINAMICAMENTE LAS FUNCIONALIDADES A LA CONSULTA
+                int i = 1;
+                foreach (Funcionalidad f in rol.getFuncionalidades())
+                {
+                    String paramName = "@idFuncionalidad" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol(idFuncionalidad, idRol) VALUES ({0}, @idRol)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, f.getIdFuncionalidad());
+                    i++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el rol que intenta actualizar");
             }
+        }
+
+        override public void bajaLogica(Rol rol)
+        {
+            rol.setActivo(false);
+            this.update(rol);
         }
 
         override public void delete(Rol rol)
         {
             if (this.exists(rol))
             {
-                //Borro el registro
+                String DELETE_STATEMENT = @"
+
+                    BEGIN TRY
+                        BEGIN TRANSACTION
+                            DELETE FROM LOS_BORBOTONES.Rol WHERE Nombre = @Nombre
+                        COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                        ROLLBACK
+                    END CATCH
+
+                ";
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+                sqlCommand.CommandText = DELETE_STATEMENT;
+
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el rol que intenta borrar");
             }
         }
 

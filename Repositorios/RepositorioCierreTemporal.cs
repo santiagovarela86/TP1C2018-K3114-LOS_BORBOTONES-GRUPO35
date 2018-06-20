@@ -88,6 +88,11 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
+        public override void bajaLogica(CierreTemporal t)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool exists(CierreTemporal t)
         {
             throw new NotImplementedException();

@@ -12,9 +12,31 @@ namespace TestingFrbaHotel
     [TestClass]
     public class TestRepositorioHotel
     {
-        RepositorioHotel repositorioHotel = new RepositorioHotel();
+        [TestMethod]
+        public void Test_Repo_Hotel_CreacionInstancia_Hotel()
+        {
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            Hotel hotel = repositorioHotel.getById(13);
+            Direccion direccionHotel = hotel.getDireccion();
+            Categoria categoriaHotel = hotel.getCategoria();
 
+            Assert.AreEqual("Balcarce 2520", hotel.getNombre());
+            Assert.AreEqual("No Posee", hotel.getMail());
+            Assert.AreEqual("No Posee", hotel.getTelefono());
+            Assert.AreEqual(2018, hotel.getFechaInicioActividades().Year);
+            Assert.AreEqual(1, categoriaHotel.getEstrellas());
+            Assert.AreEqual(10, categoriaHotel.getRecargaEstrellas());
 
+            Assert.AreEqual("Argentina", direccionHotel.getPais());
+            Assert.AreEqual("Bs. As. Oeste", direccionHotel.getCiudad());
+            Assert.AreEqual("Balcarce", direccionHotel.getCalle());
+            Assert.AreEqual(2520, direccionHotel.getNumeroCalle());
+            Assert.AreEqual(0, direccionHotel.getPiso());
+            Assert.AreEqual("", direccionHotel.getDepartamento());
+        }
+
+        //ESTE TEST TIENE QUE BORRAR LOS HOTELES QUE CREA...
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_Creacion_Hotel()
         {
@@ -45,7 +67,10 @@ namespace TestingFrbaHotel
             //VALIDAR LISTA DE HABITACIONES
 
         }
+        */
 
+        //ESTE TEST TIENE QUE BORRAR LOS HOTELES QUE CREA
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_searchHotel()
         {
@@ -92,7 +117,10 @@ namespace TestingFrbaHotel
 
 
         }
+        */
 
+        //ESTE TEST NO TIENE QUE CREAR NINGUN HOTEL... CON LOS MIGRADOS ALCANZA
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_getAll()
         {
@@ -105,9 +133,11 @@ namespace TestingFrbaHotel
             List<Hotel> hoteles = repositorioHotel.getAll();
             Assert.IsTrue(hoteles.Count > 2);
         }
+        */
 
    
-
+        //IDEM ARRIBA
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_exists_OK()
         {
@@ -119,7 +149,10 @@ namespace TestingFrbaHotel
             Assert.IsTrue(repositorioHotel.exists(hotelSaved));
 
         }
+        */
 
+        //NO HACE FALTA INSTANCIAR UN HOTEL PARA VERIFICAR QUE EL ID 999999999 no existe...
+        /*
         [TestMethod]
         public void Test_Repo_Hotel_not_exists()
         {
@@ -130,36 +163,10 @@ namespace TestingFrbaHotel
             Assert.IsFalse(repositorioHotel.exists(hotel));
 
         }
+        */
+
+        //LO QUE SE CREA EN EL TEST SE TIENE QUE BORRAR
         /*
-        [TestMethod]
-        public void Test_Repo_Hotel_crear_bajaTemporalError()
-        {
-            throw new NotImplementedException();
-        }
-        [TestMethod]
-        public void Test_Repo_Hotel_crear_bajaTemporalConReservasEnHotelOk()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void Test_Repo_Hotel_UpdateCompleto_OKSinReservas()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void Test_Repo_Hotel_UpdateCompleto_OKConReservas()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void Test_Repo_Hotel_UpdateCompleto_Error_AlQuitarRegimenConReservas()
-        {
-            throw new NotImplementedException();
-        }
-      * */
         [TestMethod]
         public void Test_Repo_Hotel_crear_bajaTemporalSinReservasEnHotelOk()
         {
@@ -188,6 +195,6 @@ namespace TestingFrbaHotel
                 Assert.AreEqual(cierre.IdHotel, idHotel);
             }
         }
-         
+        */
     }
 }

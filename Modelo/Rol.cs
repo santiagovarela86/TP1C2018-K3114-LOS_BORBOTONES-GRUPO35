@@ -46,6 +46,21 @@ namespace FrbaHotel.Modelo
             return idRol.Equals(0);
         }
 
+        public void setNombre(String nombre)
+        {
+            this.nombre = nombre;
+        }
+
+        public void setActivo(Boolean activo)
+        {
+            this.activo = activo;
+        }
+
+        public void setFuncionalidades(List<Funcionalidad> funcionalidades)
+        {
+            this.funcionalidades = funcionalidades;
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdRol { get { return this.getIdRol(); } }
         public String Nombre { get { return this.getNombre(); } }

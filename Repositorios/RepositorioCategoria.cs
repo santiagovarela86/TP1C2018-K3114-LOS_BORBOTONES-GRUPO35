@@ -30,6 +30,11 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
+        public override void bajaLogica(Categoria t)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void update(Categoria categoria)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -66,7 +71,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idCategoria", idCategoria);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria categoria WHERE categoria.idCategoria = @idCategoria";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria WHERE idCategoria = @idCategoria";
 
             sqlConnection.Open();
 

@@ -66,7 +66,7 @@
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(120, 41);
             this.Salir.TabIndex = 9;
-            this.Salir.Text = "Salir";
+            this.Salir.Text = "Desloguear";
             this.Salir.UseVisualStyleBackColor = true;
             this.Salir.Click += new System.EventHandler(this.button4_Click);
             // 

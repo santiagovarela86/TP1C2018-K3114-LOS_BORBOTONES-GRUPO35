@@ -118,6 +118,11 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
+        public override void bajaLogica(Identidad identidad)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<String> getAllTiposDocsClientes()
         {
             List<String> listaTiposDocs = new List<String>();

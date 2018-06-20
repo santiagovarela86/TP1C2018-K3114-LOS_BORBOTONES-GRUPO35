@@ -47,6 +47,17 @@ namespace FrbaHotel.AbmHotel
             base.Dispose(disposing);
         }
 
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         #region Windows Form Designer generated code
 
         /// <summary>

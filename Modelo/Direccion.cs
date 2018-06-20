@@ -80,6 +80,12 @@ namespace FrbaHotel.Modelo
             return this.getCalle() + ", " + this.getNumeroCalle().ToString() + ", " + this.getPiso().ToString() + ", " + this.getCiudad() + ", " + this.getPais();
         }
 
+        //METODO AUXILIAR PARA EL ABM HOTEL
+        public String getDireccionCorta()
+        {
+            return this.getCalle() + ", " + this.getNumeroCalle().ToString() + ", " + this.getPiso().ToString();
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdDireccion { get { return this.getIdDireccion(); } }
         public String Pais { get { return this.getPais(); } }

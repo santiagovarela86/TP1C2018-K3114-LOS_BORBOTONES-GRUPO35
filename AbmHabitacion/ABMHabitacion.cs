@@ -84,6 +84,16 @@ namespace FrbaHotel.AbmHabitacion
             return field == "" ? null : field;
         }
 
+//CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
        
 
     }

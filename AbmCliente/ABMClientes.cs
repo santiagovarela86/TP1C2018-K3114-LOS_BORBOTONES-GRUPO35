@@ -121,6 +121,5 @@ namespace FrbaHotel.AbmCliente
                 this.button5.Enabled = true;
             }
         }
-
     }
 }

@@ -40,8 +40,8 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                usuarioCheckIn = repoUsuario.getById(reader.GetOrdinal("IdUsuarioIn"));
-                usuarioCheckOut = repoUsuario.getById(reader.GetOrdinal("IdUsuarioOut"));
+                usuarioCheckIn = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("idUsuarioIn")));
+                usuarioCheckOut = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("idUsuarioOut")));
                 fechaEntrada = reader.GetDateTime(reader.GetOrdinal("FechaEntrada"));
                 fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
                 facturada = reader.GetBoolean(reader.GetOrdinal("Facturada"));
@@ -123,6 +123,12 @@ namespace FrbaHotel.Repositorios
                 //Error
             }
         }
+
+        override public void bajaLogica(Estadia estadia)
+        {
+            throw new NotImplementedException();
+        }
+
         override public Boolean exists(Estadia estadia)
         {
             int idEstadia = 0;

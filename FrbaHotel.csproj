@@ -151,9 +151,16 @@
     <Compile Include="CancelarReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Excepciones\ElementoYaExisteException.cs" />
     <Compile Include="Excepciones\RequestInvalidoException.cs" />
     <Compile Include="Excepciones\UsuarioBloqueadoException.cs" />
     <Compile Include="Excepciones\ErrorDeAutenticacionException.cs" />
+    <Compile Include="FacturarEstadia\FacturarEstadias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FacturarEstadia\FacturarEstadias.Designer.cs">
+      <DependentUpon>FacturarEstadias.cs</DependentUpon>
+    </Compile>
     <Compile Include="FuncionesAdicionales.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +187,9 @@
     <Compile Include="Login\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelBuilder\HabitacionBuilder.cs" />
+    <Compile Include="ModelBuilder\HotelBuilder.cs" />
+    <Compile Include="ModelBuilder\TipoHabitacionBuilder.cs" />
     <Compile Include="Modelo\Categoria.cs" />
     <Compile Include="Modelo\CierreTemporal.cs" />
     <Compile Include="Modelo\Cliente.cs" />
@@ -274,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\AltaUsuario.resx">
       <DependentUpon>AltaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FacturarEstadia\FacturarEstadias.resx">
+      <DependentUpon>FacturarEstadias.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FuncionesAdicionales.resx">
       <DependentUpon>FuncionesAdicionales.cs</DependentUpon>

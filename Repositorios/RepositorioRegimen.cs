@@ -42,6 +42,11 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
+
+        public override void bajaLogica(Regimen regimen)
+        {
+            throw new System.NotImplementedException();
+        }
         
         public List<Regimen> getByIdHotel(int idHotel){
 
