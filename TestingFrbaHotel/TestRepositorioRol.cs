@@ -88,36 +88,43 @@ namespace TestingFrbaHotel
         [TestMethod]
         public void Test_Repo_Rol_Alta_Baja_Rol()
         {
-            int idRolCreado = 0;
+            //INICIALIZO VARIABLES
+            int idRolTest = 0;
             RepositorioRol repositorioRol = new RepositorioRol();
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
 
-            //CARGA DE FUNCIONALIDADES
+            //INICIALIZO EL ROL A CREAR
+            String nombreRol = "RolTest";
+            Boolean activo = false;
             funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMRol"));
             funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMUsuario"));
             funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMHotel"));
             funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMRegimenEstadia"));
-
-            //ALTA DE ROL
-            String nombreRol = "RolTest";
-            Boolean activo = false;
             Rol rolTest = new Rol(0, nombreRol, activo, funcionalidades);
-            idRolCreado = repositorioRol.create(rolTest);
 
-            //RECUPERO EL ROL CREADO...
-            rolTest = repositorioRol.getById(idRolCreado);
+            //DOY DE ALTA EL ROL            
+            idRolTest = repositorioRol.create(rolTest);
+
+            //RECUPERO EL ROL CREADO
+            rolTest = repositorioRol.getById(idRolTest);
 
             //VALIDO
+            //QUE AHORA HAY UN ROL MAS (SON 5 POR DEFAULT)
             Assert.AreEqual(6, repositorioRol.getAll().Count);
+            //QUE TRAIGA LOS MISMOS VALORES QUE CARGUE
             Assert.AreEqual(nombreRol, rolTest.getNombre());
             Assert.AreEqual(activo, rolTest.getActivo());
-            //Assert.AreEqual(4, rolDummy.getFuncionalidades().Count); //TENGO QUE IMPLEMENTAR LA CARGA DE FUNCIONALIDADES
+            Assert.AreEqual(4, rolTest.getFuncionalidades().Count);
+            Assert.IsTrue(rolTest.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMRol")));
+            Assert.IsTrue(rolTest.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMUsuario")));
+            Assert.IsTrue(rolTest.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMHotel")));
+            Assert.IsTrue(rolTest.getFuncionalidades().Exists(f => f.getDescripcion().Equals("ABMRegimenEstadia")));
 
             //BAJA DE ROL
             repositorioRol.delete(rolTest);
 
-            //VALIDO
+            //VALIDO QUE LA CANTIDAD DE ROLES VUELVA A 5
             Assert.AreEqual(5, repositorioRol.getAll().Count);
         }
     }

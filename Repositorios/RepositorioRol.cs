@@ -67,9 +67,7 @@ namespace FrbaHotel.Repositorios
 
                 int idFuncionalidad = reader.GetInt32(reader.GetOrdinal("idFuncionalidad"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                Funcionalidad funcionalidad = new Funcionalidad(idFuncionalidad, descripcion);
-
-                funcionalidades.Add(funcionalidad);
+                funcionalidades.Add(new Funcionalidad(idFuncionalidad, descripcion));
 
             }
 
@@ -118,27 +116,7 @@ namespace FrbaHotel.Repositorios
                 throw new ElementoYaExisteException("Ya existe el rol que intenta crear");
             } 
             else 
-            {                
-                String CREATE_STATEMENT = @"
-
-                    BEGIN TRY
-                        BEGIN TRANSACTION
-
-                            INSERT INTO LOS_BORBOTONES.Rol(Nombre, Activo)
-                                OUTPUT INSERTED.idRol
-                                VALUES(@Nombre, @Activo);
-                            DECLARE @idRol int;
-                            SET @idRol = SCOPE_IDENTITY();
-
-                        COMMIT
-                    END TRY
-
-                    BEGIN CATCH
-                        ROLLBACK
-                    END CATCH
-
-                ";
-
+            {
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
                 SqlCommand sqlCommand = new SqlCommand();
@@ -147,9 +125,41 @@ namespace FrbaHotel.Repositorios
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = sqlConnection;
                 sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
-                sqlCommand.Parameters.AddWithValue("@Activo", rol.getActivo());
-                sqlCommand.CommandText = CREATE_STATEMENT;
+                sqlCommand.Parameters.AddWithValue("@Activo", rol.getActivo());                             
+                
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
 
+                    INSERT INTO LOS_BORBOTONES.Rol(Nombre, Activo)
+                    OUTPUT INSERTED.idRol
+                    VALUES(@Nombre, @Activo);
+
+                    DECLARE @idRol int;
+                    SET @idRol = SCOPE_IDENTITY();
+                ");
+
+                //AGREGO DINAMICAMENTE LAS FUNCIONALIDADES A LA CONSULTA
+                int i = 1;
+                foreach (Funcionalidad f in rol.getFuncionalidades())
+                {
+                    String paramName = "@idFuncionalidad" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol(idFuncionalidad, idRol) VALUES ({0}, @idRol)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, f.getIdFuncionalidad());
+                    i++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
                 sqlConnection.Open();
                 reader = sqlCommand.ExecuteReader();
 
