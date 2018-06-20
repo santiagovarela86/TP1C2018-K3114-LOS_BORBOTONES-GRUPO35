@@ -174,11 +174,60 @@ namespace FrbaHotel.Repositorios
             return idRol;
         }
 
+        //A ESTO LE PASO UN ROL CON UN ID EXISTENTE Y LOS ATRIBUTOS ACTUALIZADOS
         override public void update(Rol rol)
         {
             if (this.exists(rol))
             {
-                //Actualizo el registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+                sqlCommand.Parameters.AddWithValue("@Activo", rol.getActivo());
+                sqlCommand.Parameters.AddWithValue("@idRol", rol.getIdRol());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Rol
+                    SET Nombre = @Nombre, Activo = @Activo
+                    WHERE idRol = @idRol;
+                ");
+
+                //TENGO QUE BORRAR TODAS LAS RELACIONES MANY TO MANY RELACIONADAS CON EL IDROL
+                sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Funcionalidad_X_Rol WHERE idRol = @idRol;");  
+
+                //PARA LUEGO VOLVER A AGREGARLAS (COPIADO DEL CREATE)
+                //AGREGO DINAMICAMENTE LAS FUNCIONALIDADES A LA CONSULTA
+                int i = 1;
+                foreach (Funcionalidad f in rol.getFuncionalidades())
+                {
+                    String paramName = "@idFuncionalidad" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol(idFuncionalidad, idRol) VALUES ({0}, @idRol)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, f.getIdFuncionalidad());
+                    i++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
