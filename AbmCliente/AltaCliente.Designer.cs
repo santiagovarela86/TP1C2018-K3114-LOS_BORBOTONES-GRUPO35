@@ -172,7 +172,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(230, 56);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.Size = new System.Drawing.Size(50, 13);
             this.label5.TabIndex = 0;
             this.label5.Text = "Nro Doc:";
             // 
@@ -376,7 +376,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "Limpiar";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button2_Click);
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -386,6 +386,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Guardar";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -407,7 +408,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Name = "AltaCliente";
-            this.Text = "Alta Cliente";
+            this.Text = "w";
             this.Load += new System.EventHandler(this.AltaCliente_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();

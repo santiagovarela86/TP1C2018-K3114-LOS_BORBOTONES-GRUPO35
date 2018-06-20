@@ -182,16 +182,71 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Cliente cliente)
         {
+            int idCliente = 0;
             if (this.exists(cliente))
             {
-                //Error
+                //aca podria validar por el tipo y numero de documento.
+                throw new ElementoYaExisteException("Ya existe el cliente que intenta crear");
             }
             else
             {
-                //Creo un nuevo registro
+                //llamo a crear la identidad y traigo el IdIdentidad
+                RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+                int idIdentidad = repoIdentidad.create(cliente.getIdentidad());
+
+                //llamo a crear la direccion y traigo el IdDireccion, le seteo el idIdentidad que lo necesita
+                cliente.getIdentidad().getDireccion().setIdIdentidad(idIdentidad);
+                RepositorioDireccion repoDireccion = new RepositorioDireccion();
+                int idDireccion = repoDireccion.create(cliente.getIdentidad().getDireccion());
+
+                //ahora ya tengo todo para crear el cliente
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Activo", cliente.getActivo());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", idIdentidad);
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Cliente(Activo,idIdentidad)
+                    OUTPUT INSERTED.idCliente
+                    VALUES(@Activo,@idIdentidad);
+
+                    DECLARE @idCliente int;
+                    SET @idCliente = SCOPE_IDENTITY();
+                ");
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idCliente = reader.GetInt32(reader.GetOrdinal("idCliente"));
+                }
+
+                sqlConnection.Close();
             }
 
-            throw new NotImplementedException();
+            return idCliente;
+
         }
 
         override public void update(Cliente cliente)
@@ -250,12 +305,15 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
             Identidad ident=null;
             ident=cliente.getIdentidad();
+            String tipoDoc = ident.getTipoDocumento();
+            String nroDoc = ident.getNumeroDocumento(); 
 
-            //valido por el idIdentidad que tiene en la base
-            sqlCommand.Parameters.AddWithValue("@idIdentidad", ident.getIdIdentidad());
+            //valido por el mail y por el dni
+            sqlCommand.Parameters.AddWithValue("@tipoDoc",tipoDoc);
+            sqlCommand.Parameters.AddWithValue("@nroDoc", nroDoc);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idIdentidad FROM LOS_BORBOTONES.Cliente WHERE idIdentidad = @idIdentidad";
+            sqlCommand.CommandText = "SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = @tipoDoc and NumeroDocumento= @nroDoc and TipoIdentidad='Cliente'";
 
             sqlConnection.Open();
 
@@ -268,8 +326,8 @@ namespace FrbaHotel.Repositorios
 
             sqlConnection.Close();
 
-            //Devuelve verdadero si el ID coincide o si el IdIdentidad coincide
-            return idCliente != 0 || ident.getIdIdentidad().Equals(idIdentidad);
+            //Devuelve verdadero si el ID coincide o si el IdIdentidad es distinto de 0 que es que ya hay con ese mail y doc
+            return idCliente != 0 || idIdentidad != 0;
         }
 
         //filtro por idIdentidad que tambien despues lo uso para traer la Identidad a esta clase
