@@ -111,14 +111,57 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Rol rol)
         {
+            int idRol = 0;
+            
             if (this.exists(rol))
             {
-                //Error
-            } else {
-                //Creo un nuevo registro
+                throw new ElementoYaExisteException("Ya existe el rol que intenta crear");
+            } 
+            else 
+            {                
+                String CREATE_STATEMENT = @"
+
+                    BEGIN TRY
+                        BEGIN TRANSACTION
+
+                            INSERT INTO LOS_BORBOTONES.Rol(Nombre, Activo)
+                                OUTPUT INSERTED.idRol
+                                VALUES(@Nombre, @Activo);
+                            DECLARE @idRol int;
+                            SET @idRol = SCOPE_IDENTITY();
+
+                        COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                        ROLLBACK
+                    END CATCH
+
+                ";
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+                sqlCommand.Parameters.AddWithValue("@Activo", rol.getActivo());
+                sqlCommand.CommandText = CREATE_STATEMENT;
+
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idRol = reader.GetInt32(reader.GetOrdinal("idRol"));
+                }
+
+                sqlConnection.Close();
             }
 
-            throw new NotImplementedException();
+            return idRol;
         }
 
         override public void update(Rol rol)
@@ -129,7 +172,7 @@ namespace FrbaHotel.Repositorios
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el rol que intenta actualizar");
             }
         }
 
@@ -137,11 +180,37 @@ namespace FrbaHotel.Repositorios
         {
             if (this.exists(rol))
             {
-                //Borro el registro
+                String DELETE_STATEMENT = @"
+
+                    BEGIN TRY
+                        BEGIN TRANSACTION
+                            DELETE FROM LOS_BORBOTONES.Rol WHERE Nombre = @Nombre
+                        COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                        ROLLBACK
+                    END CATCH
+
+                ";
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
+                sqlCommand.CommandText = DELETE_STATEMENT;
+
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el rol que intenta borrar");
             }
         }
 

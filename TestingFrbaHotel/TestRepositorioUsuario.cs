@@ -11,7 +11,7 @@ namespace TestingFrbaHotel
     public class TestRepositorioUsuario
     {
         [TestMethod]
-        public void Test_Repo_Usuario_Creacion_Usuario()
+        public void Test_Repo_Usuario_CreacionInstancia_Usuario()
         {
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
             Usuario admin = repositorioUsuario.getByUsername("admin");

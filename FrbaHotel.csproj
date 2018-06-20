@@ -145,6 +145,7 @@
     <Compile Include="CancelarReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Excepciones\ElementoYaExisteException.cs" />
     <Compile Include="Excepciones\RequestInvalidoException.cs" />
     <Compile Include="Excepciones\UsuarioBloqueadoException.cs" />
     <Compile Include="Excepciones\ErrorDeAutenticacionException.cs" />

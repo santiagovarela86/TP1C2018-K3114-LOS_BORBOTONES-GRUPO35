@@ -11,7 +11,7 @@ namespace TestingFrbaHotel
     public class TestRepositorioRol
     {
         [TestMethod]
-        public void Test_Repo_Rol_Creacion_Rol()
+        public void Test_Repo_Rol_CreacionInstancia_Rol()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
             Rol rol = repositorioRol.getByNombre("AdminOriginal");
@@ -83,6 +83,42 @@ namespace TestingFrbaHotel
             Assert.AreEqual(0, repositorioRol.getByQuery("Administrador", new KeyValuePair<String, Boolean>("", false), null).Count);
 
             //FALTA FILTRO FUNCIONALIDAD
+        }
+
+        [TestMethod]
+        public void Test_Repo_Rol_Alta_Baja_Rol()
+        {
+            int idRolCreado = 0;
+            RepositorioRol repositorioRol = new RepositorioRol();
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
+
+            //CARGA DE FUNCIONALIDADES
+            funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMRol"));
+            funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMUsuario"));
+            funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMHotel"));
+            funcionalidades.Add(repositorioFuncionalidad.getByDescripcion("ABMRegimenEstadia"));
+
+            //ALTA DE ROL
+            String nombreRol = "RolTest";
+            Boolean activo = false;
+            Rol rolTest = new Rol(0, nombreRol, activo, funcionalidades);
+            idRolCreado = repositorioRol.create(rolTest);
+
+            //RECUPERO EL ROL CREADO...
+            rolTest = repositorioRol.getById(idRolCreado);
+
+            //VALIDO
+            Assert.AreEqual(6, repositorioRol.getAll().Count);
+            Assert.AreEqual(nombreRol, rolTest.getNombre());
+            Assert.AreEqual(activo, rolTest.getActivo());
+            //Assert.AreEqual(4, rolDummy.getFuncionalidades().Count); //TENGO QUE IMPLEMENTAR LA CARGA DE FUNCIONALIDADES
+
+            //BAJA DE ROL
+            repositorioRol.delete(rolTest);
+
+            //VALIDO
+            Assert.AreEqual(5, repositorioRol.getAll().Count);
         }
     }
 }
