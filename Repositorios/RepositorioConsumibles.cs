@@ -86,6 +86,68 @@ namespace FrbaHotel.Repositorios
         override public int create(Consumible consumible)
         {
             //dar de alta y antes de darlo validar del lado interfaz si quiere cambiar algo
+            int idConsumible = 0;
+            if (this.exists(consumible))
+            {
+                //aca valido que el codigo sea unico y el id distinto a 0
+                throw new ElementoYaExisteException("Ya existe el consumible que intenta crear");
+            }
+            else
+            {
+                //creo el nuevo consumible
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+               
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Code", consumible.getCodigo());
+                sqlCommand.Parameters.AddWithValue("@Desc", consumible.getDescripcion());
+                sqlCommand.Parameters.AddWithValue("@Price", consumible.getPrecio());
+
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio)
+                    OUTPUT INSERTED.idConsumible
+                    VALUES(@Code,@Desc,@Price);
+
+                    DECLARE @idConsumible int;
+                    SET @idConsumible = SCOPE_IDENTITY();
+                ");
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idConsumible = reader.GetInt32(reader.GetOrdinal("idConsumible"));
+                }
+
+                sqlConnection.Close();
+            }
+
+            return idConsumible;
+     
+        }
+         public int registrar(Consumible consumible)
+        {
+            //dar de alta y antes de darlo validar del lado interfaz si quiere cambiar algo
             throw new NotImplementedException();
         }
 
@@ -98,11 +160,52 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
-        public override bool exists(Consumible consumible)
+        public override Boolean exists(Consumible consumible)
         {
-            throw new NotImplementedException();
-        }
 
+            int idConsumible = 0;
+            int codigo = 0;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idConsumible", consumible.getIdConsumible());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idConsumible FROM LOS_BORBOTONES.Consumible WHERE idConsumible = @idConsumible";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idConsumible = reader.GetInt32(reader.GetOrdinal("idConsumible"));
+            }
+
+            sqlConnection.Close();
+
+            sqlCommand.Parameters.AddWithValue("@Code", consumible.getCodigo());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT codigo FROM LOS_BORBOTONES.Consumible WHERE codigo = @Code";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                codigo = (int)reader.GetDecimal(reader.GetOrdinal("Codigo"));
+            }
+
+            sqlConnection.Close();
+
+            //Devuelve verdadero si el ID coincide o si el username coincide
+            return idConsumible != 0 || codigo != 0;
+        }
         override public void bajaLogica(Consumible consumible)
         {
             throw new NotImplementedException();
