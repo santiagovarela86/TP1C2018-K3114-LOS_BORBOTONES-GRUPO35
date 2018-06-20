@@ -27,7 +27,7 @@ namespace FrbaHotel.AbmHotel
         private Label regimenesLabel;
         private TextBox regimenesText;
         private Label creacionLabel;
-        private TextBox creacionText;
+        private DateTimePicker creacionTime;
         private GroupBox groupBox1;
         private Button crearHotel;
 
@@ -47,6 +47,7 @@ namespace FrbaHotel.AbmHotel
             this.estrellasComboBox.SelectedItem = hotel.getCategoria().getEstrellas();
             this.calleText.Text = hotel.getDireccion().getCalle();
             this.numeroCalleText.Text = hotel.getDireccion().getNumeroCalle().ToString();
+            this.creacionTime.Value = hotel.getFechaInicioActividades();
 
         }
         /// <summary>
@@ -104,7 +105,7 @@ namespace FrbaHotel.AbmHotel
             this.regimenesLabel = new System.Windows.Forms.Label();
             this.regimenesText = new System.Windows.Forms.TextBox();
             this.creacionLabel = new System.Windows.Forms.Label();
-            this.creacionText = new System.Windows.Forms.TextBox();
+            this.creacionTime = new System.Windows.Forms.DateTimePicker();
             this.crearHotel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -142,7 +143,7 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.regimenesLabel);
             this.groupBox1.Controls.Add(this.regimenesText);
             this.groupBox1.Controls.Add(this.creacionLabel);
-            this.groupBox1.Controls.Add(this.creacionText);
+            this.groupBox1.Controls.Add(this.creacionTime);
             this.groupBox1.Controls.Add(this.nombreLabel);
             this.groupBox1.Controls.Add(this.nombreText);
             this.groupBox1.Controls.Add(this.crearHotel);
@@ -196,12 +197,9 @@ namespace FrbaHotel.AbmHotel
             // 
             // estrellasComboBox
             // 
-            this.estrellasComboBox.Items.AddRange(new object[] {
-            1,
-            2,
-            3,
-            4,
-            5});
+            RepositorioCategoria repoCategoria = new RepositorioCategoria();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll();
+            this.estrellasComboBox.DisplayMember = "Estrellas";
             this.estrellasComboBox.Location = new System.Drawing.Point(548, 41);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
@@ -282,10 +280,10 @@ namespace FrbaHotel.AbmHotel
             // 
             // creacionText
             // 
-            this.creacionText.Location = new System.Drawing.Point(307, 41);
-            this.creacionText.Name = "creacionText";
-            this.creacionText.Size = new System.Drawing.Size(117, 20);
-            this.creacionText.TabIndex = 2;
+            this.creacionTime.Location = new System.Drawing.Point(307, 41);
+            this.creacionTime.Name = "creacionText";
+            this.creacionTime.Size = new System.Drawing.Size(117, 20);
+            this.creacionTime.TabIndex = 2;
             // 
             // crearHotel
             // 
@@ -315,7 +313,10 @@ namespace FrbaHotel.AbmHotel
         private void modificarHotel_Click(object sender, EventArgs e)
         {
             RepositorioHotel repoHotel = new RepositorioHotel();
-            repoHotel.update(hotel);
+            
+            Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
+            Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, null, telefonoText.Text, creacionTime.Value);
+            repoHotel.update(hotelToUpdateSave);
 
         }
 

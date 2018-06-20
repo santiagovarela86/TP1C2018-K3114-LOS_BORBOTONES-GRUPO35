@@ -25,9 +25,66 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
+
+        public int getIdByEstrellas(int estrellas)
+        {
+            int idCategoria=0;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            List<Categoria> categorias = new List<Categoria>();
+
+            sqlCommand.Parameters.AddWithValue("@estrellas", estrellas);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria where Estrellas=@estrellas";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                idCategoria = reader.GetInt32(reader.GetOrdinal("idCategoria"));
+            }
+
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return idCategoria;
+        }
         public override List<Categoria> getAll()
         {
-            throw new NotImplementedException();
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            List<Categoria> categorias = new List<Categoria>();
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Categoria ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int estrellas = reader.GetInt32(reader.GetOrdinal("Estrellas"));
+                decimal recargaEstrellas = reader.GetDecimal(reader.GetOrdinal("RecargaEstrellas"));
+                int idCategoria= reader.GetInt32(reader.GetOrdinal("idCategoria"));
+                categorias.Add(new Categoria(idCategoria, estrellas, recargaEstrellas));
+            }
+          
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return categorias;
         }
 
         public override void bajaLogica(Categoria t)

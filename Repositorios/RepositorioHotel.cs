@@ -294,55 +294,57 @@ namespace FrbaHotel.Repositorios {
         public override void update(Hotel hotel)
         {
 
-            if (this.exists(hotel)) { 
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
+            if (this.exists(hotel))
+            {
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
 
-            Direccion direccion = hotel.getDireccion();
-            Categoria categoria = hotel.getCategoria();
+                Direccion direccion = hotel.getDireccion();
+                Categoria categoria = hotel.getCategoria();
 
-            //HOTEL
-            sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.IdHotel);
-            sqlCommand.Parameters.AddWithValue("@hotnombre", hotel.Nombre);
-            sqlCommand.Parameters.AddWithValue("@hotmail", hotel.Mail);
-            sqlCommand.Parameters.AddWithValue("@hottelefono", hotel.Telefono);
-            sqlCommand.Parameters.AddWithValue("@hotfechaInicioActividades", hotel.FechaInicioActividades);
+                //HOTEL
+                sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.IdHotel);
+                sqlCommand.Parameters.AddWithValue("@hotnombre", hotel.Nombre);
+                sqlCommand.Parameters.AddWithValue("@hotmail", hotel.Mail);
+                sqlCommand.Parameters.AddWithValue("@hottelefono", hotel.Telefono);
+                sqlCommand.Parameters.AddWithValue("@hotfechaInicioActividades", hotel.FechaInicioActividades);
 
 
 
-            //DIRECCION
-            sqlCommand.Parameters.AddWithValue("@dirpais", direccion.Pais);
-            sqlCommand.Parameters.AddWithValue("@dirciudad", direccion.Ciudad);
-            sqlCommand.Parameters.AddWithValue("@dircalle", direccion.Calle);
-            sqlCommand.Parameters.AddWithValue("@dirnumeroCalle", direccion.NumeroCalle);
-            sqlCommand.Parameters.AddWithValue("@dirpiso", direccion.Piso);
-            sqlCommand.Parameters.AddWithValue("@dirdepartamento", direccion.Departamento);
+                //DIRECCION
+                sqlCommand.Parameters.AddWithValue("@dirpais", direccion.Pais);
+                sqlCommand.Parameters.AddWithValue("@dirciudad", direccion.Ciudad);
+                sqlCommand.Parameters.AddWithValue("@dircalle", direccion.Calle);
+                sqlCommand.Parameters.AddWithValue("@dirnumeroCalle", direccion.NumeroCalle);
+                sqlCommand.Parameters.AddWithValue("@dirpiso", direccion.Piso);
+                sqlCommand.Parameters.AddWithValue("@dirdepartamento", direccion.Departamento);
 
-            //CATEGORIA
-            sqlCommand.Parameters.AddWithValue("@catestrellas", categoria.Estrellas);
-            sqlCommand.Parameters.AddWithValue("@catrecargaEstrellas", categoria.RecargaEstrellas);
+                //CATEGORIA
+                sqlCommand.Parameters.AddWithValue("@catId", categoria.Estrellas);
 
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Hotel AS HOT " +
-                "JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion" +
-                "JOIN LOS_BORBOTONES.Categoria AS CAT ON CAT.idCategoria = HOT.idCategoria" +
-                "SET HOT.Nombre= @hotnombre, HOT.Mail= @hotmail, HOT.Telefono= @hottelefono, HOT.FechaInicioActividades= @hotfechaInicioActividades," +
-                "DIR.Pais= @dirpais, DIR.Ciudad= @dirciudad, DIR.Calle=@dircalle, DIR.NumeroCalle= @dirnumeroCalle," +
-                "DIR.Piso=@dirpiso, DIR.Departamento=@dirdepartamento," +
-                "CAT.Estrellas=@catestrellas, CAT.RecargaEstrellas=@catrecargaEstrellas" +
-                "WHERE HOT.idHotel= @hotidHotel";
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Hotel AS HOT " +
+                    "JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion " +
+                    "SET HOT.Nombre= @hotnombre, HOT.Mail= @hotmail, HOT.Telefono= @hottelefono, HOT.FechaInicioActividades= @hotfechaInicioActividades, " +
+                    "DIR.Pais= @dirpais, DIR.Ciudad= @dirciudad, DIR.Calle=@dircalle, DIR.NumeroCalle= @dirnumeroCalle, " +
+                    "DIR.Piso=@dirpiso, DIR.Departamento=@dirdepartamento, " +
+                    "HOT.idCategoria=@catId " +
+                    "WHERE HOT.idHotel= @hotidHotel";
 
-            sqlConnection.Open();
+                sqlConnection.Open();
 
-            //Checkear excepcion si no existe u ocurrio algun problema con el update
+                //Checkear excepcion si no existe u ocurrio algun problema con el update
 
-            //Cierro Primera Consulta
-            sqlConnection.Close();
+                //Cierro Primera Consulta
+                sqlConnection.Close();
             }
-            throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
+            else
+            {
+                throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
+            }
         }
     }
 }
