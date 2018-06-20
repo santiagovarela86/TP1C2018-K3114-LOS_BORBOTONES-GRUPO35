@@ -68,18 +68,7 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
-                List<Regimen> regimenes = null;
-
-                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
-                List<CierreTemporal> cierresTemporales = null;
-
-                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-                List<Reserva> reservas = null;
-
-                List<Habitacion> habitaciones = null;
-
-                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
+                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio);
                 hoteles.Add(hotel);
             }
 
@@ -237,16 +226,8 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
-
-                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
-
-                //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
-
-                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-
                 hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, null, null);
+                                fechaInicio);
                 hoteles.Add(hotel);
             }
 
@@ -294,20 +275,9 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
-                List<Regimen> regimenes = null;
 
-                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
-                List<CierreTemporal> cierresTemporales = null;
 
-                //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
-                List<Habitacion> habitaciones = null;
-
-                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-                List<Reserva> reservas = null;
-
-                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
+                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio);
             }
             else
             {
