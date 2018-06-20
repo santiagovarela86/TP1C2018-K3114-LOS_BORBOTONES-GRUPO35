@@ -15,11 +15,9 @@ namespace FrbaHotel.AbmHotel
         public SearchHotel()
         {
             InitializeComponent();
-            estrellasComboBox.Items.Add(1);
-            estrellasComboBox.Items.Add(2);
-            estrellasComboBox.Items.Add(3);
-            estrellasComboBox.Items.Add(4);
-            estrellasComboBox.Items.Add(5);
+
+            RepositorioCategoria repoCategoria = new RepositorioCategoria();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll();
         }
 
 
@@ -28,7 +26,7 @@ namespace FrbaHotel.AbmHotel
             String nombre =validateStringFields(nombreText.Text);
 
             int? estrellas = null;
-            if (estrellasComboBox.SelectedItem != null) { estrellas = (int)estrellasComboBox.SelectedItem; };
+            if (estrellasComboBox.SelectedItem != null) { estrellas = ((Categoria)estrellasComboBox.SelectedItem).getEstrellas(); };
             String pais = validateStringFields(paisText.Text);
             String ciudad = validateStringFields(ciudadText.Text);
             RepositorioHotel repositorioHotel = new RepositorioHotel();
@@ -111,6 +109,24 @@ namespace FrbaHotel.AbmHotel
             {
                 this.modificarButton.Enabled = true;
                 this.cierreTemporalButton.Enabled = true;
+            }
+        }
+
+        private void altaButton_Click(object sender, EventArgs e)
+        {
+            using (CreateHotel form = new CreateHotel())
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    //string val = form.ReturnValue1;            //values preserved after close
+                    //string dateString = form.ReturnValue2;
+                    //Do something here with these values
+
+                    //for example
+                    //this.txtSomething.Text = val;
+                }
             }
         }
 
