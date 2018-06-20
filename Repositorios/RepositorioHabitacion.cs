@@ -30,7 +30,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
             sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.Piso);
             sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.Ubicacion);
-            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.Hotel.IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().IdHotel);
             sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.TipoHabitacion.getIdTipoHabitacion());
 
             sqlCommand.CommandType = CommandType.Text;
@@ -80,7 +80,7 @@ namespace FrbaHotel.Repositorios
             SqlDataReader reader;
 
             sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
-            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.Hotel.IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().IdHotel);
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;

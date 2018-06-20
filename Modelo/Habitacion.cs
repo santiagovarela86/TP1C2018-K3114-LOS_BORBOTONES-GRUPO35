@@ -14,7 +14,7 @@ namespace FrbaHotel.Modelo
         private int numero = 0;
         private int piso = 0;
         private String ubicacion = "";
-        private Hotel hotel;
+        private Hotel hotel=null;
 
         public Habitacion(int idHabitacion, TipoHabitacion tipoHabitacion,
             Boolean activa, int numero, int piso, String ubicacion, Hotel hotel)
@@ -85,7 +85,6 @@ namespace FrbaHotel.Modelo
         public int Numero { get { return this.getNumero(); } }
         public int Piso { get { return this.getPiso(); } }
         public String Ubicacion { get { return this.getUbicacion(); } }
-        public Hotel Hotel { get { return this.getHotel(); } }
         public int IdHabitacion { get { return this.getIdHabitacion(); } }
     }
 }
