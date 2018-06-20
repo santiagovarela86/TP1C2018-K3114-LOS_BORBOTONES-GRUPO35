@@ -82,6 +82,38 @@ namespace FrbaHotel.AbmHotel
             }
         }
 
+        private void modificarButton_Click(object sender, EventArgs e)
+        {
+            Hotel hotel = (Hotel)registroHoteles.CurrentRow.DataBoundItem;
+
+            using (ModificacionHotel form = new ModificacionHotel(hotel))
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    //string val = form.ReturnValue1;            //values preserved after close
+                    //string dateString = form.ReturnValue2;
+                    //Do something here with these values
+
+                    //for example
+                    //this.txtSomething.Text = val;
+                }
+            }
+        }
+
+        private void registroHotel_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.modificarButton.Enabled = true;
+                this.cierreTemporalButton.Enabled = true;
+            }
+        }
+
     }
 
 }

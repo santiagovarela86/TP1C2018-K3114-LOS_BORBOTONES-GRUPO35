@@ -97,6 +97,9 @@
     <Compile Include="AbmHabitacion\ModificarHabitacion.Designer.cs">
       <DependentUpon>ModificarHabitacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHotel\ModificacionHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmHotel\CreateHotel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHabitacion\CrearHabitacion.resx">
       <DependentUpon>CrearHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\ModificacionHotel.resx">
+      <DependentUpon>ModificacionHotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\SearchHotel.resx">
       <DependentUpon>SearchHotel.cs</DependentUpon>

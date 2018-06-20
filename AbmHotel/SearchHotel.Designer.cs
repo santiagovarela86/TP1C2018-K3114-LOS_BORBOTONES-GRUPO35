@@ -119,6 +119,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // cierreTemporalButton
             // 
+            this.cierreTemporalButton.Enabled = false;
             this.cierreTemporalButton.Location = new System.Drawing.Point(316, 477);
             this.cierreTemporalButton.Name = "cierreTemporalButton";
             this.cierreTemporalButton.Size = new System.Drawing.Size(161, 23);
@@ -127,11 +128,13 @@ namespace FrbaHotel.AbmHotel
             // 
             // modificarButton
             // 
+            this.modificarButton.Enabled = false;
             this.modificarButton.Location = new System.Drawing.Point(86, 477);
             this.modificarButton.Name = "modificarButton";
             this.modificarButton.Size = new System.Drawing.Size(161, 23);
             this.modificarButton.TabIndex = 6;
             this.modificarButton.Text = "Modificar";
+            this.modificarButton.Click += new System.EventHandler(this.modificarButton_Click);
             // 
             // estrellasLabel
             // 
