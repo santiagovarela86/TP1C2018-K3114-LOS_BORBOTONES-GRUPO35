@@ -124,7 +124,6 @@ namespace FrbaHotel.AbmHotel
             this.nombreLabel.Size = new System.Drawing.Size(44, 13);
             this.nombreLabel.TabIndex = 1;
             this.nombreLabel.Text = "Nombre";
-
             // 
             // groupBox1
             // 
@@ -149,7 +148,7 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.crearHotel);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(561, 537);
+            this.groupBox1.Size = new System.Drawing.Size(700, 407);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Crear Hotel";
@@ -157,7 +156,7 @@ namespace FrbaHotel.AbmHotel
             // telefonoLabel
             // 
             this.telefonoLabel.AutoSize = true;
-            this.telefonoLabel.Location = new System.Drawing.Point(23, 382);
+            this.telefonoLabel.Location = new System.Drawing.Point(23, 221);
             this.telefonoLabel.Name = "telefonoLabel";
             this.telefonoLabel.Size = new System.Drawing.Size(52, 13);
             this.telefonoLabel.TabIndex = 15;
@@ -165,7 +164,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // telefonoText
             // 
-            this.telefonoText.Location = new System.Drawing.Point(86, 379);
+            this.telefonoText.Location = new System.Drawing.Point(86, 218);
             this.telefonoText.Name = "telefonoText";
             this.telefonoText.Size = new System.Drawing.Size(117, 20);
             this.telefonoText.TabIndex = 14;
@@ -173,7 +172,7 @@ namespace FrbaHotel.AbmHotel
             // calleLabel
             // 
             this.calleLabel.AutoSize = true;
-            this.calleLabel.Location = new System.Drawing.Point(23, 322);
+            this.calleLabel.Location = new System.Drawing.Point(23, 161);
             this.calleLabel.Name = "calleLabel";
             this.calleLabel.Size = new System.Drawing.Size(33, 13);
             this.calleLabel.TabIndex = 13;
@@ -181,7 +180,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // calleText
             // 
-            this.calleText.Location = new System.Drawing.Point(86, 319);
+            this.calleText.Location = new System.Drawing.Point(86, 158);
             this.calleText.Name = "calleText";
             this.calleText.Size = new System.Drawing.Size(117, 20);
             this.calleText.TabIndex = 12;
@@ -189,7 +188,7 @@ namespace FrbaHotel.AbmHotel
             // estrellasLabel
             // 
             this.estrellasLabel.AutoSize = true;
-            this.estrellasLabel.Location = new System.Drawing.Point(23, 251);
+            this.estrellasLabel.Location = new System.Drawing.Point(485, 44);
             this.estrellasLabel.Name = "estrellasLabel";
             this.estrellasLabel.Size = new System.Drawing.Size(49, 13);
             this.estrellasLabel.TabIndex = 11;
@@ -203,7 +202,7 @@ namespace FrbaHotel.AbmHotel
             3,
             4,
             5});
-            this.estrellasComboBox.Location = new System.Drawing.Point(86, 248);
+            this.estrellasComboBox.Location = new System.Drawing.Point(548, 41);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
             this.estrellasComboBox.TabIndex = 10;
@@ -211,7 +210,7 @@ namespace FrbaHotel.AbmHotel
             // ciudadLabel
             // 
             this.ciudadLabel.AutoSize = true;
-            this.ciudadLabel.Location = new System.Drawing.Point(273, 193);
+            this.ciudadLabel.Location = new System.Drawing.Point(244, 97);
             this.ciudadLabel.Name = "ciudadLabel";
             this.ciudadLabel.Size = new System.Drawing.Size(43, 13);
             this.ciudadLabel.TabIndex = 9;
@@ -219,7 +218,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // ciudadText
             // 
-            this.ciudadText.Location = new System.Drawing.Point(336, 190);
+            this.ciudadText.Location = new System.Drawing.Point(307, 94);
             this.ciudadText.Name = "ciudadText";
             this.ciudadText.Size = new System.Drawing.Size(117, 20);
             this.ciudadText.TabIndex = 8;
@@ -227,7 +226,7 @@ namespace FrbaHotel.AbmHotel
             // numeroCalleLabel
             // 
             this.numeroCalleLabel.AutoSize = true;
-            this.numeroCalleLabel.Location = new System.Drawing.Point(258, 315);
+            this.numeroCalleLabel.Location = new System.Drawing.Point(244, 157);
             this.numeroCalleLabel.Name = "numeroCalleLabel";
             this.numeroCalleLabel.Size = new System.Drawing.Size(72, 13);
             this.numeroCalleLabel.TabIndex = 13;
@@ -235,7 +234,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // numeroCalleText
             // 
-            this.numeroCalleText.Location = new System.Drawing.Point(336, 312);
+            this.numeroCalleText.Location = new System.Drawing.Point(322, 154);
             this.numeroCalleText.Name = "numeroCalleText";
             this.numeroCalleText.Size = new System.Drawing.Size(117, 20);
             this.numeroCalleText.TabIndex = 12;
@@ -243,7 +242,7 @@ namespace FrbaHotel.AbmHotel
             // paisLabel
             // 
             this.paisLabel.AutoSize = true;
-            this.paisLabel.Location = new System.Drawing.Point(23, 190);
+            this.paisLabel.Location = new System.Drawing.Point(23, 97);
             this.paisLabel.Name = "paisLabel";
             this.paisLabel.Size = new System.Drawing.Size(30, 13);
             this.paisLabel.TabIndex = 7;
@@ -251,7 +250,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // paisText
             // 
-            this.paisText.Location = new System.Drawing.Point(86, 187);
+            this.paisText.Location = new System.Drawing.Point(86, 94);
             this.paisText.Name = "paisText";
             this.paisText.Size = new System.Drawing.Size(117, 20);
             this.paisText.TabIndex = 6;
@@ -259,7 +258,7 @@ namespace FrbaHotel.AbmHotel
             // regimenesLabel
             // 
             this.regimenesLabel.AutoSize = true;
-            this.regimenesLabel.Location = new System.Drawing.Point(273, 119);
+            this.regimenesLabel.Location = new System.Drawing.Point(244, 217);
             this.regimenesLabel.Name = "regimenesLabel";
             this.regimenesLabel.Size = new System.Drawing.Size(55, 13);
             this.regimenesLabel.TabIndex = 5;
@@ -267,7 +266,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // regimenesText
             // 
-            this.regimenesText.Location = new System.Drawing.Point(336, 116);
+            this.regimenesText.Location = new System.Drawing.Point(307, 214);
             this.regimenesText.Name = "regimenesText";
             this.regimenesText.Size = new System.Drawing.Size(117, 20);
             this.regimenesText.TabIndex = 4;
@@ -275,7 +274,7 @@ namespace FrbaHotel.AbmHotel
             // creacionLabel
             // 
             this.creacionLabel.AutoSize = true;
-            this.creacionLabel.Location = new System.Drawing.Point(23, 116);
+            this.creacionLabel.Location = new System.Drawing.Point(244, 44);
             this.creacionLabel.Name = "creacionLabel";
             this.creacionLabel.Size = new System.Drawing.Size(60, 13);
             this.creacionLabel.TabIndex = 3;
@@ -283,14 +282,14 @@ namespace FrbaHotel.AbmHotel
             // 
             // creacionText
             // 
-            this.creacionText.Location = new System.Drawing.Point(86, 113);
+            this.creacionText.Location = new System.Drawing.Point(307, 41);
             this.creacionText.Name = "creacionText";
             this.creacionText.Size = new System.Drawing.Size(117, 20);
             this.creacionText.TabIndex = 2;
             // 
             // crearHotel
             // 
-            this.crearHotel.Location = new System.Drawing.Point(204, 474);
+            this.crearHotel.Location = new System.Drawing.Point(289, 332);
             this.crearHotel.Name = "crearHotel";
             this.crearHotel.Size = new System.Drawing.Size(161, 23);
             this.crearHotel.TabIndex = 0;
@@ -301,7 +300,7 @@ namespace FrbaHotel.AbmHotel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 561);
+            this.ClientSize = new System.Drawing.Size(743, 395);
             this.Controls.Add(this.groupBox1);
             this.Name = "ModificacionHotel";
             this.Text = "Creacion de Hoteles";
