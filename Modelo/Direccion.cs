@@ -15,6 +15,7 @@ namespace FrbaHotel.Modelo
         private int numeroCalle = 0;
         private int piso = 0;
         private String departamento = "";
+        private int idIdentidad = 0;
 
         public Direccion(int idDireccion, String pais, String ciudad,
             String calle, int numeroCalle, int piso, String departamento)
@@ -27,10 +28,29 @@ namespace FrbaHotel.Modelo
             this.piso = piso;
             this.departamento = departamento;
         }
-
+        public Direccion(int idDireccion, String pais, String ciudad,
+            String calle, int numeroCalle, int piso, String departamento, int idIdentidad)
+        {
+            this.idDireccion = idDireccion;
+            this.idIdentidad = idIdentidad;
+            this.pais = pais;
+            this.ciudad = ciudad;
+            this.calle = calle;
+            this.numeroCalle = numeroCalle;
+            this.piso = piso;
+            this.departamento = departamento;
+        }
         public int getIdDireccion()
         {
             return this.idDireccion;
+        }
+        public int getIdIdentidad()
+        {
+            return this.idIdentidad;
+        }
+        public void setIdIdentidad(int idIdentidad)
+        {
+            this.idIdentidad = idIdentidad;
         }
 
         public String getPais()
