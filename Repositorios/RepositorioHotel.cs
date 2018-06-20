@@ -322,20 +322,24 @@ namespace FrbaHotel.Repositorios {
                 sqlCommand.Parameters.AddWithValue("@dirdepartamento", direccion.Departamento);
 
                 //CATEGORIA
-                sqlCommand.Parameters.AddWithValue("@catId", categoria.Estrellas);
+                sqlCommand.Parameters.AddWithValue("@catId", categoria.getIdCategoria());
 
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Hotel AS HOT " +
-                    "JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion " +
-                    "SET HOT.Nombre= @hotnombre, HOT.Mail= @hotmail, HOT.Telefono= @hottelefono, HOT.FechaInicioActividades= @hotfechaInicioActividades, " +
-                    "DIR.Pais= @dirpais, DIR.Ciudad= @dirciudad, DIR.Calle=@dircalle, DIR.NumeroCalle= @dirnumeroCalle, " +
-                    "DIR.Piso=@dirpiso, DIR.Departamento=@dirdepartamento, " +
-                    "HOT.idCategoria=@catId " +
-                    "WHERE HOT.idHotel= @hotidHotel";
+                sqlCommand.CommandText = 
+                    "BEGIN TRANSACTION " +
+                    "UPDATE LOS_BORBOTONES.Direccion " +
+                    "SET Pais= @dirpais,Ciudad= @dirciudad, Calle=@dircalle, NumeroCalle= @dirnumeroCalle, " +
+                    "Piso=@dirpiso, Departamento=@dirdepartamento WHERE idDireccion=@hotidHotel; " +
+                   
+                    "UPDATE LOS_BORBOTONES.Hotel " +
+                    "SET Nombre= @hotnombre, Mail= @hotmail, Telefono= @hottelefono, FechaInicioActividades= @hotfechaInicioActividades, " +
+                    "idCategoria=@catId " +
+                    "WHERE idHotel= @hotidHotel; " + 
+                    "COMMIT";
 
                 sqlConnection.Open();
-
+                reader = sqlCommand.ExecuteReader();
                 //Checkear excepcion si no existe u ocurrio algun problema con el update
 
                 //Cierro Primera Consulta
