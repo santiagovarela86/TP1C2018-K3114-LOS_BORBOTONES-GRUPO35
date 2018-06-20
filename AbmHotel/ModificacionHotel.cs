@@ -29,6 +29,8 @@ namespace FrbaHotel.AbmHotel
         private Label creacionLabel;
         private DateTimePicker creacionTime;
         private GroupBox groupBox1;
+        private Label emailLabel;
+        private TextBox emailText;
         private Button crearHotel;
 
 
@@ -40,6 +42,9 @@ namespace FrbaHotel.AbmHotel
         }
 
         private void initModificacionHotel() {
+
+            RepositorioCategoria repoCategoria = new RepositorioCategoria();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll();
             this.nombreText.Text = hotel.getNombre();
             this.paisText.Text = hotel.getDireccion().getPais();
             this.ciudadText.Text = hotel.getDireccion().getCiudad();
@@ -48,6 +53,7 @@ namespace FrbaHotel.AbmHotel
             this.calleText.Text = hotel.getDireccion().getCalle();
             this.numeroCalleText.Text = hotel.getDireccion().getNumeroCalle().ToString();
             this.creacionTime.Value = hotel.getFechaInicioActividades();
+            this.emailText.Text = hotel.getMail();
 
         }
         /// <summary>
@@ -107,6 +113,8 @@ namespace FrbaHotel.AbmHotel
             this.creacionLabel = new System.Windows.Forms.Label();
             this.creacionTime = new System.Windows.Forms.DateTimePicker();
             this.crearHotel = new System.Windows.Forms.Button();
+            this.emailLabel = new System.Windows.Forms.Label();
+            this.emailText = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -128,6 +136,8 @@ namespace FrbaHotel.AbmHotel
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.emailLabel);
+            this.groupBox1.Controls.Add(this.emailText);
             this.groupBox1.Controls.Add(this.telefonoLabel);
             this.groupBox1.Controls.Add(this.telefonoText);
             this.groupBox1.Controls.Add(this.calleLabel);
@@ -197,8 +207,6 @@ namespace FrbaHotel.AbmHotel
             // 
             // estrellasComboBox
             // 
-            RepositorioCategoria repoCategoria = new RepositorioCategoria();
-            this.estrellasComboBox.DataSource = repoCategoria.getAll();
             this.estrellasComboBox.DisplayMember = "Estrellas";
             this.estrellasComboBox.Location = new System.Drawing.Point(548, 41);
             this.estrellasComboBox.Name = "estrellasComboBox";
@@ -278,10 +286,10 @@ namespace FrbaHotel.AbmHotel
             this.creacionLabel.TabIndex = 3;
             this.creacionLabel.Text = "F. creacion";
             // 
-            // creacionText
+            // creacionTime
             // 
             this.creacionTime.Location = new System.Drawing.Point(307, 41);
-            this.creacionTime.Name = "creacionText";
+            this.creacionTime.Name = "creacionTime";
             this.creacionTime.Size = new System.Drawing.Size(117, 20);
             this.creacionTime.TabIndex = 2;
             // 
@@ -293,6 +301,22 @@ namespace FrbaHotel.AbmHotel
             this.crearHotel.TabIndex = 0;
             this.crearHotel.Text = "Crear";
             this.crearHotel.Click += new System.EventHandler(this.modificarHotel_Click);
+            // 
+            // label1
+            // 
+            this.emailLabel.AutoSize = true;
+            this.emailLabel.Location = new System.Drawing.Point(485, 100);
+            this.emailLabel.Name = "label1";
+            this.emailLabel.Size = new System.Drawing.Size(43, 13);
+            this.emailLabel.TabIndex = 17;
+            this.emailLabel.Text = "Email:";
+            // 
+            // textBox1
+            // 
+            this.emailText.Location = new System.Drawing.Point(548, 97);
+            this.emailText.Name = "textBox1";
+            this.emailText.Size = new System.Drawing.Size(117, 20);
+            this.emailText.TabIndex = 16;
             // 
             // ModificacionHotel
             // 
@@ -315,7 +339,7 @@ namespace FrbaHotel.AbmHotel
             RepositorioHotel repoHotel = new RepositorioHotel();
             
             Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
-            Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, null, telefonoText.Text, creacionTime.Value);
+            Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, emailText.Text, telefonoText.Text, creacionTime.Value);
             repoHotel.update(hotelToUpdateSave);
 
         }

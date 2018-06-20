@@ -330,7 +330,7 @@ namespace FrbaHotel.Repositorios {
                     "BEGIN TRANSACTION " +
                     "UPDATE LOS_BORBOTONES.Direccion " +
                     "SET Pais= @dirpais,Ciudad= @dirciudad, Calle=@dircalle, NumeroCalle= @dirnumeroCalle, " +
-                    "Piso=@dirpiso, Departamento=@dirdepartamento WHERE idDireccion=@hotidHotel; " +
+                    "Piso=@dirpiso, Depto=@dirdepartamento WHERE idDireccion=@hotidHotel; " +
                    
                     "UPDATE LOS_BORBOTONES.Hotel " +
                     "SET Nombre= @hotnombre, Mail= @hotmail, Telefono= @hottelefono, FechaInicioActividades= @hotfechaInicioActividades, " +
