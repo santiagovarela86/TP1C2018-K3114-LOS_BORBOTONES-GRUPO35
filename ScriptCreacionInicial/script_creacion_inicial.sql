@@ -926,6 +926,13 @@ INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMReserva'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Guest'));
 GO
 
+--Permisos del RolDummy (tiene que tener al menos un rol)
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'GenerarListadoEstadistico'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'RolDummy'));
+GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Genero Identidad de los Usuarios
 

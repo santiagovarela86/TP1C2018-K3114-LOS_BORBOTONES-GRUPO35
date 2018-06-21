@@ -322,7 +322,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Devuelve verdadero si el ID coincide o si el Nombre coincide
-            return idRol != 0 || rol.getNombre().Equals(nombre);
+            return idRol != 0 || rol.getNombre().ToUpper().Equals(nombre.ToUpper());
         }
 
         public Rol getByNombre(String nombre)

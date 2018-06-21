@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System.Diagnostics;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.AbmRol
 {
@@ -20,13 +21,41 @@ namespace FrbaHotel.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.ModificacionRol_Load(sender, e);
+            this.inicializarResetear();
         }
 
         public ModificacionRol(Rol rol)
         {
             InitializeComponent();
-            this.rol = rol;            
+            this.rol = rol;
+        }
+
+        private void inicializarResetear()
+        {
+            //BUSCO TODAS LAS FUNCIONALIDADES
+            RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
+            dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll();
+
+            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+            dataGridFuncionalidades.CurrentCell = null;
+            dataGridFuncionalidades.ClearSelection();
+
+            //MARCO LAS FUNCIONALIDADES QUE PERTENECEN AL ROL
+            foreach (DataGridViewRow row in dataGridFuncionalidades.Rows)
+            {
+                Funcionalidad funcionalidad = (Funcionalidad)row.DataBoundItem;
+                if (rol.getFuncionalidades().Exists(f => f.getDescripcion().Equals(funcionalidad.getDescripcion())))
+                {
+                    dataGridFuncionalidades.Rows[row.Index].Selected = true;
+                    dataGridFuncionalidades.Rows[row.Index].Cells[0].Selected = true;
+                }
+            }
+
+            //MOSTRAR EL NOMBRE DEL ROL
+            textBoxNombreRol.Text = rol.getNombre();
+
+            //MOSTRAR SI EL ROL ESTA ACTIVO
+            checkBoxActivo.Checked = rol.getActivo();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -36,26 +65,7 @@ namespace FrbaHotel.AbmRol
 
         private void ModificacionRol_Load(object sender, EventArgs e)
         {
-            //BUSCO TODAS LAS FUNCIONALIDADES
-            RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
-            dataGridView1.DataSource = repositorioFuncionalidad.getAll();
-
-            //MARCO LAS FUNCIONALIDADES QUE PERTENECEN AL ROL
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                Funcionalidad funcionalidad = (Funcionalidad)row.DataBoundItem;
-                if (rol.getFuncionalidades().Exists(f => f.getDescripcion().Equals(funcionalidad.getDescripcion())))
-                {
-                    dataGridView1.Rows[row.Index].Selected = true;
-                    dataGridView1.Rows[row.Index].Cells[0].Selected = true;
-                }
-            }
-
-            //MOSTRAR EL NOMBRE DEL ROL
-            textBox1.Text = rol.getNombre();
-
-            //MOSTRAR SI EL ROL ESTA ACTIVO
-            checkBox1.Checked = rol.getActivo();
+            this.inicializarResetear();
         }
 
         //CIERRO LA VENTANA CON ESCAPE
@@ -67,6 +77,52 @@ namespace FrbaHotel.AbmRol
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void buttonGuardar_Click(object sender, EventArgs e){
+            String nombreRol = textBoxNombreRol.Text;
+            Boolean activo = checkBoxActivo.Checked;
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            RepositorioRol repositorioRol = new RepositorioRol();
+
+            foreach (DataGridViewRow row in dataGridFuncionalidades.SelectedRows)
+            {
+                funcionalidades.Add((Funcionalidad)row.DataBoundItem);
+            }
+
+            //CAMBIO LOS ATRIBUTOS DEL ROL
+            rol.setNombre(nombreRol);
+            rol.setActivo(activo);
+            rol.setFuncionalidades(funcionalidades);
+
+            //LA RESPONSABILIDAD DE VALIDAR EL INPUT LA DEJO EN LA INTERFAZ???
+            //O MEJOR EN EL REPOSITORIO Y LAS MANEJO CON EXCEPCIONES???
+            if (this.validoInput(this))
+            {
+                try
+                {
+                    repositorioRol.update(rol);
+                    MessageBox.Show("Rol actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    //ME TRAIGO EL ROL ACTUALIZADO
+                    this.rol = repositorioRol.getById(rol.getIdRol());
+                    this.inicializarResetear();
+                }
+                catch (NoExisteIDException exc)
+                {
+                    MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ingrese nombre del Rol y seleccione sus Funcionalidades", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private Boolean validoInput(ModificacionRol form)
+        {
+            return !form.textBoxNombreRol.Text.Equals("") &&
+                   !form.dataGridFuncionalidades.SelectedRows.Count.Equals(0);
         }
     }
 }
