@@ -111,7 +111,6 @@ namespace FrbaHotel.AbmHotel
             // 
             // altaButton
             // 
-
             this.altaButton.Location = new System.Drawing.Point(26, 477);
             this.altaButton.Name = "altaButton";
             this.altaButton.Size = new System.Drawing.Size(130, 23);
@@ -137,6 +136,7 @@ namespace FrbaHotel.AbmHotel
             this.cierreTemporalButton.Size = new System.Drawing.Size(128, 23);
             this.cierreTemporalButton.TabIndex = 7;
             this.cierreTemporalButton.Text = "Cierre Temporal";
+            this.cierreTemporalButton.Click += new System.EventHandler(this.cierreTemporalButton_Click);
             // 
             // modificarButton
             // 

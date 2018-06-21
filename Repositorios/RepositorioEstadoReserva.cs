@@ -35,7 +35,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva = @idReserva" +
-                " ORDER BY idEstadoReserva DESC;";
+                " ORDER BY idEstado DESC;";
 
             sqlConnection.Open();
 
@@ -43,7 +43,7 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstadoReserva"));
+                int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
                 Usuario usuario = repoUsuario.getById(reader.GetOrdinal("IdUsuario"));
                 Reserva reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
                 DateTime fecha = reader.SafeGetDateTime(reader.GetOrdinal("Fecha"));

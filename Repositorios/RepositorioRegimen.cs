@@ -35,7 +35,41 @@ namespace FrbaHotel.Repositorios
 
         public override Regimen getById(int id)
         {
-            throw new NotImplementedException();
+
+            Regimen regimen = null;
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idRegimen", id);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Regimen WHERE idRegimen = @idRegimen";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+            
+                int idRegimen = reader.GetInt32(reader.GetOrdinal("idRegimen"));
+                String codigo = reader.SafeGetString(reader.GetOrdinal("Codigo"));
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
+                decimal precio = reader.GetDecimal(reader.GetOrdinal("Precio"));
+                bool activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
+                regimen = new Regimen(idRegimen, codigo, descripcion, precio, activo);
+
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+          
+            return regimen;
         }
 
         public override void update(Regimen t)

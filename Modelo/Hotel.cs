@@ -125,7 +125,7 @@ namespace FrbaHotel.Modelo
             if (this.cierresTemporales == null)
             {
                 RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
-                this.cierresTemporales = repoCierres.getByIdHotel(this.IdHotel);
+                this.cierresTemporales = repoCierres.getByIdHotel(this);
             }
             return this.cierresTemporales;
         }

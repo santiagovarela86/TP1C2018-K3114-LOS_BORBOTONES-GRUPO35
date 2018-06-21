@@ -79,8 +79,8 @@ namespace FrbaHotel.Repositorios
             Estadia estadia = null;
             Regimen regimen = null;
             Cliente cliente = null;
-            int codigoReserva = 0;
-            int diasAlojados = 0;
+            decimal codigoReserva = 0;
+            decimal diasAlojados = 0;
             DateTime fechaCreacion = new DateTime();
             DateTime fechaDesde = new DateTime();
             DateTime fechaHasta = new DateTime();
@@ -104,8 +104,8 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                codigoReserva = reader.GetInt32(reader.GetOrdinal("CodigoReserva"));
-                diasAlojados = reader.GetInt32(reader.GetOrdinal("DiasAlojados"));
+                codigoReserva = reader.GetDecimal(reader.GetOrdinal("CodigoReserva"));
+                diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
                 fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
                 fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
                 fechaCreacion = reader.GetDateTime(reader.GetOrdinal("FechaCreacion"));

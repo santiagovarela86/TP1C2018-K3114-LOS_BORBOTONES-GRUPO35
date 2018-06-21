@@ -15,7 +15,7 @@ namespace FrbaHotel.Repositorios {
 
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
             RepositorioReserva repositorioReserva = new RepositorioReserva();
-            Hotel hotel = getById(cierreTemporal.IdHotel);
+            Hotel hotel = cierreTemporal.getHotel();
             List<Reserva> reservas = hotel.getReservas();
             foreach(var reserva in reservas){
                 bool overlap = reserva.FechaDesde < cierreTemporal.FechaFin && cierreTemporal.FechaInicio < reserva.FechaHasta;
