@@ -16,14 +16,10 @@ namespace FrbaHotel.Repositorios {
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
             RepositorioReserva repositorioReserva = new RepositorioReserva();
             Hotel hotel = cierreTemporal.getHotel();
-            List<Reserva> reservas = hotel.getReservas();
-            foreach(var reserva in reservas){
-                bool overlap = reserva.FechaDesde < cierreTemporal.FechaFin && cierreTemporal.FechaInicio < reserva.FechaHasta;
-                if (overlap){
+            bool existReservas = repositorioReserva.existReservaBetweenDate(cierreTemporal.getFechaInicio(), cierreTemporal.getFechaFin(), cierreTemporal.getHotel().getIdHotel());
+            if(existReservas){
                     throw new RequestInvalidoException("No es posible dar de baja temporal el hotel. Existen reservas para la fecha la cual se quiere dar de baja el hotel");
                 }
-                           }
-
             return repositorioCierreTemporal.create(cierreTemporal);
         }
 

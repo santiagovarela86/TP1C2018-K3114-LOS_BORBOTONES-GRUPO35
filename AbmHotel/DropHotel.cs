@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.AbmHotel
 {
@@ -175,9 +176,17 @@ namespace FrbaHotel.AbmHotel
             }
             else
             {
-                CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
-                RepositorioHotel repoHotel = new RepositorioHotel();
-                repoHotel.crearBajaTemporal(cierreTemporal);
+                try
+                {
+                    CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
+                    RepositorioHotel repoHotel = new RepositorioHotel();
+                    repoHotel.crearBajaTemporal(cierreTemporal);
+                }
+                catch (RequestInvalidoException exception)
+                {
+                    MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+                }
             }
         }
 

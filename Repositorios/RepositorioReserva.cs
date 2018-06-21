@@ -63,6 +63,41 @@ namespace FrbaHotel.Repositorios
             return reservas;
 
         }
+
+
+        public bool existReservaBetweenDate(DateTime fechaDesde, DateTime fechaHasta, int idHotel)
+        {
+
+            RepositorioHotel repoHotel = new RepositorioHotel();
+            RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+
+            List<Reserva> reservas = new List<Reserva>();
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@fechaDesde", fechaDesde);
+            sqlCommand.Parameters.AddWithValue("@fechaHasta", fechaHasta);
+            sqlCommand.Parameters.AddWithValue("@idHotel", idHotel);
+            //  reserva.FechaDesde < cierreTemporal.FechaFin && cierreTemporal.FechaInicio < reserva.FechaHasta;
+              
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Reserva WHERE FechaDesde < @fechaHasta AND @fechaDesde < FechaHasta AND idHotel = @idHotel";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            bool exist = reader.Read();
+           
+            sqlConnection.Close();
+
+            return exist;
+
+        }
         override public Reserva getById(int idReserva)
         {
 
