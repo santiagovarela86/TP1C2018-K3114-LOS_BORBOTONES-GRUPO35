@@ -31,7 +31,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.Piso);
             sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.Ubicacion);
             sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().IdHotel);
-            sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.TipoHabitacion.getIdTipoHabitacion());
+            sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.getTipoHabitacion().getIdTipoHabitacion());
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
