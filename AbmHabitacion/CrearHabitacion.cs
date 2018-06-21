@@ -43,7 +43,6 @@ namespace FrbaHotel.AbmHabitacion
                 Hotel hotel = (Hotel)validateFields(comboBoxHotel.SelectedItem, "Hotel");
                 String ubicacion = (String)validateFields(comboBoxUbicacion.SelectedItem, "Ubicacion");
                 TipoHabitacion tipoHabitacion = (TipoHabitacion)validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo");
-                String descripcion = (String)validateStringFields(textDescripcion.Text, "Descripcion");
                 RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
                 bool activa= checkBoxActiva.Checked;
                 Habitacion habitacion = new Habitacion(0, tipoHabitacion, activa, numero, piso, ubicacion, hotel);

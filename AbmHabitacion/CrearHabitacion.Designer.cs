@@ -32,8 +32,6 @@
             this.textNumero = new System.Windows.Forms.TextBox();
             this.labelPiso = new System.Windows.Forms.Label();
             this.textPiso = new System.Windows.Forms.TextBox();
-            this.labelDescripcion = new System.Windows.Forms.Label();
-            this.textDescripcion = new System.Windows.Forms.TextBox();
             this.labelHotel = new System.Windows.Forms.Label();
             this.comboBoxHotel = new System.Windows.Forms.ComboBox();
             this.labelUbicacion = new System.Windows.Forms.Label();
@@ -75,22 +73,7 @@
             this.textPiso.Name = "textPiso";
             this.textPiso.Size = new System.Drawing.Size(100, 20);
             this.textPiso.TabIndex = 4;
-            // 
-            // labelDescripcion
-            // 
-            this.labelDescripcion.AutoSize = true;
-            this.labelDescripcion.Location = new System.Drawing.Point(217, 97);
-            this.labelDescripcion.Name = "labelDescripcion";
-            this.labelDescripcion.Size = new System.Drawing.Size(63, 13);
-            this.labelDescripcion.TabIndex = 7;
-            this.labelDescripcion.Text = "Descripcion";
-            // 
-            // textDescripcion
-            // 
-            this.textDescripcion.Location = new System.Drawing.Point(292, 97);
-            this.textDescripcion.Name = "textDescripcion";
-            this.textDescripcion.Size = new System.Drawing.Size(100, 20);
-            this.textDescripcion.TabIndex = 6;
+
             // 
             // labelHotel
             // 
@@ -173,8 +156,6 @@
             this.Controls.Add(this.comboBoxUbicacion);
             this.Controls.Add(this.labelHotel);
             this.Controls.Add(this.comboBoxHotel);
-            this.Controls.Add(this.labelDescripcion);
-            this.Controls.Add(this.textDescripcion);
             this.Controls.Add(this.labelPiso);
             this.Controls.Add(this.textPiso);
             this.Controls.Add(this.labelNumero);
@@ -196,8 +177,6 @@
         private System.Windows.Forms.ComboBox comboBoxUbicacion;
         private System.Windows.Forms.Label labelHotel;
         private System.Windows.Forms.ComboBox comboBoxHotel;
-        private System.Windows.Forms.Label labelDescripcion;
-        private System.Windows.Forms.TextBox textDescripcion;
         private System.Windows.Forms.Label labelTipoHabitacion;
         private System.Windows.Forms.ComboBox comboBoxTipoHabitacion;
         private System.Windows.Forms.Button buttonCrearHabitacion;

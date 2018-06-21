@@ -79,13 +79,14 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
+            sqlCommand.Parameters.AddWithValue("@habIdHabitacion", habitacion.IdHabitacion);
             sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
             sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().IdHotel);
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Habitacion "+
-                " WHERE Numero=@habNumero AND idHotel=@habIdHotel;";
+                " WHERE Numero=@habNumero AND idHotel=@habIdHotel AND idHabitacion!=@habIdHabitacion;";
 
             sqlConnection.Open();
             reader = sqlCommand.ExecuteReader();
@@ -176,9 +177,30 @@ namespace FrbaHotel.Repositorios
             return habitacion;
         }
 
-        public override void update(Habitacion t)
+        public override void update(Habitacion habitacion)
         {
-            throw new NotImplementedException();
+            if (!this.exists(habitacion))
+            {
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().getIdHotel());
+                sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.getUbicacion());
+                sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.getNumero());
+                sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.getPiso());
+                sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.getActiva());
+                sqlCommand.Parameters.AddWithValue("@habidHabitacion", habitacion.getIdHabitacion());
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva,Numero=@habNumero,Piso=@habPiso,Ubicacion=@habUbicacion,idHotel=@habIdHotel WHERE idHabitacion=@habidHabitacion";
+
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+                sqlConnection.Close();
+            }else{
+                throw new RequestInvalidoException("El numero de habitacion en el hotel al cual se quiere actualizar ya existe");
+            }
         }
 
 

@@ -270,6 +270,9 @@
     <EmbeddedResource Include="AbmHabitacion\CrearHabitacion.resx">
       <DependentUpon>CrearHabitacion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\ModificarHabitacion.resx">
+      <DependentUpon>ModificarHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\DropHotel.resx">
       <DependentUpon>DropHotel.cs</DependentUpon>
     </EmbeddedResource>
