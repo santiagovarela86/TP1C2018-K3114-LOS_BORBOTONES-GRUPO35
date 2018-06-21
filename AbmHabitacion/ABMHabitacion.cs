@@ -33,9 +33,7 @@ namespace FrbaHotel.AbmHabitacion
             tipoHabitaciones.AddRange(repositorioTipoHab.getAll());
 
             comboBoxTipoHabitacion.DataSource = tipoHabitaciones;
-            comboBoxTipoHabitacion.DisplayMember = "Descripcion";
-            comboBoxUbicacion.DataSource = new[] { "","Vista al exterior", "Interior" };
-            
+            comboBoxTipoHabitacion.DisplayMember = "Descripcion";            
 
             checkBoxActiva.Checked = false;
         }
@@ -55,8 +53,8 @@ namespace FrbaHotel.AbmHabitacion
 
         private void buttonBajaHabitacion_Click(object sender, EventArgs e)
         {
-
-            using (BajaHabitacion bajaHabitacion = new BajaHabitacion())
+            Habitacion habitacion = (Habitacion)registroHabitaciones.CurrentRow.DataBoundItem;
+            using (BajaHabitacion bajaHabitacion = new BajaHabitacion(habitacion))
             {
                 var resultFormBajaHabitacion = bajaHabitacion.ShowDialog();
 
@@ -72,11 +70,10 @@ namespace FrbaHotel.AbmHabitacion
             String numero = validateStringFields(textNumero.Text);
             String piso = validateStringFields(textPiso.Text);
             Hotel hotel = (Hotel)comboBoxHotel.SelectedItem;
-            String ubicacion = (String)validateStringFields((String)comboBoxUbicacion.SelectedItem);
             TipoHabitacion tipoHabitacion = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
             RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
             bool activa = checkBoxActiva.Checked;
-            registroHabitaciones.DataSource= repositorioHabitacion.getByQuery(numero, piso, hotel, ubicacion, tipoHabitacion, activa);
+            registroHabitaciones.DataSource= repositorioHabitacion.getByQuery(numero, piso, hotel, tipoHabitacion, activa);
         }
 
         private String validateStringFields(String field)
@@ -94,7 +91,34 @@ namespace FrbaHotel.AbmHabitacion
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-       
+
+        private void registroHabitacion_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.buttonModificarHabitacion.Enabled = true;
+                this.buttonBajaHabitacion.Enabled = true;
+            }
+        }
+
+        private void buttonModificarHabitacion_Click(object sender, EventArgs e)
+        {
+            Habitacion habitacion = (Habitacion)registroHabitaciones.CurrentRow.DataBoundItem;
+            using (ModificarHabitacion modificarHabitacion = new ModificarHabitacion(habitacion))
+            {
+                var resultFormModificarHabitacion = modificarHabitacion.ShowDialog();
+
+                if (resultFormModificarHabitacion == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
 
     }
+
 }

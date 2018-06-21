@@ -30,8 +30,7 @@
         {
             this.checkBoxActiva = new System.Windows.Forms.CheckBox();
             this.buttonCrearHabitacion = new System.Windows.Forms.Button();
-            this.labelTipoHabitacion = new System.Windows.Forms.Label();
-            this.comboBoxHabitacion = new System.Windows.Forms.ComboBox();
+            this.habitacionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // checkBoxActiva
@@ -56,19 +55,12 @@
             // 
             // labelTipoHabitacion
             // 
-            this.labelTipoHabitacion.AutoSize = true;
-            this.labelTipoHabitacion.Location = new System.Drawing.Point(26, 34);
-            this.labelTipoHabitacion.Name = "labelTipoHabitacion";
-            this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
-            this.labelTipoHabitacion.TabIndex = 22;
-            this.labelTipoHabitacion.Text = "Tipo : ";
-            // 
-            // comboBoxHabitacion
-            // 
-            this.comboBoxHabitacion.Location = new System.Drawing.Point(77, 28);
-            this.comboBoxHabitacion.Name = "comboBoxHabitacion";
-            this.comboBoxHabitacion.Size = new System.Drawing.Size(195, 21);
-            this.comboBoxHabitacion.TabIndex = 21;
+            this.habitacionLabel.AutoSize = true;
+            this.habitacionLabel.Location = new System.Drawing.Point(26, 34);
+            this.habitacionLabel.Name = "labelTipoHabitacion";
+            this.habitacionLabel.Size = new System.Drawing.Size(37, 13);
+            this.habitacionLabel.TabIndex = 22;
+
             // 
             // BajaHabitacion
             // 
@@ -77,8 +69,7 @@
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.checkBoxActiva);
             this.Controls.Add(this.buttonCrearHabitacion);
-            this.Controls.Add(this.labelTipoHabitacion);
-            this.Controls.Add(this.comboBoxHabitacion);
+            this.Controls.Add(this.habitacionLabel);
             this.Name = "BajaHabitacion";
             this.Text = "BajaHabitacion";
             this.ResumeLayout(false);
@@ -90,7 +81,6 @@
 
         private System.Windows.Forms.CheckBox checkBoxActiva;
         private System.Windows.Forms.Button buttonCrearHabitacion;
-        private System.Windows.Forms.Label labelTipoHabitacion;
-        private System.Windows.Forms.ComboBox comboBoxHabitacion;
+        private System.Windows.Forms.Label habitacionLabel;
     }
 }

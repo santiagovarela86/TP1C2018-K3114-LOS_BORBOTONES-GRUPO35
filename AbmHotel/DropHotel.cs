@@ -181,6 +181,8 @@ namespace FrbaHotel.AbmHotel
                     CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
                     RepositorioHotel repoHotel = new RepositorioHotel();
                     repoHotel.crearBajaTemporal(cierreTemporal);
+                    MessageBox.Show("Cierre temporal creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
                 }
                 catch (RequestInvalidoException exception)
                 {

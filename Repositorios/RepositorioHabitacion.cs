@@ -183,8 +183,7 @@ namespace FrbaHotel.Repositorios
 
 
 
-        public List<Habitacion> getByQuery(String numero, String piso, Hotel hotel,
-                                             String ubicacion,TipoHabitacion tipoHabitacion,bool activa )
+        public List<Habitacion> getByQuery(String numero, String piso, Hotel hotel,TipoHabitacion tipoHabitacion,bool activa )
         {
             List<Habitacion> habitaciones = new List<Habitacion>();
             RepositorioHotel repositorioHotel = new RepositorioHotel();
@@ -200,7 +199,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
                 "SELECT DISTINCT(HAB.idHabitacion),HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
-                getCondiciones(numero,piso,hotel,ubicacion,tipoHabitacion,activa,sqlCommand) + ";";
+                getCondiciones(numero,piso,hotel,tipoHabitacion,activa,sqlCommand) + ";";
             
             sqlConnection.Open();
 
@@ -208,7 +207,7 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-
+                int qidHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 int qidHabitacion = reader.GetInt32(reader.GetOrdinal("idHabitacion"));
                 int qidTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
                 bool qactiva = reader.GetBoolean(reader.GetOrdinal("Activa"));
@@ -216,7 +215,7 @@ namespace FrbaHotel.Repositorios
                 int qpiso = reader.GetInt32(reader.GetOrdinal("Piso"));
                 String qubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
                 TipoHabitacion qtipoHabitacion = repositorioTipoHabitacion.getById(qidTipoHabitacion);
-                Hotel qhotel = repositorioHotel.getById(hotel.getIdHotel());
+                Hotel qhotel = repositorioHotel.getById(qidHotel);
                 habitaciones.Add(new Habitacion(qidHabitacion, qtipoHabitacion, qactiva, qnumero, qpiso, qubicacion, qhotel));
            
             }
@@ -227,8 +226,7 @@ namespace FrbaHotel.Repositorios
 
         }
 
-        private String getCondiciones(String numero, String piso, Hotel hotel,
-                                             String ubicacion,TipoHabitacion tipoHabitacion,bool activa,  SqlCommand sqlCommand)
+        private String getCondiciones(String numero, String piso, Hotel hotel,TipoHabitacion tipoHabitacion,bool activa,  SqlCommand sqlCommand)
         {
 
             List<String> condiciones = new List<String>();
@@ -244,20 +242,15 @@ namespace FrbaHotel.Repositorios
                 sqlCommand.Parameters.AddWithValue("@habPiso", piso);
 
             }
-            if (hotel.getIdHotel() != 0)
+            if (hotel !=null && hotel.getIdHotel() != 0)
             {
                 condiciones.Add("HAB.idHotel=@habIdHotel");
                 sqlCommand.Parameters.AddWithValue("@habIdHotel", hotel.getIdHotel());
 
             }
 
-            if (ubicacion != null )
-            {
-                condiciones.Add("HAB.Ubicacion=@habUbicacion");
-                sqlCommand.Parameters.AddWithValue("@habUbicacion", ubicacion);
-            }
 
-            if (tipoHabitacion.getIdTipoHabitacion() != 0)
+            if (tipoHabitacion !=null && tipoHabitacion.getIdTipoHabitacion() != 0)
             {
                 condiciones.Add("HAB.idTipoHabitacion=@habidTipoHabitacion");
                 sqlCommand.Parameters.AddWithValue("@habidTipoHabitacion", tipoHabitacion.getIdTipoHabitacion());

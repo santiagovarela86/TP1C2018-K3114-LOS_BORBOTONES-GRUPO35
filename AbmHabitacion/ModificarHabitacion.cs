@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Modelo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,7 @@ namespace FrbaHotel.AbmHabitacion
 {
     public partial class ModificarHabitacion : Form
     {
-        public ModificarHabitacion()
+        public ModificarHabitacion(Habitacion habitacion)
         {
             InitializeComponent();
         }
