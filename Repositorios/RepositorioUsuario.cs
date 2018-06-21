@@ -140,16 +140,95 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Usuario usuario)
         {
+            int idUsuario = 0;
             if (this.exists(usuario))
             {
-                //Error
+                //aca valido que el username sea unico
+                throw new ElementoYaExisteException("Ya existe el usuario que intenta crear");
             }
             else
             {
-                //Creo un nuevo registro
+                //llamo a crear la identidad y traigo el IdIdentidad
+                RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+                int idIdentidad = repoIdentidad.create(usuario.getIdentidad());
+
+                //llamo a crear la direccion y traigo el IdDireccion, le seteo el idIdentidad que lo necesita
+                usuario.getIdentidad().getDireccion().setIdIdentidad(idIdentidad);
+                RepositorioDireccion repoDireccion = new RepositorioDireccion();
+                int idDireccion= repoDireccion.create(usuario.getIdentidad().getDireccion());
+
+                //ahora ya tengo todo para crear el usuario
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                //encripto clave
+                string passwordEncriptada = this.EncriptarSHA256(usuario.getPassword());
+        
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Username", usuario.getUsername());
+                sqlCommand.Parameters.AddWithValue("@Activo", usuario.getActivo());
+                sqlCommand.Parameters.AddWithValue("@Password", passwordEncriptada);
+                sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", usuario.getIntentosFallidosLogin());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", idIdentidad);
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Usuario(Username,Password,IntentosFallidosLogin,Activo,idIdentidad)
+                    OUTPUT INSERTED.idUsuario
+                    VALUES(@Username,@Password,@IntentosFallidosLogin,@Activo,@idIdentidad);
+
+                    DECLARE @idUsuario int;
+                    SET @idUsuario = SCOPE_IDENTITY();
+                ");
+
+                //AGREGO DINAMICAMENTE LOS ROLES A LA CONSULTA
+                int i = 1;
+                foreach (Rol r in usuario.getRoles())
+                {
+                    String paramName = "@idRol" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Rol_X_Usuario(idRol,idUsuario) VALUES ({0}, @idUsuario)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, r.getIdRol());
+                    i++;
+                }
+                //AGREGO DINAMICAMENTE LOS HOTELES A LA CONSULTA
+                int k = 1;
+                foreach (Hotel h in usuario.getHoteles())
+                {
+                    String paramName = "@idHotel" + k.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario(idHotel,idUsuario) VALUES ({0}, @idUsuario)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, h.getIdHotel());
+                    k++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
+                }
+
+                sqlConnection.Close();
             }
 
-            throw new NotImplementedException();
+            return idUsuario;
         }
 
         override public void update(Usuario usuario)

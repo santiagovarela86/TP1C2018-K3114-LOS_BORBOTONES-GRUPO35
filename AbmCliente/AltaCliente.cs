@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FrbaHotel.Modelo;
+using FrbaHotel.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,16 +38,41 @@ namespace FrbaHotel.AbmCliente
             String localidad = textBox9.Text;
             String paisOrigen = textBox10.Text;
             DateTime fechaNacimiento = dateTime.Value;
-            String nroCalle = textBox12.Text;
-            String nroPiso = textBox13.Text;
+            int nroCalle = 0;
+            if (textBox12.Text != "")
+            {
+                nroCalle = int.Parse(textBox12.Text);
+            }
+            int nroPiso = 0;
+            if (textBox13.Text != "")
+            {
+                nroPiso = int.Parse(textBox13.Text);
+            }
+
             String depto = textBox14.Text;
             String tipoDoc = "";
-            
+            String tipoIdentidad = "Cliente";
+            int idDir = 0;
+            int idIdentidad = 0;
+            int idCliente = 0;
+            Boolean activo = true;
+            List<Reserva> reservas = new List<Reserva>();
             if (comboBoxTipoDoc.SelectedItem != null)
             {
                 tipoDoc = (String)comboBoxTipoDoc.SelectedItem;
             }
-            //Validar que mail sea unico asi como tipo y numero de documento tambien
+            //armo direccion (id en 0)
+            Direccion adress = new Direccion(idDir, paisOrigen, localidad,
+            calle, nroCalle, nroPiso, depto);
+            //armo la identidad con la direccion(id en 0)
+            Identidad identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDoc, nroDoc,
+            mail, fechaNacimiento, nacionalidad, telefono, adress);
+            // armo el cliente con la identidad (id en 0)
+            Cliente cliente = new Cliente(idCliente,identidad, activo,reservas);
+            //ahora si ya lo puedo crear
+            RepositorioCliente repoCliente = new RepositorioCliente();
+            repoCliente.create(cliente);
+            
 
         }
 
@@ -71,6 +98,7 @@ namespace FrbaHotel.AbmCliente
 
             List<String> tipoDoc = new List<String>();
             tipoDoc.Add("DNI");
+            tipoDoc.Add("Pasaporte");
             tipoDoc.Add("CUIT");
             tipoDoc.Add("LE");
             tipoDoc.Add("LC");

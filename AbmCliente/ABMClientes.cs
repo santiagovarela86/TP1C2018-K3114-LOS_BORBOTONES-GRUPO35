@@ -88,6 +88,20 @@ namespace FrbaHotel.AbmCliente
         private void button3_Click(object sender, EventArgs e)
         {
             //aca va el alta
+            using (AltaCliente form = new AltaCliente())
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    //string val = form.ReturnValue1;            //values preserved after close
+                    //string dateString = form.ReturnValue2;
+                    //Do something here with these values
+
+                    //for example
+                    //this.txtSomething.Text = val;
+                }
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)

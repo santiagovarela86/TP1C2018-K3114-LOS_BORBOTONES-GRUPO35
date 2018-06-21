@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using FrbaHotel.Modelo;
 using FrbaHotel.Excepciones;
+using System.Text;
 
 namespace FrbaHotel.Repositorios
 {
@@ -18,25 +19,48 @@ namespace FrbaHotel.Repositorios
             SqlDataReader reader;
             int idDireccionInserted = 0;
 
-            sqlCommand.Parameters.AddWithValue("@pais", direccion.Pais);
-            sqlCommand.Parameters.AddWithValue("@ciudad", direccion.Ciudad);
-            sqlCommand.Parameters.AddWithValue("@calle", direccion.Calle);
-            sqlCommand.Parameters.AddWithValue("@numeroCalle", direccion.NumeroCalle);
-            sqlCommand.Parameters.AddWithValue("@piso", direccion.Piso);
-            sqlCommand.Parameters.AddWithValue("@departamento", direccion.Departamento);
-            sqlCommand.Parameters.AddWithValue("@idDireccion", direccion.IdDireccion);
-
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "INSERT INTO  LOS_BORBOTONES.Direccion( Pais,Ciudad,Calle,NumeroCalle,Piso,Depto) OUTPUT INSERTED.idDireccion VALUES (@pais,@ciudad,@calle,@numeroCalle,@piso,@departamento);";
+            sqlCommand.Parameters.AddWithValue("@pais", direccion.getPais());
+            sqlCommand.Parameters.AddWithValue("@ciudad", direccion.getCiudad());
+            sqlCommand.Parameters.AddWithValue("@calle", direccion.getCalle());
+            sqlCommand.Parameters.AddWithValue("@numeroCalle", direccion.getNumeroCalle());
+            sqlCommand.Parameters.AddWithValue("@piso", direccion.getPiso());
+            sqlCommand.Parameters.AddWithValue("@departamento", direccion.getDepartamento());
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", direccion.getIdIdentidad());
+            
+            
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
 
+                    INSERT INTO LOS_BORBOTONES.Direccion( Pais,Ciudad,Calle,NumeroCalle,Piso,Depto,idIdentidad)
+                    OUTPUT INSERTED.idDireccion
+                    VALUES(@pais,@ciudad,@calle,@numeroCalle,@piso,@departamento,@idIdentidad);
+
+                    DECLARE @idDireccion int;
+                    SET @idDireccion = SCOPE_IDENTITY();
+                ");
+
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
             sqlConnection.Open();
             reader = sqlCommand.ExecuteReader();
 
-            if (reader.Read()){
+            if (reader.Read())
+            {
                 idDireccionInserted = reader.GetInt32(reader.GetOrdinal("idDireccion"));
             }
-            
+
             sqlConnection.Close();
             return idDireccionInserted;
         }

@@ -12,6 +12,7 @@ namespace FrbaHotel.Modelo
         private int codigo = 0;
         private String descripcion = "";
         private float precio = 0;
+        private int idEstadia = 0;
 
         public Consumible(int idConsumible, int codigo, String descripcion, float precio)
         {
@@ -20,10 +21,18 @@ namespace FrbaHotel.Modelo
             this.descripcion = descripcion;
             this.precio = precio;
         }
-
+        
         public int getIdConsumible()
         {
             return this.idConsumible;
+        }
+        public int getIdEstadia()
+        {
+            return this.idEstadia;
+        }
+        public void setIdEstadia(int idEstadia)
+        {
+            this.idEstadia = idEstadia;
         }
 
         public int getCodigo()

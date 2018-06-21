@@ -35,11 +35,11 @@ namespace FrbaHotel.AbmUsuario
             comboBoxRoles.DataSource = repositorioRol.getAll();
             comboBoxRoles.SelectedValue = "";
 
-            /*RepositorioHotel repositorioHotel = new RepositorioHotel();
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
             comboBoxHoteles.ValueMember = "idHotel";
             comboBoxHoteles.DisplayMember = "Nombre";
-            comboBoxHoteles.DataSource = repositorioRol.getAll();
-            comboBoxHoteles.SelectedValue = "";*/
+            comboBoxHoteles.DataSource = repositorioHotel.getAll();
+            comboBoxHoteles.SelectedValue = "";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -89,6 +89,20 @@ namespace FrbaHotel.AbmUsuario
 
         private void button3_Click(object sender, EventArgs e)
         {
+            using (AltaUsuario form = new AltaUsuario())
+            {
+                var result = form.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    //string val = form.ReturnValue1;            //values preserved after close
+                    //string dateString = form.ReturnValue2;
+                    //Do something here with these values
+
+                    //for example
+                    //this.txtSomething.Text = val;
+                }
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)

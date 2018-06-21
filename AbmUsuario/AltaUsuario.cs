@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Repositorios;
+﻿using FrbaHotel.Modelo;
+using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,16 +37,55 @@ namespace FrbaHotel.AbmUsuario
             String calle = textBox8.Text;
             String localidad = textBox15.Text;
             String pais = textBox16.Text;
+            String nacionalidad = textBox17.Text;
             DateTime fechaNacimiento = dateTime.Value;
-            String nroCalle = textBox12.Text;
-            String nroPiso = textBox13.Text;
+            int nroCalle = 0;
+            if (textBox12.Text != "")
+            {
+                 nroCalle = int.Parse(textBox12.Text);
+            }
+            int nroPiso = 0;
+            if (textBox13.Text != "")
+            {
+                nroPiso = int.Parse(textBox13.Text);
+            }
+
             String depto = textBox14.Text;
             String tipoDoc = "";
-
+            String tipoIdentidad = "Usuario";
+            int idDir = 0;
+            int idIdentidad = 0;
+            int idUsuario = 0;
+            int intentosFallidosLogin = 0;
+            Boolean activo = true;
             if (comboBoxTipoDoc.SelectedItem != null)
             {
                 tipoDoc = (String)comboBoxTipoDoc.SelectedItem;
             }
+            //traigo los roles elegidos
+            List<Rol> roles = new List<Rol>();
+            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+                {
+                    roles.Add(item.DataBoundItem as Rol);
+                }
+            //traigo los hoteles elegidos
+            List<Hotel> hoteles = new List<Hotel>();
+            foreach (DataGridViewRow item in this.dataGridView2.SelectedRows)
+            {
+                hoteles.Add(item.DataBoundItem as Hotel);
+            }
+
+            //armo direccion (id en 0)
+            Direccion adress = new Direccion(idDir,pais, localidad,
+            calle, nroCalle, nroPiso, depto);
+            //armo la identidad con la direccion(id en 0)
+            Identidad identidad =new Identidad(idIdentidad,tipoIdentidad,nombre, apellido,tipoDoc,nroDoc,
+            mail,fechaNacimiento,nacionalidad,telefono, adress);
+            // armo el usuario con la identidad (id en 0)
+            Usuario user = new Usuario(idUsuario, identidad, username,password,intentosFallidosLogin, activo,roles,hoteles);
+            //ahora si ya lo puedo crear
+            RepositorioUsuario repoUser = new RepositorioUsuario();
+            repoUser.create(user);
             //validar que el username sea unico y encriptar clave
         }
 
@@ -65,6 +105,7 @@ namespace FrbaHotel.AbmUsuario
             textBox14.Text = "";
             textBox15.Text = "";
             textBox16.Text = "";
+            textBox17.Text = "";
        
             
             //cargo rol
@@ -73,10 +114,10 @@ namespace FrbaHotel.AbmUsuario
             dataGridView1.ClearSelection();
             
             //cargo hotel
-            /*RepositorioHotel repositorioHotel = new RepositorioHotel();
+            RepositorioHotel repositorioHotel = new RepositorioHotel();
             dataGridView2.DataSource = repositorioHotel.getAll();
             dataGridView2.ClearSelection();
-            */
+            
             comboBoxTipoDoc.SelectedValue = "";
             dateTime.ResetText();
 

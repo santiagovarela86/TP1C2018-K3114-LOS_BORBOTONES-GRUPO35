@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Repositorios;
+﻿using FrbaHotel.Modelo;
+using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,6 @@ namespace FrbaHotel.RegistrarConsumible
             RepositorioConsumibles repositorioConsumible = new RepositorioConsumibles();
             dataGridView1.DataSource = repositorioConsumible.getAll();
             dataGridView1.ClearSelection();
-            textBox1.Text = "";
             textBox2.Text = "";
             textBox3.Text = "";
             textBox4.Text = "";
@@ -40,14 +40,10 @@ namespace FrbaHotel.RegistrarConsumible
             int codigo = 0;
             String descripcion = "";
             float precio = 0;
-            int idEstadia=0;
             int idEstadia2=0;
-            Consumibles consumible = null;
+            Consumible consumible = null;
+            int idConsumible = 0;
 
-            if (textBox1.Text != "")
-            {
-                idEstadia = int.Parse(textBox1.Text);
-            }
             if (textBox5.Text != "")
             {
                 idEstadia2 = int.Parse(textBox5.Text);
@@ -58,12 +54,17 @@ namespace FrbaHotel.RegistrarConsumible
             }
             if (textBox4.Text != "")
             {
-                precio = float.Parse(textBox1.Text);
+                precio = float.Parse(textBox4.Text);
             }
             descripcion=textBox3.Text;
-            //consumible = dataGridView1.SelectedRows;
+            //traigo el consumible elegido (solo dejo traer uno)
+            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+            {
+               consumible = item.DataBoundItem as Consumible;
+            }
+            RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
 
-            if (idEstadia == 0 | descripcion == "" | codigo == 0 | precio == 0)
+            if (descripcion == "" | codigo == 0 | precio == 0)
             {
                 //pregunto si estan los otros 2 de usar consumible ya existente o doy warning de datos
                 if (idEstadia2 == 0 | consumible == null)
@@ -74,12 +75,21 @@ namespace FrbaHotel.RegistrarConsumible
                 else
                 {
                     //sumar el consumible elegido a la estadia marcada
-                    
+                    consumible.setIdEstadia(idEstadia2);
+                    //metodo registrar que no crea el consumible solo lo suma
+                    repoConsumible.registrar(consumible);
                 }
             }
             else
             {
                 //crear nuevo consumible para la estadia marcada
+                Consumible nuevoConsumible = new Consumible(idConsumible,codigo,descripcion,precio);
+                idConsumible= repoConsumible.create(nuevoConsumible);
+                if (idConsumible!=0)
+                    {
+                        MessageBox.Show("Consumible dado de alta", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.AltaConsumible_Load(sender, e);
+                    }
             }
 
         }

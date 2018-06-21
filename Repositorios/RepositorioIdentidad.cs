@@ -72,17 +72,68 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Identidad identidad)
         {
+            int idIdentidad = 0;
             if (this.exists(identidad))
             {
-                //Error
+                //controlo por mail que me sirve para el cliente de paso
+                throw new ElementoYaExisteException("Ya existe la identidad que intenta crear");
             }
             else
             {
-                //Creo un nuevo registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+        
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", identidad.getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", identidad.getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", identidad.getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", identidad.getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", identidad.getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", identidad.getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", identidad.getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", identidad.getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", identidad.getTelefono());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad,Nombre, Apellido,TipoDocumento,NumeroDocumento,Mail,FechaNacimiento,Nacionalidad,Telefono)
+                    OUTPUT INSERTED.idIdentidad
+                    VALUES(@TipoIdent,@Nombre,@Apellido,@TipoDoc,@NroDoc,@Mail,@FecNac,@Nacion,@Tel);
+
+                    DECLARE @idIdentidad int;
+                    SET @idIdentidad = SCOPE_IDENTITY();
+                ");
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+                
+                if (reader.Read())
+                {
+                    idIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+                }
+
+                sqlConnection.Close();
             }
 
-            throw new NotImplementedException();
+            return idIdentidad;
         }
+
 
         override public void update(Identidad identidad)
         {
@@ -110,7 +161,48 @@ namespace FrbaHotel.Repositorios
 
         override public Boolean exists(Identidad identidad)
         {
-            throw new NotImplementedException();
+            int idIdentidad = 0;
+            String mail = "";
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", identidad.getIdIdentidad());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE idIdentidad = @idIdentidad";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            sqlConnection.Close();
+
+            sqlCommand.Parameters.AddWithValue("@Mail", identidad.getMail());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT Mail FROM LOS_BORBOTONES.Identidad WHERE Mail = @Mail";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                mail = reader.GetString(reader.GetOrdinal("Mail"));
+            }
+
+            sqlConnection.Close();
+
+            //Devuelve verdadero si el ID coincide o si el username coincide
+            return idIdentidad != 0 || identidad.getMail().Equals(mail);
         }
 
         override public List<Identidad> getAll()

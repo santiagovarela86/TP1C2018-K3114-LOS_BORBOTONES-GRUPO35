@@ -19,6 +19,7 @@ namespace FrbaHotel.Modelo
         private String nacionalidad = "";
         private String telefono = "";
         private List<Direccion> direcciones = new List<Direccion>();
+        private Direccion direccion = null;
 
         public Identidad(int idIdentidad, String tipoIdentidad, String nombre, String apellido, String tipoDocumento, String numeroDocumento,
             String mail, DateTime fechaNacimiento, String nacionalidad, String telefono, List<Direccion> direcciones)
@@ -35,7 +36,21 @@ namespace FrbaHotel.Modelo
             this.telefono = telefono;
             this.direcciones = direcciones;
         }
-
+        public Identidad(int idIdentidad,String tipoIdentidad, String nombre, String apellido, String tipoDocumento, String numeroDocumento,
+            String mail, DateTime fechaNacimiento, String nacionalidad, String telefono, Direccion direccion)
+        {
+            this.idIdentidad = idIdentidad;
+            this.tipoIdentidad = tipoIdentidad;
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.tipoDocumento = tipoDocumento;
+            this.numeroDocumento = numeroDocumento;
+            this.mail = mail;
+            this.fechaNacimiento = fechaNacimiento;
+            this.nacionalidad = nacionalidad;
+            this.telefono = telefono;
+            this.direccion = direccion;
+        }
         public int getIdIdentidad()
         {
             return this.idIdentidad;
@@ -90,7 +105,10 @@ namespace FrbaHotel.Modelo
         {
             return this.direcciones;
         }
-
+        public Direccion getDireccion()
+        {
+            return this.direccion;
+        }
         public Boolean esNuevo()
         {
             return idIdentidad.Equals(0);
