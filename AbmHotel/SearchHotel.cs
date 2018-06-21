@@ -18,6 +18,8 @@ namespace FrbaHotel.AbmHotel
 
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
             this.estrellasComboBox.DataSource = repoCategoria.getAll();
+            this.estrellasComboBox.ValueMember = "Estrellas";
+            limpiarBusquedaYResultados();
         }
 
 

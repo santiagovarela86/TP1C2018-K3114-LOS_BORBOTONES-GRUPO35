@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Modelo;
+﻿using FrbaHotel.Excepciones;
+using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
 using System.Windows.Forms;
@@ -31,7 +32,7 @@ namespace FrbaHotel.AbmHotel
         private GroupBox groupBox1;
         private Label emailLabel;
         private TextBox emailText;
-        private Button crearHotel;
+        private Button modificarHotel;
 
 
         public ModificacionHotel(Hotel hotel)
@@ -45,11 +46,12 @@ namespace FrbaHotel.AbmHotel
 
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
             this.estrellasComboBox.DataSource = repoCategoria.getAll();
+            this.estrellasComboBox.ValueMember = "Estrellas";
             this.nombreText.Text = hotel.getNombre();
             this.paisText.Text = hotel.getDireccion().getPais();
             this.ciudadText.Text = hotel.getDireccion().getCiudad();
             this.telefonoText.Text = hotel.getTelefono();
-            this.estrellasComboBox.SelectedItem = hotel.getCategoria().getEstrellas();
+            this.estrellasComboBox.SelectedValue = hotel.getCategoria().getEstrellas();
             this.calleText.Text = hotel.getDireccion().getCalle();
             this.numeroCalleText.Text = hotel.getDireccion().getNumeroCalle().ToString();
             this.creacionTime.Value = hotel.getFechaInicioActividades();
@@ -112,7 +114,7 @@ namespace FrbaHotel.AbmHotel
             this.regimenesText = new System.Windows.Forms.TextBox();
             this.creacionLabel = new System.Windows.Forms.Label();
             this.creacionTime = new System.Windows.Forms.DateTimePicker();
-            this.crearHotel = new System.Windows.Forms.Button();
+            this.modificarHotel = new System.Windows.Forms.Button();
             this.emailLabel = new System.Windows.Forms.Label();
             this.emailText = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
@@ -156,13 +158,13 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.creacionTime);
             this.groupBox1.Controls.Add(this.nombreLabel);
             this.groupBox1.Controls.Add(this.nombreText);
-            this.groupBox1.Controls.Add(this.crearHotel);
+            this.groupBox1.Controls.Add(this.modificarHotel);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(700, 407);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Crear Hotel";
+            this.groupBox1.Text = "Modificar Hotel";
             // 
             // telefonoLabel
             // 
@@ -295,12 +297,12 @@ namespace FrbaHotel.AbmHotel
             // 
             // crearHotel
             // 
-            this.crearHotel.Location = new System.Drawing.Point(289, 332);
-            this.crearHotel.Name = "crearHotel";
-            this.crearHotel.Size = new System.Drawing.Size(161, 23);
-            this.crearHotel.TabIndex = 0;
-            this.crearHotel.Text = "Crear";
-            this.crearHotel.Click += new System.EventHandler(this.modificarHotel_Click);
+            this.modificarHotel.Location = new System.Drawing.Point(289, 332);
+            this.modificarHotel.Name = "codificarHotel";
+            this.modificarHotel.Size = new System.Drawing.Size(161, 23);
+            this.modificarHotel.TabIndex = 0;
+            this.modificarHotel.Text = "Modificar";
+            this.modificarHotel.Click += new System.EventHandler(this.modificarHotel_Click);
             // 
             // label1
             // 
@@ -337,11 +339,16 @@ namespace FrbaHotel.AbmHotel
         private void modificarHotel_Click(object sender, EventArgs e)
         {
             RepositorioHotel repoHotel = new RepositorioHotel();
-            
-            Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
-            Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, emailText.Text, telefonoText.Text, creacionTime.Value);
-            repoHotel.update(hotelToUpdateSave);
+            try{
+                Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
+                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, emailText.Text, telefonoText.Text, creacionTime.Value);
+                repoHotel.update(hotelToUpdateSave);
+                 MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 
+            } catch (RequestInvalidoException exception)
+            {
+                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+            }
         }
 
 
