@@ -188,14 +188,7 @@ namespace FrbaHotel.Repositorios
 
         override public void delete(Identidad identidad)
         {
-            if (this.exists(identidad))
-            {
-                //Borro el registro
-            }
-            else
-            {
-                //Error
-            }
+            throw new NotImplementedException();
         }
 
         override public Boolean exists(Identidad identidad)
@@ -249,9 +242,9 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
-        public override void bajaLogica(Identidad identidad)
+        override public void bajaLogica(Identidad identidad)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public List<String> getAllTiposDocsClientes()

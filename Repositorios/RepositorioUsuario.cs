@@ -235,24 +235,111 @@ namespace FrbaHotel.Repositorios
         {
             if (this.exists(usuario))
             {
-                //Actualizo el registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+
+                //PARAMETERS DE LA DIRECCION
+                sqlCommand.Parameters.AddWithValue("@Pais", usuario.getIdentidad().getDireccion().getPais());
+                sqlCommand.Parameters.AddWithValue("@Ciudad", usuario.getIdentidad().getDireccion().getCiudad());
+                sqlCommand.Parameters.AddWithValue("@Calle", usuario.getIdentidad().getDireccion().getCalle());
+                sqlCommand.Parameters.AddWithValue("@NumeroCalle", usuario.getIdentidad().getDireccion().getNumeroCalle());
+                sqlCommand.Parameters.AddWithValue("@Piso", usuario.getIdentidad().getDireccion().getPiso());
+                sqlCommand.Parameters.AddWithValue("@Departamento", usuario.getIdentidad().getDireccion().getDepartamento());
+                sqlCommand.Parameters.AddWithValue("@idDireccion", usuario.getIdentidad().getDireccion().getIdDireccion());
+
+                //PARAMETERS DE LA IDENTIDAD
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", usuario.getIdentidad().getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", usuario.getIdentidad().getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", usuario.getIdentidad().getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", usuario.getIdentidad().getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", usuario.getIdentidad().getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", usuario.getIdentidad().getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", usuario.getIdentidad().getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", usuario.getIdentidad().getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", usuario.getIdentidad().getTelefono());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", usuario.getIdentidad().getIdIdentidad());
+
+                //PARAMETERS DEL USUARIO
+                sqlCommand.Parameters.AddWithValue("@Username", usuario.getUsername());
+                sqlCommand.Parameters.AddWithValue("@Activo", usuario.getActivo());
+                sqlCommand.Parameters.AddWithValue("@Password", this.EncriptarSHA256(usuario.getPassword()));
+                sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", usuario.getIntentosFallidosLogin());                
+                sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+
+                //HABRÍA QUE ANALIZAR PROS Y CONTRAS DE ACTUALIZAR/CREAR UN USUARIO TODO EN LA MISMA CONSULTA COMO EN ESTE METODO
+                //O ACTUALIZARLO/CREARLO POR SEPARADO CON LOS METODOS DEL REPOSITORIO (USANDO LOS METODOS DEL REPO HAY QUE DEFINIR COMO SE MANEJA EL ROLLBACK SI UN UPDATE O CREATE FALLA)
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Direccion
+                    SET Pais = @Pais, Ciudad = @Ciudad, Calle = @Calle, NumeroCalle = @NumeroCalle, Piso = @Piso, Departamento = @Departamento
+                    WHERE idDireccion = @idDireccion;
+
+                    UPDATE LOS_BORBOTONES.Identidad
+                    SET TipoIdentidad = @TipoIdent, Nombre = @Nombre, Apellido = @Apellido, TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail, FechaNacimiento = @FecNac, Nacionalidad = @Nacion, Telefono = @Tel
+                    WHERE idIdentidad = @idIdentidad;
+
+                    UPDATE LOS_BORBOTONES.Usuario
+                    SET Username = @Username, Password = @Password, IntentosFallidosLogin = @IntentosFallidosLogin, Activo = @Activo, idIdentidad = @idIdentidad
+                    WHERE idUsuario = @idUsuario;
+                ");
+
+                //TENGO QUE BORRAR TODAS LAS RELACIONES QUE TENGO CON LOS ROLES
+                sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Rol_X_Usuario WHERE idUsuario = @idUsuario;");
+
+                //TENGO QUE BORRAR TODAS LAS RELACIONES QUE TENGO CON LOS HOTELES
+                sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Hotel_X_Usuario WHERE idUsuario = @idUsuario;");  
+
+                //AGREGO DINAMICAMENTE LOS ROLES A LA CONSULTA
+                int i = 1;
+                foreach (Rol r in usuario.getRoles())
+                {
+                    String paramName = "@idRol" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Rol_X_Usuario(idRol,idUsuario) VALUES ({0}, @idUsuario)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, r.getIdRol());
+                    i++;
+                }
+                //AGREGO DINAMICAMENTE LOS HOTELES A LA CONSULTA
+                int k = 1;
+                foreach (Hotel h in usuario.getHoteles())
+                {
+                    String paramName = "@idHotel" + k.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario(idHotel,idUsuario) VALUES ({0}, @idUsuario)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, h.getIdHotel());
+                    k++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el usuario que intenta actualizar");
             }
         }
 
         override public void delete(Usuario usuario)
         {
-            if (this.exists(usuario))
-            {
-                //Borro el registro
-            }
-            else
-            {
-                //Error
-            }
+            throw new NotImplementedException();
         }
 
         override public void bajaLogica(Usuario usuario)
