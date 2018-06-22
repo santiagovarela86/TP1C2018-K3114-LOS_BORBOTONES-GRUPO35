@@ -243,10 +243,10 @@ namespace FrbaHotel.Repositorios {
 
                 //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
 
-                List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
+                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
 
-                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, null, null);
+                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio, null, regimenes, null, cierresTemporales);
+
                 hoteles.Add(hotel);
             }
 

@@ -303,7 +303,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Devuelve verdadero si el ID coincide o si el username coincide
-            return idUsuario != 0 || usuario.getUsername().Equals(username);
+            return idUsuario != 0 || usuario.getUsername().ToUpper().Equals(username.ToUpper());
         }
 
         public Usuario getByUsername(String username)
@@ -376,8 +376,8 @@ namespace FrbaHotel.Repositorios
                 //Va primero porque el JOIN va antes que el WHERE
                 if (rol != null)
                 {
-                    sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
-                    query = query + " INNER JOIN LOS_BORBOTONES.Rol_X_Usuario rxu ON u.idUsuario = rxu.idUsuario INNER JOIN LOS_BORBOTONES.Rol r ON r.idRol = rxu.idRol WHERE r.Nombre = @Nombre";
+                    sqlCommand.Parameters.AddWithValue("@nombreRol", rol.getNombre());
+                    query = query + " INNER JOIN LOS_BORBOTONES.Rol_X_Usuario rxu ON u.idUsuario = rxu.idUsuario INNER JOIN LOS_BORBOTONES.Rol r ON r.idRol = rxu.idRol WHERE r.Nombre = @nombreRol";
                     primerCriterioWhere = false;
                 }
 
@@ -449,7 +449,7 @@ namespace FrbaHotel.Repositorios
             Usuario usuario = null;
 
             //VALIDO SI EXISTE PRIMERO EL USUARIO
-            if (this.getAll().Exists(usr => usr.getUsername().Equals(username)))
+            if (this.getAll().Exists(usr => usr.getUsername().ToUpper().Equals(username.ToUpper())))
             {
                 usuario = this.getByUsername(username);
 

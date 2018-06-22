@@ -202,7 +202,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Devuelve verdadero si el ID coincide o si el username coincide
-            return idIdentidad != 0 || identidad.getMail().Equals(mail);
+            return idIdentidad != 0 || identidad.getMail().ToUpper().Equals(mail.ToUpper());
         }
 
         override public List<Identidad> getAll()

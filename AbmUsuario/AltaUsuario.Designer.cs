@@ -66,7 +66,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonGuardar = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -83,14 +83,14 @@
             this.comboBoxTipoDoc.Location = new System.Drawing.Point(97, 77);
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
             this.comboBoxTipoDoc.Size = new System.Drawing.Size(127, 21);
-            this.comboBoxTipoDoc.TabIndex = 3;
+            this.comboBoxTipoDoc.TabIndex = 7;
             // 
             // dateTime
             // 
             this.dateTime.Location = new System.Drawing.Point(108, 103);
             this.dateTime.Name = "dateTime";
             this.dateTime.Size = new System.Drawing.Size(207, 20);
-            this.dateTime.TabIndex = 1;
+            this.dateTime.TabIndex = 10;
             // 
             // label10
             // 
@@ -122,7 +122,7 @@
             this.textBox2.Location = new System.Drawing.Point(292, 27);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(156, 20);
-            this.textBox2.TabIndex = 1;
+            this.textBox2.TabIndex = 2;
             // 
             // label2
             // 
@@ -149,7 +149,7 @@
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(260, 250);
-            this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.TabIndex = 18;
             // 
             // groupBox2
             // 
@@ -166,7 +166,7 @@
             this.textBox3.Location = new System.Drawing.Point(59, 56);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(165, 20);
-            this.textBox3.TabIndex = 1;
+            this.textBox3.TabIndex = 4;
             // 
             // label3
             // 
@@ -182,7 +182,7 @@
             this.textBox4.Location = new System.Drawing.Point(283, 53);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(165, 20);
-            this.textBox4.TabIndex = 1;
+            this.textBox4.TabIndex = 5;
             // 
             // label4
             // 
@@ -198,7 +198,8 @@
             this.textBox5.Location = new System.Drawing.Point(321, 80);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(127, 20);
-            this.textBox5.TabIndex = 1;
+            this.textBox5.TabIndex = 8;
+            this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox5_KeyPress);
             // 
             // label5
             // 
@@ -214,7 +215,7 @@
             this.textBox6.Location = new System.Drawing.Point(491, 27);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(156, 20);
-            this.textBox6.TabIndex = 1;
+            this.textBox6.TabIndex = 3;
             // 
             // label6
             // 
@@ -230,7 +231,8 @@
             this.textBox7.Location = new System.Drawing.Point(512, 53);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(135, 20);
-            this.textBox7.TabIndex = 1;
+            this.textBox7.TabIndex = 6;
+            this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox7_KeyPress);
             // 
             // label7
             // 
@@ -246,7 +248,7 @@
             this.textBox8.Location = new System.Drawing.Point(365, 103);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(282, 20);
-            this.textBox8.TabIndex = 1;
+            this.textBox8.TabIndex = 11;
             // 
             // label8
             // 
@@ -265,49 +267,50 @@
             this.label9.Size = new System.Drawing.Size(96, 13);
             this.label9.TabIndex = 0;
             this.label9.Text = "Fecha Nacimiento:";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // textBox12
             // 
             this.textBox12.Location = new System.Drawing.Point(39, 127);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(31, 20);
-            this.textBox12.TabIndex = 1;
+            this.textBox12.TabIndex = 12;
+            this.textBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox12_KeyPress);
             // 
             // textBox13
             // 
             this.textBox13.Location = new System.Drawing.Point(112, 127);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(30, 20);
-            this.textBox13.TabIndex = 1;
+            this.textBox13.TabIndex = 13;
+            this.textBox13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox13_KeyPress);
             // 
             // textBox14
             // 
             this.textBox14.Location = new System.Drawing.Point(193, 127);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(33, 20);
-            this.textBox14.TabIndex = 1;
+            this.textBox14.TabIndex = 14;
             // 
             // textBox15
             // 
             this.textBox15.Location = new System.Drawing.Point(296, 127);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(152, 20);
-            this.textBox15.TabIndex = 1;
+            this.textBox15.TabIndex = 15;
             // 
             // textBox16
             // 
             this.textBox16.Location = new System.Drawing.Point(491, 129);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(156, 20);
-            this.textBox16.TabIndex = 1;
+            this.textBox16.TabIndex = 16;
             // 
             // textBox17
             // 
             this.textBox17.Location = new System.Drawing.Point(512, 78);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(135, 20);
-            this.textBox17.TabIndex = 1;
+            this.textBox17.TabIndex = 9;
             // 
             // label12
             // 
@@ -379,7 +382,7 @@
             this.dataGridView2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView2.Size = new System.Drawing.Size(344, 250);
-            this.dataGridView2.TabIndex = 1;
+            this.dataGridView2.TabIndex = 17;
             // 
             // groupBox3
             // 
@@ -437,40 +440,41 @@
             this.button1.Location = new System.Drawing.Point(153, 456);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
+            this.button1.TabIndex = 19;
             this.button1.Text = "Limpiar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // buttonGuardar
             // 
-            this.button2.Location = new System.Drawing.Point(350, 456);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Guardar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonGuardar.Location = new System.Drawing.Point(350, 456);
+            this.buttonGuardar.Name = "buttonGuardar";
+            this.buttonGuardar.Size = new System.Drawing.Size(75, 23);
+            this.buttonGuardar.TabIndex = 20;
+            this.buttonGuardar.Text = "Guardar";
+            this.buttonGuardar.UseVisualStyleBackColor = true;
+            this.buttonGuardar.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(533, 456);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 5;
+            this.button3.TabIndex = 21;
             this.button3.Text = "Salir";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // AltaUsuario
             // 
+            this.AcceptButton = this.buttonGuardar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(687, 486);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.buttonGuardar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Name = "AltaUsuario";
@@ -507,7 +511,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonGuardar;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
