@@ -141,5 +141,20 @@ namespace FrbaHotel.AbmUsuario
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja el Usuario?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                RepositorioUsuario repoUsuario = new RepositorioUsuario();
+                Usuario usuario = (Usuario)dataGridView1.CurrentRow.DataBoundItem;
+
+                repoUsuario.bajaLogica(usuario);
+
+                //CUANDO DOY DE BAJA EL USUARIO VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
+            }
+        }
     }
 }

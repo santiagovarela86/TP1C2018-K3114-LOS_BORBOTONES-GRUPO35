@@ -98,8 +98,8 @@ namespace FrbaHotel.Repositorios
             {
                 //lleno el hotel con el getbyID                
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
-                //RepositorioHotel repoHotel = new RepositorioHotel();
-                //hoteles.Add(repoHotel.getById(idHotel));         
+                RepositorioHotel repoHotel = new RepositorioHotel();
+                hoteles.Add(repoHotel.getById(idHotel));         
             }
 
             sqlConnection.Close();
@@ -343,7 +343,8 @@ namespace FrbaHotel.Repositorios
 
         override public void bajaLogica(Usuario usuario)
         {
-            throw new NotImplementedException();
+            usuario.setActivo(false);
+            this.update(usuario);
         }
 
         override public Boolean exists(Usuario usuario)
