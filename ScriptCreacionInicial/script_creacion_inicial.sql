@@ -1201,6 +1201,16 @@ INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario(idHotel, idUsuario)
 	ORDER BY r.idHotel, e.idUsuarioIn
 GO
 
+--El admin del enunciado trabaja en todos los hoteles
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario (idHotel, idUsuario)
+SELECT h.idHotel, u.idUsuario
+FROM LOS_BORBOTONES.Hotel h
+CROSS JOIN LOS_BORBOTONES.Usuario u
+WHERE u.Username = 'admin';
+GO
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Migracion Factura (*) trae montototal con importes inconsistentes, se corrige luego de migrar itemFactura
 -- se define tipoDePago Efectivo, para los clientes migrados de la tablaMaestra
