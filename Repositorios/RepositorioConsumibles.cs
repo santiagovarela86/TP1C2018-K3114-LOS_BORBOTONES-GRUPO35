@@ -147,9 +147,52 @@ namespace FrbaHotel.Repositorios
         }
          public int registrar(Consumible consumible)
         {
-            //dar de alta y antes de darlo validar del lado interfaz si quiere cambiar algo
-            throw new NotImplementedException();
-        }
+                int consRegistrado=0;
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+            
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@IdConsumible", consumible.getIdConsumible());
+                sqlCommand.Parameters.AddWithValue("@IdEstadia", consumible.getIdEstadia());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia,idConsumible)
+                    OUTPUT INSERTED.idConsumible
+                    VALUES(@IdEstadia,@IdConsumible);
+
+                ");
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    consRegistrado = reader.GetInt32(reader.GetOrdinal("idConsumible"));
+                }
+
+                sqlConnection.Close();
+                return consRegistrado;
+         }
+
+        
 
         override public void update(Consumible consumible)
         {
