@@ -266,8 +266,22 @@ namespace FrbaHotel.Repositorios
                 //PARAMETERS DEL USUARIO
                 sqlCommand.Parameters.AddWithValue("@Username", usuario.getUsername());
                 sqlCommand.Parameters.AddWithValue("@Activo", usuario.getActivo());
-                sqlCommand.Parameters.AddWithValue("@Password", this.EncriptarSHA256(usuario.getPassword()));
-                sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", usuario.getIntentosFallidosLogin());                
+                sqlCommand.Parameters.AddWithValue("@Password", usuario.getPassword());
+                
+                //SI CAMBIO EL ESTADO DEL USUARIO
+                //RESETEO LA CANTIDAD DE INTENTOS FALLIDOS              
+                Boolean usuarioActivoEnBase = this.getById(usuario.getIdUsuario()).getActivo();
+                Boolean usuarioActivoEnModelo = usuario.getActivo();
+
+                if (!usuarioActivoEnBase && usuarioActivoEnModelo)
+                {
+                    sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", 0);
+                } 
+                else 
+                {
+                    sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", usuario.getIntentosFallidosLogin());
+                }
+                
                 sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
 
                 //HABRÍA QUE ANALIZAR PROS Y CONTRAS DE ACTUALIZAR/CREAR UN USUARIO TODO EN LA MISMA CONSULTA COMO EN ESTE METODO
@@ -541,17 +555,21 @@ namespace FrbaHotel.Repositorios
                 usuario = this.getByUsername(username);
 
                 //SI LA PASSWORD ESTA BIEN Y EL USUARIO NO ESTA BLOQUEADO
-                if (usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                String passwordUser = usuario.getPassword();
+                int intentosFallidos = usuario.getIntentosFallidosLogin();
+                Boolean usuarioActivo = usuario.getActivo();
+
+                if (passwordUser.Equals(passwordEncriptada) && intentosFallidos < 3 && usuarioActivo)
                 {
+                    usuario.resetearIntentosFallidosLogin();
+                    this.update(usuario);
                     return usuario;
                 }
                 else
                 {
                     //SI HUBO UN ERROR DE CREDENCIALES Y EL USUARIO TODAVIA NO ESTA BLOQUEADO
-                    if (!usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                    if (!passwordUser.Equals(passwordEncriptada) && intentosFallidos < 3 && usuarioActivo)
                     {
-                        //ESTO FALTA DESARROLLARLO
-                        /*
                         usuario.incrementarIntentosFallidosLogin();
                         
                         if (usuario.getIntentosFallidosLogin() >= 3)
@@ -559,14 +577,16 @@ namespace FrbaHotel.Repositorios
                             usuario.setActivo(false);
                         }
                         
-                        repositorioUsuario.update(usuario); //GRABA LOS CAMBIOS EN LA BASE
-                        */
+                        this.update(usuario);
 
                         throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
                     }
                     //LUEGO SI EL USUARIO ESTA BLOQUEADO
                     else if (usuario.getIntentosFallidosLogin() >= 3 || !usuario.getActivo())
                     {
+                        usuario.incrementarIntentosFallidosLogin();
+                        this.update(usuario);
+
                         throw new UsuarioBloqueadoException("El usuario esta bloqueado o deshabilitado");
                     }
                 }

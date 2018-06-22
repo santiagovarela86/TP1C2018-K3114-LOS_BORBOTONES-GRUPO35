@@ -17,6 +17,8 @@ namespace FrbaHotel.AbmUsuario
     {
         //USUARIO A MODIFICAR
         Usuario usuario = null;
+        String password = "";
+        Boolean passwordChanged = false;
 
         public ModificacionUsuario(Usuario usuario)
         {
@@ -41,12 +43,11 @@ namespace FrbaHotel.AbmUsuario
             comboBoxTipoDoc.DisplayMember = "Key";
             comboBoxTipoDoc.DataSource = tipoDoc;
 
-            //??
             dateTime.ResetText();
+            passwordChanged = false;
 
             //seteo la info
             textBox1.Text = usuario.getUsername();
-            textBox2.Text = "********";
             textBox3.Text = usuario.getIdentidad().getNombre();
             textBox4.Text = usuario.getIdentidad().getApellido();
             textBox5.Text = usuario.getIdentidad().getNumeroDocumento();
@@ -102,11 +103,11 @@ namespace FrbaHotel.AbmUsuario
         private void button2_Click(object sender, EventArgs e)
         {
             //ACTUALIZAR EL USUARIO
+            RepositorioUsuario repoUser = new RepositorioUsuario();
 
             //ESTOS VALORES SON LOS QUE CAMBIAN
             //STRINGS
-            String username = textBox1.Text;
-            String password = textBox2.Text;
+            String username = textBox1.Text;          
             String nombre = textBox3.Text;
             String apellido = textBox4.Text;
             String nroDoc = textBox5.Text;
@@ -129,6 +130,10 @@ namespace FrbaHotel.AbmUsuario
             if (comboBoxTipoDoc.SelectedItem != null) { tipoDoc = (String)comboBoxTipoDoc.SelectedItem; }
             Boolean activo = checkBox1.Checked;
             DateTime fechaNacimiento = dateTime.Value;
+
+            //SI SE CAMBIA LA PASSWORD SE VUELVE A GENERAR
+            //SINO SE MANTIENE LA MISMA
+            if (passwordChanged) { password = repoUser.EncriptarSHA256(this.password); } else { password = usuario.getPassword(); }
 
             //VALORES QUE NO CAMBIAN
             String tipoIdentidad = "Usuario";
@@ -154,8 +159,6 @@ namespace FrbaHotel.AbmUsuario
             Identidad identidad =new Identidad(idIdentidad,tipoIdentidad,nombre, apellido,tipoDoc,nroDoc,mail,fechaNacimiento,nacionalidad,telefono, adress);
             Usuario user = new Usuario(idUsuario, identidad, username,password,intentosFallidosLogin, activo,roles,hoteles);
 
-            RepositorioUsuario repoUser = new RepositorioUsuario();
-
             if (this.validoInput(this))
             {
                 try
@@ -164,8 +167,7 @@ namespace FrbaHotel.AbmUsuario
                     MessageBox.Show("Usuario actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     //ME TRAIGO EL USUARIO ACTUALIZADO
-                    RepositorioUsuario repoUsuario = new RepositorioUsuario();
-                    this.usuario = repoUsuario.getById(usuario.getIdUsuario());
+                    this.usuario = repoUser.getById(usuario.getIdUsuario());
                     this.resetearDatos();
                 }
                 catch (NoExisteIDException exc)
@@ -182,7 +184,7 @@ namespace FrbaHotel.AbmUsuario
         private Boolean validoInput(ModificacionUsuario form)
         {
             return !form.textBox1.Text.Equals("") &&
-                   !form.textBox2.Text.Equals("") &&
+                   !this.password.Equals("") && //!form.textBox2.Text.Equals("") &&
                    !form.textBox3.Text.Equals("") &&
                    !form.textBox4.Text.Equals("") &&
                    !form.textBox5.Text.Equals("") &&
@@ -191,7 +193,7 @@ namespace FrbaHotel.AbmUsuario
                    !form.textBox8.Text.Equals("") &&
                    !form.textBox12.Text.Equals("") &&
                    !form.textBox13.Text.Equals("") &&
-                   !form.textBox14.Text.Equals("") &&
+                   //!form.textBox14.Text.Equals("") && //DEPTO PUEDE ESTAR VACIO (?)
                    !form.textBox15.Text.Equals("") &&
                    !form.textBox16.Text.Equals("") &&
                    !form.textBox17.Text.Equals("") &&
@@ -259,6 +261,12 @@ namespace FrbaHotel.AbmUsuario
             {
                 e.Handled = true;
             }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            passwordChanged = true;
+            this.password = textBox2.Text;
         }
     }
 }
