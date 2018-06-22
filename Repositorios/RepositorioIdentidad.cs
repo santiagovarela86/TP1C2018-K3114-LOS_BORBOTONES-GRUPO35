@@ -134,16 +134,55 @@ namespace FrbaHotel.Repositorios
             return idIdentidad;
         }
 
-
+        //A ESTO LE PASO UNA IDENTIDAD CON UN ID EXISTENTE Y LOS ATRIBUTOS ACTUALIZADOS
         override public void update(Identidad identidad)
         {
             if (this.exists(identidad))
             {
-                //Actualizo el registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", identidad.getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", identidad.getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", identidad.getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", identidad.getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", identidad.getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", identidad.getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", identidad.getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", identidad.getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", identidad.getTelefono());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", identidad.getIdIdentidad());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Identidad
+                    SET TipoIdentidad = @TipoIdent, Nombre = @Nombre, Apellido = @Apellido, TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail, FechaNacimiento = @FecNac, Nacionalidad = @Nacion, Telefono = @Tel)
+                    WHERE idIdentidad = @idIdentidad;
+
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe la identidad que intenta actualizar");
             }
         }
 

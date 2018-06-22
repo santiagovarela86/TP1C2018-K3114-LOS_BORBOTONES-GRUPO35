@@ -57,13 +57,13 @@ namespace FrbaHotel.AbmUsuario
             comboBoxTipoDoc.SelectedValue = "";
             dateTime.ResetText();
 
-            //ESTO HABRIA QUE TRAERLO DE LA BASE (?)
-            //AGREGAR EN EL SCRIPT TODOS LOS DOCUMENTOS POSIBLES, SUMARLO AL PASAPORTE MIGRADO DE LA BASE MAESTRA
             List<String> tipoDoc = new List<String>();
             tipoDoc.Add("DNI");
             tipoDoc.Add("CUIT");
             tipoDoc.Add("LE");
             tipoDoc.Add("LC");
+            tipoDoc.Add("Pasaporte");
+
             comboBoxTipoDoc.ValueMember = "Value";
             comboBoxTipoDoc.DisplayMember = "Key";
             comboBoxTipoDoc.DataSource = tipoDoc;
