@@ -139,6 +139,12 @@
     <Compile Include="AbmUsuario\AltaUsuario.Designer.cs">
       <DependentUpon>AltaUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmUsuario\ModificacionUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuario\ModificacionUsuario.Designer.cs">
+      <DependentUpon>ModificacionUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="CancelarReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -278,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmUsuario\AltaUsuario.resx">
       <DependentUpon>AltaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuario\ModificacionUsuario.resx">
+      <DependentUpon>ModificacionUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FacturarEstadia\FacturarEstadias.resx">
       <DependentUpon>FacturarEstadias.cs</DependentUpon>

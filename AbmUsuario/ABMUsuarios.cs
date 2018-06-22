@@ -108,6 +108,15 @@ namespace FrbaHotel.AbmUsuario
 
         private void button4_Click(object sender, EventArgs e)
         {
+            Usuario usuario = (Usuario) dataGridView1.CurrentRow.DataBoundItem;
+
+            using (ModificacionUsuario form = new ModificacionUsuario(usuario))
+            {
+                var result = form.ShowDialog();
+
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
+            }
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)

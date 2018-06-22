@@ -272,14 +272,13 @@ namespace FrbaHotel.Repositorios
 
                 //HABRÍA QUE ANALIZAR PROS Y CONTRAS DE ACTUALIZAR/CREAR UN USUARIO TODO EN LA MISMA CONSULTA COMO EN ESTE METODO
                 //O ACTUALIZARLO/CREARLO POR SEPARADO CON LOS METODOS DEL REPOSITORIO (USANDO LOS METODOS DEL REPO HAY QUE DEFINIR COMO SE MANEJA EL ROLLBACK SI UN UPDATE O CREATE FALLA)
-
                 StringBuilder sqlBuilder = new StringBuilder();
                 sqlBuilder.Append(@"
                     BEGIN TRY
                     BEGIN TRANSACTION
 
                     UPDATE LOS_BORBOTONES.Direccion
-                    SET Pais = @Pais, Ciudad = @Ciudad, Calle = @Calle, NumeroCalle = @NumeroCalle, Piso = @Piso, Departamento = @Departamento
+                    SET Pais = @Pais, Ciudad = @Ciudad, Calle = @Calle, NumeroCalle = @NumeroCalle, Piso = @Piso, Depto = @Departamento
                     WHERE idDireccion = @idDireccion;
 
                     UPDATE LOS_BORBOTONES.Identidad
