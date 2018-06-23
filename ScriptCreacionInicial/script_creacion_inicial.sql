@@ -66,16 +66,20 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Usuario_Hotel', 'F') IS NOT NULL
 	DROP CONSTRAINT FK_Usuario_Hotel
 GO
 
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Regimen_X_Hotel
+	DROP CONSTRAINT FK_Hotel
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Regimen', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Regimen_X_Hotel
+	DROP CONSTRAINT FK_Regimen
+GO
+
 -- Tabla CierreTemporal
 IF OBJECT_ID('LOS_BORBOTONES.FK_CierreTemporal_Hotel', 'F') IS NOT NULL
 	ALTER TABLE LOS_BORBOTONES.CierreTemporal
 	DROP CONSTRAINT FK_CierreTemporal_Hotel 
-GO
-
--- Tabla Regimen
-IF OBJECT_ID('LOS_BORBOTONES.FK_Regimen_Hotel', 'F') IS NOT NULL
-	ALTER TABLE LOS_BORBOTONES.Regimen
-	DROP CONSTRAINT FK_Regimen_Hotel 
 GO
 
 -- Tabla Habitacion
@@ -232,6 +236,10 @@ GO
 	
 IF OBJECT_ID('LOS_BORBOTONES.Regimen','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Regimen;
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.Regimen_X_Hotel','U') IS NOT NULL
+    DROP TABLE LOS_BORBOTONES.Regimen_X_Hotel;
 GO
 
 IF OBJECT_ID('LOS_BORBOTONES.TipoHabitacion','U') IS NOT NULL
@@ -524,8 +532,16 @@ CREATE TABLE LOS_BORBOTONES.Regimen (
 	Codigo			VARCHAR(45)		NOT NULL,		
 	Descripcion		NVARCHAR(255),
 	Precio			NUMERIC(18,2),
-	Activo			BIT,
-	idHotel			INT				NOT NULL,
+	Activo			BIT
+)
+GO
+
+--Tabla Regimen
+CREATE TABLE LOS_BORBOTONES.Regimen_X_Hotel (
+	
+	idRegimenXHotel		INT				IDENTITY(1,1)	NOT NULL,
+	idHotel				INT				NOT NULL,	
+	idRegimen			INT				NOT NULL,	
 )
 GO
 
@@ -761,13 +777,19 @@ ADD CONSTRAINT FK_Hotel_Usuario FOREIGN KEY(idHotel) REFERENCES LOS_BORBOTONES.H
 ALTER TABLE LOS_BORBOTONES.Hotel_X_Usuario
 ADD CONSTRAINT FK_Usuario_Hotel FOREIGN KEY(idUsuario) REFERENCES LOS_BORBOTONES.Usuario(idUsuario)
 
+
+
+-- Tabla Regimen_X_Hotel
+ALTER TABLE LOS_BORBOTONES.Regimen_X_Hotel 
+ADD CONSTRAINT FK_Regimen FOREIGN KEY(idRegimen) REFERENCES LOS_BORBOTONES.Regimen(idRegimen);
+
+ALTER TABLE LOS_BORBOTONES.Regimen_X_Hotel 
+ADD CONSTRAINT FK_Hotel FOREIGN KEY(idHotel) REFERENCES LOS_BORBOTONES.Hotel(idHotel);
+
+
 -- Tabla CierreTemporal
 ALTER TABLE LOS_BORBOTONES.CierreTemporal
 ADD CONSTRAINT FK_CierreTemporal_Hotel FOREIGN KEY(idHotel) REFERENCES LOS_BORBOTONES.Hotel(idHotel) ON DELETE CASCADE ON UPDATE CASCADE
-
--- Tabla Regimen
-ALTER TABLE LOS_BORBOTONES.Regimen
-ADD CONSTRAINT FK_Regimen_Hotel FOREIGN KEY(idHotel) REFERENCES LOS_BORBOTONES.Hotel(idHotel) ON DELETE CASCADE ON UPDATE CASCADE
 
 -- Tabla Habitacion
 ALTER TABLE LOS_BORBOTONES.Habitacion
@@ -1063,29 +1085,37 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Regimen
 
-INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
-		SELECT  DISTINCT 'RGAI', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo)
+		SELECT  DISTINCT 'RGAI', m.Regimen_Descripcion, m.Regimen_Precio, 1
+		FROM gd_esquema.maestra m
 		WHERE  m.Regimen_Descripcion = 'All inclusive'
 GO
 
-INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
-		SELECT  DISTINCT 'RGAIM', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo)
+		SELECT  DISTINCT 'RGAIM', m.Regimen_Descripcion, m.Regimen_Precio, 1
+		FROM gd_esquema.maestra m
 		WHERE  m.Regimen_Descripcion = 'All Inclusive moderado'
 GO
 
-INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
-		SELECT  DISTINCT 'RGPC', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo)
+		SELECT  DISTINCT 'RGPC', m.Regimen_Descripcion, m.Regimen_Precio, 1
+		FROM gd_esquema.maestra m
 		WHERE  m.Regimen_Descripcion = 'Pension Completa'
 GO
 
-INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo, idHotel)
-		SELECT  DISTINCT 'RGMP', m.Regimen_Descripcion, m.Regimen_Precio, 1, h.idHotel
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Hotel h
+INSERT INTO LOS_BORBOTONES.Regimen(Codigo, Descripcion, Precio, Activo)
+		SELECT  DISTINCT 'RGMP', m.Regimen_Descripcion, m.Regimen_Precio, 1
+		FROM gd_esquema.maestra m
 		WHERE  m.Regimen_Descripcion = 'Media Pensión'
 GO
+
+
+INSERT INTO LOS_BORBOTONES.Regimen_X_Hotel(idHotel,idRegimen)
+SELECT H.idHotel, R.idRegimen FROM gd_esquema.Maestra AS M
+JOIN LOS_BORBOTONES.Hotel AS H ON H.Nombre=LOS_BORBOTONES.concatenarNombreHotel(M.Hotel_Calle,M.Hotel_Nro_Calle)
+JOIN LOS_BORBOTONES.Regimen AS R ON R.Descripcion=M.Regimen_Descripcion
+GROUP BY idHotel ,idRegimen
+ORDER BY idHotel ,idRegimen;
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga CierreTemporal
@@ -1178,7 +1208,9 @@ FROM  LOS_BORBOTONES.Hotel h
 	INNER JOIN LOS_BORBOTONES.Estadia e
 		ON m.Estadia_Fecha_Inicio = e.FechaEntrada AND m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
 	INNER JOIN LOS_BORBOTONES.Regimen r
-		ON m.Regimen_Descripcion = r.Descripcion AND r.idHotel = h.idHotel
+		ON m.Regimen_Descripcion = r.Descripcion
+		INNER JOIN LOS_BORBOTONES.Regimen_X_Hotel rxh
+		ON rxh.idHotel = h.idHotel
 	INNER JOIN LOS_BORBOTONES.Identidad i
 		ON m.Cliente_Pasaporte_Nro = i.NumeroDocumento
 	INNER JOIN LOS_BORBOTONES.Cliente c 
