@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Modelo;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
 using System.Windows.Forms;
@@ -326,12 +327,28 @@ namespace FrbaHotel.AbmHotel
         private void altaHotel_Click(object sender, EventArgs e)
         {
             RepositorioHotel repoHotel = new RepositorioHotel();
-            
-            Direccion direccion= new Direccion(0,paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
-            Hotel hotelToUpdateSave = new Hotel(0, (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, emailText.Text, telefonoText.Text, creacionTime.Value);
-            repoHotel.create(hotelToUpdateSave);
-            MessageBox.Show("Hotel creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+            try
+            {
+                String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
+                String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
+                String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
+                int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text, "NumeroCalle");
+                Direccion direccion = new Direccion(0, pais, ciudad, calle, numeroCalle, 0, "");
 
+                Categoria categoria = (Categoria)Utils.validateFields(estrellasComboBox.SelectedItem, "Categoria");
+                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
+                String email = Utils.validateStringFields(emailText.Text, "Email");
+                String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
+                DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
+                Hotel hotelToUpdateSave = new Hotel(0, categoria, direccion, nombre, email, telefono, fechaInicioActividades);
+                repoHotel.create(hotelToUpdateSave);
+                MessageBox.Show("Hotel creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+            }
 
         }
 

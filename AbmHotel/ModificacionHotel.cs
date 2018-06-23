@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
@@ -340,12 +341,25 @@ namespace FrbaHotel.AbmHotel
         {
             RepositorioHotel repoHotel = new RepositorioHotel();
             try{
-                Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
-                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, emailText.Text, telefonoText.Text, creacionTime.Value);
+
+
+                String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
+                String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
+                String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
+                int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text, "NumeroCalle");
+
+                Categoria categoria = (Categoria)Utils.validateFields(estrellasComboBox.SelectedItem, "Categoria");
+                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
+                String email = Utils.validateStringFields(emailText.Text, "Email");
+                String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
+                DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
+
+                Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),pais,ciudad,calle,numeroCalle,0,"");
+                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades);
                 repoHotel.update(hotelToUpdateSave);
                  MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 
-            } catch (RequestInvalidoException exception)
+            } catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
             }
