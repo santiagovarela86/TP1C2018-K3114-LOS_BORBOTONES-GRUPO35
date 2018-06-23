@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
@@ -46,10 +47,19 @@ namespace FrbaHotel.AbmHabitacion
         {
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
 
-            Habitacion habitacionAModificar= new Habitacion(habitacion.getIdHabitacion(),habitacion.getTipoHabitacion(),this.checkBoxActiva.Checked,Int32.Parse(textNumero.Text),Int32.Parse(textPiso.Text),(String)comboBoxUbicacion.SelectedItem,(Hotel)comboBoxHotel.SelectedItem);
-
             try
             {
+                int idHabitacion = Utils.validateIntField(habitacion.getIdHabitacion().ToString(), "ID Habitacion");
+            TipoHabitacion tipoHabitacion = (TipoHabitacion)Utils.validateFields(habitacion.getTipoHabitacion(),"Tipo Habitacion");
+            bool activa = this.checkBoxActiva.Checked;
+            int numero = Utils.validateIntField(textNumero.Text, "Numero");
+            int piso = Utils.validateIntField(textPiso.Text, "Piso");
+            String ubicacion =Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem,"Ubicacion");
+            Hotel hotel= (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem,"Hotel");
+
+            Habitacion habitacionAModificar = new Habitacion(idHabitacion, tipoHabitacion,
+                activa, numero, piso, ubicacion, hotel);
+
                 repoHabitacion.update(habitacionAModificar);
                 MessageBox.Show("Habitacion modificada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 

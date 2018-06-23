@@ -267,6 +267,7 @@
     <Compile Include="Repositorios\RepositorioRol.cs" />
     <Compile Include="Repositorios\RepositorioTipoHabitacion.cs" />
     <Compile Include="Repositorios\RepositorioUsuario.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <EmbeddedResource Include="AbmCliente\ABMClientes.resx">
       <DependentUpon>ABMClientes.cs</DependentUpon>
     </EmbeddedResource>
