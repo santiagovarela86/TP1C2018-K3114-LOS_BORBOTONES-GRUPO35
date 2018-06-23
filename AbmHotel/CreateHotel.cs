@@ -330,6 +330,8 @@ namespace FrbaHotel.AbmHotel
             Direccion direccion= new Direccion(0,paisText.Text,ciudadText.Text,calleText.Text,Int32.Parse(numeroCalleText.Text),0,"");
             Hotel hotelToUpdateSave = new Hotel(0, (Categoria)estrellasComboBox.SelectedItem, direccion, nombreText.Text, emailText.Text, telefonoText.Text, creacionTime.Value);
             repoHotel.create(hotelToUpdateSave);
+            MessageBox.Show("Hotel creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
 
         }
 
