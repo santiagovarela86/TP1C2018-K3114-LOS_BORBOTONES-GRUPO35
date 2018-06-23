@@ -215,6 +215,12 @@
     <Compile Include="RegistrarConsumible\Consumibles.Designer.cs">
       <DependentUpon>Consumibles.cs</DependentUpon>
     </Compile>
+    <Compile Include="RegistrarEstadia\RegistrarEstadias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarEstadia\RegistrarEstadias.Designer.cs">
+      <DependentUpon>RegistrarEstadias.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositorios\RepositorioConsumibles.cs" />
     <Compile Include="Repositorios\RepositorioEstadia.cs" />
     <Compile Include="Repositorios\RepositorioEstadoReserva.cs" />
@@ -314,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RegistrarConsumible\Consumibles.resx">
       <DependentUpon>Consumibles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegistrarEstadia\RegistrarEstadias.resx">
+      <DependentUpon>RegistrarEstadias.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
