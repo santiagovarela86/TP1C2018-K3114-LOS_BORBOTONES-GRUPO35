@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace FrbaHotel.Repositorios
 {
@@ -14,7 +15,8 @@ namespace FrbaHotel.Repositorios
         {
             //Elementos de la Estadia a devolver
             Estadia estadia;
-            
+
+            int cantidadNoches = 0;
             Usuario usuarioCheckIn = null;
             Usuario usuarioCheckOut = null;
             DateTime fechaEntrada = new DateTime();
@@ -45,6 +47,7 @@ namespace FrbaHotel.Repositorios
                 fechaEntrada = reader.GetDateTime(reader.GetOrdinal("FechaEntrada"));
                 fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
                 facturada = reader.GetBoolean(reader.GetOrdinal("Facturada"));
+                cantidadNoches = reader.GetInt32(reader.GetOrdinal("CantidadNoches"));
             }
 
             //Cierro Primera Consulta
@@ -54,7 +57,7 @@ namespace FrbaHotel.Repositorios
             if (usuarioCheckIn.Equals(null)) throw new NoExisteIDException("No existe estadia con el ID asociado");
 
             //Armo la estadia completa
-            estadia = new Estadia(idEstadia, usuarioCheckIn, usuarioCheckOut, fechaEntrada, fechaSalida, facturada);
+            estadia = new Estadia(idEstadia, usuarioCheckIn, usuarioCheckOut, fechaEntrada, fechaSalida, facturada,cantidadNoches);
             return estadia;
         }
 
@@ -86,7 +89,7 @@ namespace FrbaHotel.Repositorios
             return estadias;
         }
 
-        override public int create(Estadia estadia)
+        override public void delete(Estadia estadia)
         {
             if (this.exists(estadia))
             {
@@ -94,7 +97,7 @@ namespace FrbaHotel.Repositorios
             }
             else
             {
-                //Creo un nuevo registro
+                //elimino registro
             }
 
             throw new System.NotImplementedException();
@@ -112,16 +115,66 @@ namespace FrbaHotel.Repositorios
             }
         }
 
-        override public void delete(Estadia estadia)
+        override public int create(Estadia estadia)
         {
+            int idEstadia = 0;
             if (this.exists(estadia))
             {
-                //Borro el registro
+                throw new ElementoYaExisteException("Ya existe la estadia que intenta crear");
             }
             else
             {
-                //Error
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@FecIn", estadia.getFechaEntrada());
+                sqlCommand.Parameters.AddWithValue("@FecOut", estadia.getFechaSalida());
+                sqlCommand.Parameters.AddWithValue("@CantNoches", estadia.getCantidadNoches());
+                sqlCommand.Parameters.AddWithValue("@Facturada", estadia.getFacturada());
+                sqlCommand.Parameters.AddWithValue("@UserIn", estadia.getUsuarioCheckIn().getIdUsuario());
+                sqlCommand.Parameters.AddWithValue("@UserOut", estadia.getUsuarioCheckOut().getIdUsuario());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada,FechaSalida,CantidadNoches,Facturada,idUsuarioIn,idUsuarioOut)
+                    OUTPUT INSERTED.idEstadia
+                    VALUES(@FecIn, @FecOut, @CantNoches, @Facturada, @UserIn, @UserOut);
+
+                    DECLARE @idEstadia int;
+                    SET @idEstadia = SCOPE_IDENTITY();
+                ");
+
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idEstadia = reader.GetInt32(reader.GetOrdinal("idEstadia"));
+                }
+
+                sqlConnection.Close();
             }
+
+            return idEstadia;
         }
 
         override public void bajaLogica(Estadia estadia)

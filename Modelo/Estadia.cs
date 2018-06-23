@@ -9,6 +9,7 @@ namespace FrbaHotel.Modelo
     public class Estadia
     {
         private int idEstadia = 0;
+        private decimal cantidadNoches = 0;
         private Usuario usuarioCheckIn = null;
         private Usuario usuarioCheckOut = null;
         private DateTime fechaEntrada = new DateTime();
@@ -16,9 +17,10 @@ namespace FrbaHotel.Modelo
         private Boolean facturada = false;
 
         public Estadia(int idEstadia, Usuario usuarioCheckIn, Usuario usuarioCheckOut,
-            DateTime fechaEntrada, DateTime fechaSalida, Boolean facturada)
+            DateTime fechaEntrada, DateTime fechaSalida, Boolean facturada, decimal cantidadNoches)
         {
             this.idEstadia = idEstadia;
+            this.cantidadNoches = cantidadNoches;
             this.usuarioCheckIn = usuarioCheckIn;
             this.usuarioCheckOut = usuarioCheckOut;
             this.fechaEntrada = fechaEntrada;
@@ -29,6 +31,10 @@ namespace FrbaHotel.Modelo
         public int getIdEstadia()
         {
             return this.idEstadia;
+        }
+        public Decimal getCantidadNoches()
+        {
+            return this.cantidadNoches;
         }
 
         public Usuario getUsuarioCheckIn()

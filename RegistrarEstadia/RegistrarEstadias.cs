@@ -43,7 +43,7 @@ namespace FrbaHotel.RegistrarEstadia
                 codReserva = int.Parse(textBox1.Text);
                 username = textBox2.Text;
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, username);
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, date, username);
                 if (estadoValidez==1)
                 { 
                     //es valida, dar de alta la reserva(con usuario y fecha) y los huespedes en la otra pantalla
@@ -61,14 +61,16 @@ namespace FrbaHotel.RegistrarEstadia
                 else if (estadoValidez == 2)
                 {
                     MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In, generar otra nueva ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
+
                 }
                 else if (estadoValidez == 3)
                 {
                     MessageBox.Show("La reserva ingresada no corresponde al hotel al que el usuario tiene permisos ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
+                else if (estadoValidez == 4)
                 {
-                    MessageBox.Show("el username no es correcto ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo dar de alta la estadia", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -81,6 +83,8 @@ namespace FrbaHotel.RegistrarEstadia
         private void button4_Click(object sender, EventArgs e)
         {
             //CHECK OUT
+            //si se va antes de la fecha de salida tengo que poner bien los dias porque dsp en la factura se hace algo con esto
+            //llamo a la nueva pantalla que va a pedir las habitaciones
             /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
             {
                 var result = form.ShowDialog();

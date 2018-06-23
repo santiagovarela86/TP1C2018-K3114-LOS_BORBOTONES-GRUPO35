@@ -246,9 +246,11 @@ namespace FrbaHotel.Repositorios
             int idHotel = 0;
             int reserva = 0;
             int hotelFound = 0;
+            decimal cantidadNoches = 0;
+            DateTime fechaOut= new DateTime();
             RepositorioUsuario repouser = new RepositorioUsuario();
             Usuario userIn = null;
-            //hacer try catch por si el user no existe
+            //SACAR ESTO CUANDO INVOQUE DESDE FUNCIONALIDES ADICIONALES, TRAIGO DE UNA LA ID YA VALIDA
             userIn = repouser.getByUsername(username);
             if (userIn == null)
                 return 4;
@@ -262,7 +264,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@date", date);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idReserva,idHotel FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @CodReserva and FechaDesde = @date";
+            sqlCommand.CommandText = "SELECT idReserva,idHotel,FechaHasta,DiasAlojados FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @CodReserva and FechaDesde = @date";
 
             sqlConnection.Open();
 
@@ -272,13 +274,19 @@ namespace FrbaHotel.Repositorios
             {
                 reserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
                 idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+                fechaOut = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
+                cantidadNoches = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
             }
 
             sqlConnection.Close();
             if (reserva == 0)
+            {
+                //llamo a cancelar la reserva en estado reserva
+                RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();                
+                repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario());
                 return 2;
-            int i = 0;
 
+            }
             
             foreach (Hotel h in userIn.getHoteles())
             {
@@ -291,8 +299,18 @@ namespace FrbaHotel.Repositorios
                 return 3;
 
             if (reserva != 0 && hotelFound != 0)
+            {
+                //llamo a cargar la estadia
+                RepositorioEstadia repoEstadia =new RepositorioEstadia();
+                int idEstadia=0;
+                Boolean facturada = false;
+                Usuario userOut=null;
+                Estadia estadia = new Estadia(idEstadia, userIn, userOut,date,fechaOut,facturada,cantidadNoches);
+                idEstadia=repoEstadia.create(estadia);
+                if (idEstadia == 0)
+                    return 4;
                 return 1;
-
+            }
             return 0;
         }
     }

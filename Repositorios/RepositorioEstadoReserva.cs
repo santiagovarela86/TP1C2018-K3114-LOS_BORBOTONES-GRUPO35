@@ -229,6 +229,42 @@ namespace FrbaHotel.Repositorios
             return idEstado != 0 || reserva.getIdReserva().Equals(idReserva);
         }
         //luego hacer algun getBy que vea especial y el getByQuery
+        public void rechazarReserva(int codReserva,int idUser)
+        {
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@CodReserva", codReserva);
+                sqlCommand.Parameters.AddWithValue("@IdUser", idUser);
+            
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.EstadoReserva
+                    SET TipoEstado = 'RCR', Descripcion= 'Reserva Cancelada por Recepcion',idUsuario = @IdUser
+                    WHERE idReserva = (SELECT idReserva FROM LOS_BORBOTONES.Reserva where CodigoReserva= @CodReserva);
+                ");
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
+        }
     }
 }
 
