@@ -926,6 +926,13 @@ INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
 VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'ABMReserva'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'Guest'));
 GO
 
+--Permisos del RolDummy (tiene que tener al menos un rol)
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Funcionalidad_X_Rol (idFuncionalidad, idRol)
+VALUES ((SELECT idFuncionalidad FROM LOS_BORBOTONES.Funcionalidad WHERE Descripcion = 'GenerarListadoEstadistico'),(SELECT idRol FROM LOS_BORBOTONES.Rol WHERE Nombre = 'RolDummy'));
+GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Genero Identidad de los Usuarios
 
@@ -1192,6 +1199,16 @@ INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario(idHotel, idUsuario)
 		JOIN LOS_BORBOTONES.Usuario u 	
 			ON e.idUsuarioIn =  u.idUsuario	OR e.idUsuarioOut =  u.idUsuario
 	ORDER BY r.idHotel, e.idUsuarioIn
+GO
+
+--El admin del enunciado trabaja en todos los hoteles
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario (idHotel, idUsuario)
+SELECT h.idHotel, u.idUsuario
+FROM LOS_BORBOTONES.Hotel h
+CROSS JOIN LOS_BORBOTONES.Usuario u
+WHERE u.Username = 'admin';
 GO
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------

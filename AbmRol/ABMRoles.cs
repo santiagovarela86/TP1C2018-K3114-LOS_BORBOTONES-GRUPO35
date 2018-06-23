@@ -72,7 +72,15 @@ namespace FrbaHotel.AbmRol
             List<Rol> roles = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad);
 
             dataGridView1.DataSource = roles;
+            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+            dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();
+
+            //PONGO ESTO ACA PARA QUE DESPUES DE DAR DE ALTA, MODIFICAR O DAR DE BAJA
+            //Y SE VUELVA A CARGAR LA LISTA, NO SE PUEDA MODIFICAR O DAR DE BAJA
+            //UN ROL NULL...
+            this.button4.Enabled = false;
+            this.button5.Enabled = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -81,15 +89,8 @@ namespace FrbaHotel.AbmRol
             {
                 var result = form.ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    //string val = form.ReturnValue1;            //values preserved after close
-                    //string dateString = form.ReturnValue2;
-                    //Do something here with these values
-
-                    //for example
-                    //this.txtSomething.Text = val;
-                }
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
             }
         }
 
@@ -101,15 +102,8 @@ namespace FrbaHotel.AbmRol
             {
                 var result = form.ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    //string val = form.ReturnValue1;            //values preserved after close
-                    //string dateString = form.ReturnValue2;
-                    //Do something here with these values
-
-                    //for example
-                    //this.txtSomething.Text = val;
-                }
+                //AL CERRAR LA VENTANA DESPUES DE MODIFICAR EL ROL VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
             }
         }
 
@@ -134,6 +128,21 @@ namespace FrbaHotel.AbmRol
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja el Rol?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                RepositorioRol repositorioRol = new RepositorioRol();
+                Rol rol = (Rol)dataGridView1.CurrentRow.DataBoundItem;
+
+                repositorioRol.bajaLogica(rol);
+
+                //CUANDO DOY DE BAJA EL ROL VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
+            }
         }
     }
 }

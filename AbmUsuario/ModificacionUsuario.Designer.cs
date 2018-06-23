@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.AbmUsuario
 {
-    partial class AltaUsuario
+    partial class ModificacionUsuario
     {
         /// <summary>
         /// Required designer variable.
@@ -65,6 +65,7 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -123,6 +124,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(156, 20);
             this.textBox2.TabIndex = 2;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label2
             // 
@@ -247,7 +249,7 @@
             // 
             this.textBox8.Location = new System.Drawing.Point(365, 103);
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(282, 20);
+            this.textBox8.Size = new System.Drawing.Size(220, 20);
             this.textBox8.TabIndex = 11;
             // 
             // label8
@@ -396,6 +398,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.textBox16);
             this.groupBox1.Controls.Add(this.label1);
@@ -435,13 +438,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "General";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.Location = new System.Drawing.Point(591, 105);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(56, 17);
+            this.checkBox1.TabIndex = 18;
+            this.checkBox1.Text = "Activo";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(153, 456);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 19;
-            this.button1.Text = "Limpiar";
+            this.button1.Text = "Resetear";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -451,7 +465,7 @@
             this.buttonGuardar.Name = "buttonGuardar";
             this.buttonGuardar.Size = new System.Drawing.Size(75, 23);
             this.buttonGuardar.TabIndex = 20;
-            this.buttonGuardar.Text = "Guardar";
+            this.buttonGuardar.Text = "Actualizar";
             this.buttonGuardar.UseVisualStyleBackColor = true;
             this.buttonGuardar.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -465,7 +479,7 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // AltaUsuario
+            // ModificacionUsuario
             // 
             this.AcceptButton = this.buttonGuardar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -477,9 +491,9 @@
             this.Controls.Add(this.buttonGuardar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
-            this.Name = "AltaUsuario";
-            this.Text = "Alta Usuario";
-            this.Load += new System.EventHandler(this.AltaUsuario_Load);
+            this.Name = "ModificacionUsuario";
+            this.Text = "Modificacion Usuario";
+            this.Load += new System.EventHandler(this.ModificacionUsuario_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
@@ -533,5 +547,6 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.ComboBox comboBoxTipoDoc;
         private System.Windows.Forms.DateTimePicker dateTime;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

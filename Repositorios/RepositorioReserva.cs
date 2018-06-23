@@ -276,6 +276,60 @@ namespace FrbaHotel.Repositorios
             return idReserva != 0 || estadia.getIdEstadia().Equals(idEstadia);
         }
         //luego hacer algun getBy que vea especial y el getByQuery
+         public int GetReservaValida(int codReserva,DateTime date,String username)
+        {
+            int idHotel = 0;
+            int reserva = 0;
+            int hotelFound = 0;
+            RepositorioUsuario repouser = new RepositorioUsuario();
+            Usuario userIn = null;
+            //hacer try catch por si el user no existe
+            userIn = repouser.getByUsername(username);
+            if (userIn == null)
+                return 4;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            
+            sqlCommand.Parameters.AddWithValue("@CodReserva", codReserva);
+            sqlCommand.Parameters.AddWithValue("@date", date);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idReserva,idHotel FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @CodReserva and FechaDesde = @date";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                reserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+            }
+
+            sqlConnection.Close();
+            if (reserva == 0)
+                return 2;
+            int i = 0;
+
+            
+            foreach (Hotel h in userIn.getHoteles())
+            {
+                //si encuentro el hotel en el que el usuario trabaja entonces valido bien
+                if (h.getIdHotel() == idHotel)
+                    hotelFound = 1;
+            }
+        
+            if (hotelFound == 0)
+                return 3;
+
+            if (reserva != 0 && hotelFound != 0)
+                return 1;
+
+            return 0;
+        }
     }
 }
 

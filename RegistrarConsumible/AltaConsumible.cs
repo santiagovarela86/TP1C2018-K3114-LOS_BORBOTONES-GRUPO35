@@ -77,7 +77,17 @@ namespace FrbaHotel.RegistrarConsumible
                     //sumar el consumible elegido a la estadia marcada
                     consumible.setIdEstadia(idEstadia2);
                     //metodo registrar que no crea el consumible solo lo suma
-                    repoConsumible.registrar(consumible);
+                    idConsumible = repoConsumible.registrar(consumible);
+                    if (idConsumible == consumible.getIdConsumible())
+                    {
+                        MessageBox.Show("Consumible Registrado correctamente en la estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.AltaConsumible_Load(sender, e);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al registrar el consumible", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.AltaConsumible_Load(sender, e);
+                    }
                 }
             }
             else

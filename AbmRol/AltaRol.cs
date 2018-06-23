@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System.Diagnostics;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.AbmRol
 {
@@ -22,16 +23,25 @@ namespace FrbaHotel.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.AltaRol_Load(sender, e);
+            this.limpiarPantalla();
+        }
+
+        private void limpiarPantalla()
+        {
+            RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
+            dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll();
+            dataGridFuncionalidades.ClearSelection();
+            textBoxNombreRol.Text = "";
+            checkBoxActivo.Checked = false;
+
+            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+            dataGridFuncionalidades.CurrentCell = null;
+            dataGridFuncionalidades.ClearSelection();
         }
 
         private void AltaRol_Load(object sender, EventArgs e)
         {
-            RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
-            dataGridView1.DataSource = repositorioFuncionalidad.getAll();
-            dataGridView1.ClearSelection();
-            textBox1.Text = "";
-            checkBox1.Checked = false;
+            this.limpiarPantalla();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -52,7 +62,44 @@ namespace FrbaHotel.AbmRol
 
         private void button2_Click(object sender, EventArgs e)
         {
+            String nombreRol = textBoxNombreRol.Text;
+            Boolean activo = checkBoxActivo.Checked;
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            RepositorioRol repositorioRol = new RepositorioRol();
+            Rol rol = null;
 
+            foreach (DataGridViewRow row in dataGridFuncionalidades.SelectedRows)
+            {
+                funcionalidades.Add((Funcionalidad) row.DataBoundItem);
+            }
+
+            rol = new Rol(0, nombreRol, activo, funcionalidades);
+
+            //LA RESPONSABILIDAD DE VALIDAR EL INPUT LA DEJO EN LA INTERFAZ???
+            //O MEJOR EN EL REPOSITORIO Y LAS MANEJO CON EXCEPCIONES???
+            if (this.validoInput(this))
+            {
+                try
+                {
+                    repositorioRol.create(rol);
+                    MessageBox.Show("Rol creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.limpiarPantalla();
+                }
+                catch (ElementoYaExisteException exc)
+                {
+                    MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ingrese nombre del Rol y seleccione sus Funcionalidades", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private Boolean validoInput(AltaRol form)
+        {
+            return !form.textBoxNombreRol.Text.Equals("") &&
+                   !form.dataGridFuncionalidades.SelectedRows.Count.Equals(0);
         }
     }
 }

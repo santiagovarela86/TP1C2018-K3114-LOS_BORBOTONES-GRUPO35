@@ -35,6 +35,8 @@ namespace FrbaHotel.Modelo
             this.nacionalidad = nacionalidad;
             this.telefono = telefono;
             this.direcciones = direcciones;
+            //PARA MANTENER LA COMPATIBILIDAD ENTRE LOS CONSTRUCTORES Y EL MODELO
+            this.direccion = direcciones.First();
         }
         public Identidad(int idIdentidad,String tipoIdentidad, String nombre, String apellido, String tipoDocumento, String numeroDocumento,
             String mail, DateTime fechaNacimiento, String nacionalidad, String telefono, Direccion direccion)
@@ -50,6 +52,8 @@ namespace FrbaHotel.Modelo
             this.nacionalidad = nacionalidad;
             this.telefono = telefono;
             this.direccion = direccion;
+            //PARA MANTENER LA COMPATIBILIDAD ENTRE LOS CONSTRUCTORES Y EL MODELO
+            this.direcciones.Add(direccion);
         }
         public int getIdIdentidad()
         {

@@ -200,7 +200,7 @@ namespace FrbaHotel.Repositorios
                     WHERE idRol = @idRol;
                 ");
 
-                //TENGO QUE BORRAR TODAS LAS RELACIONES MANY TO MANY RELACIONADAS CON EL IDROL
+                //TENGO QUE BORRAR TODAS LAS RELACIONES QUE TENGO CON LAS FUNCIONALIDADES
                 sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Funcionalidad_X_Rol WHERE idRol = @idRol;");  
 
                 //PARA LUEGO VOLVER A AGREGARLAS (COPIADO DEL CREATE)
@@ -322,7 +322,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Devuelve verdadero si el ID coincide o si el Nombre coincide
-            return idRol != 0 || rol.getNombre().Equals(nombre);
+            return idRol != 0 || rol.getNombre().ToUpper().Equals(nombre.ToUpper());
         }
 
         public Rol getByNombre(String nombre)

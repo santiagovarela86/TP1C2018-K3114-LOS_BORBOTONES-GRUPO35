@@ -98,8 +98,8 @@ namespace FrbaHotel.Repositorios
             {
                 //lleno el hotel con el getbyID                
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
-                //RepositorioHotel repoHotel = new RepositorioHotel();
-                //hoteles.Add(repoHotel.getById(idHotel));         
+                RepositorioHotel repoHotel = new RepositorioHotel();
+                hoteles.Add(repoHotel.getById(idHotel));         
             }
 
             sqlConnection.Close();
@@ -235,29 +235,130 @@ namespace FrbaHotel.Repositorios
         {
             if (this.exists(usuario))
             {
-                //Actualizo el registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+
+                //PARAMETERS DE LA DIRECCION
+                sqlCommand.Parameters.AddWithValue("@Pais", usuario.getIdentidad().getDireccion().getPais());
+                sqlCommand.Parameters.AddWithValue("@Ciudad", usuario.getIdentidad().getDireccion().getCiudad());
+                sqlCommand.Parameters.AddWithValue("@Calle", usuario.getIdentidad().getDireccion().getCalle());
+                sqlCommand.Parameters.AddWithValue("@NumeroCalle", usuario.getIdentidad().getDireccion().getNumeroCalle());
+                sqlCommand.Parameters.AddWithValue("@Piso", usuario.getIdentidad().getDireccion().getPiso());
+                sqlCommand.Parameters.AddWithValue("@Departamento", usuario.getIdentidad().getDireccion().getDepartamento());
+                sqlCommand.Parameters.AddWithValue("@idDireccion", usuario.getIdentidad().getDireccion().getIdDireccion());
+
+                //PARAMETERS DE LA IDENTIDAD
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", usuario.getIdentidad().getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", usuario.getIdentidad().getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", usuario.getIdentidad().getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", usuario.getIdentidad().getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", usuario.getIdentidad().getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", usuario.getIdentidad().getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", usuario.getIdentidad().getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", usuario.getIdentidad().getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", usuario.getIdentidad().getTelefono());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", usuario.getIdentidad().getIdIdentidad());
+
+                //PARAMETERS DEL USUARIO
+                sqlCommand.Parameters.AddWithValue("@Username", usuario.getUsername());
+                sqlCommand.Parameters.AddWithValue("@Activo", usuario.getActivo());
+                sqlCommand.Parameters.AddWithValue("@Password", usuario.getPassword());
+                
+                //SI CAMBIO EL ESTADO DEL USUARIO
+                //RESETEO LA CANTIDAD DE INTENTOS FALLIDOS              
+                Boolean usuarioActivoEnBase = this.getById(usuario.getIdUsuario()).getActivo();
+                Boolean usuarioActivoEnModelo = usuario.getActivo();
+
+                if (!usuarioActivoEnBase && usuarioActivoEnModelo)
+                {
+                    sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", 0);
+                } 
+                else 
+                {
+                    sqlCommand.Parameters.AddWithValue("@IntentosFallidosLogin", usuario.getIntentosFallidosLogin());
+                }
+                
+                sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+
+                //HABRÍA QUE ANALIZAR PROS Y CONTRAS DE ACTUALIZAR/CREAR UN USUARIO TODO EN LA MISMA CONSULTA COMO EN ESTE METODO
+                //O ACTUALIZARLO/CREARLO POR SEPARADO CON LOS METODOS DEL REPOSITORIO (USANDO LOS METODOS DEL REPO HAY QUE DEFINIR COMO SE MANEJA EL ROLLBACK SI UN UPDATE O CREATE FALLA)
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Direccion
+                    SET Pais = @Pais, Ciudad = @Ciudad, Calle = @Calle, NumeroCalle = @NumeroCalle, Piso = @Piso, Depto = @Departamento
+                    WHERE idDireccion = @idDireccion;
+
+                    UPDATE LOS_BORBOTONES.Identidad
+                    SET TipoIdentidad = @TipoIdent, Nombre = @Nombre, Apellido = @Apellido, TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail, FechaNacimiento = @FecNac, Nacionalidad = @Nacion, Telefono = @Tel
+                    WHERE idIdentidad = @idIdentidad;
+
+                    UPDATE LOS_BORBOTONES.Usuario
+                    SET Username = @Username, Password = @Password, IntentosFallidosLogin = @IntentosFallidosLogin, Activo = @Activo, idIdentidad = @idIdentidad
+                    WHERE idUsuario = @idUsuario;
+                ");
+
+                //TENGO QUE BORRAR TODAS LAS RELACIONES QUE TENGO CON LOS ROLES
+                sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Rol_X_Usuario WHERE idUsuario = @idUsuario;");
+
+                //TENGO QUE BORRAR TODAS LAS RELACIONES QUE TENGO CON LOS HOTELES
+                sqlBuilder.Append("DELETE FROM LOS_BORBOTONES.Hotel_X_Usuario WHERE idUsuario = @idUsuario;");  
+
+                //AGREGO DINAMICAMENTE LOS ROLES A LA CONSULTA
+                int i = 1;
+                foreach (Rol r in usuario.getRoles())
+                {
+                    String paramName = "@idRol" + i.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Rol_X_Usuario(idRol,idUsuario) VALUES ({0}, @idUsuario)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, r.getIdRol());
+                    i++;
+                }
+                //AGREGO DINAMICAMENTE LOS HOTELES A LA CONSULTA
+                int k = 1;
+                foreach (Hotel h in usuario.getHoteles())
+                {
+                    String paramName = "@idHotel" + k.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario(idHotel,idUsuario) VALUES ({0}, @idUsuario)", paramName);
+                    sqlCommand.Parameters.AddWithValue(paramName, h.getIdHotel());
+                    k++;
+                }
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el usuario que intenta actualizar");
             }
         }
 
         override public void delete(Usuario usuario)
         {
-            if (this.exists(usuario))
-            {
-                //Borro el registro
-            }
-            else
-            {
-                //Error
-            }
+            throw new NotImplementedException();
         }
 
         override public void bajaLogica(Usuario usuario)
         {
-            throw new NotImplementedException();
+            usuario.setActivo(false);
+            this.update(usuario);
         }
 
         override public Boolean exists(Usuario usuario)
@@ -303,7 +404,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Devuelve verdadero si el ID coincide o si el username coincide
-            return idUsuario != 0 || usuario.getUsername().Equals(username);
+            return idUsuario != 0 || usuario.getUsername().ToUpper().Equals(username.ToUpper());
         }
 
         public Usuario getByUsername(String username)
@@ -376,8 +477,8 @@ namespace FrbaHotel.Repositorios
                 //Va primero porque el JOIN va antes que el WHERE
                 if (rol != null)
                 {
-                    sqlCommand.Parameters.AddWithValue("@Nombre", rol.getNombre());
-                    query = query + " INNER JOIN LOS_BORBOTONES.Rol_X_Usuario rxu ON u.idUsuario = rxu.idUsuario INNER JOIN LOS_BORBOTONES.Rol r ON r.idRol = rxu.idRol WHERE r.Nombre = @Nombre";
+                    sqlCommand.Parameters.AddWithValue("@nombreRol", rol.getNombre());
+                    query = query + " INNER JOIN LOS_BORBOTONES.Rol_X_Usuario rxu ON u.idUsuario = rxu.idUsuario INNER JOIN LOS_BORBOTONES.Rol r ON r.idRol = rxu.idRol WHERE r.Nombre = @nombreRol";
                     primerCriterioWhere = false;
                 }
 
@@ -449,22 +550,26 @@ namespace FrbaHotel.Repositorios
             Usuario usuario = null;
 
             //VALIDO SI EXISTE PRIMERO EL USUARIO
-            if (this.getAll().Exists(usr => usr.getUsername().Equals(username)))
+            if (this.getAll().Exists(usr => usr.getUsername().ToUpper().Equals(username.ToUpper())))
             {
                 usuario = this.getByUsername(username);
 
                 //SI LA PASSWORD ESTA BIEN Y EL USUARIO NO ESTA BLOQUEADO
-                if (usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                String passwordUser = usuario.getPassword();
+                int intentosFallidos = usuario.getIntentosFallidosLogin();
+                Boolean usuarioActivo = usuario.getActivo();
+
+                if (passwordUser.Equals(passwordEncriptada) && intentosFallidos < 3 && usuarioActivo)
                 {
+                    usuario.resetearIntentosFallidosLogin();
+                    this.update(usuario);
                     return usuario;
                 }
                 else
                 {
                     //SI HUBO UN ERROR DE CREDENCIALES Y EL USUARIO TODAVIA NO ESTA BLOQUEADO
-                    if (!usuario.getPassword().Equals(passwordEncriptada) && usuario.getIntentosFallidosLogin() < 3 && usuario.getActivo())
+                    if (!passwordUser.Equals(passwordEncriptada) && intentosFallidos < 3 && usuarioActivo)
                     {
-                        //ESTO FALTA DESARROLLARLO
-                        /*
                         usuario.incrementarIntentosFallidosLogin();
                         
                         if (usuario.getIntentosFallidosLogin() >= 3)
@@ -472,14 +577,16 @@ namespace FrbaHotel.Repositorios
                             usuario.setActivo(false);
                         }
                         
-                        repositorioUsuario.update(usuario); //GRABA LOS CAMBIOS EN LA BASE
-                        */
+                        this.update(usuario);
 
                         throw new ErrorDeAutenticacionException("Las credenciales son incorrectas");
                     }
                     //LUEGO SI EL USUARIO ESTA BLOQUEADO
                     else if (usuario.getIntentosFallidosLogin() >= 3 || !usuario.getActivo())
                     {
+                        usuario.incrementarIntentosFallidosLogin();
+                        this.update(usuario);
+
                         throw new UsuarioBloqueadoException("El usuario esta bloqueado o deshabilitado");
                     }
                 }

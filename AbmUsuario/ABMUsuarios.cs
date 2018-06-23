@@ -84,7 +84,15 @@ namespace FrbaHotel.AbmUsuario
             List<Usuario> usuarios = repositorioUsuario.getByQuery(username, estado, hotel,rol);
 
             dataGridView1.DataSource = usuarios;
+            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+            dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();
+
+            //PONGO ESTO ACA PARA QUE DESPUES DE DAR DE ALTA, MODIFICAR O DAR DE BAJA
+            //Y SE VUELVA A CARGAR LA LISTA, NO SE PUEDA MODIFICAR O DAR DE BAJA
+            //UN ROL NULL...
+            this.button4.Enabled = false;
+            this.button5.Enabled = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -93,20 +101,22 @@ namespace FrbaHotel.AbmUsuario
             {
                 var result = form.ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    //string val = form.ReturnValue1;            //values preserved after close
-                    //string dateString = form.ReturnValue2;
-                    //Do something here with these values
-
-                    //for example
-                    //this.txtSomething.Text = val;
-                }
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            Usuario usuario = (Usuario) dataGridView1.CurrentRow.DataBoundItem;
+
+            using (ModificacionUsuario form = new ModificacionUsuario(usuario))
+            {
+                var result = form.ShowDialog();
+
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
+            }
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -130,6 +140,21 @@ namespace FrbaHotel.AbmUsuario
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja el Usuario?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                RepositorioUsuario repoUsuario = new RepositorioUsuario();
+                Usuario usuario = (Usuario)dataGridView1.CurrentRow.DataBoundItem;
+
+                repoUsuario.bajaLogica(usuario);
+
+                //CUANDO DOY DE BAJA EL USUARIO VUELVO A CARGAR LA LISTA
+                this.buscar_Click(sender, e);
+            }
         }
     }
 }

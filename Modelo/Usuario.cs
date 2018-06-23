@@ -74,6 +74,21 @@ namespace FrbaHotel.Modelo
             return idUsuario.Equals(0);
         }
 
+        public void setActivo(Boolean activo)
+        {
+            this.activo = activo;
+        }
+
+        public void incrementarIntentosFallidosLogin()
+        {
+            this.intentosFallidosLogin++;
+        }
+
+        public void resetearIntentosFallidosLogin()
+        {
+            this.intentosFallidosLogin = 0;
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdUsuario { get { return this.getIdUsuario(); } }
         public String Username { get { return this.getUsername(); } }

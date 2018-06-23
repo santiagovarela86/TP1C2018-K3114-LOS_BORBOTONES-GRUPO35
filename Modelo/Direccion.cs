@@ -12,9 +12,9 @@ namespace FrbaHotel.Modelo
         private String pais = "";
         private String ciudad = "";
         private String calle = "";
-        private int numeroCalle = 0;
-        private int piso = 0;
         private String departamento = "";
+        private int numeroCalle = 0;
+        private int piso = 0;        
         private int idIdentidad = 0;
 
         public Direccion(int idDireccion, String pais, String ciudad,
