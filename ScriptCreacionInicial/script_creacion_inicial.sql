@@ -1210,7 +1210,7 @@ FROM  LOS_BORBOTONES.Hotel h
 	INNER JOIN LOS_BORBOTONES.Regimen r
 		ON m.Regimen_Descripcion = r.Descripcion
 		INNER JOIN LOS_BORBOTONES.Regimen_X_Hotel rxh
-		ON rxh.idHotel = h.idHotel
+		ON rxh.idHotel = h.idHotel AND rxh.idRegimen= r.idRegimen
 	INNER JOIN LOS_BORBOTONES.Identidad i
 		ON m.Cliente_Pasaporte_Nro = i.NumeroDocumento
 	INNER JOIN LOS_BORBOTONES.Cliente c 
