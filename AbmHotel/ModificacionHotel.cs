@@ -3,6 +3,7 @@ using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace FrbaHotel.AbmHotel
@@ -27,12 +28,13 @@ namespace FrbaHotel.AbmHotel
         private Label paisLabel;
         private TextBox paisText;
         private Label regimenesLabel;
-        private TextBox regimenesText;
+        private DataGridView regimenesGrid;
         private Label creacionLabel;
         private DateTimePicker creacionTime;
         private GroupBox groupBox1;
         private Label emailLabel;
         private TextBox emailText;
+        private Button button1;
         private Button modificarHotel;
 
 
@@ -40,23 +42,43 @@ namespace FrbaHotel.AbmHotel
         {
             this.hotel = hotel;
             InitializeComponent();
-            initModificacionHotel();
         }
 
-        private void initModificacionHotel() {
+        private void initModificacionHotel()
+        {
 
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
             this.estrellasComboBox.DataSource = repoCategoria.getAll();
             this.estrellasComboBox.ValueMember = "Estrellas";
+
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
+            this.regimenesGrid.DataSource = repoRegimen.getAll();
+            regimenesGrid.CurrentCell = null;
+            regimenesGrid.ClearSelection();
+            this.regimenesGrid.Rows[0].Cells[0].Selected = false;
+            this.regimenesGrid.Rows[0].Selected = false;
+
             this.nombreText.Text = hotel.getNombre();
             this.paisText.Text = hotel.getDireccion().getPais();
             this.ciudadText.Text = hotel.getDireccion().getCiudad();
             this.telefonoText.Text = hotel.getTelefono();
             this.estrellasComboBox.SelectedValue = hotel.getCategoria().getEstrellas();
+
             this.calleText.Text = hotel.getDireccion().getCalle();
             this.numeroCalleText.Text = hotel.getDireccion().getNumeroCalle().ToString();
             this.creacionTime.Value = hotel.getFechaInicioActividades();
             this.emailText.Text = hotel.getMail();
+
+
+            foreach (DataGridViewRow row in regimenesGrid.Rows)
+            {
+                Regimen regimen = (Regimen)row.DataBoundItem;
+                if (hotel.getRegimenes().Exists(r => r.getIdRegimen().Equals(regimen.getIdRegimen())))
+                {
+                    this.regimenesGrid.Rows[row.Index].Cells[0].Selected = true;
+                    this.regimenesGrid.Rows[row.Index].Selected = true;
+                }
+            }
 
         }
         /// <summary>
@@ -99,6 +121,10 @@ namespace FrbaHotel.AbmHotel
             this.nombreText = new System.Windows.Forms.TextBox();
             this.nombreLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.emailLabel = new System.Windows.Forms.Label();
+            this.regimenesGrid = new System.Windows.Forms.DataGridView();
+            this.regimenesLabel = new System.Windows.Forms.Label();
+            this.emailText = new System.Windows.Forms.TextBox();
             this.telefonoLabel = new System.Windows.Forms.Label();
             this.telefonoText = new System.Windows.Forms.TextBox();
             this.calleLabel = new System.Windows.Forms.Label();
@@ -111,14 +137,12 @@ namespace FrbaHotel.AbmHotel
             this.numeroCalleText = new System.Windows.Forms.TextBox();
             this.paisLabel = new System.Windows.Forms.Label();
             this.paisText = new System.Windows.Forms.TextBox();
-            this.regimenesLabel = new System.Windows.Forms.Label();
-            this.regimenesText = new System.Windows.Forms.TextBox();
             this.creacionLabel = new System.Windows.Forms.Label();
             this.creacionTime = new System.Windows.Forms.DateTimePicker();
             this.modificarHotel = new System.Windows.Forms.Button();
-            this.emailLabel = new System.Windows.Forms.Label();
-            this.emailText = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.regimenesGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // nombreText
@@ -139,7 +163,10 @@ namespace FrbaHotel.AbmHotel
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.emailLabel);
+            this.groupBox1.Controls.Add(this.regimenesGrid);
+            this.groupBox1.Controls.Add(this.regimenesLabel);
             this.groupBox1.Controls.Add(this.emailText);
             this.groupBox1.Controls.Add(this.telefonoLabel);
             this.groupBox1.Controls.Add(this.telefonoText);
@@ -153,8 +180,6 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.numeroCalleText);
             this.groupBox1.Controls.Add(this.paisLabel);
             this.groupBox1.Controls.Add(this.paisText);
-            this.groupBox1.Controls.Add(this.regimenesLabel);
-            this.groupBox1.Controls.Add(this.regimenesText);
             this.groupBox1.Controls.Add(this.creacionLabel);
             this.groupBox1.Controls.Add(this.creacionTime);
             this.groupBox1.Controls.Add(this.nombreLabel);
@@ -162,15 +187,55 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.modificarHotel);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(700, 407);
+            this.groupBox1.Size = new System.Drawing.Size(687, 428);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Modificar Hotel";
             // 
+            // emailLabel
+            // 
+            this.emailLabel.AutoSize = true;
+            this.emailLabel.Location = new System.Drawing.Point(485, 100);
+            this.emailLabel.Name = "emailLabel";
+            this.emailLabel.Size = new System.Drawing.Size(35, 13);
+            this.emailLabel.TabIndex = 17;
+            this.emailLabel.Text = "Email:";
+            // 
+            // regimenesGrid
+            // 
+            this.regimenesGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.regimenesGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.regimenesGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.regimenesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.regimenesGrid.Location = new System.Drawing.Point(106, 221);
+            this.regimenesGrid.Name = "regimenesGrid";
+            this.regimenesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.regimenesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.regimenesGrid.Size = new System.Drawing.Size(528, 139);
+            this.regimenesGrid.TabIndex = 4;
+
+
+            // 
+            // regimenesLabel
+            // 
+            this.regimenesLabel.AutoSize = true;
+            this.regimenesLabel.Location = new System.Drawing.Point(25, 238);
+            this.regimenesLabel.Name = "regimenesLabel";
+            this.regimenesLabel.Size = new System.Drawing.Size(55, 13);
+            this.regimenesLabel.TabIndex = 5;
+            this.regimenesLabel.Text = "Regimen: ";
+            // 
+            // emailText
+            // 
+            this.emailText.Location = new System.Drawing.Point(548, 97);
+            this.emailText.Name = "emailText";
+            this.emailText.Size = new System.Drawing.Size(117, 20);
+            this.emailText.TabIndex = 16;
+            // 
             // telefonoLabel
             // 
             this.telefonoLabel.AutoSize = true;
-            this.telefonoLabel.Location = new System.Drawing.Point(23, 221);
+            this.telefonoLabel.Location = new System.Drawing.Point(485, 152);
             this.telefonoLabel.Name = "telefonoLabel";
             this.telefonoLabel.Size = new System.Drawing.Size(52, 13);
             this.telefonoLabel.TabIndex = 15;
@@ -178,7 +243,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // telefonoText
             // 
-            this.telefonoText.Location = new System.Drawing.Point(86, 218);
+            this.telefonoText.Location = new System.Drawing.Point(548, 149);
             this.telefonoText.Name = "telefonoText";
             this.telefonoText.Size = new System.Drawing.Size(117, 20);
             this.telefonoText.TabIndex = 14;
@@ -186,7 +251,7 @@ namespace FrbaHotel.AbmHotel
             // calleLabel
             // 
             this.calleLabel.AutoSize = true;
-            this.calleLabel.Location = new System.Drawing.Point(23, 161);
+            this.calleLabel.Location = new System.Drawing.Point(23, 149);
             this.calleLabel.Name = "calleLabel";
             this.calleLabel.Size = new System.Drawing.Size(33, 13);
             this.calleLabel.TabIndex = 13;
@@ -194,7 +259,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // calleText
             // 
-            this.calleText.Location = new System.Drawing.Point(86, 158);
+            this.calleText.Location = new System.Drawing.Point(86, 146);
             this.calleText.Name = "calleText";
             this.calleText.Size = new System.Drawing.Size(117, 20);
             this.calleText.TabIndex = 12;
@@ -235,7 +300,7 @@ namespace FrbaHotel.AbmHotel
             // numeroCalleLabel
             // 
             this.numeroCalleLabel.AutoSize = true;
-            this.numeroCalleLabel.Location = new System.Drawing.Point(244, 157);
+            this.numeroCalleLabel.Location = new System.Drawing.Point(229, 149);
             this.numeroCalleLabel.Name = "numeroCalleLabel";
             this.numeroCalleLabel.Size = new System.Drawing.Size(72, 13);
             this.numeroCalleLabel.TabIndex = 13;
@@ -243,7 +308,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // numeroCalleText
             // 
-            this.numeroCalleText.Location = new System.Drawing.Point(322, 154);
+            this.numeroCalleText.Location = new System.Drawing.Point(307, 146);
             this.numeroCalleText.Name = "numeroCalleText";
             this.numeroCalleText.Size = new System.Drawing.Size(117, 20);
             this.numeroCalleText.TabIndex = 12;
@@ -264,22 +329,6 @@ namespace FrbaHotel.AbmHotel
             this.paisText.Size = new System.Drawing.Size(117, 20);
             this.paisText.TabIndex = 6;
             // 
-            // regimenesLabel
-            // 
-            this.regimenesLabel.AutoSize = true;
-            this.regimenesLabel.Location = new System.Drawing.Point(244, 217);
-            this.regimenesLabel.Name = "regimenesLabel";
-            this.regimenesLabel.Size = new System.Drawing.Size(55, 13);
-            this.regimenesLabel.TabIndex = 5;
-            this.regimenesLabel.Text = "Regimen: ";
-            // 
-            // regimenesText
-            // 
-            this.regimenesText.Location = new System.Drawing.Point(307, 214);
-            this.regimenesText.Name = "regimenesText";
-            this.regimenesText.Size = new System.Drawing.Size(117, 20);
-            this.regimenesText.TabIndex = 4;
-            // 
             // creacionLabel
             // 
             this.creacionLabel.AutoSize = true;
@@ -296,41 +345,36 @@ namespace FrbaHotel.AbmHotel
             this.creacionTime.Size = new System.Drawing.Size(117, 20);
             this.creacionTime.TabIndex = 2;
             // 
-            // crearHotel
+            // modificarHotel
             // 
-            this.modificarHotel.Location = new System.Drawing.Point(289, 332);
-            this.modificarHotel.Name = "codificarHotel";
+            this.modificarHotel.Location = new System.Drawing.Point(164, 382);
+            this.modificarHotel.Name = "modificarHotel";
             this.modificarHotel.Size = new System.Drawing.Size(161, 23);
             this.modificarHotel.TabIndex = 0;
             this.modificarHotel.Text = "Modificar";
             this.modificarHotel.Click += new System.EventHandler(this.modificarHotel_Click);
             // 
-            // label1
+            // button1
             // 
-            this.emailLabel.AutoSize = true;
-            this.emailLabel.Location = new System.Drawing.Point(485, 100);
-            this.emailLabel.Name = "label1";
-            this.emailLabel.Size = new System.Drawing.Size(43, 13);
-            this.emailLabel.TabIndex = 17;
-            this.emailLabel.Text = "Email:";
-            // 
-            // textBox1
-            // 
-            this.emailText.Location = new System.Drawing.Point(548, 97);
-            this.emailText.Name = "textBox1";
-            this.emailText.Size = new System.Drawing.Size(117, 20);
-            this.emailText.TabIndex = 16;
+            this.button1.Location = new System.Drawing.Point(421, 382);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(161, 23);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "Limpiar";
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ModificacionHotel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 395);
+            this.ClientSize = new System.Drawing.Size(745, 467);
             this.Controls.Add(this.groupBox1);
             this.Name = "ModificacionHotel";
             this.Text = "Creacion de Hoteles";
+            this.Load += new System.EventHandler(this.load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.regimenesGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -342,7 +386,11 @@ namespace FrbaHotel.AbmHotel
             RepositorioHotel repoHotel = new RepositorioHotel();
             try{
 
-
+                List<Regimen> regimenes = new List<Regimen>();
+                foreach (DataGridViewRow item in this.regimenesGrid.SelectedRows)
+                {
+                    regimenes.Add(item.DataBoundItem as Regimen);
+                }
                 String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
                 String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
                 String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
@@ -355,7 +403,7 @@ namespace FrbaHotel.AbmHotel
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
 
                 Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),pais,ciudad,calle,numeroCalle,0,"");
-                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades);
+                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
                 repoHotel.update(hotelToUpdateSave);
                  MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 
@@ -363,6 +411,17 @@ namespace FrbaHotel.AbmHotel
             {
                 MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
             }
+        }
+
+        private void load(object sender, EventArgs e)
+        {
+            this.initModificacionHotel();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.initModificacionHotel();
+
         }
 
 

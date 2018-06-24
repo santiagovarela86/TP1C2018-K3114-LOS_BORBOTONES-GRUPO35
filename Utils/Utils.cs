@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FrbaHotel.Commons
 {
@@ -42,6 +43,15 @@ namespace FrbaHotel.Commons
                 throw new RequestInvalidoException(fieldName + " debe ser numerico");
 
             }
+        }
+
+        public static void validateListField(DataGridViewSelectedRowCollection field, String fieldName)
+        {
+            if (field == null || field.Count ==0)
+            {
+                throw new RequestInvalidoException(fieldName + " no puede ser nulo o vacio");
+            }
+            
         }
     }
 }

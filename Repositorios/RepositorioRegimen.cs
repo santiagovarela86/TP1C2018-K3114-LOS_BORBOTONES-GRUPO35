@@ -30,7 +30,34 @@ namespace FrbaHotel.Repositorios
 
         public override List<Regimen> getAll()
         {
-            throw new NotImplementedException();
+            List<Regimen> regimenes = new List<Regimen>();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText =
+                "SELECT idRegimen,Codigo,Descripcion,Precio,Activo FROM LOS_BORBOTONES.Regimen AS REG;";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idRegimen = reader.GetInt32(reader.GetOrdinal("idRegimen"));
+                String codigo = reader.GetString(reader.GetOrdinal("Codigo"));
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
+                decimal precio = reader.GetDecimal(reader.GetOrdinal("Precio"));
+                bool activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
+
+                Regimen regimen = new Regimen(idRegimen, codigo, descripcion, precio, activo);
+
+                regimenes.Add(regimen);
+            }
+            return regimenes;
         }
 
         public override Regimen getById(int id)
@@ -94,7 +121,9 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHotel", idHotel);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idRegimen,Codigo,Descripcion,Precio,Activo FROM LOS_BORBOTONES.Regimen AS REG WHERE REG.idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT REG.idRegimen,REG.Codigo,REG.Descripcion,REG.Precio,REG.Activo FROM LOS_BORBOTONES.Regimen_X_Hotel AS RXH  "+ 
+                "JOIN LOS_BORBOTONES.Regimen AS REG ON REG.idRegimen = RXH.idRegimen " +
+                "WHERE RXH.idHotel = @idHotel" ;
 
             sqlConnection.Open();
 

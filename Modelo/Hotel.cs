@@ -38,6 +38,18 @@ namespace FrbaHotel.Modelo
             this.cierresTemporales = cierresTemporales;
         }
 
+        public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,List<Regimen> regimenes)
+        {
+            this.idHotel = idHotel;
+            this.categoria = categoria;
+            this.direccion = direccion;
+            this.nombre = nombre;
+            this.mail = mail;
+            this.telefono = telefono;
+            this.fechaInicioActividades = fechaInicioActividades;
+            this.regimenes = regimenes;
+        }
+
         public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades)
         {
             this.idHotel = idHotel;
@@ -48,7 +60,6 @@ namespace FrbaHotel.Modelo
             this.telefono = telefono;
             this.fechaInicioActividades = fechaInicioActividades;
         }
-
         public int getIdHotel()
         {
             return this.idHotel;

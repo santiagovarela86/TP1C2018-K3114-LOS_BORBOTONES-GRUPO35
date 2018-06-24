@@ -113,22 +113,7 @@ namespace FrbaHotel.Repositorios {
 
             int idHotel = 0;
 
-            String CREATE_STATEMENT = "BEGIN TRANSACTION" +
-                                        " BEGIN TRY" +
-                                        " DECLARE @idDireccion int; " +
-                                        "DECLARE @idCategoria int;" +
-                                        "INSERT INTO LOS_BORBOTONES.Categoria(Estrellas, RecargaEstrellas) VALUES(@catEstrellas,@catRecargaEstrellas);" +
-                                        "SET @idCategoria = SCOPE_IDENTITY();" +
-                                        "INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle) VALUES(@dirPais,@dirCiudad,@dirCalle, @dirNumeroCalle);" +
-                                        "SET @idDireccion = SCOPE_IDENTITY();" +
-                                        "INSERT INTO LOS_BORBOTONES.Hotel(idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion) OUTPUT INSERTED.idHotel " +
-                                        "VALUES(@idCategoria,@hotNombre, @hotMail, @hotTelefono, @hotFechaIniciaActividades, @idDireccion); " +
-                                        "COMMIT TRANSACTION " +
-                                        "END TRY " +
-                                        "BEGIN CATCH " +
-                                        "RAISERROR('ERROR TRYING TO CREATE HOTEL', 16, 1) " +
-                                        "ROLLBACK TRANSACTION " +
-                                        "END CATCH";
+          
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -137,6 +122,27 @@ namespace FrbaHotel.Repositorios {
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
+
+
+            String CREATE_STATEMENT = "BEGIN TRANSACTION" +
+                                      " BEGIN TRY" +
+                                      " DECLARE @idDireccion int; " +
+                                      "DECLARE @idCategoria int;" +
+                                       "DECLARE @hotidHotel int;" +
+                                      "INSERT INTO LOS_BORBOTONES.Categoria(Estrellas, RecargaEstrellas) VALUES(@catEstrellas,@catRecargaEstrellas);" +
+                                      "SET @idCategoria = SCOPE_IDENTITY();" +
+                                      "INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle) VALUES(@dirPais,@dirCiudad,@dirCalle, @dirNumeroCalle);" +
+                                      "SET @idDireccion = SCOPE_IDENTITY();" +
+                                      "INSERT INTO LOS_BORBOTONES.Hotel(idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion) OUTPUT INSERTED.idHotel " +
+                                      "VALUES(@idCategoria,@hotNombre, @hotMail, @hotTelefono, @hotFechaIniciaActividades, @idDireccion); " +
+                                      "SET @hotidHotel = SCOPE_IDENTITY(); " +
+                                      this.insertsRegimenes(hotel, sqlCommand) +
+                                      "COMMIT TRANSACTION " +
+                                      "END TRY " +
+                                      "BEGIN CATCH " +
+                                      "RAISERROR('ERROR TRYING TO CREATE HOTEL', 16, 1) " +
+                                      "ROLLBACK TRANSACTION " +
+                                      "END CATCH";
 
 
             //HOTEL
@@ -324,6 +330,8 @@ namespace FrbaHotel.Repositorios {
                 sqlCommand.Connection = sqlConnection;
                 sqlCommand.CommandText = 
                     "BEGIN TRANSACTION " +
+                    "DELETE FROM LOS_BORBOTONES.Regimen_X_Hotel WHERE idHotel=@hotidHotel; " + 
+                    insertsRegimenes(hotel,sqlCommand) +
                     "UPDATE LOS_BORBOTONES.Direccion " +
                     "SET Pais= @dirpais,Ciudad= @dirciudad, Calle=@dircalle, NumeroCalle= @dirnumeroCalle, " +
                     "Piso=@dirpiso, Depto=@dirdepartamento WHERE idDireccion=@hotidHotel; " +
@@ -346,6 +354,24 @@ namespace FrbaHotel.Repositorios {
                 throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
             }
         }
+
+
+        private String insertsRegimenes(Hotel hotel,SqlCommand sqlCommand)
+        {
+            String update = "";
+            List<Regimen> regimenes = hotel.getRegimenes();
+            int index=0;
+            foreach (Regimen regimen in regimenes)
+            {
+               sqlCommand.Parameters.AddWithValue("@rxhidRegimen"+index, regimen.getIdRegimen());
+
+               update += " INSERT INTO LOS_BORBOTONES.Regimen_X_Hotel(idHotel,idRegimen) values(@hotidHotel," + "@rxhidRegimen" + index + "); ";
+               index++;
+            }
+            return update;
+        }
+
+
     }
 }
 
