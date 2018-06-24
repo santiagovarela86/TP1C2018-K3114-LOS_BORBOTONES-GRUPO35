@@ -62,7 +62,7 @@ namespace FrbaHotel.AbmHabitacion
 
                 repoHabitacion.update(habitacionAModificar);
                 MessageBox.Show("Habitacion modificada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
-
+                habitacion = habitacionAModificar;
             } catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");

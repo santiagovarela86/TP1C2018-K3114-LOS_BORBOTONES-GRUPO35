@@ -412,7 +412,7 @@ namespace FrbaHotel.AbmHotel
                 Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
                 repoHotel.update(hotelToUpdateSave);
                  MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
-
+                 hotel = hotelToUpdateSave;
             } catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
@@ -440,7 +440,7 @@ namespace FrbaHotel.AbmHotel
                     bool exists= repoReserva.existsReservasConRegimen(regimenActual, hotel);
                     if (exists)
                     {
-                        throw new RequestInvalidoException("No puede quitarse el regimen " + regimenActual.getDescripcion() + "porque existen reservas tomadas para ese regimen");
+                        throw new RequestInvalidoException("No puede quitarse el regimen " + regimenActual.getDescripcion() + " porque existen reservas tomadas para ese regimen");
                     }
                 }
 
