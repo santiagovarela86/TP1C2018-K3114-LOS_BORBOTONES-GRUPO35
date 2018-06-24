@@ -15,25 +15,27 @@ namespace FrbaHotel.AbmHotel
         public SearchHotel()
         {
             InitializeComponent();
-            estrellasComboBox.Items.Add(1);
-            estrellasComboBox.Items.Add(2);
-            estrellasComboBox.Items.Add(3);
-            estrellasComboBox.Items.Add(4);
-            estrellasComboBox.Items.Add(5);
-        }
 
+            RepositorioCategoria repoCategoria = new RepositorioCategoria();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll();
+            this.estrellasComboBox.ValueMember = "Estrellas";
+            limpiarBusquedaYResultados();
+        }
 
         private void button_buscarHoteles(object sender, EventArgs e)
         {
-            String nombre =validateStringFields(nombreText.Text);
+            buscarHoteles();
+        }
 
+        private void buscarHoteles() {
+            String nombre = validateStringFields(nombreText.Text);
             int? estrellas = null;
-            if (estrellasComboBox.SelectedItem != null) { estrellas = (int)estrellasComboBox.SelectedItem; };
+            if (estrellasComboBox.SelectedItem != null) { estrellas = ((Categoria)estrellasComboBox.SelectedItem).getEstrellas(); };
             String pais = validateStringFields(paisText.Text);
             String ciudad = validateStringFields(ciudadText.Text);
             RepositorioHotel repositorioHotel = new RepositorioHotel();
 
-            List<Hotel> hoteles= repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
+            List<Hotel> hoteles = repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
             registroHoteles.DataSource = hoteles;
         }
 
@@ -79,6 +81,53 @@ namespace FrbaHotel.AbmHotel
             {
                 this.modificarButton.Enabled = true;
                 this.cierreTemporalButton.Enabled = true;
+            }
+        }
+
+        private void modificarButton_Click(object sender, EventArgs e)
+        {
+            Hotel hotel = (Hotel)registroHoteles.CurrentRow.DataBoundItem;
+
+            using (ModificacionHotel form = new ModificacionHotel(hotel))
+            {
+                var result = form.ShowDialog();
+                    buscarHoteles();
+            }
+        }
+
+        private void registroHotel_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                this.modificarButton.Enabled = true;
+                this.cierreTemporalButton.Enabled = true;
+            }
+        }
+
+        private void altaButton_Click(object sender, EventArgs e)
+        {
+            using (CreateHotel form = new CreateHotel())
+            {
+                var result = form.ShowDialog();
+
+                    buscarHoteles();
+               
+            }
+        }
+
+        private void cierreTemporalButton_Click(object sender, EventArgs e)
+        {
+            Hotel hotel = (Hotel)registroHoteles.CurrentRow.DataBoundItem;
+
+            using (DropHotel form = new DropHotel(hotel))
+            {
+                var result = form.ShowDialog();
+
+                    buscarHoteles();
+                
             }
         }
 

@@ -12,6 +12,7 @@ namespace FrbaHotel.Modelo
         private String codigo = "";
         private decimal porcentual = 0;
         private String descripcion = "";
+        public TipoHabitacion() { }
 
         public TipoHabitacion(int idTipoHabitacion, String codigo, decimal porcentual, String descripcion)
         {

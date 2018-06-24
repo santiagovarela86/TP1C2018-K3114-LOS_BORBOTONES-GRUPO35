@@ -22,7 +22,7 @@ namespace FrbaHotel.AbmHotel
         private GroupBox groupBox1;
 
         private DataGridView registroHoteles;
-        private Button buscarHoteles;
+        private Button buscarHotelesButton;
 
 
         /// <summary>
@@ -54,11 +54,12 @@ namespace FrbaHotel.AbmHotel
             this.nombreText = new System.Windows.Forms.TextBox();
             this.nombreLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.altaButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.cierreTemporalButton = new System.Windows.Forms.Button();
             this.modificarButton = new System.Windows.Forms.Button();
             this.estrellasLabel = new System.Windows.Forms.Label();
-            this.buscarHoteles = new System.Windows.Forms.Button();
+            this.buscarHotelesButton = new System.Windows.Forms.Button();
             this.estrellasComboBox = new System.Windows.Forms.ComboBox();
             this.ciudadLabel = new System.Windows.Forms.Label();
             this.ciudadText = new System.Windows.Forms.TextBox();
@@ -87,11 +88,12 @@ namespace FrbaHotel.AbmHotel
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.altaButton);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.cierreTemporalButton);
             this.groupBox1.Controls.Add(this.modificarButton);
             this.groupBox1.Controls.Add(this.estrellasLabel);
-            this.groupBox1.Controls.Add(this.buscarHoteles);
+            this.groupBox1.Controls.Add(this.buscarHotelesButton);
             this.groupBox1.Controls.Add(this.estrellasComboBox);
             this.groupBox1.Controls.Add(this.ciudadLabel);
             this.groupBox1.Controls.Add(this.ciudadText);
@@ -107,6 +109,15 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Buscar Hotel";
             // 
+            // altaButton
+            // 
+            this.altaButton.Location = new System.Drawing.Point(26, 477);
+            this.altaButton.Name = "altaButton";
+            this.altaButton.Size = new System.Drawing.Size(130, 23);
+            this.altaButton.TabIndex = 13;
+            this.altaButton.Text = "Alta";
+            this.altaButton.Click += new System.EventHandler(this.altaButton_Click);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(298, 156);
@@ -119,19 +130,23 @@ namespace FrbaHotel.AbmHotel
             // 
             // cierreTemporalButton
             // 
-            this.cierreTemporalButton.Location = new System.Drawing.Point(316, 477);
+            this.cierreTemporalButton.Enabled = false;
+            this.cierreTemporalButton.Location = new System.Drawing.Point(410, 477);
             this.cierreTemporalButton.Name = "cierreTemporalButton";
-            this.cierreTemporalButton.Size = new System.Drawing.Size(161, 23);
+            this.cierreTemporalButton.Size = new System.Drawing.Size(128, 23);
             this.cierreTemporalButton.TabIndex = 7;
             this.cierreTemporalButton.Text = "Cierre Temporal";
+            this.cierreTemporalButton.Click += new System.EventHandler(this.cierreTemporalButton_Click);
             // 
             // modificarButton
             // 
-            this.modificarButton.Location = new System.Drawing.Point(86, 477);
+            this.modificarButton.Enabled = false;
+            this.modificarButton.Location = new System.Drawing.Point(218, 477);
             this.modificarButton.Name = "modificarButton";
-            this.modificarButton.Size = new System.Drawing.Size(161, 23);
+            this.modificarButton.Size = new System.Drawing.Size(127, 23);
             this.modificarButton.TabIndex = 6;
             this.modificarButton.Text = "Modificar";
+            this.modificarButton.Click += new System.EventHandler(this.modificarButton_Click);
             // 
             // estrellasLabel
             // 
@@ -144,20 +159,20 @@ namespace FrbaHotel.AbmHotel
             // 
             // buscarHoteles
             // 
-            this.buscarHoteles.Location = new System.Drawing.Point(421, 156);
-            this.buscarHoteles.Name = "buscarHoteles";
-            this.buscarHoteles.Size = new System.Drawing.Size(117, 23);
-            this.buscarHoteles.TabIndex = 4;
-            this.buscarHoteles.Text = "Buscar";
-            this.buscarHoteles.Click += new System.EventHandler(this.button_buscarHoteles);
+            this.buscarHotelesButton.Location = new System.Drawing.Point(421, 156);
+            this.buscarHotelesButton.Name = "buscarHotelesButton";
+            this.buscarHotelesButton.Size = new System.Drawing.Size(117, 23);
+            this.buscarHotelesButton.TabIndex = 4;
+            this.buscarHotelesButton.Text = "Buscar";
+            this.buscarHotelesButton.Click += new System.EventHandler(this.button_buscarHoteles);
             // 
             // estrellasComboBox
             // 
-            this.estrellasComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.estrellasComboBox.Location = new System.Drawing.Point(421, 38);
+            this.estrellasComboBox.DisplayMember = "Estrellas";
+            this.estrellasComboBox.Location = new System.Drawing.Point(421, 37);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
-            this.estrellasComboBox.TabIndex = 1;
+            this.estrellasComboBox.TabIndex = 10;
             // 
             // ciudadLabel
             // 
@@ -213,7 +228,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // SearchHotel
             // 
-            this.AcceptButton = this.buscarHoteles;
+            this.AcceptButton = this.buscarHotelesButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(586, 561);
@@ -232,6 +247,7 @@ namespace FrbaHotel.AbmHotel
         private Button modificarButton;
         private Button cierreTemporalButton;
         private Button button1;
+        private Button altaButton;
 
 
     }

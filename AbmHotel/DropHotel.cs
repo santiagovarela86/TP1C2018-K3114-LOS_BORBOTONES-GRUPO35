@@ -2,31 +2,31 @@
 
 using System.Windows.Forms;
 using System.Drawing;
+using FrbaHotel.Modelo;
+using FrbaHotel.Repositorios;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.AbmHotel
 {
-    partial class DropHotel
+    public partial class DropHotel
        : Form
 
     {
-        private TextBox nombreText;
-        private Label nombreLabel;
 
-        private Label estrellasLabel;
-        private ComboBox estrellasComboBox;
-        private Label ciudadLabel;
-        private TextBox ciudadText;
-        private Label paisLabel;
-        private TextBox paisText;
-
+        public DropHotel(Hotel hotel)
+        {
+            InitializeComponent();
+            this.hotelBaja = hotel;
+        }
+        private Hotel hotelBaja;
         private GroupBox groupBox1;
-        private Button buscarHotel;
-
-        private DataGrid registroHoteles;
-
         private MonthCalendar calendarioDesde;
         private MonthCalendar calendarioHasta;
         private Button bajaHotel;
+        private Label descripcionBajaLabel;
+        private TextBox descripcionBajaText;
+        private Label label2;
+        private Label label1;
 
 
         /// <summary>
@@ -66,150 +66,85 @@ namespace FrbaHotel.AbmHotel
         /// </summary>
         private void InitializeComponent()
         {
-            this.nombreText = new System.Windows.Forms.TextBox();
-            this.nombreLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.estrellasLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.descripcionBajaLabel = new System.Windows.Forms.Label();
+            this.descripcionBajaText = new System.Windows.Forms.TextBox();
             this.bajaHotel = new System.Windows.Forms.Button();
-            this.estrellasComboBox = new System.Windows.Forms.ComboBox();
-            this.ciudadLabel = new System.Windows.Forms.Label();
-            this.ciudadText = new System.Windows.Forms.TextBox();
-            this.paisLabel = new System.Windows.Forms.Label();
-            this.paisText = new System.Windows.Forms.TextBox();
-            this.buscarHotel = new System.Windows.Forms.Button();
-            this.registroHoteles = new System.Windows.Forms.DataGrid();
             this.calendarioDesde = new System.Windows.Forms.MonthCalendar();
             this.calendarioHasta = new System.Windows.Forms.MonthCalendar();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.registroHoteles)).BeginInit();
             this.SuspendLayout();
-            // 
-            // nombreText
-            // 
-            this.nombreText.Location = new System.Drawing.Point(86, 38);
-            this.nombreText.Name = "nombreText";
-            this.nombreText.Size = new System.Drawing.Size(100, 20);
-            this.nombreText.TabIndex = 0;
-            // 
-            // nombreLabel
-            // 
-            this.nombreLabel.AutoSize = true;
-            this.nombreLabel.Location = new System.Drawing.Point(22, 41);
-            this.nombreLabel.Name = "nombreLabel";
-            this.nombreLabel.Size = new System.Drawing.Size(44, 13);
-            this.nombreLabel.TabIndex = 1;
-            this.nombreLabel.Text = "Nombre";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.estrellasLabel);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.descripcionBajaLabel);
+            this.groupBox1.Controls.Add(this.descripcionBajaText);
             this.groupBox1.Controls.Add(this.bajaHotel);
-            this.groupBox1.Controls.Add(this.estrellasComboBox);
-            this.groupBox1.Controls.Add(this.ciudadLabel);
-            this.groupBox1.Controls.Add(this.ciudadText);
-            this.groupBox1.Controls.Add(this.paisLabel);
-            this.groupBox1.Controls.Add(this.paisText);
-            this.groupBox1.Controls.Add(this.nombreLabel);
-            this.groupBox1.Controls.Add(this.nombreText);
-            this.groupBox1.Controls.Add(this.buscarHotel);
-            this.groupBox1.Controls.Add(this.registroHoteles);
             this.groupBox1.Controls.Add(this.calendarioDesde);
             this.groupBox1.Controls.Add(this.calendarioHasta);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(561, 524);
+            this.groupBox1.Size = new System.Drawing.Size(561, 314);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Baja Hotel";
             // 
-            // estrellasLabel
+            // label2
             // 
-            this.estrellasLabel.AutoSize = true;
-            this.estrellasLabel.Location = new System.Drawing.Point(358, 41);
-            this.estrellasLabel.Name = "estrellasLabel";
-            this.estrellasLabel.Size = new System.Drawing.Size(49, 13);
-            this.estrellasLabel.TabIndex = 11;
-            this.estrellasLabel.Text = "Estrellas:";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(380, 75);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Fecha Hasta:";
             // 
-            // modificarHoteles
+            // label1
             // 
-            this.bajaHotel.Location = new System.Drawing.Point(201, 484);
-            this.bajaHotel.Name = "modificarHoteles";
-            this.bajaHotel.Size = new System.Drawing.Size(161, 23);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(114, 75);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Fecha Desde:";
+            // 
+            // descripcionBajaLabel
+            // 
+            this.descripcionBajaLabel.AutoSize = true;
+            this.descripcionBajaLabel.Location = new System.Drawing.Point(23, 39);
+            this.descripcionBajaLabel.Name = "descripcionBajaLabel";
+            this.descripcionBajaLabel.Size = new System.Drawing.Size(66, 13);
+            this.descripcionBajaLabel.TabIndex = 15;
+            this.descripcionBajaLabel.Text = "Descripcion:";
+            // 
+            // descripcionBajaText
+            // 
+            this.descripcionBajaText.Location = new System.Drawing.Point(95, 36);
+            this.descripcionBajaText.Name = "descripcionBajaText";
+            this.descripcionBajaText.Size = new System.Drawing.Size(435, 20);
+            this.descripcionBajaText.TabIndex = 14;
+            // 
+            // bajaHotel
+            // 
+            this.bajaHotel.Location = new System.Drawing.Point(246, 271);
+            this.bajaHotel.Name = "bajaHotel";
+            this.bajaHotel.Size = new System.Drawing.Size(75, 23);
             this.bajaHotel.TabIndex = 0;
-            this.bajaHotel.Text = "Baja temporal";
-            // 
-            // estrellasComboBox
-            // 
-            this.estrellasComboBox.Items.AddRange(new object[] {
-            1,
-            2,
-            3,
-            4,
-            5});
-            this.estrellasComboBox.Location = new System.Drawing.Point(421, 38);
-            this.estrellasComboBox.Name = "estrellasComboBox";
-            this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
-            this.estrellasComboBox.TabIndex = 10;
-            // 
-            // ciudadLabel
-            // 
-            this.ciudadLabel.AutoSize = true;
-            this.ciudadLabel.Location = new System.Drawing.Point(358, 111);
-            this.ciudadLabel.Name = "ciudadLabel";
-            this.ciudadLabel.Size = new System.Drawing.Size(43, 13);
-            this.ciudadLabel.TabIndex = 9;
-            this.ciudadLabel.Text = "Ciudad:";
-            // 
-            // ciudadText
-            // 
-            this.ciudadText.Location = new System.Drawing.Point(421, 108);
-            this.ciudadText.Name = "ciudadText";
-            this.ciudadText.Size = new System.Drawing.Size(117, 20);
-            this.ciudadText.TabIndex = 8;
-            // 
-            // paisLabel
-            // 
-            this.paisLabel.AutoSize = true;
-            this.paisLabel.Location = new System.Drawing.Point(23, 108);
-            this.paisLabel.Name = "paisLabel";
-            this.paisLabel.Size = new System.Drawing.Size(30, 13);
-            this.paisLabel.TabIndex = 7;
-            this.paisLabel.Text = "Pais:";
-            // 
-            // paisText
-            // 
-            this.paisText.Location = new System.Drawing.Point(86, 105);
-            this.paisText.Name = "paisText";
-            this.paisText.Size = new System.Drawing.Size(117, 20);
-            this.paisText.TabIndex = 6;
-            // 
-            // buscarHotel
-            // 
-            this.buscarHotel.Location = new System.Drawing.Point(201, 156);
-            this.buscarHotel.Name = "buscarHotel";
-            this.buscarHotel.Size = new System.Drawing.Size(161, 23);
-            this.buscarHotel.TabIndex = 0;
-            this.buscarHotel.Text = "Buscar";
-            // 
-            // registroHoteles
-            // 
-            this.registroHoteles.DataMember = "";
-            this.registroHoteles.HeaderForeColor = System.Drawing.SystemColors.ControlText;
-            this.registroHoteles.Location = new System.Drawing.Point(26, 203);
-            this.registroHoteles.Name = "registroHoteles";
-            this.registroHoteles.Size = new System.Drawing.Size(513, 97);
-            this.registroHoteles.TabIndex = 0;
+            this.bajaHotel.Text = "Baja";
+            this.bajaHotel.Click += new System.EventHandler(this.bajaHotel_Click);
             // 
             // calendarioDesde
             // 
-            this.calendarioDesde.Location = new System.Drawing.Point(290, 312);
+            this.calendarioDesde.Location = new System.Drawing.Point(26, 97);
             this.calendarioDesde.Name = "calendarioDesde";
             this.calendarioDesde.TabIndex = 12;
             // 
             // calendarioHasta
             // 
-            this.calendarioHasta.Location = new System.Drawing.Point(24, 312);
+            this.calendarioHasta.Location = new System.Drawing.Point(292, 97);
             this.calendarioHasta.Name = "calendarioHasta";
             this.calendarioHasta.TabIndex = 13;
             // 
@@ -217,18 +152,46 @@ namespace FrbaHotel.AbmHotel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 561);
+            this.ClientSize = new System.Drawing.Size(586, 334);
             this.Controls.Add(this.groupBox1);
             this.Name = "DropHotel";
             this.Text = "Baja temporal de Hoteles";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.registroHoteles)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private void bajaHotel_Click(object sender, EventArgs e)
+        {
+            DateTime fechaDesde = calendarioDesde.SelectionStart;
+            DateTime fechaHasta = calendarioHasta.SelectionStart;
+
+            if (fechaDesde > fechaHasta)
+            {
+                MessageBox.Show("La fecha desde no puede ser superior a la fecha hasta", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+            }
+            else
+            {
+                try
+                {
+                    CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
+                    RepositorioHotel repoHotel = new RepositorioHotel();
+                    repoHotel.crearBajaTemporal(cierreTemporal);
+                    MessageBox.Show("Cierre temporal creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+                }
+                catch (RequestInvalidoException exception)
+                {
+                    MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+                }
+            }
+        }
+
 
 
     }

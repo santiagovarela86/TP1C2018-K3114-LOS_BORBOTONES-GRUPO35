@@ -14,12 +14,14 @@ namespace FrbaHotel.AbmHabitacion
 {
     public partial class BajaHabitacion : Form
     {
-        public BajaHabitacion()
+
+        private Habitacion habitacionBaja;
+        public BajaHabitacion(Habitacion habitacion)
         {
+            this.habitacionBaja = habitacion;
             InitializeComponent();
-            RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
-            comboBoxHabitacion.DataSource = repositorioHabitacion.getAll();
-            comboBoxHabitacion.DisplayMember = "Descriptor";
+            habitacionLabel.Text = "Habitacion Nº" + habitacionBaja.getNumero() + ". Piso: " + habitacionBaja.getPiso() + ". Hotel: " + habitacionBaja.getHotel().getNombre(); 
+
             checkBoxActiva.Checked = false;
 
         }
@@ -27,10 +29,9 @@ namespace FrbaHotel.AbmHabitacion
         private void buttonActivarDesactivarHabitacion_Click(object sender, EventArgs e)
         {
             RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
-            Habitacion habitacion = (Habitacion)comboBoxHabitacion.SelectedItem;
             bool activa=checkBoxActiva.Checked;
-            habitacion.setActiva(activa);
-            repositorioHabitacion.bajaLogica(habitacion);
+            habitacionBaja.setActiva(activa);
+            repositorioHabitacion.bajaLogica(habitacionBaja);
 
             MessageBox.Show("Habitacion " + (activa?"Activada":"Desactivada"), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 

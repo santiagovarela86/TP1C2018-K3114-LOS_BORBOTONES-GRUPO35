@@ -1,6 +1,8 @@
 ﻿using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
+using FrbaHotel.Commons;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,12 +40,11 @@ namespace FrbaHotel.AbmHabitacion
         {
             try
             {
-                int numero = Int32.Parse(validateStringFields(textNumero.Text, "Numero"));
-                int piso =  Int32.Parse(validateStringFields(textPiso.Text, "Piso"));
-                Hotel hotel = (Hotel)validateFields(comboBoxHotel.SelectedItem, "Hotel");
-                String ubicacion = (String)validateFields(comboBoxUbicacion.SelectedItem, "Ubicacion");
-                TipoHabitacion tipoHabitacion = (TipoHabitacion)validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo");
-                String descripcion = (String)validateStringFields(textDescripcion.Text, "Descripcion");
+                int numero = Utils.validateIntField(textNumero.Text, "Numero");
+                int piso = Utils.validateIntField(textPiso.Text, "Piso");
+                Hotel hotel = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
+                String ubicacion = Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem, "Ubicacion");
+                TipoHabitacion tipoHabitacion = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo");
                 RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
                 bool activa= checkBoxActiva.Checked;
                 Habitacion habitacion = new Habitacion(0, tipoHabitacion, activa, numero, piso, ubicacion, hotel);
@@ -58,22 +59,7 @@ namespace FrbaHotel.AbmHabitacion
         }
 
       
-        private Object validateFields(Object field,String fieldName){
-            if (field == null)
-            {
-                throw new RequestInvalidoException(fieldName + "no puede ser nulo");
-            }
-            return field;
-        }
 
-        private String validateStringFields(String field, String fieldName)
-        {
-            if (field == null || field=="")
-            {
-                throw new RequestInvalidoException(fieldName + " no puede ser nulo");
-            }
-            return field;
-        }
 
         //CIERRO LA VENTANA CON ESCAPE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

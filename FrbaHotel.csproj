@@ -91,6 +91,15 @@
     <Compile Include="AbmHabitacion\CrearHabitacion.Designer.cs">
       <DependentUpon>CrearHabitacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmHabitacion\ModificarHabitacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmHabitacion\ModificarHabitacion.Designer.cs">
+      <DependentUpon>ModificarHabitacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmHotel\ModificacionHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmHotel\CreateHotel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,6 +267,7 @@
     <Compile Include="Repositorios\RepositorioRol.cs" />
     <Compile Include="Repositorios\RepositorioTipoHabitacion.cs" />
     <Compile Include="Repositorios\RepositorioUsuario.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <EmbeddedResource Include="AbmCliente\ABMClientes.resx">
       <DependentUpon>ABMClientes.cs</DependentUpon>
     </EmbeddedResource>
@@ -272,6 +282,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHabitacion\CrearHabitacion.resx">
       <DependentUpon>CrearHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHabitacion\ModificarHabitacion.resx">
+      <DependentUpon>ModificarHabitacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\CreateHotel.resx">
+      <DependentUpon>CreateHotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\DropHotel.resx">
+      <DependentUpon>DropHotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmHotel\ModificacionHotel.resx">
+      <DependentUpon>ModificacionHotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\SearchHotel.resx">
       <DependentUpon>SearchHotel.cs</DependentUpon>

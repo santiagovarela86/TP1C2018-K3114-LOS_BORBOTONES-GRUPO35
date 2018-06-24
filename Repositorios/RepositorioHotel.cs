@@ -15,15 +15,11 @@ namespace FrbaHotel.Repositorios {
 
             RepositorioCierreTemporal repositorioCierreTemporal = new RepositorioCierreTemporal();
             RepositorioReserva repositorioReserva = new RepositorioReserva();
-            Hotel hotel = getById(cierreTemporal.IdHotel);
-            List<Reserva> reservas = hotel.getReservas();
-            foreach(var reserva in reservas){
-                bool overlap = reserva.FechaDesde < cierreTemporal.FechaFin && cierreTemporal.FechaInicio < reserva.FechaHasta;
-                if (overlap){
+            Hotel hotel = cierreTemporal.getHotel();
+            bool existReservas = repositorioReserva.existReservaBetweenDate(cierreTemporal.getFechaInicio(), cierreTemporal.getFechaFin(), cierreTemporal.getHotel().getIdHotel());
+            if(existReservas){
                     throw new RequestInvalidoException("No es posible dar de baja temporal el hotel. Existen reservas para la fecha la cual se quiere dar de baja el hotel");
                 }
-                           }
-
             return repositorioCierreTemporal.create(cierreTemporal);
         }
 
@@ -68,18 +64,7 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
-                List<Regimen> regimenes = null;
-
-                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
-                List<CierreTemporal> cierresTemporales = null;
-
-                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-                List<Reserva> reservas = null;
-
-                List<Habitacion> habitaciones = null;
-
-                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
+                Hotel hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio);
                 hoteles.Add(hotel);
             }
 
@@ -128,22 +113,7 @@ namespace FrbaHotel.Repositorios {
 
             int idHotel = 0;
 
-            String CREATE_STATEMENT = "BEGIN TRANSACTION" +
-                                        " BEGIN TRY" +
-                                        " DECLARE @idDireccion int; " +
-                                        "DECLARE @idCategoria int;" +
-                                        "INSERT INTO LOS_BORBOTONES.Categoria(Estrellas, RecargaEstrellas) VALUES(@catEstrellas,@catRecargaEstrellas);" +
-                                        "SET @idCategoria = SCOPE_IDENTITY();" +
-                                        "INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle) VALUES(@dirPais,@dirCiudad,@dirCalle, @dirNumeroCalle);" +
-                                        "SET @idDireccion = SCOPE_IDENTITY();" +
-                                        "INSERT INTO LOS_BORBOTONES.Hotel(idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion) OUTPUT INSERTED.idHotel " +
-                                        "VALUES(@idCategoria,@hotNombre, @hotMail, @hotTelefono, @hotFechaIniciaActividades, @idDireccion); " +
-                                        "COMMIT TRANSACTION " +
-                                        "END TRY " +
-                                        "BEGIN CATCH " +
-                                        "RAISERROR('ERROR TRYING TO CREATE HOTEL', 16, 1) " +
-                                        "ROLLBACK TRANSACTION " +
-                                        "END CATCH";
+          
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -154,14 +124,33 @@ namespace FrbaHotel.Repositorios {
             sqlCommand.Connection = sqlConnection;
 
 
+            String CREATE_STATEMENT = "BEGIN TRANSACTION" +
+                                      " BEGIN TRY" +
+                                      " DECLARE @idDireccion int; " +
+                                      
+                                       "DECLARE @hotidHotel int;" +
+                                      
+                                      "INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle) VALUES(@dirPais,@dirCiudad,@dirCalle, @dirNumeroCalle);" +
+                                      "SET @idDireccion = SCOPE_IDENTITY();" +
+                                      "INSERT INTO LOS_BORBOTONES.Hotel(idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion) OUTPUT INSERTED.idHotel " +
+                                      "VALUES(@hotidCategoria,@hotNombre, @hotMail, @hotTelefono, @hotFechaIniciaActividades, @idDireccion); " +
+                                      "SET @hotidHotel = SCOPE_IDENTITY(); " +
+                                      this.insertsRegimenes(hotel, sqlCommand) +
+                                      "COMMIT TRANSACTION " +
+                                      "END TRY " +
+                                      "BEGIN CATCH " +
+                                      "RAISERROR('ERROR TRYING TO CREATE HOTEL', 16, 1) " +
+                                      "ROLLBACK TRANSACTION " +
+                                      "END CATCH";
+
+
             //HOTEL
             sqlCommand.Parameters.AddWithValue("@hotNombre", hotel.getNombre());
             sqlCommand.Parameters.AddWithValue("@hotMail", hotel.getMail());
             sqlCommand.Parameters.AddWithValue("@hotTelefono", hotel.getTelefono());
             sqlCommand.Parameters.AddWithValue("@hotFechaIniciaActividades", hotel.getFechaInicioActividades());
             //CATEGORIA
-            sqlCommand.Parameters.AddWithValue("@catEstrellas", hotel.getCategoria().Estrellas);
-            sqlCommand.Parameters.AddWithValue("@catRecargaEstrellas", hotel.getCategoria().RecargaEstrellas);
+            sqlCommand.Parameters.AddWithValue("@hotidCategoria", hotel.getCategoria().getIdCategoria());
             //DIRECCION
             sqlCommand.Parameters.AddWithValue("@dirPais", hotel.getDireccion().getPais());
             sqlCommand.Parameters.AddWithValue("@dirCiudad", hotel.getDireccion().getCiudad());
@@ -237,16 +226,8 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                List<Regimen> regimenes = repositorioRegimen.getByIdHotel(idHotel);
-
-                List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(idHotel);
-
-                //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
-
-                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-
-                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio, null, regimenes, null, cierresTemporales);
-
+                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
+                                fechaInicio);
                 hoteles.Add(hotel);
             }
 
@@ -294,20 +275,9 @@ namespace FrbaHotel.Repositorios {
 
                 Direccion direccion = repositorioDireccion.getById(idDireccion);
 
-                //List<Regimen> regimenes = repositorioRegimen.getByIdHotel(id);
-                List<Regimen> regimenes = null;
 
-                //List<CierreTemporal> cierresTemporales = repositorioCierreTemporal.getByHotelId(id);
-                List<CierreTemporal> cierresTemporales = null;
 
-                //List<Habitacion> habitaciones = repositorioHabitacion.getByHotelId(id);
-                List<Habitacion> habitaciones = null;
-
-                //List<Reserva> reservas = repositorioReserva.getByIdHotel(idHotel);
-                List<Reserva> reservas = null;
-
-                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono,
-                                fechaInicio, reservas, regimenes, habitaciones, cierresTemporales);
+                hotel = new Hotel(idHotel, categoria, direccion, nombre, mail, telefono, fechaInicio);
             }
             else
             {
@@ -324,56 +294,82 @@ namespace FrbaHotel.Repositorios {
         public override void update(Hotel hotel)
         {
 
-            if (this.exists(hotel)) { 
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
+            if (this.exists(hotel))
+            {
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
 
-            Direccion direccion = hotel.getDireccion();
-            Categoria categoria = hotel.getCategoria();
+                Direccion direccion = hotel.getDireccion();
+                Categoria categoria = hotel.getCategoria();
 
-            //HOTEL
-            sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.IdHotel);
-            sqlCommand.Parameters.AddWithValue("@hotnombre", hotel.Nombre);
-            sqlCommand.Parameters.AddWithValue("@hotmail", hotel.Mail);
-            sqlCommand.Parameters.AddWithValue("@hottelefono", hotel.Telefono);
-            sqlCommand.Parameters.AddWithValue("@hotfechaInicioActividades", hotel.FechaInicioActividades);
+                //HOTEL
+                sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.IdHotel);
+                sqlCommand.Parameters.AddWithValue("@hotnombre", hotel.Nombre);
+                sqlCommand.Parameters.AddWithValue("@hotmail", hotel.Mail);
+                sqlCommand.Parameters.AddWithValue("@hottelefono", hotel.Telefono);
+                sqlCommand.Parameters.AddWithValue("@hotfechaInicioActividades", hotel.FechaInicioActividades);
 
 
 
-            //DIRECCION
-            sqlCommand.Parameters.AddWithValue("@dirpais", direccion.Pais);
-            sqlCommand.Parameters.AddWithValue("@dirciudad", direccion.Ciudad);
-            sqlCommand.Parameters.AddWithValue("@dircalle", direccion.Calle);
-            sqlCommand.Parameters.AddWithValue("@dirnumeroCalle", direccion.NumeroCalle);
-            sqlCommand.Parameters.AddWithValue("@dirpiso", direccion.Piso);
-            sqlCommand.Parameters.AddWithValue("@dirdepartamento", direccion.Departamento);
+                //DIRECCION
+                sqlCommand.Parameters.AddWithValue("@dirpais", direccion.Pais);
+                sqlCommand.Parameters.AddWithValue("@dirciudad", direccion.Ciudad);
+                sqlCommand.Parameters.AddWithValue("@dircalle", direccion.Calle);
+                sqlCommand.Parameters.AddWithValue("@dirnumeroCalle", direccion.NumeroCalle);
+                sqlCommand.Parameters.AddWithValue("@dirpiso", direccion.Piso);
+                sqlCommand.Parameters.AddWithValue("@dirdepartamento", direccion.Departamento);
 
-            //CATEGORIA
-            sqlCommand.Parameters.AddWithValue("@catestrellas", categoria.Estrellas);
-            sqlCommand.Parameters.AddWithValue("@catrecargaEstrellas", categoria.RecargaEstrellas);
+                //CATEGORIA
+                sqlCommand.Parameters.AddWithValue("@catId", categoria.getIdCategoria());
 
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Hotel AS HOT " +
-                "JOIN LOS_BORBOTONES.Direccion AS DIR ON DIR.idDireccion = HOT.idDireccion" +
-                "JOIN LOS_BORBOTONES.Categoria AS CAT ON CAT.idCategoria = HOT.idCategoria" +
-                "SET HOT.Nombre= @hotnombre, HOT.Mail= @hotmail, HOT.Telefono= @hottelefono, HOT.FechaInicioActividades= @hotfechaInicioActividades," +
-                "DIR.Pais= @dirpais, DIR.Ciudad= @dirciudad, DIR.Calle=@dircalle, DIR.NumeroCalle= @dirnumeroCalle," +
-                "DIR.Piso=@dirpiso, DIR.Departamento=@dirdepartamento," +
-                "CAT.Estrellas=@catestrellas, CAT.RecargaEstrellas=@catrecargaEstrellas" +
-                "WHERE HOT.idHotel= @hotidHotel";
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.CommandText = 
+                    "BEGIN TRANSACTION " +
+                    "DELETE FROM LOS_BORBOTONES.Regimen_X_Hotel WHERE idHotel=@hotidHotel; " + 
+                    insertsRegimenes(hotel,sqlCommand) +
+                    "UPDATE LOS_BORBOTONES.Direccion " +
+                    "SET Pais= @dirpais,Ciudad= @dirciudad, Calle=@dircalle, NumeroCalle= @dirnumeroCalle, " +
+                    "Piso=@dirpiso, Depto=@dirdepartamento WHERE idDireccion=@hotidHotel; " +
+                   
+                    "UPDATE LOS_BORBOTONES.Hotel " +
+                    "SET Nombre= @hotnombre, Mail= @hotmail, Telefono= @hottelefono, FechaInicioActividades= @hotfechaInicioActividades, " +
+                    "idCategoria=@catId " +
+                    "WHERE idHotel= @hotidHotel; " + 
+                    "COMMIT";
 
-            sqlConnection.Open();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+                //Checkear excepcion si no existe u ocurrio algun problema con el update
 
-            //Checkear excepcion si no existe u ocurrio algun problema con el update
-
-            //Cierro Primera Consulta
-            sqlConnection.Close();
+                //Cierro Primera Consulta
+                sqlConnection.Close();
             }
-            throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
+            else
+            {
+                throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
+            }
         }
+
+
+        private String insertsRegimenes(Hotel hotel,SqlCommand sqlCommand)
+        {
+            String update = "";
+            List<Regimen> regimenes = hotel.getRegimenes();
+            int index=0;
+            foreach (Regimen regimen in regimenes)
+            {
+               sqlCommand.Parameters.AddWithValue("@rxhidRegimen"+index, regimen.getIdRegimen());
+
+               update += " INSERT INTO LOS_BORBOTONES.Regimen_X_Hotel(idHotel,idRegimen) values(@hotidHotel," + "@rxhidRegimen" + index + "); ";
+               index++;
+            }
+            return update;
+        }
+
+
     }
 }
 

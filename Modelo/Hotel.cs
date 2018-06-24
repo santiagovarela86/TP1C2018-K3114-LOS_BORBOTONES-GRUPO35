@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,12 @@ namespace FrbaHotel.Modelo
         private String mail = "";
         private String telefono = "";
         private DateTime fechaInicioActividades = new DateTime();
-        private List<Reserva> reservas = new List<Reserva>();
-        private List<Regimen> regimenes = new List<Regimen>();
-        private List<Habitacion> habitaciones = new List<Habitacion>();
-        private List<CierreTemporal> cierresTemporales = new List<CierreTemporal>();
+        private List<Reserva> reservas = null;
+        private List<Regimen> regimenes = null;
+        private List<Habitacion> habitaciones = null;
+        private List<CierreTemporal> cierresTemporales = null;
 
+        public Hotel() { }
         public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,
             List<Reserva> reservas, List<Regimen> regimenes, List<Habitacion> habitaciones, List<CierreTemporal> cierresTemporales)
         {
@@ -36,6 +38,28 @@ namespace FrbaHotel.Modelo
             this.cierresTemporales = cierresTemporales;
         }
 
+        public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades,List<Regimen> regimenes)
+        {
+            this.idHotel = idHotel;
+            this.categoria = categoria;
+            this.direccion = direccion;
+            this.nombre = nombre;
+            this.mail = mail;
+            this.telefono = telefono;
+            this.fechaInicioActividades = fechaInicioActividades;
+            this.regimenes = regimenes;
+        }
+
+        public Hotel(int idHotel, Categoria categoria, Direccion direccion, String nombre, String mail, String telefono, DateTime fechaInicioActividades)
+        {
+            this.idHotel = idHotel;
+            this.categoria = categoria;
+            this.direccion = direccion;
+            this.nombre = nombre;
+            this.mail = mail;
+            this.telefono = telefono;
+            this.fechaInicioActividades = fechaInicioActividades;
+        }
         public int getIdHotel()
         {
             return this.idHotel;
@@ -78,21 +102,42 @@ namespace FrbaHotel.Modelo
 
         public List<Reserva> getReservas()
         {
+            if (this.reservas == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.reservas = repoReserva.getByIdHotel(this.IdHotel);
+            }
             return this.reservas;
         }
 
         public List<Regimen> getRegimenes()
         {
+
+            if (this.regimenes == null)
+            {
+                RepositorioRegimen repoRegimen = new RepositorioRegimen();
+                this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
+            }
             return this.regimenes;
         }
 
         public List<Habitacion> getHabitaciones()
         {
+
+            if (this.habitaciones == null)
+            {
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel,this);
+            }
             return this.habitaciones;
         }
 
         public List<CierreTemporal> getCierresTemporales()
         {
+            if (this.cierresTemporales == null)
+            {
+                RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
+                this.cierresTemporales = repoCierres.getByIdHotel(this);
+            }
             return this.cierresTemporales;
         }
 
@@ -111,7 +156,7 @@ namespace FrbaHotel.Modelo
         public String Pais { get { return this.getDireccion().getPais(); } }
         public int Estrellas { get { return this.getCategoria().Estrellas; } }
         //ACA HAY QUE HACER UN METODO QUE CONCATENE LA LISTA DE REGIMENES Y LOS MUESTRE SEPARADOS POR COMA... EJ: ("Media pensión, All inclusive, ...)
-        //public String Regimenes { get { return this.getRegimenesString(); } }
+        public String Regimenes { get { return String.Join(",",this.getRegimenes().Select(regimen => regimen.Descripcion)); } }
         public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
 
     }
