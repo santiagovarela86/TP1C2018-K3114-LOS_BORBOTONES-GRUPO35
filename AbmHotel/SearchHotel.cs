@@ -22,18 +22,20 @@ namespace FrbaHotel.AbmHotel
             limpiarBusquedaYResultados();
         }
 
-
         private void button_buscarHoteles(object sender, EventArgs e)
         {
-            String nombre =validateStringFields(nombreText.Text);
+            buscarHoteles();
+        }
 
+        private void buscarHoteles() {
+            String nombre = validateStringFields(nombreText.Text);
             int? estrellas = null;
             if (estrellasComboBox.SelectedItem != null) { estrellas = ((Categoria)estrellasComboBox.SelectedItem).getEstrellas(); };
             String pais = validateStringFields(paisText.Text);
             String ciudad = validateStringFields(ciudadText.Text);
             RepositorioHotel repositorioHotel = new RepositorioHotel();
 
-            List<Hotel> hoteles= repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
+            List<Hotel> hoteles = repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
             registroHoteles.DataSource = hoteles;
         }
 
@@ -89,16 +91,7 @@ namespace FrbaHotel.AbmHotel
             using (ModificacionHotel form = new ModificacionHotel(hotel))
             {
                 var result = form.ShowDialog();
-
-                if (result == DialogResult.OK)
-                {
-                    //string val = form.ReturnValue1;            //values preserved after close
-                    //string dateString = form.ReturnValue2;
-                    //Do something here with these values
-
-                    //for example
-                    //this.txtSomething.Text = val;
-                }
+                    buscarHoteles();
             }
         }
 
@@ -120,15 +113,8 @@ namespace FrbaHotel.AbmHotel
             {
                 var result = form.ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    //string val = form.ReturnValue1;            //values preserved after close
-                    //string dateString = form.ReturnValue2;
-                    //Do something here with these values
-
-                    //for example
-                    //this.txtSomething.Text = val;
-                }
+                    buscarHoteles();
+               
             }
         }
 
@@ -140,15 +126,8 @@ namespace FrbaHotel.AbmHotel
             {
                 var result = form.ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    //string val = form.ReturnValue1;            //values preserved after close
-                    //string dateString = form.ReturnValue2;
-                    //Do something here with these values
-
-                    //for example
-                    //this.txtSomething.Text = val;
-                }
+                    buscarHoteles();
+                
             }
         }
 

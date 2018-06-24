@@ -127,14 +127,13 @@ namespace FrbaHotel.Repositorios {
             String CREATE_STATEMENT = "BEGIN TRANSACTION" +
                                       " BEGIN TRY" +
                                       " DECLARE @idDireccion int; " +
-                                      "DECLARE @idCategoria int;" +
+                                      
                                        "DECLARE @hotidHotel int;" +
-                                      "INSERT INTO LOS_BORBOTONES.Categoria(Estrellas, RecargaEstrellas) VALUES(@catEstrellas,@catRecargaEstrellas);" +
-                                      "SET @idCategoria = SCOPE_IDENTITY();" +
+                                      
                                       "INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle) VALUES(@dirPais,@dirCiudad,@dirCalle, @dirNumeroCalle);" +
                                       "SET @idDireccion = SCOPE_IDENTITY();" +
                                       "INSERT INTO LOS_BORBOTONES.Hotel(idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion) OUTPUT INSERTED.idHotel " +
-                                      "VALUES(@idCategoria,@hotNombre, @hotMail, @hotTelefono, @hotFechaIniciaActividades, @idDireccion); " +
+                                      "VALUES(@hotidCategoria,@hotNombre, @hotMail, @hotTelefono, @hotFechaIniciaActividades, @idDireccion); " +
                                       "SET @hotidHotel = SCOPE_IDENTITY(); " +
                                       this.insertsRegimenes(hotel, sqlCommand) +
                                       "COMMIT TRANSACTION " +
@@ -151,8 +150,7 @@ namespace FrbaHotel.Repositorios {
             sqlCommand.Parameters.AddWithValue("@hotTelefono", hotel.getTelefono());
             sqlCommand.Parameters.AddWithValue("@hotFechaIniciaActividades", hotel.getFechaInicioActividades());
             //CATEGORIA
-            sqlCommand.Parameters.AddWithValue("@catEstrellas", hotel.getCategoria().Estrellas);
-            sqlCommand.Parameters.AddWithValue("@catRecargaEstrellas", hotel.getCategoria().RecargaEstrellas);
+            sqlCommand.Parameters.AddWithValue("@hotidCategoria", hotel.getCategoria().getIdCategoria());
             //DIRECCION
             sqlCommand.Parameters.AddWithValue("@dirPais", hotel.getDireccion().getPais());
             sqlCommand.Parameters.AddWithValue("@dirCiudad", hotel.getDireccion().getCiudad());

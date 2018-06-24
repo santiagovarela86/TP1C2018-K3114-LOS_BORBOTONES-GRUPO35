@@ -252,6 +252,8 @@ namespace FrbaHotel.AbmHotel
             this.numeroCalleLabel.Size = new System.Drawing.Size(72, 13);
             this.numeroCalleLabel.TabIndex = 13;
             this.numeroCalleLabel.Text = "Numero calle:";
+            this.numeroCalleText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+
             // 
             // numeroCalleText
             // 
@@ -378,6 +380,14 @@ namespace FrbaHotel.AbmHotel
 
         }
 
+        private void onlyNumeric(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
 
         private void load(object sender, EventArgs e) {
             this.initModificacionHotel();

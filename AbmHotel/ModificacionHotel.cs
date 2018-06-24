@@ -305,6 +305,7 @@ namespace FrbaHotel.AbmHotel
             this.numeroCalleLabel.Size = new System.Drawing.Size(72, 13);
             this.numeroCalleLabel.TabIndex = 13;
             this.numeroCalleLabel.Text = "Numero calle:";
+
             // 
             // numeroCalleText
             // 
@@ -312,6 +313,8 @@ namespace FrbaHotel.AbmHotel
             this.numeroCalleText.Name = "numeroCalleText";
             this.numeroCalleText.Size = new System.Drawing.Size(117, 20);
             this.numeroCalleText.TabIndex = 12;
+            this.numeroCalleText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+
             // 
             // paisLabel
             // 
@@ -391,6 +394,9 @@ namespace FrbaHotel.AbmHotel
                 {
                     regimenes.Add(item.DataBoundItem as Regimen);
                 }
+
+                validarQuitaRegimen(hotel.getRegimenes(), regimenes);
+
                 String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
                 String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
                 String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
@@ -422,6 +428,33 @@ namespace FrbaHotel.AbmHotel
         {
             this.initModificacionHotel();
 
+        }
+
+        private void validarQuitaRegimen(List<Regimen> regimenesActuales, List<Regimen> regimenesPorActualizar)
+        {
+            foreach (Regimen regimenActual in regimenesActuales)
+            {
+                if (!regimenesPorActualizar.Exists(regimen => regimen.getIdRegimen().Equals(regimenActual.getIdRegimen())))
+                {
+                    RepositorioReserva repoReserva = new RepositorioReserva();
+                    bool exists= repoReserva.existsReservasConRegimen(regimenActual, hotel);
+                    if (exists)
+                    {
+                        throw new RequestInvalidoException("No puede quitarse el regimen " + regimenActual.getDescripcion() + "porque existen reservas tomadas para ese regimen");
+                    }
+                }
+
+            }
+
+        }
+
+        private void onlyNumeric(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
 
 

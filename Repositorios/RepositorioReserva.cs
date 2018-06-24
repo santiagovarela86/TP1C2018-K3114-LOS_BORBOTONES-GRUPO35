@@ -330,6 +330,34 @@ namespace FrbaHotel.Repositorios
 
             return 0;
         }
+
+
+         public bool existsReservasConRegimen(Regimen regimen,Hotel hotel) {
+
+             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+             SqlConnection sqlConnection = new SqlConnection(connectionString);
+             SqlCommand sqlCommand = new SqlCommand();
+             SqlDataReader reader;
+
+             sqlCommand.Parameters.AddWithValue("@idRegimen", regimen.getIdRegimen());
+             sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
+
+             sqlCommand.CommandType = CommandType.Text;
+             sqlCommand.Connection = sqlConnection;
+             sqlCommand.CommandText = 
+                 "SELECT idReserva FROM LOS_BORBOTONES.Reserva WHERE idRegimen = @idRegimen "  + 
+                 "AND idHotel=@idHotel " +
+                 "AND FechaHasta >GETDATE(); ";
+
+             sqlConnection.Open();
+
+             reader = sqlCommand.ExecuteReader();
+
+             bool exist = reader.Read();
+             sqlConnection.Close();
+
+             return exist;
+         }
     }
 }
 
