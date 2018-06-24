@@ -1,4 +1,5 @@
-﻿namespace FrbaHotel.AbmHabitacion
+﻿using System.Windows.Forms;
+namespace FrbaHotel.AbmHabitacion
 {
     partial class CrearHabitacion
     {
@@ -57,6 +58,8 @@
             this.textNumero.Name = "textNumero";
             this.textNumero.Size = new System.Drawing.Size(100, 20);
             this.textNumero.TabIndex = 2;
+            this.textNumero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+
             // 
             // labelPiso
             // 
@@ -73,6 +76,8 @@
             this.textPiso.Name = "textPiso";
             this.textPiso.Size = new System.Drawing.Size(100, 20);
             this.textPiso.TabIndex = 4;
+            this.textPiso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+
 
             // 
             // labelHotel
@@ -167,6 +172,14 @@
 
         }
 
+        private void onlyNumeric(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
         #endregion
 
         private System.Windows.Forms.Label labelNumero;

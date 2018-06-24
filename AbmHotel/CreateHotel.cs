@@ -392,6 +392,8 @@ namespace FrbaHotel.AbmHotel
         private void load(object sender, EventArgs e) {
             this.initModificacionHotel();
         }
+
+
     }
 
 }

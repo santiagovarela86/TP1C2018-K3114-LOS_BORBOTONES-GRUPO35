@@ -46,12 +46,14 @@ namespace FrbaHotel.AbmHabitacion
             this.labelNumero = new System.Windows.Forms.Label();
             this.textPiso = new System.Windows.Forms.TextBox();
             this.labelPiso = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.registroHabitaciones)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.checkBoxActiva);
             this.groupBox2.Controls.Add(this.buttonAltaHabitacion);
             this.groupBox2.Controls.Add(this.labelTipoHabitacion);
@@ -149,7 +151,7 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // buttonBbuscarHoteles
             // 
-            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(185, 158);
+            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(80, 157);
             this.buttonBbuscarHoteles.Name = "buttonBbuscarHoteles";
             this.buttonBbuscarHoteles.Size = new System.Drawing.Size(161, 23);
             this.buttonBbuscarHoteles.TabIndex = 0;
@@ -182,6 +184,8 @@ namespace FrbaHotel.AbmHabitacion
             this.textNumero.Name = "textNumero";
             this.textNumero.Size = new System.Drawing.Size(71, 20);
             this.textNumero.TabIndex = 20;
+            this.textNumero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+
             // 
             // labelNumero
             // 
@@ -198,6 +202,8 @@ namespace FrbaHotel.AbmHabitacion
             this.textPiso.Name = "textPiso";
             this.textPiso.Size = new System.Drawing.Size(78, 20);
             this.textPiso.TabIndex = 22;
+            this.textPiso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+
             // 
             // labelPiso
             // 
@@ -207,6 +213,15 @@ namespace FrbaHotel.AbmHabitacion
             this.labelPiso.Size = new System.Drawing.Size(27, 13);
             this.labelPiso.TabIndex = 23;
             this.labelPiso.Text = "Piso";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(341, 157);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(161, 23);
+            this.button1.TabIndex = 33;
+            this.button1.Text = "Limpiar";
+            this.button1.Click += new System.EventHandler(this.limpiarBusquedaYResultados);
             // 
             // ABMHabitacion
             // 
@@ -223,6 +238,16 @@ namespace FrbaHotel.AbmHabitacion
 
         }
 
+
+
+        private void onlyNumeric(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
         #endregion
 
         private GroupBox groupBox2;
@@ -240,6 +265,7 @@ namespace FrbaHotel.AbmHabitacion
         private Label labelNumero;
         private TextBox textPiso;
         private Label labelPiso;
+        private Button button1;
 
     }
 }

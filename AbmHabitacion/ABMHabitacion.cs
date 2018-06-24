@@ -21,21 +21,16 @@ namespace FrbaHotel.AbmHabitacion
             RepositorioHotel repositorioHotel = new RepositorioHotel();
             RepositorioTipoHabitacion repositorioTipoHab = new RepositorioTipoHabitacion();
 
-            List<Hotel> hoteles= new List<Hotel>();
-            hoteles.Add(new Hotel());
-            hoteles.AddRange(repositorioHotel.getAll());
-            comboBoxHotel.DataSource = hoteles;
+
+            comboBoxHotel.DataSource = repositorioHotel.getAll();
             comboBoxHotel.SelectedIndex = -1;
-            comboBoxHotel.DisplayMember = "Nombre";
+            comboBoxHotel.ValueMember = "Nombre";
 
-            List<TipoHabitacion> tipoHabitaciones = new List<TipoHabitacion>();
-            tipoHabitaciones.Add(new TipoHabitacion());
-            tipoHabitaciones.AddRange(repositorioTipoHab.getAll());
 
-            comboBoxTipoHabitacion.DataSource = tipoHabitaciones;
-            comboBoxTipoHabitacion.DisplayMember = "Descripcion";            
+            comboBoxTipoHabitacion.DataSource = repositorioTipoHab.getAll();
+            comboBoxTipoHabitacion.ValueMember = "Descripcion";            
 
-            checkBoxActiva.Checked = false;
+            limpiarBusquedaYResultados();
         }
 
         private void buttonCrearHabitacion_Click(object sender, EventArgs e)
@@ -119,6 +114,23 @@ namespace FrbaHotel.AbmHabitacion
             }
         }
 
+        private void limpiarBusquedaYResultados(object sender, EventArgs e) {
+            this.limpiarBusquedaYResultados();
+        }
+        private void limpiarBusquedaYResultados()
+        {
+            registroHabitaciones.DataSource = new List<Habitacion>();
+            textNumero.Text = "";
+            textPiso.Text = "";
+            comboBoxTipoHabitacion.SelectedValue = "";
+            comboBoxTipoHabitacion.SelectedIndex = -1;
+            checkBoxActiva.Checked = false;
+
+            comboBoxHotel.SelectedValue = "";
+            comboBoxHotel.SelectedIndex = -1;
+        }
+
+        
     }
 
 }

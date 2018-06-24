@@ -220,7 +220,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
-                "SELECT DISTINCT(HAB.idHabitacion),HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
+                "SELECT  DISTINCT TOP 100 (HAB.idHabitacion) ,HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
                 getCondiciones(numero,piso,hotel,tipoHabitacion,activa,sqlCommand) + ";";
             
             sqlConnection.Open();
