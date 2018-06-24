@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace FrbaHotel.Repositorios
 {
@@ -14,7 +15,8 @@ namespace FrbaHotel.Repositorios
         {
             //Elementos de la Estadia a devolver
             Estadia estadia;
-            
+
+            decimal cantidadNoches = 0;
             Usuario usuarioCheckIn = null;
             Usuario usuarioCheckOut = null;
             DateTime fechaEntrada = new DateTime();
@@ -45,6 +47,7 @@ namespace FrbaHotel.Repositorios
                 fechaEntrada = reader.GetDateTime(reader.GetOrdinal("FechaEntrada"));
                 fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
                 facturada = reader.GetBoolean(reader.GetOrdinal("Facturada"));
+                cantidadNoches = reader.GetDecimal(reader.GetOrdinal("CantidadNoches"));
             }
 
             //Cierro Primera Consulta
@@ -54,7 +57,7 @@ namespace FrbaHotel.Repositorios
             if (usuarioCheckIn.Equals(null)) throw new NoExisteIDException("No existe estadia con el ID asociado");
 
             //Armo la estadia completa
-            estadia = new Estadia(idEstadia, usuarioCheckIn, usuarioCheckOut, fechaEntrada, fechaSalida, facturada);
+            estadia = new Estadia(idEstadia, usuarioCheckIn, usuarioCheckOut, fechaEntrada, fechaSalida, facturada,cantidadNoches);
             return estadia;
         }
 
@@ -86,7 +89,7 @@ namespace FrbaHotel.Repositorios
             return estadias;
         }
 
-        override public int create(Estadia estadia)
+        override public void delete(Estadia estadia)
         {
             if (this.exists(estadia))
             {
@@ -94,7 +97,7 @@ namespace FrbaHotel.Repositorios
             }
             else
             {
-                //Creo un nuevo registro
+                //elimino registro
             }
 
             throw new System.NotImplementedException();
@@ -102,26 +105,118 @@ namespace FrbaHotel.Repositorios
 
         override public void update(Estadia estadia)
         {
+            Estadia estadiaOriginal = this.getById(estadia.getIdEstadia());
+            
             if (this.exists(estadia))
             {
-                //Actualizo el registro
+                decimal cantNoches =0;
+                //hago la cuenta de los dias que estuvo con la fecha de salida
+
+                cantNoches = (decimal)(estadia.getFechaSalida() -estadiaOriginal.getFechaEntrada()).TotalDays;
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@UserOut", estadia.getUsuarioCheckOut().getIdUsuario());
+                sqlCommand.Parameters.AddWithValue("@FecOut", estadia.getFechaSalida());
+                sqlCommand.Parameters.AddWithValue("@idEstadia", estadia.getIdEstadia());
+                sqlCommand.Parameters.AddWithValue("@CantNoches", cantNoches);
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Estadia
+                    SET idUsuarioOut = @UserOut, FechaSalida = @FecOut, CantidadNoches=@CantNoches
+                    WHERE idEstadia = @idEstadia;
+                ");
+
+                
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe la estadia que intenta actualizar");
             }
         }
 
-        override public void delete(Estadia estadia)
+        override public int create(Estadia estadia)
         {
+            int idEstadia = 0;
             if (this.exists(estadia))
             {
-                //Borro el registro
+                throw new ElementoYaExisteException("Ya existe la estadia que intenta crear");
             }
             else
             {
-                //Error
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@FecIn", estadia.getFechaEntrada());
+                sqlCommand.Parameters.AddWithValue("@FecOut", estadia.getFechaSalida());
+                sqlCommand.Parameters.AddWithValue("@CantNoches", estadia.getCantidadNoches());
+                sqlCommand.Parameters.AddWithValue("@Facturada", estadia.getFacturada());
+                sqlCommand.Parameters.AddWithValue("@UserIn", estadia.getUsuarioCheckIn().getIdUsuario());
+                sqlCommand.Parameters.AddWithValue("@UserOut", estadia.getUsuarioCheckOut().getIdUsuario());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada,FechaSalida,CantidadNoches,Facturada,idUsuarioIn,idUsuarioOut)
+                    OUTPUT INSERTED.idEstadia
+                    VALUES(@FecIn, @FecOut, @CantNoches, @Facturada, @UserIn, @UserOut);
+
+                    DECLARE @idEstadia int;
+                    SET @idEstadia = SCOPE_IDENTITY();
+                ");
+
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idEstadia = reader.GetInt32(reader.GetOrdinal("idEstadia"));
+                }
+
+                sqlConnection.Close();
             }
+
+            return idEstadia;
         }
 
         override public void bajaLogica(Estadia estadia)
@@ -132,8 +227,7 @@ namespace FrbaHotel.Repositorios
         override public Boolean exists(Estadia estadia)
         {
             int idEstadia = 0;
-            int idUserIn = 0;
-
+            
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -154,30 +248,58 @@ namespace FrbaHotel.Repositorios
             }
 
             sqlConnection.Close();
-            Usuario user = null;
-            user = estadia.getUsuarioCheckIn();
-
-            //valido por el idUserIn que tiene en la base
-            sqlCommand.Parameters.AddWithValue("@idUsuario", user.getIdUsuario());
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idUsuarioIn FROM LOS_BORBOTONES.Estadia WHERE idUsuarioIn = @idUsuario";
-
-            sqlConnection.Open();
-
-            reader = sqlCommand.ExecuteReader();
-
-            while (reader.Read())
-            {
-                idUserIn = reader.GetInt32(reader.GetOrdinal("idUsuarioIn"));
-            }
-
-            sqlConnection.Close();
-
-            //Devuelve verdadero si el ID coincide o si el IdUserIn coincide
-            return idEstadia != 0 || user.getIdUsuario().Equals(idUserIn);
+            
+            //Devuelve verdadero si el ID coincide
+            return idEstadia != 0;
         }
         //luego hacer algun getBy que vea especial y el getByQuery
+        public void updateIn (Estadia estadia)
+        {
+            if (this.exists(estadia))
+            {
+                
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@UserIn", estadia.getUsuarioCheckIn().getIdUsuario());
+                sqlCommand.Parameters.AddWithValue("@FecIn", estadia.getFechaEntrada());
+                sqlCommand.Parameters.AddWithValue("@idEstadia", estadia.getIdEstadia());
+                
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Estadia
+                    SET idUsuarioIn = @UserIn, FechaEntrada = @FecIn
+                    WHERE idEstadia = @idEstadia;
+                ");
+
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
+            }
+            else
+            {
+                throw new NoExisteIDException("No existe la estadia que intenta actualizar");
+            }    
+        }
     }
 }
 

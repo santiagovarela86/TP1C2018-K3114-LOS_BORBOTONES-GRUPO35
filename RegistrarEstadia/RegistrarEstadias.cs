@@ -43,10 +43,11 @@ namespace FrbaHotel.RegistrarEstadia
                 codReserva = int.Parse(textBox1.Text);
                 username = textBox2.Text;
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, username);
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, date, username);
                 if (estadoValidez==1)
                 { 
-                    //es valida, dar de alta la reserva(con usuario y fecha) y los huespedes en la otra pantalla
+                    //es valida ya se dio de alta la reserva(con usuario y fecha)
+                    //Traigo otra pantalla para los huespedes
                     MessageBox.Show("La reserva es valida", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
                       {
@@ -61,14 +62,16 @@ namespace FrbaHotel.RegistrarEstadia
                 else if (estadoValidez == 2)
                 {
                     MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In, generar otra nueva ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
+
                 }
                 else if (estadoValidez == 3)
                 {
                     MessageBox.Show("La reserva ingresada no corresponde al hotel al que el usuario tiene permisos ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
+                else if (estadoValidez == 4)
                 {
-                    MessageBox.Show("el username no es correcto ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo dar de alta la estadia", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -81,6 +84,30 @@ namespace FrbaHotel.RegistrarEstadia
         private void button4_Click(object sender, EventArgs e)
         {
             //CHECK OUT
+            int codReserva = 0;
+            String username = "";
+            int idEstadia = 0;
+            //si se va antes de la fecha de salida tengo que poner bien los dias porque dsp en la factura se hace algo con esto
+            DateTime date = DateTime.Today;
+            RepositorioEstadia repoEstadia = new RepositorioEstadia();
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            if (textBox1.Text != "" | textBox2.Text != "")
+            {
+                codReserva = int.Parse(textBox1.Text);
+                //ESTO SE VA AL TRAER ID DIRECTO DEL LOGIN
+                username = textBox2.Text;
+                Usuario user = null;
+                RepositorioUsuario repoUser =new RepositorioUsuario();
+                user = repoUser.getByUsername(username);
+                //consigo del codigo de reserva el idEstadia
+                idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
+
+                Estadia estadia = new Estadia(idEstadia,user,date);
+                repoEstadia.update(estadia);
+                MessageBox.Show("Check out correcto, proceder a facturar Estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+            }
+            //llamo a facturar estadia para que sea mas happy path
             /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
             {
                 var result = form.ShowDialog();
