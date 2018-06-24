@@ -27,6 +27,13 @@ namespace FrbaHotel.Modelo
             this.fechaSalida = fechaSalida;
             this.facturada = facturada;
         }
+        public Estadia(int idEstadia, Usuario usuarioCheckOut,
+            DateTime fechaSalida)
+        {
+            this.idEstadia = idEstadia;
+            this.usuarioCheckOut = usuarioCheckOut;
+            this.fechaSalida = fechaSalida;
+        }
 
         public int getIdEstadia()
         {

@@ -241,7 +241,33 @@ namespace FrbaHotel.Repositorios
             return idReserva != 0 || estadia.getIdEstadia().Equals(idEstadia);
         }
         //luego hacer algun getBy que vea especial y el getByQuery
-         public int GetReservaValida(int codReserva,DateTime date,String username)
+        public int getIdEstadiaByCodReserva(int codReserva)
+        {
+            int idEstadia = 0;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@CodReserva", codReserva);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idEstadia FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @CodReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idEstadia = reader.GetInt32(reader.GetOrdinal("idEstadia"));
+            }
+
+            sqlConnection.Close();
+            
+            return idEstadia;
+        }
+        public int GetReservaValida(int codReserva,DateTime date,String username)
         {
             int idHotel = 0;
             int reserva = 0;
@@ -283,7 +309,7 @@ namespace FrbaHotel.Repositorios
             {
                 //llamo a cancelar la reserva en estado reserva
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();                
-                repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario());
+                repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario(),date);
                 return 2;
 
             }
@@ -300,15 +326,14 @@ namespace FrbaHotel.Repositorios
 
             if (reserva != 0 && hotelFound != 0)
             {
-                //llamo a cargar la estadia
+                //llamo a actualizar la estadia
                 RepositorioEstadia repoEstadia =new RepositorioEstadia();
-                int idEstadia=0;
+                int idEstadia = getIdEstadiaByCodReserva(codReserva);
                 Boolean facturada = false;
                 Usuario userOut=null;
                 Estadia estadia = new Estadia(idEstadia, userIn, userOut,date,fechaOut,facturada,cantidadNoches);
-                idEstadia=repoEstadia.create(estadia);
-                if (idEstadia == 0)
-                    return 4;
+                repoEstadia.updateIn(estadia);
+                
                 return 1;
             }
             return 0;

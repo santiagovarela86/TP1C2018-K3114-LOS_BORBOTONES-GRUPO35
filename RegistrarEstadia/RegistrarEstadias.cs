@@ -46,7 +46,8 @@ namespace FrbaHotel.RegistrarEstadia
                 estadoValidez = repositorioReserva.GetReservaValida(codReserva, date, username);
                 if (estadoValidez==1)
                 { 
-                    //es valida, dar de alta la reserva(con usuario y fecha) y los huespedes en la otra pantalla
+                    //es valida ya se dio de alta la reserva(con usuario y fecha)
+                    //Traigo otra pantalla para los huespedes
                     MessageBox.Show("La reserva es valida", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
                       {
@@ -83,8 +84,30 @@ namespace FrbaHotel.RegistrarEstadia
         private void button4_Click(object sender, EventArgs e)
         {
             //CHECK OUT
+            int codReserva = 0;
+            String username = "";
+            int idEstadia = 0;
             //si se va antes de la fecha de salida tengo que poner bien los dias porque dsp en la factura se hace algo con esto
-            //llamo a la nueva pantalla que va a pedir las habitaciones
+            DateTime date = DateTime.Today;
+            RepositorioEstadia repoEstadia = new RepositorioEstadia();
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            if (textBox1.Text != "" | textBox2.Text != "")
+            {
+                codReserva = int.Parse(textBox1.Text);
+                //ESTO SE VA AL TRAER ID DIRECTO DEL LOGIN
+                username = textBox2.Text;
+                Usuario user = null;
+                RepositorioUsuario repoUser =new RepositorioUsuario();
+                user = repoUser.getByUsername(username);
+                //consigo del codigo de reserva el idEstadia
+                idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
+
+                Estadia estadia = new Estadia(idEstadia,user,date);
+                repoEstadia.update(estadia);
+                MessageBox.Show("Check out correcto, proceder a facturar Estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+            }
+            //llamo a facturar estadia para que sea mas happy path
             /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
             {
                 var result = form.ShowDialog();
