@@ -135,7 +135,7 @@ namespace FrbaHotel.AbmCliente
                    !form.textBoxCalle.Text.Equals("") &&
                    !form.textBoxNroCalle.Text.Equals("") &&
                    !form.textBoxPiso.Text.Equals("") &&
-                   !form.textBoxDepto.Text.Equals("") &&
+                   //!form.textBoxDepto.Text.Equals("") && //DEPTO PUEDE ESTAR VACIO (?)
                    !form.textBoxLocalidad.Text.Equals("") &&
                    !form.textBoxPaisOrigen.Text.Equals("") &&
                    !form.textBoxNacionalidad.Text.Equals("") &&

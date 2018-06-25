@@ -48,6 +48,11 @@ namespace FrbaHotel.AbmCliente
             dataGridView1.DataSource = new List<Cliente>();
             this.button4.Enabled = false;
             this.button5.Enabled = false;
+
+            //ESTO ES PARA QUE ME ACTUALICE LA LISTA DE DOCUMENTOS POSIBLES
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+            comboBoxTipoDoc.DataSource = repoIdentidad.getAllTiposDocsClientes();
+            comboBoxTipoDoc.SelectedValue = "";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -91,6 +96,11 @@ namespace FrbaHotel.AbmCliente
             //UN ROL NULL...
             this.button4.Enabled = false;
             this.button5.Enabled = false;
+
+            //ESTO ES PARA QUE ME ACTUALICE LA LISTA DE DOCUMENTOS POSIBLES
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+            comboBoxTipoDoc.DataSource = repoIdentidad.getAllTiposDocsClientes();
+            comboBoxTipoDoc.SelectedValue = "";
         }
 
         private void button3_Click(object sender, EventArgs e)
