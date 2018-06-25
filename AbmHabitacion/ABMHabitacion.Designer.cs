@@ -172,7 +172,7 @@ namespace FrbaHotel.AbmHabitacion
             this.registroHabitaciones.MultiSelect = false;
             this.registroHabitaciones.Name = "registroHabitaciones";
             this.registroHabitaciones.ReadOnly = true;
-            this.registroHabitaciones.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.registroHabitaciones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing; //or even better .DisableResizing. Most time consumption enum is DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
             this.registroHabitaciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.registroHabitaciones.Size = new System.Drawing.Size(513, 257);
             this.registroHabitaciones.TabIndex = 0;
