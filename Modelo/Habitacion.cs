@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Repositorios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,21 +17,24 @@ namespace FrbaHotel.Modelo
         private String ubicacion = "";
         private Hotel hotel=null;
 
-        public Habitacion(int idHabitacion, TipoHabitacion tipoHabitacion,
-            Boolean activa, int numero, int piso, String ubicacion, Hotel hotel)
+        public Habitacion(int idHabitacion,
+            Boolean activa, int numero, int piso, String ubicacion)
         {
             this.idHabitacion = idHabitacion;
-            this.tipoHabitacion = tipoHabitacion;
             this.activa = activa;
             this.numero = numero;
             this.piso = piso;
             this.ubicacion = ubicacion;
-            this.hotel = hotel;
         }
 
 
         public TipoHabitacion getTipoHabitacion()
         {
+            if (this.tipoHabitacion == null)
+            {
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                this.tipoHabitacion = repoHabitacion.getTipoHabitacionByIdHabitacion(this.idHabitacion);
+            }
             return tipoHabitacion;
         }
 
@@ -56,6 +60,11 @@ namespace FrbaHotel.Modelo
 
         public Hotel getHotel()
         {
+            if (this.hotel == null)
+            {
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                this.hotel = repoHabitacion.getHotelByIdHabitacion(this.idHabitacion);
+            }
             return this.hotel;
         }
 
@@ -76,6 +85,12 @@ namespace FrbaHotel.Modelo
         public void setActiva(bool activa)
         {
             this.activa = activa;
+        }
+
+
+        public void setTipoHabitacion(TipoHabitacion tipo)
+        {
+            this.tipoHabitacion = tipo;
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view

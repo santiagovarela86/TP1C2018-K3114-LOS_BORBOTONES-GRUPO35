@@ -47,7 +47,9 @@ namespace FrbaHotel.AbmHabitacion
                 TipoHabitacion tipoHabitacion = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo");
                 RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
                 bool activa= checkBoxActiva.Checked;
-                Habitacion habitacion = new Habitacion(0, tipoHabitacion, activa, numero, piso, ubicacion, hotel);
+                Habitacion habitacion = new Habitacion(0, activa, numero, piso, ubicacion);
+                habitacion.setHotel(hotel);
+                habitacion.setTipoHabitacion(tipoHabitacion);
                 repositorioHabitacion.create(habitacion);
                 MessageBox.Show("Habitacion creada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
 

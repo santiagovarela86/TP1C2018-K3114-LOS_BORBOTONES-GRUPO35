@@ -126,7 +126,7 @@ namespace FrbaHotel.Modelo
             if (this.habitaciones == null)
             {
                 RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-                this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel,this);
+                this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
             }
             return this.habitaciones;
         }

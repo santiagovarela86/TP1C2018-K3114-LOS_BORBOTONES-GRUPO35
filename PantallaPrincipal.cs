@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaHotel.Login;
 using FrbaHotel.Modelo;
+using FrbaHotel.AbmReserva;
 
 namespace FrbaHotel
 {
@@ -53,6 +54,16 @@ namespace FrbaHotel
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (GenerarReserva generarReserva = new GenerarReserva())
+            {
+                var resultFormLogin = generarReserva.ShowDialog();
+
+                
+            }
         }
     }
 }
