@@ -18,6 +18,7 @@ namespace FrbaHotel.AbmUsuario
         {
             InitializeComponent();
         }
+
         private void ListadoUsuarios_Load(object sender, EventArgs e)
         {
             dataGridView1.DataSource = new List<Usuario>();
@@ -90,7 +91,7 @@ namespace FrbaHotel.AbmUsuario
 
             //PONGO ESTO ACA PARA QUE DESPUES DE DAR DE ALTA, MODIFICAR O DAR DE BAJA
             //Y SE VUELVA A CARGAR LA LISTA, NO SE PUEDA MODIFICAR O DAR DE BAJA
-            //UN ROL NULL...
+            //UN USUARIO NULL...
             this.button4.Enabled = false;
             this.button5.Enabled = false;
         }
@@ -101,7 +102,7 @@ namespace FrbaHotel.AbmUsuario
             {
                 var result = form.ShowDialog();
 
-                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO USUARIO VUELVO A CARGAR LA LISTA
                 this.buscar_Click(sender, e);
             }
         }
@@ -114,7 +115,7 @@ namespace FrbaHotel.AbmUsuario
             {
                 var result = form.ShowDialog();
 
-                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO USUARIO VUELVO A CARGAR LA LISTA
                 this.buscar_Click(sender, e);
             }
         }

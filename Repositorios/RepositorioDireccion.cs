@@ -87,6 +87,8 @@ namespace FrbaHotel.Repositorios
 
         public override void update(Direccion direccion)
         {
+            throw new NotImplementedException();
+            /*
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -113,6 +115,7 @@ namespace FrbaHotel.Repositorios
 
             //Cierro Primera Consulta
             sqlConnection.Close();
+            */
         }
 
         public override Direccion getById(int idDireccion)

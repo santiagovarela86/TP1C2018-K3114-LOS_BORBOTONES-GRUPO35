@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.AbmCliente
 {
@@ -18,38 +19,71 @@ namespace FrbaHotel.AbmCliente
         {
             InitializeComponent();
         }
+
+        private void limpiarPantalla()
+        {
+            //vacio todos los campos porque es el limpiar
+            textBoxNacionalidad.Text = "";
+            textBoxNombre.Text = "";
+            textBoxApellido.Text = "";
+            textBoxNroDoc.Text = "";
+            textBoxMail.Text = "";
+            textBoxTelefono.Text = "";
+            textBoxCalle.Text = "";
+            textBoxLocalidad.Text = "";
+            textBoxPaisOrigen.Text = "";
+            textBoxNroCalle.Text = "";
+            textBoxPiso.Text = "";
+            textBoxDepto.Text = "";
+
+            comboBoxTipoDoc.SelectedValue = "";
+            dateTime.ResetText();
+
+            List<String> tipoDoc = new List<String>();
+            tipoDoc.Add("DNI");
+            tipoDoc.Add("CUIT");
+            tipoDoc.Add("LE");
+            tipoDoc.Add("LC");
+            tipoDoc.Add("Pasaporte");
+
+            comboBoxTipoDoc.ValueMember = "Value";
+            comboBoxTipoDoc.DisplayMember = "Key";
+            comboBoxTipoDoc.DataSource = tipoDoc;
+            comboBoxTipoDoc.SelectedValue = "";
+        }
         
         private void button1_Click(object sender, EventArgs e)
         {
-            this.AltaCliente_Load(sender, e);
+            this.limpiarPantalla();
         }
+
         private void button2_Click(object sender, EventArgs e)
         {
             //GENERAR ALTA (no pido el estado ya que va como activo al momento de crearlo)
 
             //traigo los valores
-            String nacionalidad = textBox2.Text;
-            String nombre = textBox3.Text;
-            String apellido = textBox4.Text;
-            String nroDoc = textBox5.Text;
-            String mail = textBox6.Text;
-            String telefono = textBox7.Text;
-            String calle = textBox8.Text;
-            String localidad = textBox9.Text;
-            String paisOrigen = textBox10.Text;
+            String nacionalidad = textBoxNacionalidad.Text;
+            String nombre = textBoxNombre.Text;
+            String apellido = textBoxApellido.Text;
+            String nroDoc = textBoxNroDoc.Text;
+            String mail = textBoxMail.Text;
+            String telefono = textBoxTelefono.Text;
+            String calle = textBoxCalle.Text;
+            String localidad = textBoxLocalidad.Text;
+            String paisOrigen = textBoxPaisOrigen.Text;
             DateTime fechaNacimiento = dateTime.Value;
             int nroCalle = 0;
-            if (textBox12.Text != "")
+            if (textBoxNroCalle.Text != "")
             {
-                nroCalle = int.Parse(textBox12.Text);
+                nroCalle = int.Parse(textBoxNroCalle.Text);
             }
             int nroPiso = 0;
-            if (textBox13.Text != "")
+            if (textBoxPiso.Text != "")
             {
-                nroPiso = int.Parse(textBox13.Text);
+                nroPiso = int.Parse(textBoxPiso.Text);
             }
 
-            String depto = textBox14.Text;
+            String depto = textBoxDepto.Text;
             String tipoDoc = "";
             String tipoIdentidad = "Cliente";
             int idDir = 0;
@@ -71,53 +105,51 @@ namespace FrbaHotel.AbmCliente
             Cliente cliente = new Cliente(idCliente,identidad, activo,reservas);
             //ahora si ya lo puedo crear
             RepositorioCliente repoCliente = new RepositorioCliente();
-            repoCliente.create(cliente);
-            
 
+            if (this.validoInput(this))
+            {
+                try
+                {
+                    repoCliente.create(cliente);
+                    MessageBox.Show("Cliente creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.limpiarPantalla();
+                }
+                catch (ElementoYaExisteException exc)
+                {
+                    MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para crear el Cliente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        private Boolean validoInput(AltaCliente form)
+        {
+            return !form.textBoxNombre.Text.Equals("") &&
+                   !form.textBoxApellido.Text.Equals("") &&
+                   !form.textBoxNroDoc.Text.Equals("") &&
+                   !form.textBoxMail.Text.Equals("") &&
+                   !form.textBoxTelefono.Text.Equals("") &&
+                   !form.textBoxCalle.Text.Equals("") &&
+                   !form.textBoxNroCalle.Text.Equals("") &&
+                   !form.textBoxPiso.Text.Equals("") &&
+                   !form.textBoxDepto.Text.Equals("") &&
+                   !form.textBoxLocalidad.Text.Equals("") &&
+                   !form.textBoxPaisOrigen.Text.Equals("") &&
+                   !form.textBoxNacionalidad.Text.Equals("") &&
+                   form.comboBoxTipoDoc.SelectedValue != null;
+        } 
 
         private void AltaCliente_Load(object sender, EventArgs e)
         {
-            //vacio todos los campos porque es el limpiar
-            textBox2.Text = "";
-            textBox3.Text = "";
-            textBox4.Text = "";
-            textBox5.Text = "";
-            textBox6.Text = "";
-            textBox7.Text = "";
-            textBox8.Text = "";
-            textBox9.Text = "";
-            textBox10.Text = "";
-            textBox12.Text = "";
-            textBox13.Text = "";
-            textBox14.Text = "";
-
-            
-            comboBoxTipoDoc.SelectedValue = "";
-            dateTime.ResetText();
-
-            List<String> tipoDoc = new List<String>();
-            tipoDoc.Add("DNI");
-            tipoDoc.Add("Pasaporte");
-            tipoDoc.Add("CUIT");
-            tipoDoc.Add("LE");
-            tipoDoc.Add("LC");
-            comboBoxTipoDoc.ValueMember = "Value";
-            comboBoxTipoDoc.DisplayMember = "Key";
-            comboBoxTipoDoc.DataSource = tipoDoc;
-            comboBoxTipoDoc.SelectedValue = "";
-
-            
+            this.limpiarPantalla();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
         }
 
         //CIERRO LA VENTANA CON ESCAPE
@@ -129,6 +161,46 @@ namespace FrbaHotel.AbmCliente
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        //ESTO LO PONGO PARA QUE EL NUMERO DE CALLE SOLO PUEDA SER UN NUMERO
+        private void textBoxNroCalle_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //ESTO LO PONGO PARA QUE EL PISO DEL DEPTO SOLO PUEDA SER UN NUMERO
+        private void textBoxPiso_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //ESTO LO PONGO PARA QUE EL DOCUMENTO SOLO PUEDA TENER NUMEROS
+        private void textBoxNroDoc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //ESTO LO PONGO PARA QUE EL TELEFONO SOLO PUEDA TENER NUMEROS
+        private void textBoxTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

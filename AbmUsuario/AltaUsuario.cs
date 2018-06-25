@@ -19,6 +19,7 @@ namespace FrbaHotel.AbmUsuario
         {
             InitializeComponent();
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             this.limpiarPantalla();
@@ -27,32 +28,32 @@ namespace FrbaHotel.AbmUsuario
         private void limpiarPantalla()
         {
             //vacio todos los campos porque es el limpiar
-            textBox1.Text = "";
-            textBox2.Text = "";
-            textBox3.Text = "";
-            textBox4.Text = "";
-            textBox5.Text = "";
-            textBox6.Text = "";
-            textBox7.Text = "";
-            textBox8.Text = "";
-            textBox12.Text = "";
-            textBox13.Text = "";
-            textBox14.Text = "";
-            textBox15.Text = "";
-            textBox16.Text = "";
-            textBox17.Text = "";
+            textBoxUsername.Text = "";
+            textBoxPassword.Text = "";
+            textBoxNombre.Text = "";
+            textBoxApellido.Text = "";
+            textBoxNroDoc.Text = "";
+            textBoxMail.Text = "";
+            textBoxTelefono.Text = "";
+            textBoxCalle.Text = "";
+            textBoxNroCalle.Text = "";
+            textBoxPiso.Text = "";
+            textBoxDepto.Text = "";
+            textBoxLocalidad.Text = "";
+            textBoxPaisOrigen.Text = "";
+            textBoxNacionalidad.Text = "";
 
             //cargo rol
             RepositorioRol repositorioRol = new RepositorioRol();
-            dataGridView1.DataSource = repositorioRol.getAll();
-            dataGridView1.CurrentCell = null;
-            dataGridView1.ClearSelection();
+            dataGridRoles.DataSource = repositorioRol.getAll();
+            dataGridRoles.CurrentCell = null;
+            dataGridRoles.ClearSelection();
 
             //cargo hotel
             RepositorioHotel repositorioHotel = new RepositorioHotel();
-            dataGridView2.DataSource = repositorioHotel.getAll();
-            dataGridView2.CurrentCell = null;
-            dataGridView2.ClearSelection();
+            dataGridHoteles.DataSource = repositorioHotel.getAll();
+            dataGridHoteles.CurrentCell = null;
+            dataGridHoteles.ClearSelection();
 
             comboBoxTipoDoc.SelectedValue = "";
             dateTime.ResetText();
@@ -75,30 +76,30 @@ namespace FrbaHotel.AbmUsuario
             //GENERAR ALTA (no pido el estado ya que va como activo al momento de crearlo)
 
             //traigo los valores
-            String username = textBox1.Text;
-            String password = textBox2.Text;
-            String nombre = textBox3.Text;
-            String apellido = textBox4.Text;
-            String nroDoc = textBox5.Text;
-            String mail = textBox6.Text;
-            String telefono = textBox7.Text;
-            String calle = textBox8.Text;
-            String localidad = textBox15.Text;
-            String pais = textBox16.Text;
-            String nacionalidad = textBox17.Text;
+            String username = textBoxUsername.Text;
+            String password = textBoxPassword.Text;
+            String nombre = textBoxNombre.Text;
+            String apellido = textBoxApellido.Text;
+            String nroDoc = textBoxNroDoc.Text;
+            String mail = textBoxMail.Text;
+            String telefono = textBoxTelefono.Text;
+            String calle = textBoxCalle.Text;
+            String localidad = textBoxLocalidad.Text;
+            String pais = textBoxPaisOrigen.Text;
+            String nacionalidad = textBoxNacionalidad.Text;
             DateTime fechaNacimiento = dateTime.Value;
             int nroCalle = 0;
-            if (textBox12.Text != "")
+            if (textBoxNroCalle.Text != "")
             {
-                 nroCalle = int.Parse(textBox12.Text);
+                 nroCalle = int.Parse(textBoxNroCalle.Text);
             }
             int nroPiso = 0;
-            if (textBox13.Text != "")
+            if (textBoxPiso.Text != "")
             {
-                nroPiso = int.Parse(textBox13.Text);
+                nroPiso = int.Parse(textBoxPiso.Text);
             }
 
-            String depto = textBox14.Text;
+            String depto = textBoxDepto.Text;
             String tipoDoc = "";
             String tipoIdentidad = "Usuario";
             int idDir = 0;
@@ -112,13 +113,13 @@ namespace FrbaHotel.AbmUsuario
             }
             //traigo los roles elegidos
             List<Rol> roles = new List<Rol>();
-            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+            foreach (DataGridViewRow item in this.dataGridRoles.SelectedRows)
                 {
                     roles.Add(item.DataBoundItem as Rol);
                 }
             //traigo los hoteles elegidos
             List<Hotel> hoteles = new List<Hotel>();
-            foreach (DataGridViewRow item in this.dataGridView2.SelectedRows)
+            foreach (DataGridViewRow item in this.dataGridHoteles.SelectedRows)
             {
                 hoteles.Add(item.DataBoundItem as Hotel);
             }
@@ -155,22 +156,22 @@ namespace FrbaHotel.AbmUsuario
 
         private Boolean validoInput(AltaUsuario form)
         {
-            return !form.textBox1.Text.Equals("") &&
-                   !form.textBox2.Text.Equals("") &&
-                   !form.textBox3.Text.Equals("") &&
-                   !form.textBox4.Text.Equals("") &&
-                   !form.textBox5.Text.Equals("") &&
-                   !form.textBox6.Text.Equals("") &&
-                   !form.textBox7.Text.Equals("") &&
-                   !form.textBox8.Text.Equals("") &&
-                   !form.textBox12.Text.Equals("") &&
-                   !form.textBox13.Text.Equals("") &&
-                   !form.textBox14.Text.Equals("") &&
-                   !form.textBox15.Text.Equals("") &&
-                   !form.textBox16.Text.Equals("") &&
-                   !form.textBox17.Text.Equals("") &&
-                   !form.dataGridView1.SelectedRows.Count.Equals(0) &&
-                   !form.dataGridView2.SelectedRows.Count.Equals(0) &&
+            return !form.textBoxUsername.Text.Equals("") &&
+                   !form.textBoxPassword.Text.Equals("") &&
+                   !form.textBoxNombre.Text.Equals("") &&
+                   !form.textBoxApellido.Text.Equals("") &&
+                   !form.textBoxNroDoc.Text.Equals("") &&
+                   !form.textBoxMail.Text.Equals("") &&
+                   !form.textBoxTelefono.Text.Equals("") &&
+                   !form.textBoxCalle.Text.Equals("") &&
+                   !form.textBoxNroCalle.Text.Equals("") &&
+                   !form.textBoxPiso.Text.Equals("") &&
+                   !form.textBoxDepto.Text.Equals("") &&
+                   !form.textBoxLocalidad.Text.Equals("") &&
+                   !form.textBoxPaisOrigen.Text.Equals("") &&
+                   !form.textBoxNacionalidad.Text.Equals("") &&
+                   !form.dataGridRoles.SelectedRows.Count.Equals(0) &&
+                   !form.dataGridHoteles.SelectedRows.Count.Equals(0) &&
                    form.comboBoxTipoDoc.SelectedValue != null;
         } 
 

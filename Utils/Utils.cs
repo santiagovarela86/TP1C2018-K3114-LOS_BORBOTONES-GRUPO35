@@ -38,10 +38,9 @@ namespace FrbaHotel.Commons
             {
                 return Int32.Parse(field);
             }
-            catch (Exception e)
+            catch (System.FormatException e)
             {
-                throw new RequestInvalidoException(fieldName + " debe ser numerico");
-
+                throw new RequestInvalidoException(fieldName + " debe ser numerico: " + e.Message);
             }
         }
 
