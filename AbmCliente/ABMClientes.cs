@@ -108,7 +108,7 @@ namespace FrbaHotel.AbmCliente
         private void button4_Click(object sender, EventArgs e)
         {
             Cliente cliente = (Cliente)dataGridView1.CurrentRow.DataBoundItem;
-            /*
+
             using (ModificacionCliente form = new ModificacionCliente(cliente))
             {
                 var result = form.ShowDialog();
@@ -116,7 +116,6 @@ namespace FrbaHotel.AbmCliente
                 //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO CLIENTE VUELVO A CARGAR LA LISTA
                 this.button2_Click(sender, e);
             }
-            */
         }
 
         private void button5_Click(object sender, EventArgs e)

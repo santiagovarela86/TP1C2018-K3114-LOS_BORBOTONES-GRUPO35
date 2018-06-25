@@ -31,47 +31,47 @@
             this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.dateTime = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridRoles = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxNroDoc = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBoxMail = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBoxTelefono = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBoxCalle = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.textBox13 = new System.Windows.Forms.TextBox();
-            this.textBox14 = new System.Windows.Forms.TextBox();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.textBox16 = new System.Windows.Forms.TextBox();
-            this.textBox17 = new System.Windows.Forms.TextBox();
+            this.textBoxNroCalle = new System.Windows.Forms.TextBox();
+            this.textBoxPiso = new System.Windows.Forms.TextBox();
+            this.textBoxDepto = new System.Windows.Forms.TextBox();
+            this.textBoxLocalidad = new System.Windows.Forms.TextBox();
+            this.textBoxPais = new System.Windows.Forms.TextBox();
+            this.textBoxNacionalidad = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dataGridHoteles = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.buttonGuardar = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.checkBoxActivo = new System.Windows.Forms.CheckBox();
+            this.buttonResetear = new System.Windows.Forms.Button();
+            this.buttonActualizar = new System.Windows.Forms.Button();
+            this.buttonSalir = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridRoles)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHoteles)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -102,12 +102,12 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Tipo documento:";
             // 
-            // textBox1
+            // textBoxUsername
             // 
-            this.textBox1.Location = new System.Drawing.Point(68, 26);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(156, 20);
-            this.textBox1.TabIndex = 1;
+            this.textBoxUsername.Location = new System.Drawing.Point(68, 26);
+            this.textBoxUsername.Name = "textBoxUsername";
+            this.textBoxUsername.Size = new System.Drawing.Size(156, 20);
+            this.textBoxUsername.TabIndex = 1;
             // 
             // label1
             // 
@@ -118,13 +118,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Username:";
             // 
-            // textBox2
+            // textBoxPassword
             // 
-            this.textBox2.Location = new System.Drawing.Point(292, 27);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(156, 20);
-            this.textBox2.TabIndex = 2;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.textBoxPassword.Location = new System.Drawing.Point(292, 27);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.Size = new System.Drawing.Size(156, 20);
+            this.textBoxPassword.TabIndex = 2;
+            this.textBoxPassword.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label2
             // 
@@ -135,27 +135,27 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Password:";
             // 
-            // dataGridView1
+            // dataGridRoles
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(9, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(260, 250);
-            this.dataGridView1.TabIndex = 18;
+            this.dataGridRoles.AllowUserToAddRows = false;
+            this.dataGridRoles.AllowUserToDeleteRows = false;
+            this.dataGridRoles.AllowUserToOrderColumns = true;
+            this.dataGridRoles.AllowUserToResizeRows = false;
+            this.dataGridRoles.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridRoles.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.dataGridRoles.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridRoles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridRoles.Location = new System.Drawing.Point(9, 19);
+            this.dataGridRoles.Name = "dataGridRoles";
+            this.dataGridRoles.ReadOnly = true;
+            this.dataGridRoles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridRoles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridRoles.Size = new System.Drawing.Size(260, 250);
+            this.dataGridRoles.TabIndex = 18;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.dataGridView1);
+            this.groupBox2.Controls.Add(this.dataGridRoles);
             this.groupBox2.Location = new System.Drawing.Point(391, 175);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(287, 275);
@@ -163,12 +163,12 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Roles";
             // 
-            // textBox3
+            // textBoxNombre
             // 
-            this.textBox3.Location = new System.Drawing.Point(59, 56);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(165, 20);
-            this.textBox3.TabIndex = 4;
+            this.textBoxNombre.Location = new System.Drawing.Point(59, 56);
+            this.textBoxNombre.Name = "textBoxNombre";
+            this.textBoxNombre.Size = new System.Drawing.Size(165, 20);
+            this.textBoxNombre.TabIndex = 4;
             // 
             // label3
             // 
@@ -179,12 +179,12 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Nombre:";
             // 
-            // textBox4
+            // textBoxApellido
             // 
-            this.textBox4.Location = new System.Drawing.Point(283, 53);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(165, 20);
-            this.textBox4.TabIndex = 5;
+            this.textBoxApellido.Location = new System.Drawing.Point(283, 53);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(165, 20);
+            this.textBoxApellido.TabIndex = 5;
             // 
             // label4
             // 
@@ -195,13 +195,13 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Apellido:";
             // 
-            // textBox5
+            // textBoxNroDoc
             // 
-            this.textBox5.Location = new System.Drawing.Point(321, 80);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(127, 20);
-            this.textBox5.TabIndex = 8;
-            this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox5_KeyPress);
+            this.textBoxNroDoc.Location = new System.Drawing.Point(321, 80);
+            this.textBoxNroDoc.Name = "textBoxNroDoc";
+            this.textBoxNroDoc.Size = new System.Drawing.Size(127, 20);
+            this.textBoxNroDoc.TabIndex = 8;
+            this.textBoxNroDoc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox5_KeyPress);
             // 
             // label5
             // 
@@ -212,12 +212,12 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "Nro Documento:";
             // 
-            // textBox6
+            // textBoxMail
             // 
-            this.textBox6.Location = new System.Drawing.Point(491, 27);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(156, 20);
-            this.textBox6.TabIndex = 3;
+            this.textBoxMail.Location = new System.Drawing.Point(491, 27);
+            this.textBoxMail.Name = "textBoxMail";
+            this.textBoxMail.Size = new System.Drawing.Size(156, 20);
+            this.textBoxMail.TabIndex = 3;
             // 
             // label6
             // 
@@ -228,13 +228,13 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Mail:";
             // 
-            // textBox7
+            // textBoxTelefono
             // 
-            this.textBox7.Location = new System.Drawing.Point(512, 53);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(135, 20);
-            this.textBox7.TabIndex = 6;
-            this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox7_KeyPress);
+            this.textBoxTelefono.Location = new System.Drawing.Point(512, 53);
+            this.textBoxTelefono.Name = "textBoxTelefono";
+            this.textBoxTelefono.Size = new System.Drawing.Size(135, 20);
+            this.textBoxTelefono.TabIndex = 6;
+            this.textBoxTelefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox7_KeyPress);
             // 
             // label7
             // 
@@ -245,12 +245,12 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Telefono:";
             // 
-            // textBox8
+            // textBoxCalle
             // 
-            this.textBox8.Location = new System.Drawing.Point(365, 103);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(220, 20);
-            this.textBox8.TabIndex = 11;
+            this.textBoxCalle.Location = new System.Drawing.Point(365, 103);
+            this.textBoxCalle.Name = "textBoxCalle";
+            this.textBoxCalle.Size = new System.Drawing.Size(220, 20);
+            this.textBoxCalle.TabIndex = 11;
             // 
             // label8
             // 
@@ -270,49 +270,49 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "Fecha Nacimiento:";
             // 
-            // textBox12
+            // textBoxNroCalle
             // 
-            this.textBox12.Location = new System.Drawing.Point(39, 127);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(31, 20);
-            this.textBox12.TabIndex = 12;
-            this.textBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox12_KeyPress);
+            this.textBoxNroCalle.Location = new System.Drawing.Point(39, 127);
+            this.textBoxNroCalle.Name = "textBoxNroCalle";
+            this.textBoxNroCalle.Size = new System.Drawing.Size(31, 20);
+            this.textBoxNroCalle.TabIndex = 12;
+            this.textBoxNroCalle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox12_KeyPress);
             // 
-            // textBox13
+            // textBoxPiso
             // 
-            this.textBox13.Location = new System.Drawing.Point(112, 127);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(30, 20);
-            this.textBox13.TabIndex = 13;
-            this.textBox13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox13_KeyPress);
+            this.textBoxPiso.Location = new System.Drawing.Point(112, 127);
+            this.textBoxPiso.Name = "textBoxPiso";
+            this.textBoxPiso.Size = new System.Drawing.Size(30, 20);
+            this.textBoxPiso.TabIndex = 13;
+            this.textBoxPiso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox13_KeyPress);
             // 
-            // textBox14
+            // textBoxDepto
             // 
-            this.textBox14.Location = new System.Drawing.Point(193, 127);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(33, 20);
-            this.textBox14.TabIndex = 14;
+            this.textBoxDepto.Location = new System.Drawing.Point(193, 127);
+            this.textBoxDepto.Name = "textBoxDepto";
+            this.textBoxDepto.Size = new System.Drawing.Size(33, 20);
+            this.textBoxDepto.TabIndex = 14;
             // 
-            // textBox15
+            // textBoxLocalidad
             // 
-            this.textBox15.Location = new System.Drawing.Point(296, 127);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(152, 20);
-            this.textBox15.TabIndex = 15;
+            this.textBoxLocalidad.Location = new System.Drawing.Point(296, 127);
+            this.textBoxLocalidad.Name = "textBoxLocalidad";
+            this.textBoxLocalidad.Size = new System.Drawing.Size(152, 20);
+            this.textBoxLocalidad.TabIndex = 15;
             // 
-            // textBox16
+            // textBoxPais
             // 
-            this.textBox16.Location = new System.Drawing.Point(491, 129);
-            this.textBox16.Name = "textBox16";
-            this.textBox16.Size = new System.Drawing.Size(156, 20);
-            this.textBox16.TabIndex = 16;
+            this.textBoxPais.Location = new System.Drawing.Point(491, 129);
+            this.textBoxPais.Name = "textBoxPais";
+            this.textBoxPais.Size = new System.Drawing.Size(156, 20);
+            this.textBoxPais.TabIndex = 16;
             // 
-            // textBox17
+            // textBoxNacionalidad
             // 
-            this.textBox17.Location = new System.Drawing.Point(512, 78);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(135, 20);
-            this.textBox17.TabIndex = 9;
+            this.textBoxNacionalidad.Location = new System.Drawing.Point(512, 78);
+            this.textBoxNacionalidad.Name = "textBoxNacionalidad";
+            this.textBoxNacionalidad.Size = new System.Drawing.Size(135, 20);
+            this.textBoxNacionalidad.TabIndex = 9;
             // 
             // label12
             // 
@@ -368,27 +368,27 @@
             this.label17.TabIndex = 0;
             this.label17.Text = "Nacion:";
             // 
-            // dataGridView2
+            // dataGridHoteles
             // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.AllowUserToOrderColumns = true;
-            this.dataGridView2.AllowUserToResizeRows = false;
-            this.dataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridView2.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            this.dataGridView2.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(9, 19);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(344, 250);
-            this.dataGridView2.TabIndex = 17;
+            this.dataGridHoteles.AllowUserToAddRows = false;
+            this.dataGridHoteles.AllowUserToDeleteRows = false;
+            this.dataGridHoteles.AllowUserToOrderColumns = true;
+            this.dataGridHoteles.AllowUserToResizeRows = false;
+            this.dataGridHoteles.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridHoteles.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.dataGridHoteles.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridHoteles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridHoteles.Location = new System.Drawing.Point(9, 19);
+            this.dataGridHoteles.Name = "dataGridHoteles";
+            this.dataGridHoteles.ReadOnly = true;
+            this.dataGridHoteles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridHoteles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridHoteles.Size = new System.Drawing.Size(344, 250);
+            this.dataGridHoteles.TabIndex = 17;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.dataGridView2);
+            this.groupBox3.Controls.Add(this.dataGridHoteles);
             this.groupBox3.Location = new System.Drawing.Point(13, 175);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(359, 275);
@@ -398,38 +398,38 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.textBox16);
+            this.groupBox1.Controls.Add(this.checkBoxActivo);
+            this.groupBox1.Controls.Add(this.textBoxUsername);
+            this.groupBox1.Controls.Add(this.textBoxPais);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.textBoxPassword);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.textBoxNombre);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBox4);
+            this.groupBox1.Controls.Add(this.textBoxApellido);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox5);
+            this.groupBox1.Controls.Add(this.textBoxNroDoc);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.textBox6);
+            this.groupBox1.Controls.Add(this.textBoxMail);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.textBox7);
+            this.groupBox1.Controls.Add(this.textBoxTelefono);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.textBox8);
+            this.groupBox1.Controls.Add(this.textBoxCalle);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.comboBoxTipoDoc);
-            this.groupBox1.Controls.Add(this.textBox15);
+            this.groupBox1.Controls.Add(this.textBoxLocalidad);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.dateTime);
-            this.groupBox1.Controls.Add(this.textBox12);
+            this.groupBox1.Controls.Add(this.textBoxNroCalle);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.textBox13);
+            this.groupBox1.Controls.Add(this.textBoxPiso);
             this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.textBox14);
+            this.groupBox1.Controls.Add(this.textBoxDepto);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.label16);
-            this.groupBox1.Controls.Add(this.textBox17);
+            this.groupBox1.Controls.Add(this.textBoxNacionalidad);
             this.groupBox1.Controls.Add(this.label17);
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Name = "groupBox1";
@@ -438,65 +438,65 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "General";
             // 
-            // checkBox1
+            // checkBoxActivo
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(591, 105);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(56, 17);
-            this.checkBox1.TabIndex = 18;
-            this.checkBox1.Text = "Activo";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxActivo.AutoSize = true;
+            this.checkBoxActivo.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxActivo.Location = new System.Drawing.Point(591, 105);
+            this.checkBoxActivo.Name = "checkBoxActivo";
+            this.checkBoxActivo.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxActivo.TabIndex = 18;
+            this.checkBoxActivo.Text = "Activo";
+            this.checkBoxActivo.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonResetear
             // 
-            this.button1.Location = new System.Drawing.Point(153, 456);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "Resetear";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonResetear.Location = new System.Drawing.Point(153, 456);
+            this.buttonResetear.Name = "buttonResetear";
+            this.buttonResetear.Size = new System.Drawing.Size(75, 23);
+            this.buttonResetear.TabIndex = 19;
+            this.buttonResetear.Text = "Resetear";
+            this.buttonResetear.UseVisualStyleBackColor = true;
+            this.buttonResetear.Click += new System.EventHandler(this.button1_Click);
             // 
-            // buttonGuardar
+            // buttonActualizar
             // 
-            this.buttonGuardar.Location = new System.Drawing.Point(350, 456);
-            this.buttonGuardar.Name = "buttonGuardar";
-            this.buttonGuardar.Size = new System.Drawing.Size(75, 23);
-            this.buttonGuardar.TabIndex = 20;
-            this.buttonGuardar.Text = "Actualizar";
-            this.buttonGuardar.UseVisualStyleBackColor = true;
-            this.buttonGuardar.Click += new System.EventHandler(this.button2_Click);
+            this.buttonActualizar.Location = new System.Drawing.Point(350, 456);
+            this.buttonActualizar.Name = "buttonActualizar";
+            this.buttonActualizar.Size = new System.Drawing.Size(75, 23);
+            this.buttonActualizar.TabIndex = 20;
+            this.buttonActualizar.Text = "Actualizar";
+            this.buttonActualizar.UseVisualStyleBackColor = true;
+            this.buttonActualizar.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // buttonSalir
             // 
-            this.button3.Location = new System.Drawing.Point(533, 456);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 21;
-            this.button3.Text = "Salir";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.buttonSalir.Location = new System.Drawing.Point(533, 456);
+            this.buttonSalir.Name = "buttonSalir";
+            this.buttonSalir.Size = new System.Drawing.Size(75, 23);
+            this.buttonSalir.TabIndex = 21;
+            this.buttonSalir.Text = "Salir";
+            this.buttonSalir.UseVisualStyleBackColor = true;
+            this.buttonSalir.Click += new System.EventHandler(this.button3_Click);
             // 
             // ModificacionUsuario
             // 
-            this.AcceptButton = this.buttonGuardar;
+            this.AcceptButton = this.buttonActualizar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(687, 486);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.buttonSalir);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.buttonGuardar);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonActualizar);
+            this.Controls.Add(this.buttonResetear);
             this.Controls.Add(this.groupBox1);
             this.Name = "ModificacionUsuario";
             this.Text = "Modificacion Usuario";
             this.Load += new System.EventHandler(this.ModificacionUsuario_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridRoles)).EndInit();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHoteles)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -523,29 +523,29 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button buttonGuardar;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox12;
-        private System.Windows.Forms.TextBox textBox13;
-        private System.Windows.Forms.TextBox textBox14;
-        private System.Windows.Forms.TextBox textBox15;
-        private System.Windows.Forms.TextBox textBox16;
-        private System.Windows.Forms.TextBox textBox17;
+        private System.Windows.Forms.Button buttonResetear;
+        private System.Windows.Forms.Button buttonActualizar;
+        private System.Windows.Forms.TextBox textBoxUsername;
+        private System.Windows.Forms.TextBox textBoxPassword;
+        private System.Windows.Forms.TextBox textBoxNombre;
+        private System.Windows.Forms.TextBox textBoxApellido;
+        private System.Windows.Forms.TextBox textBoxNroDoc;
+        private System.Windows.Forms.TextBox textBoxMail;
+        private System.Windows.Forms.TextBox textBoxTelefono;
+        private System.Windows.Forms.TextBox textBoxCalle;
+        private System.Windows.Forms.TextBox textBoxNroCalle;
+        private System.Windows.Forms.TextBox textBoxPiso;
+        private System.Windows.Forms.TextBox textBoxDepto;
+        private System.Windows.Forms.TextBox textBoxLocalidad;
+        private System.Windows.Forms.TextBox textBoxPais;
+        private System.Windows.Forms.TextBox textBoxNacionalidad;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button buttonSalir;
+        private System.Windows.Forms.DataGridView dataGridRoles;
+        private System.Windows.Forms.DataGridView dataGridHoteles;
         private System.Windows.Forms.ComboBox comboBoxTipoDoc;
         private System.Windows.Forms.DateTimePicker dateTime;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxActivo;
     }
 }
