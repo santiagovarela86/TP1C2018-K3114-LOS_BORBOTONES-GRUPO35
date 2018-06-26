@@ -37,7 +37,7 @@
             this.comboBoxTipoHabitacion = new System.Windows.Forms.ComboBox();
             this.labelHotel = new System.Windows.Forms.Label();
             this.comboBoxHotel = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelRegimen = new System.Windows.Forms.Label();
             this.comboBoxRegimen = new System.Windows.Forms.ComboBox();
             this.habitacionesDisponiblesGrid = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).BeginInit();
@@ -117,12 +117,12 @@
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(37, 83);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 33;
-            this.label3.Text = "Hotel:";
+            this.labelRegimen.AutoSize = true;
+            this.labelRegimen.Location = new System.Drawing.Point(37, 83);
+            this.labelRegimen.Name = "labelRegimen";
+            this.labelRegimen.Size = new System.Drawing.Size(35, 13);
+            this.labelRegimen.TabIndex = 33;
+            this.labelRegimen.Text = "Regimen:";
             // 
             // comboBoxRegimen
             // 
@@ -156,7 +156,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 573);
             this.Controls.Add(this.habitacionesDisponiblesGrid);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelRegimen);
             this.Controls.Add(this.comboBoxRegimen);
             this.Controls.Add(this.labelHotel);
             this.Controls.Add(this.comboBoxHotel);
@@ -186,7 +186,7 @@
         private System.Windows.Forms.ComboBox comboBoxTipoHabitacion;
         private System.Windows.Forms.Label labelHotel;
         private System.Windows.Forms.ComboBox comboBoxHotel;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelRegimen;
         private System.Windows.Forms.ComboBox comboBoxRegimen;
         private System.Windows.Forms.DataGridView habitacionesDisponiblesGrid;
     }

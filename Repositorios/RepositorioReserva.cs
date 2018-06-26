@@ -85,7 +85,9 @@ namespace FrbaHotel.Repositorios
               
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Reserva WHERE FechaDesde < @fechaHasta AND @fechaDesde < FechaHasta AND idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Reserva AS RES " +
+                "WHERE RES.FechaDesde < @fechaHasta AND @fechaDesde < RES.FechaHasta AND RES.idHotel = @idHotel " +
+                "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE WHERE ESRE.idReserva = RES.idReserva AND  ESRE.TipoEstado IN ('RCR','RCC','RCNS')); ";
 
             sqlConnection.Open();
 
@@ -387,10 +389,11 @@ namespace FrbaHotel.Repositorios
 
              sqlCommand.CommandType = CommandType.Text;
              sqlCommand.Connection = sqlConnection;
-             sqlCommand.CommandText = 
-                 "SELECT idReserva FROM LOS_BORBOTONES.Reserva WHERE idRegimen = @idRegimen "  + 
-                 "AND idHotel=@idHotel " +
-                 "AND FechaHasta >GETDATE(); ";
+             sqlCommand.CommandText =
+                 "SELECT idReserva FROM LOS_BORBOTONES.Reserva AS RES WHERE RES.idRegimen = @idRegimen " +
+                 "AND RES.idHotel=@idHotel " +
+                 "AND RES.FechaHasta >GETDATE()" +
+                 "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE WHERE ESRE.idReserva = res.idReserva AND  ESRE.TipoEstado IN ('RCR','RCC','RCNS'));";
 
              sqlConnection.Open();
 
