@@ -92,8 +92,8 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 usuario = repoUsuario.getById(reader.GetOrdinal("IdUsuario"));
-                reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
-                fecha = reader.GetDateTime(reader.GetOrdinal("Fecha"));
+                //reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
+                //fecha = reader.GetDateTime(reader.GetOrdinal("Fecha"));
                 tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
                 descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
             }
@@ -102,7 +102,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Si no encuentro elemento con ese ID tiro una excepción
-            if (reserva.Equals(null)) throw new NoExisteIDException("No existe estadoReserva con el ID asociado");
+            //if (usuario.Equals(null)) throw new NoExisteIDException("No existe estadoReserva con el ID asociado");
 
             //Armo el estadoReserva completo
             estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
@@ -266,6 +266,39 @@ namespace FrbaHotel.Repositorios
 
                 sqlConnection.Close();
         }
+
+        public EstadoReserva getByIdEstadia(int idEstadia)
+        {
+            EstadoReserva estadoReserva = null;
+            int idEstadoReserva = 0;
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva =" +
+                " (SELECT TOP 1 idReserva FROM LOS_BORBOTONES.Reserva WHERE idEstadia = @idEstadia);";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+               idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
+            }
+            estadoReserva = this.getById(idEstadoReserva);
+
+            sqlConnection.Close();
+
+            return estadoReserva;
+        }
+
     }
 }
 

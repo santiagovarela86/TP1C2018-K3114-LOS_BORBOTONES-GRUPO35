@@ -54,7 +54,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Si no encuentro elemento con ese ID tiro una excepción
-            if (usuarioCheckIn.Equals(null)) throw new NoExisteIDException("No existe estadia con el ID asociado");
+            //if (usuarioCheckIn.Equals(null)) throw new NoExisteIDException("No existe estadia con el ID asociado");
 
             //Armo la estadia completa
             estadia = new Estadia(idEstadia, usuarioCheckIn, usuarioCheckOut, fechaEntrada, fechaSalida, facturada,cantidadNoches);
@@ -70,6 +70,7 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
+            
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
 
@@ -87,6 +88,34 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             return estadias;
+        }
+        public List<Consumible> getConsumiblesXIdEstadia(int idEstadia)
+        {
+            List<Consumible> consumiblesXEstadia = new List<Consumible>();
+            RepositorioConsumibles repoConsumibles = new RepositorioConsumibles();
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idConsumible FROM LOS_BORBOTONES.Estadia_X_Consumible where idEstadia=@idEstadia";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                consumiblesXEstadia.Add(repoConsumibles.getById(reader.GetInt32(reader.GetOrdinal("idConsumible"))));
+            }
+
+            sqlConnection.Close();
+
+            return consumiblesXEstadia;
         }
 
         override public void delete(Estadia estadia)

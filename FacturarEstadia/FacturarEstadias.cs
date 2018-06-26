@@ -22,6 +22,21 @@ namespace FrbaHotel.FacturarEstadia
         {
             textBox1.Text = "";
             dataGridView1.DataSource = new List<Estadia>();
+            dataGridView2.DataSource = new List<Consumible>();
+
+            comboBoxTipoPago.SelectedValue = "";
+
+            List<String> tipoPago = new List<String>();
+            tipoPago.Add("Efectivo");
+            tipoPago.Add("VISA Credito");
+            tipoPago.Add("American Express Credito");
+            tipoPago.Add("Mastercard Credito");
+
+            comboBoxTipoPago.ValueMember = "Value";
+            comboBoxTipoPago.DisplayMember = "Key";
+            comboBoxTipoPago.DataSource = tipoPago;
+            comboBoxTipoPago.SelectedValue = "";
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,22 +46,46 @@ namespace FrbaHotel.FacturarEstadia
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //traigo la estadia con sus items de factura si la estadia ya tiene checkout hecho.
             int idEstadia = 0;
-            RepositorioEstadia repositorioEstadias = new RepositorioEstadia();
+            RepositorioEstadia repositorioEstadia = new RepositorioEstadia();
+            RepositorioEstadoReserva repoEstadoReserva =new RepositorioEstadoReserva();
+
+            Estadia estadia = null;
+            EstadoReserva estadoReserva=null;
+
             if (textBox1.Text != "")
             {
                 idEstadia = int.Parse(textBox1.Text);
-                
-                Estadia estadia = repositorioEstadias.getById(idEstadia);
 
-                dataGridView1.DataSource = estadia;
-                dataGridView1.ClearSelection();
-            }else
-            {
-                List<Estadia> estadias = repositorioEstadias.getAll();
+                estadia = repositorioEstadia.getById(idEstadia);
+                //buscar por estado reserva que este con check out ya realizado
+                estadoReserva = repoEstadoReserva.getByIdEstadia(idEstadia);
+             if (estadia.getCantidadNoches()==0 | estadoReserva.getTipoEstado().Equals("RCE") | estadia.getFacturada()==true)
+             {
+                 if(estadoReserva.getTipoEstado().Equals("RCE"))
+                     MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 if (estadia.getFacturada() == true)
+                     MessageBox.Show("la estadia ingresada ya fue facturada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 MessageBox.Show("La estadia ingresada no es correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+             }else
+             {
+                //lleno los datos de la estadia aca se puede ver la cantidad de noches que de verdad se alojo.
+                List<Estadia> estadias= new List<Estadia>();
+                estadias.Add(estadia);
                 dataGridView1.DataSource = estadias;
                 dataGridView1.ClearSelection();
-            }
+                //lleno los consumibles por estadia en el datagrid2
+                List<Consumible> consumiblesXEstadia = new List<Consumible>();
+                consumiblesXEstadia = repositorioEstadia.getConsumiblesXIdEstadia(estadia.getIdEstadia());
+                dataGridView2.DataSource = consumiblesXEstadia;
+                dataGridView2.ClearSelection();                
+             }
+            }else
+            {
+                MessageBox.Show("por favor ingresar id de estadia ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }            
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
