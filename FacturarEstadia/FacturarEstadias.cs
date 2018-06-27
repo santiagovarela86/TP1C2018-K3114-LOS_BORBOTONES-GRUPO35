@@ -14,6 +14,8 @@ namespace FrbaHotel.FacturarEstadia
 {
     public partial class FacturarEstadias : Form
     {
+        List<Estadia> estadias = new List<Estadia>();
+        List<Consumible> consumiblesXEstadia = new List<Consumible>();
         public FacturarEstadias()
         {
             InitializeComponent();
@@ -21,6 +23,10 @@ namespace FrbaHotel.FacturarEstadia
         private void ListadoFacturarEstadia_Load(object sender, EventArgs e)
         {
             textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
             dataGridView1.DataSource = new List<Estadia>();
             dataGridView2.DataSource = new List<Consumible>();
 
@@ -71,12 +77,12 @@ namespace FrbaHotel.FacturarEstadia
              }else
              {
                 //lleno los datos de la estadia aca se puede ver la cantidad de noches que de verdad se alojo.
-                List<Estadia> estadias= new List<Estadia>();
+                 //List<Estadia> estadias = new List<Estadia>();
                 estadias.Add(estadia);
                 dataGridView1.DataSource = estadias;
                 dataGridView1.ClearSelection();
                 //lleno los consumibles por estadia en el datagrid2
-                List<Consumible> consumiblesXEstadia = new List<Consumible>();
+                //List<Consumible> consumiblesXEstadia = new List<Consumible>();
                 consumiblesXEstadia = repositorioEstadia.getConsumiblesXIdEstadia(estadia.getIdEstadia());
                 dataGridView2.DataSource = consumiblesXEstadia;
                 dataGridView2.ClearSelection();                
@@ -90,16 +96,43 @@ namespace FrbaHotel.FacturarEstadia
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //aca va el alta, tiene que poder editar antes de guardarlo tener en cuenta eso ya que despues no hay baja ni mod.
-            /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
+            //FACTURAR ESTADIA
+            RepositorioFactura repoFact = new RepositorioFactura();
+            int idFactura = 0;
+            String tipoPago = "";
+            String nombreTarjeta = "";
+            String vencTarjeta = "";
+            String nroTarjeta = "";
+            String codSegTarjeta = "";
+
+            if (comboBoxTipoPago.SelectedItem != null)
             {
-                var result = form.ShowDialog();
-
-                if (result == DialogResult.OK)
+                tipoPago = (String)comboBoxTipoPago.SelectedItem;
+            }
+            if(tipoPago.Equals("Efectivo"))
+            {
+                //es efectivo llamo aca no necesito los datos de tarjeta
+                
+            }else
+            {
+                //traigo los datos de la tarjeta
+                nombreTarjeta = textBox2.Text;
+                nroTarjeta = textBox3.Text;
+                codSegTarjeta= textBox4.Text;
+                vencTarjeta = textBox5.Text;
+                if (vencTarjeta=="" |codSegTarjeta==""| nroTarjeta=="" | nombreTarjeta=="")
                 {
-
+                    MessageBox.Show("por favor completar todos los campos de informacion de tarjeta ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.ListadoFacturarEstadia_Load(sender, e);    
+                }else
+                {
+                    //tomo la informacion de la estadia, consumibles por estadia y datos de pago
+                    idFactura= repoFact.facturar(estadias, consumiblesXEstadia, tipoPago);
+                    if (idFactura==0)
+                        MessageBox.Show("Error facturando la estadia ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else MessageBox.Show("estadia facturada correctamente ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            }*/
+            }    
         }
 
         //CIERRO LA VENTANA CON ESCAPE

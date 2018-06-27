@@ -239,6 +239,8 @@
     <Compile Include="Repositorios\RepositorioConsumibles.cs" />
     <Compile Include="Repositorios\RepositorioEstadia.cs" />
     <Compile Include="Repositorios\RepositorioEstadoReserva.cs" />
+    <Compile Include="Repositorios\RepositorioFactura.cs" />
+    <Compile Include="Repositorios\RepositorioItemFactura.cs" />
     <Compile Include="Repositorios\RepositorioReserva.cs" />
     <Compile Include="Repositorios\SafeSqlTypeReader.cs" />
     <Compile Include="Modelo\Regimen.cs" />

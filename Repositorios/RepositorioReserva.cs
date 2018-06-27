@@ -63,6 +63,44 @@ namespace FrbaHotel.Repositorios
             return reservas;
 
         }
+        public Reserva getIdByIdEstadia(int idEstadia)
+        {
+            Reserva reserva = null;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT TOP 1 * FROM LOS_BORBOTONES.Reserva WHERE idEstadia = @idEstadia";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                decimal codigoReserva = reader.GetDecimal(reader.GetOrdinal("CodigoReserva"));
+                decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
+                DateTime fechaDesde = reader.SafeGetDateTime(reader.GetOrdinal("FechaDesde"));
+                DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
+                DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
+                Hotel hotel = null;
+                Regimen regimen = null;
+                Estadia estadia = null;
+                Cliente cliente = null;
+                List<EstadoReserva> estados = new List<EstadoReserva>();
+                reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+            }
+            sqlConnection.Close();
+
+            return reserva;
+
+        }
 
 
         public bool existReservaBetweenDate(DateTime fechaDesde, DateTime fechaHasta, int idHotel)
