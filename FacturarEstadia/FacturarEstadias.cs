@@ -129,8 +129,11 @@ namespace FrbaHotel.FacturarEstadia
                     //tomo la informacion de la estadia, consumibles por estadia y datos de pago
                     idFactura= repoFact.facturar(estadias, consumiblesXEstadia, tipoPago);
                     if (idFactura==0)
-                        MessageBox.Show("Error facturando la estadia ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    else MessageBox.Show("estadia facturada correctamente ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Error cargando algun item de la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idFactura == 2)
+                        MessageBox.Show("Error cargando la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idFactura == 1)
+                         MessageBox.Show("estadia facturada correctamente ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }    
         }

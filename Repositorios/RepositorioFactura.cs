@@ -1,6 +1,10 @@
-﻿using FrbaHotel.Modelo;
+﻿using FrbaHotel.Excepciones;
+using FrbaHotel.Modelo;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,20 +21,66 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
-        
+
         override public int create(Factura factura)
         {
+            int idFactura = 0;
+
             if (this.exists(factura))
             {
-                //Error
+                throw new ElementoYaExisteException("Ya existe la factura que intenta crear");
             }
             else
             {
-                //Creo un nuevo registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@NumeroFactura", factura.getNumeroFactura());
+                sqlCommand.Parameters.AddWithValue("@FechaFacturacion", factura.getFechaFacturacion());
+                sqlCommand.Parameters.AddWithValue("@Total", factura.getTotal());
+                sqlCommand.Parameters.AddWithValue("@Puntos", factura.getPuntos());
+                sqlCommand.Parameters.AddWithValue("@TipoPago", factura.getTipoPago());
+                sqlCommand.Parameters.AddWithValue("@IdEstadia", factura.getEstadia().getIdEstadia());
+                sqlCommand.Parameters.AddWithValue("@IdReserva", factura.getReserva().getIdReserva());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+                    INSERT INTO LOS_BORBOTONES.Factura(FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva)
+                    OUTPUT INSERTED.idFactura
+                    VALUES(@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva);
+                    DECLARE @idFactura int;
+                    SET @idFactura = SCOPE_IDENTITY();
+                ");
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idFactura = reader.GetInt32(reader.GetOrdinal("idFactura"));
+                }
+
+                sqlConnection.Close();
             }
 
-            throw new System.NotImplementedException();
+            return idFactura;
         }
+
 
         override public void update(Factura factura)
         {
@@ -63,8 +113,33 @@ namespace FrbaHotel.Repositorios
 
         override public Boolean exists(Factura factura)
         {
-            throw new NotImplementedException();
+            int idFactura = 0;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idFactura", factura.getIdFactura());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idFactura FROM LOS_BORBOTONES.Factura WHERE idFactura = @idFactura";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idFactura = reader.GetInt32(reader.GetOrdinal("idFactura"));
+            }
+
+            sqlConnection.Close();
+
+            //Devuelve verdadero si el ID coincide
+            return idFactura != 0;
         }
+
 
         public int facturar(List<Estadia> estadias, List<Consumible> consumiblesXEstadia, String tipoPago)
         {
@@ -87,51 +162,115 @@ namespace FrbaHotel.Repositorios
             float total = 0;
             int puntos = 0;
 
-            //traigo el numero de factura asi le sumo 1 que sera el nuevo.(SI NO ES AUTOINCREMENTAL)
-
-            //traigo el total
-            //hago for each de los consumibles y sumo total y puntos
-            //consigo los dias que estuvo y el precio de habitaciones para sumar total y puntos
-
-            //sumo los puntos
-
-            float cant = 1;//pongo cant siempre en 1 ya que no marco mas que 1 solo consumible
+            float cant = 1;//pongo cant siempre en 1 ya que no marco mas que 1 solo consumible y lo mismo con la habitacion
             float monto = 0;//va a ser siempre el precio del cons ya que no marco mas que 1 solo consumible
             DateTime fecha = new DateTime();
             int idItemFactura = 0;
             int idConsumible = 0;
             fecha = DateTime.Today;               
-                        
+                  
+            //traigo el numero de factura asi le sumo 1 que sera el nuevo.
+            numeroFactura = getLastNumeroFactura()+1 ;
+
+            //traigo el total
+            //hago for each de los consumibles y sumo total y puntos
+            ItemFactura itemFactura = null;
+            float montoTotal = 0;
+            foreach (Consumible item in consumiblesXEstadia)
+            {
+                idConsumible = item.getIdConsumible();
+                monto = item.getPrecio();
+                itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
+                itemsFactura.Add(itemFactura);
+                montoTotal = monto + montoTotal;
+            }
+            //sumo la habitacion x los dias alojados
+            float montoHabitacion = 0;
+            float totalHabitacion = 0;
+            if( reserva.getDiasAlojados()==estadia.getCantidadNoches())
+                {
+                    float diasAlojados=(float)reserva.getDiasAlojados();
+                    //se quedo toda la estadia hago solo un item factura con los dias x el monto
+                    totalHabitacion = montoHabitacion * diasAlojados;
+                    idConsumible = -1; //con -1 marco que es la habitacion
+                    itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
+                    itemsFactura.Add(itemFactura);
+                
+                }else
+                {
+                    //no se quedo toda la estadia hago un item factura con los diasAlojados x el monto y aparte un item por cada dia que quedo.
+                
+                    float diasAlojados = (float)estadia.getCantidadNoches();
+                    float diasAlojadosTotal = (float)reserva.getDiasAlojados();
+                
+                totalHabitacion = montoHabitacion * diasAlojadosTotal;
+                idConsumible = -1; //con -1 marco que es la habitacion
+                itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
+                itemsFactura.Add(itemFactura);
+
+                float gap= (float)(reserva.getDiasAlojados() - estadia.getCantidadNoches());
+                itemFactura = new ItemFactura(idItemFactura, idConsumible, gap, montoHabitacion, fecha, idFactura);
+                itemsFactura.Add(itemFactura);
+                }
+                
+            //consigo los dias que estuvo y el precio de habitaciones para sumar total y puntos
+            //montoHabitacion
+
+            //sumo los puntos
+      
             Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura);
             idFactura = this.create(factura);
-            if(idFactura!=0)
+            if (idFactura != 0)
             {
-                if( reserva.getDiasAlojados()==estadia.getCantidadNoches())
+                foreach (ItemFactura item in itemsFactura)
                 {
-                    //se quedo toda la estadia
-                    ItemFactura itemFactura = null;
+                    //hago el set de idFactura para el create
+                    item.setIdFactura(idFactura);
+                    idItemFactura = repoItemFactura.create(item);
 
-                    foreach (Consumible item in consumiblesXEstadia)
-                    {
-                        idConsumible = item.getIdConsumible();
-                        monto = item.getPrecio();
-                        itemFactura = new ItemFactura(idItemFactura,idConsumible,cant,monto,fecha,idFactura);
-                       // itemsFactura.Add(itemFactura);
-                        //creo uno a uno los items factura
-                        repoItemFactura.create(itemFactura);
-                    }
-
-                
-                }
-                else
-                {
-                    //no se quedo toda la estadia hago un metodo especial en itemFactura
+                    if (idItemFactura == 0)
+                        resultado = 0;//falla creando algun itemFactura
                 }
                 //hacer update de la estadia avisando que ya facture
                 repoEstadia.facturado(estadia.getIdEstadia());
+                resultado = 1;
             }
+            else resultado = 2;//falla creando factura
             
             return resultado;
         }
+        
+        public int getLastNumeroFactura()
+        {
+            
+            int numeroFactura=0;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT TOP 1 NumeroFactura FROM LOS_BORBOTONES.Factura order by NumeroFactura desc";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                numeroFactura = reader.GetInt32(reader.GetOrdinal("NumeroFactura"));
+                
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return numeroFactura;
+        }
+
     }
 }

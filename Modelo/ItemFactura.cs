@@ -35,6 +35,11 @@ namespace FrbaHotel.Modelo
         {
             return idFactura;
         }
+        public void setIdFactura(int idFactura)
+        {
+            this.idFactura = idFactura;
+        }
+
         public int getIdConsumible()
         {
             return idConsumible;

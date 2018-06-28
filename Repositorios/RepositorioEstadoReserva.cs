@@ -151,17 +151,46 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
+        //poner el check in post create de la estadia
+        //poner el check out con check out
         override public void update(EstadoReserva estadoReserva)
         {
-            if (this.exists(estadoReserva))
-            {
-                //Actualizo el registro
-            }
-            else
-            {
-                //Error
-            }
-        }
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@Desc", estadoReserva.getDescripcion());
+            sqlCommand.Parameters.AddWithValue("@IdReserva", estadoReserva.getReserva().getIdReserva());
+            sqlCommand.Parameters.AddWithValue("@TipoEstado", estadoReserva.getTipoEstado());
+            sqlCommand.Parameters.AddWithValue("@IdUser", estadoReserva.getUsuario().getIdUsuario());
+            sqlCommand.Parameters.AddWithValue("@Date", estadoReserva.getFecha());
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+                    UPDATE LOS_BORBOTONES.EstadoReserva
+                    SET TipoEstado = @TipoEstado, Descripcion= @Desc,idUsuario = @IdUser,Fecha=@Date
+                    WHERE idReserva = @IdReserva;
+                ");
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        } 
+
 
         override public void delete(EstadoReserva estadoReserva)
         {
