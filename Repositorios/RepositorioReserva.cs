@@ -343,7 +343,7 @@ namespace FrbaHotel.Repositorios
         public int GetReservaValida(int codReserva,DateTime date,String username)
         {
             int idHotel = 0;
-            int reserva = 0;
+            int idReserva = 0;
             int hotelFound = 0;
             decimal cantidadNoches = 0;
             DateTime fechaOut= new DateTime();
@@ -363,22 +363,22 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@date", date);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idReserva,idHotel,FechaHasta,DiasAlojados FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @CodReserva and FechaDesde = @date";
-
+            sqlCommand.CommandText = "SELECT r.idReserva,r.idHotel,r.FechaHasta,r.DiasAlojados FROM LOS_BORBOTONES.Reserva as r,LOS_BORBOTONES.EstadoReserva as er WHERE r.CodigoReserva = @CodReserva and r.FechaDesde = @date and er.idReserva=r.idReserva and er.TipoEstado='RC'";
+            
             sqlConnection.Open();
 
             reader = sqlCommand.ExecuteReader();
 
             while (reader.Read())
             {
-                reserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
                 idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 fechaOut = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
                 cantidadNoches = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
             }
 
             sqlConnection.Close();
-            if (reserva == 0)
+            if (idReserva == 0)
             {
                 //llamo a cancelar la reserva en estado reserva
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();                
@@ -397,16 +397,29 @@ namespace FrbaHotel.Repositorios
             if (hotelFound == 0)
                 return 3;
 
-            if (reserva != 0 && hotelFound != 0)
+            if (idReserva != 0 && hotelFound != 0)
             {
                 //llamo a actualizar la estadia
                 RepositorioEstadia repoEstadia =new RepositorioEstadia();
-                int idEstadia = getIdEstadiaByCodReserva(codReserva);
+                //int idEstadia = getIdEstadiaByCodReserva(codReserva);
+                //comento lo de arriba ya que es un insert esto, no un update como pense al principio
+                int idEstadia = 0;
                 Boolean facturada = false;
                 Usuario userOut=null;
                 Estadia estadia = new Estadia(idEstadia, userIn, userOut,date,fechaOut,facturada,cantidadNoches);
-                repoEstadia.updateIn(estadia);
-                
+                idEstadia= repoEstadia.create(estadia);
+                //repoEstadia.updateIn(estadia);
+
+                //hago update de EstadoReserva
+                RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                int idEstadoReserva = 0;
+                Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
+                String desc = "Reserva Con Ingreso";
+                String tipoEstado = "RCI";
+                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, userIn, reserva, tipoEstado, date, desc);
+                repoEstadoReserva.update(estadoReserva);
+
                 return 1;
             }
             return 0;
@@ -439,6 +452,7 @@ namespace FrbaHotel.Repositorios
 
              return exist;
          }
+
     }
 }
 

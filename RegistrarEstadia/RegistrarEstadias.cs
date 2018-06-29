@@ -104,6 +104,15 @@ namespace FrbaHotel.RegistrarEstadia
 
                 Estadia estadia = new Estadia(idEstadia,user,date);
                 repoEstadia.update(estadia);
+                //hago update de EstadoReserva
+                RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+                int idEstadoReserva=0;
+                Reserva reserva =repoReserva.getIdByIdEstadia(estadia.getIdEstadia());
+                String desc="Reserva Con Egreso";
+                String tipoEstado="RCE";
+                EstadoReserva estadoReserva=new EstadoReserva(idEstadoReserva, user, reserva, tipoEstado, date, desc);
+                repoEstadoReserva.update(estadoReserva);
+
                 MessageBox.Show("Check out correcto, proceder a facturar Estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
             }

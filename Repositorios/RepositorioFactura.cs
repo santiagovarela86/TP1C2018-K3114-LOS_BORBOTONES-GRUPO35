@@ -172,21 +172,45 @@ namespace FrbaHotel.Repositorios
             //traigo el numero de factura asi le sumo 1 que sera el nuevo.
             numeroFactura = getLastNumeroFactura()+1 ;
 
+            //traigo regimen para sumarlo o ver si es all inclusive
+            RepositorioRegimen repoRegimen= new RepositorioRegimen();
+ //arreglar que setie en null el regimen al tener la reserva
+            Regimen regimen = reserva.getRegimen();
+            Boolean allInclusive = false;
+            if (regimen.getCodigoRegimen().Equals("RGAI"))
+                allInclusive = true;
+
             //traigo el total
             //hago for each de los consumibles y sumo total y puntos
             ItemFactura itemFactura = null;
             float montoTotal = 0;
-            foreach (Consumible item in consumiblesXEstadia)
+            if (!allInclusive)
             {
-                idConsumible = item.getIdConsumible();
-                monto = item.getPrecio();
+                foreach (Consumible item in consumiblesXEstadia)
+                {
+                    idConsumible = item.getIdConsumible();
+                    monto = item.getPrecio();
+                    itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
+                    itemsFactura.Add(itemFactura);
+                    montoTotal = monto + montoTotal;
+                }   
+
+            }else
+            {
+                //es all inclusive, hago un solo itemFactura all inclusive y no se cobra nada
+                idConsumible = 0;
+                monto = 0;
+                //necesito un nuevo campo que sea descripcion por regimen de estadia
                 itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
-                montoTotal = monto + montoTotal;
             }
+            
             //sumo la habitacion x los dias alojados
             float montoHabitacion = 0;
             float totalHabitacion = 0;
+
+            //conseguir el montoHabitacion de la reserva
+
             if( reserva.getDiasAlojados()==estadia.getCantidadNoches())
                 {
                     float diasAlojados=(float)reserva.getDiasAlojados();
@@ -213,9 +237,7 @@ namespace FrbaHotel.Repositorios
                 itemsFactura.Add(itemFactura);
                 }
                 
-            //consigo los dias que estuvo y el precio de habitaciones para sumar total y puntos
-            //montoHabitacion
-
+            
             //sumo los puntos
       
             Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura);
