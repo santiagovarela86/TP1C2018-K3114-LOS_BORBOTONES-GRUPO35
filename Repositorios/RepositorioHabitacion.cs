@@ -339,15 +339,23 @@ namespace FrbaHotel.Repositorios
                 "JOIN LOS_BORBOTONES.Regimen_X_Hotel AS RXH ON RXH.idHotel=HOT.idHotel " +
                 "JOIN LOS_BORBOTONES.Regimen AS REG ON REG.idRegimen = RXH.idRegimen " +
                 "JOIN LOS_BORBOTONES.TipoHabitacion AS TIP ON TIP.idTipoHabitacion=HAB.idTipoHabitacion " +
-                "LEFT JOIN LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente AS RXHXC ON HAB.idHabitacion= RXHXC.idHabitacion " +
-                "LEFT JOIN LOS_BORBOTONES.Reserva AS RES ON RES.idReserva = RXHXC.idReserva " +
-                "LEFT JOIN LOS_BORBOTONES.EstadoReserva AS ESRE ON RES.idReserva = ESRE.idReserva " +
                 "WHERE REG.Activo=1 " +
                 "AND HAB.idHotel=@idHotel " +
                 "AND HAB.Activa=1 " +
                 "AND HAB.idTipoHabitacion=@idtipoHabitacion " +
-                "AND ((NOT (RES.FechaDesde < @fechaFin AND @fechaInicio < RES.FechaHasta ) ) OR (RES.FechaDesde IS NULL AND RES.FechaHasta IS NULL)) " +
-                "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE WHERE ESRE.idReserva = RES.idReserva AND  ESRE.TipoEstado NOT IN ('RCR','RCC','RCNS')) " +
+
+                "AND NOT EXISTS ( " + 
+                "SELECT * FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente AS RXHXC " + 
+                "JOIN LOS_BORBOTONES.Reserva AS RES ON RES.idReserva = RXHXC.idReserva  " + 
+                "WHERE HAB.idHabitacion= RXHXC.idHabitacion " +
+                "AND  (RES.FechaDesde < @fechaFin AND @fechaInicio < RES.FechaHasta  ) " +
+                "AND NOT EXISTS( "+
+                "SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE " + 
+                "WHERE RES.idReserva = ESRE.idReserva " +
+                "AND ESRE.TipoEstado  IN ('RCR','RCC','RCNS') " +
+                ") " + 
+                ") " + 
+                
                 "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.CierreTemporal AS CIE WHERE CIE.idHotel= HOT.idHotel AND CIE.FechaInicio < @fechaFin AND @fechaInicio < CIE.FechaFin) ";
 
             if (regimen != null)

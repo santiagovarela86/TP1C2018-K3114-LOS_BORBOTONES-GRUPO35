@@ -16,7 +16,7 @@ namespace TestingFrbaHotel.ModelBuilder
             Hotel hotel = HotelBuilder.buildHotel();
             int id = repositorioHotel.create(hotel);
             hotel.setIdHotel(id);
-            Habitacion hab = new Habitacion(0, tipoHabitacion, true, 1, 1, "TEST: ZONA 1");
+            Habitacion hab = new Habitacion(0, true, 1, 1, "TEST: ZONA 1");
             hab.setHotel(hotel);
             return hab;
         }
