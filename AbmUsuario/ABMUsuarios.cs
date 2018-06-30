@@ -14,9 +14,12 @@ namespace FrbaHotel.AbmUsuario
 {
     public partial class ABMUsuarios : Form
     {
-        public ABMUsuarios()
+        private Hotel hotelSeleccionadoParaTrabajar = null;
+
+        public ABMUsuarios(Hotel hotel)
         {
             InitializeComponent();
+            this.hotelSeleccionadoParaTrabajar = hotel;
         }
 
         private void ListadoUsuarios_Load(object sender, EventArgs e)
@@ -109,14 +112,22 @@ namespace FrbaHotel.AbmUsuario
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Usuario usuario = (Usuario) dataGridView1.CurrentRow.DataBoundItem;
+            Usuario usuarioAModificar = (Usuario) dataGridView1.CurrentRow.DataBoundItem;
 
-            using (ModificacionUsuario form = new ModificacionUsuario(usuario))
+            //SI EL USUARIO A SER MODIFICADO TRABAJA EN EL HOTEL SELECCIONADO PARA TRABAJAR
+            if (usuarioAModificar.getHoteles().Exists(hotel => hotel.getIdHotel().Equals(this.hotelSeleccionadoParaTrabajar.getIdHotel())))
             {
-                var result = form.ShowDialog();
+                using (ModificacionUsuario form = new ModificacionUsuario(usuarioAModificar))
+                {
+                    var result = form.ShowDialog();
 
-                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO USUARIO VUELVO A CARGAR LA LISTA
-                this.buscar_Click(sender, e);
+                    //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO USUARIO VUELVO A CARGAR LA LISTA
+                    this.buscar_Click(sender, e);
+                }
+            }
+            else
+            {
+                MessageBox.Show("El usuario no trabaja en el Hotel seleccionado para trabajar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -145,16 +156,24 @@ namespace FrbaHotel.AbmUsuario
 
         private void button5_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja el Usuario?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            if (result == System.Windows.Forms.DialogResult.Yes)
+            Usuario usuarioAModificar = (Usuario)dataGridView1.CurrentRow.DataBoundItem;            
+            
+            //SI EL USUARIO A SER MODIFICADO TRABAJA EN EL HOTEL SELECCIONADO PARA TRABAJAR
+            if (usuarioAModificar.getHoteles().Exists(hotel => hotel.getIdHotel().Equals(this.hotelSeleccionadoParaTrabajar.getIdHotel())))
             {
-                RepositorioUsuario repoUsuario = new RepositorioUsuario();
-                Usuario usuario = (Usuario)dataGridView1.CurrentRow.DataBoundItem;
+                DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja el Usuario?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    RepositorioUsuario repoUsuario = new RepositorioUsuario();
+                    repoUsuario.bajaLogica(usuarioAModificar);
 
-                repoUsuario.bajaLogica(usuario);
-
-                //CUANDO DOY DE BAJA EL USUARIO VUELVO A CARGAR LA LISTA
-                this.buscar_Click(sender, e);
+                    //CUANDO DOY DE BAJA EL USUARIO VUELVO A CARGAR LA LISTA
+                    this.buscar_Click(sender, e);
+                }
+            }
+            else
+            {
+                MessageBox.Show("El usuario no trabaja en el Hotel seleccionado para trabajar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

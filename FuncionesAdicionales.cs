@@ -41,7 +41,6 @@ namespace FrbaHotel
             return this.sesion.getHotel();
         }
 
-
         private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -102,7 +101,7 @@ namespace FrbaHotel
 
         private void ABMUsuario_Click(object sender, EventArgs e)
         {
-            using (ABMUsuarios formularioABMUsuarios = new ABMUsuarios())
+            using (ABMUsuarios formularioABMUsuarios = new ABMUsuarios(this.getHotelElegido()))
             {
                 var resultFormABMUsuarios = formularioABMUsuarios.ShowDialog();
 

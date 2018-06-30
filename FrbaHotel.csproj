@@ -208,9 +208,6 @@
     <Compile Include="Login\SeleccionRolYHotel.Designer.cs">
       <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
     </Compile>
-    <Compile Include="ModelBuilder\HabitacionBuilder.cs" />
-    <Compile Include="ModelBuilder\HotelBuilder.cs" />
-    <Compile Include="ModelBuilder\TipoHabitacionBuilder.cs" />
     <Compile Include="Modelo\Categoria.cs" />
     <Compile Include="Modelo\CierreTemporal.cs" />
     <Compile Include="Modelo\Cliente.cs" />
