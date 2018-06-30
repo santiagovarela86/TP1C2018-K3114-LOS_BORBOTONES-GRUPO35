@@ -94,6 +94,10 @@ namespace FrbaHotel.Repositorios
 
         public override void update(Categoria categoria)
         {
+            throw new NotImplementedException();
+
+            /*
+            
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -114,6 +118,7 @@ namespace FrbaHotel.Repositorios
 
             //Cierro Primera Consulta
             sqlConnection.Close();
+            */
         }
 
         public override Categoria getById(int idCategoria) {

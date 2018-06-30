@@ -97,17 +97,11 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdReserva { get { return this.getIdReserva(); } }
-        public Hotel Hotel { get { return this.getHotel(); } }
-        public Estadia Estadia { get { return this.getEstadia(); } }
-        public Regimen Regimen { get { return this.getRegimen(); } }
-        public Cliente Cliente { get { return this.getCliente(); } }
         public decimal CodigoReserva { get { return this.getCodigoReserva(); } }
-        public decimal DiasAlojados { get { return this.getDiasAlojados(); } }
-        public DateTime FechaCreacion { get { return this.getFechaCreacion(); } }
-        public DateTime FechaDesde { get { return this.getFechaDesde(); } }
-        public DateTime FechaHasta { get { return this.getFechaHasta(); } }
-        public List<EstadoReserva> Estados { get { return this.getEstados(); } }
+        public String FechaCreacion { get { return this.getFechaCreacion().ToString(); } }
+        public String FechaDesde { get { return this.getFechaDesde().ToString(); } }
+        public String FechaHasta { get { return this.getFechaHasta().ToString(); } }
+        //public String Cliente { get { return this.getCliente().getIdentidad().getNombreCompleto(); } }       
 
     }
 }

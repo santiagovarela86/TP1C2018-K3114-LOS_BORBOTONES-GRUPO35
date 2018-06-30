@@ -27,20 +27,41 @@ namespace FrbaHotel
 
         private void button2_Click(object sender, EventArgs e)
         {
+            //ABRO EL FORMULARIO DE LOGIN
             using (FormLogin formularioLogin = new FormLogin())
             {
                 var resultFormLogin = formularioLogin.ShowDialog();
 
+                //SI EL LOGIN ES EXITOSO
                 if (resultFormLogin == DialogResult.OK)
                 {
                     Usuario usuarioLogueado = formularioLogin.getUsuarioLogueado();
 
-                    //ABRO EL SUBFORMULARIO DE FUNCIONES ADICIONALES
-                    using (FuncionesAdicionales subForm = new FuncionesAdicionales(usuarioLogueado))
+                    //VALIDO QUE TENGA ROLES HABILITADOS
+                    if (usuarioLogueado.getRoles().FindAll(rol => rol.getActivo()).Count == 0)
                     {
-                        var resultSubForm = subForm.ShowDialog();
+                        MessageBox.Show("El usuario con el que intenta iniciar sesión, no tiene roles habilitados, contáctese con el administrador del sistema.", "Error Seleccionando Hotel y Rol", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    else 
+                    {
+                        //ABRO EL FORMULARIO DE SELECCION DE ROL Y HOTEL
+                        using (SeleccionRolYHotel formularioSeleccionRolYHotel = new SeleccionRolYHotel(usuarioLogueado))
+                        {
+                            var resultFormSesion = formularioSeleccionRolYHotel.ShowDialog();
 
+                            //SI EL RESULTADO ES EXITOSO
+                            if (resultFormSesion == DialogResult.OK)
+                            {
+                                Sesion sesion = formularioSeleccionRolYHotel.getSesion();
+
+                                //ABRO EL SUBFORMULARIO DE FUNCIONES ADICIONALES
+                                using (FuncionesAdicionales subForm = new FuncionesAdicionales(sesion))
+                                {
+                                    var resultSubForm = subForm.ShowDialog();
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

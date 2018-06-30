@@ -13,12 +13,8 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioEstadoReserva : Repositorio<EstadoReserva>
     {
-
-
         public List<EstadoReserva> getByIdReserva(int idReserva)
         {
-
-
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
             RepositorioReserva repoReserva = new RepositorioReserva();
 
@@ -34,8 +30,11 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva = @idReserva" +
-                " ORDER BY idEstado DESC;";
+            sqlCommand.CommandText = @"
+                SELECT *
+                FROM LOS_BORBOTONES.EstadoReserva
+                WHERE idReserva = @idReserva
+                ORDER BY idEstado DESC;";
 
             sqlConnection.Open();
 
@@ -44,13 +43,12 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
-                Usuario usuario = repoUsuario.getById(reader.GetOrdinal("IdUsuario"));
-                Reserva reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
-                DateTime fecha = reader.SafeGetDateTime(reader.GetOrdinal("Fecha"));
                 String tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
+                DateTime fecha = DateTime.Parse(reader.GetString(reader.GetOrdinal("Fecha")));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
-
+                Usuario usuario = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("IdUsuario")));
+                Reserva reserva = repoReserva.getById(reader.GetInt32(reader.GetOrdinal("IdReserva")));
+                estadoReservas.Add(new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion));
             }
             
             sqlConnection.Close();
@@ -92,8 +90,8 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 usuario = repoUsuario.getById(reader.GetOrdinal("IdUsuario"));
-                reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
-                fecha = reader.GetDateTime(reader.GetOrdinal("Fecha"));
+                //reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
+                //fecha = reader.GetDateTime(reader.GetOrdinal("Fecha"));
                 tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
                 descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
             }
@@ -102,7 +100,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Si no encuentro elemento con ese ID tiro una excepción
-            if (reserva.Equals(null)) throw new NoExisteIDException("No existe estadoReserva con el ID asociado");
+            //if (usuario.Equals(null)) throw new NoExisteIDException("No existe estadoReserva con el ID asociado");
 
             //Armo el estadoReserva completo
             estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
@@ -151,17 +149,46 @@ namespace FrbaHotel.Repositorios
             throw new System.NotImplementedException();
         }
 
+        //poner el check in post create de la estadia
+        //poner el check out con check out
         override public void update(EstadoReserva estadoReserva)
         {
-            if (this.exists(estadoReserva))
-            {
-                //Actualizo el registro
-            }
-            else
-            {
-                //Error
-            }
-        }
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@Desc", estadoReserva.getDescripcion());
+            sqlCommand.Parameters.AddWithValue("@IdReserva", estadoReserva.getReserva().getIdReserva());
+            sqlCommand.Parameters.AddWithValue("@TipoEstado", estadoReserva.getTipoEstado());
+            sqlCommand.Parameters.AddWithValue("@IdUser", estadoReserva.getUsuario().getIdUsuario());
+            sqlCommand.Parameters.AddWithValue("@Date", estadoReserva.getFecha());
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+                    UPDATE LOS_BORBOTONES.EstadoReserva
+                    SET TipoEstado = @TipoEstado, Descripcion= @Desc,idUsuario = @IdUser,Fecha=@Date
+                    WHERE idReserva = @IdReserva;
+                ");
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        } 
+
 
         override public void delete(EstadoReserva estadoReserva)
         {
@@ -266,6 +293,39 @@ namespace FrbaHotel.Repositorios
 
                 sqlConnection.Close();
         }
+
+        public EstadoReserva getByIdEstadia(int idEstadia)
+        {
+            EstadoReserva estadoReserva = null;
+            int idEstadoReserva = 0;
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva =" +
+                " (SELECT TOP 1 idReserva FROM LOS_BORBOTONES.Reserva WHERE idEstadia = @idEstadia);";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+               idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
+            }
+            estadoReserva = this.getById(idEstadoReserva);
+
+            sqlConnection.Close();
+
+            return estadoReserva;
+        }
+
     }
 }
 

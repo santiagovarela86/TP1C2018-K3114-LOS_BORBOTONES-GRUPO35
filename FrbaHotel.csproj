@@ -73,6 +73,12 @@
     <Compile Include="AbmCliente\AltaCliente.Designer.cs">
       <DependentUpon>AltaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmCliente\ModificacionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCliente\ModificacionCliente.Designer.cs">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmHabitacion\ABMHabitacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,12 +117,6 @@
     </Compile>
     <Compile Include="AbmHotel\SearchHotel.Designer.cs">
       <DependentUpon>SearchHotel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmRegimen\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmRegimen\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmReserva\GenerarReserva.cs">
       <SubType>Form</SubType>
@@ -203,9 +203,12 @@
     <Compile Include="Login\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="ModelBuilder\HabitacionBuilder.cs" />
-    <Compile Include="ModelBuilder\HotelBuilder.cs" />
-    <Compile Include="ModelBuilder\TipoHabitacionBuilder.cs" />
+    <Compile Include="Login\SeleccionRolYHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SeleccionRolYHotel.Designer.cs">
+      <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modelo\Categoria.cs" />
     <Compile Include="Modelo\CierreTemporal.cs" />
     <Compile Include="Modelo\Cliente.cs" />
@@ -219,6 +222,7 @@
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />
     <Compile Include="Modelo\ItemFactura.cs" />
+    <Compile Include="Modelo\Sesion.cs" />
     <Compile Include="RegistrarConsumible\AltaConsumible.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,6 +244,8 @@
     <Compile Include="Repositorios\RepositorioConsumibles.cs" />
     <Compile Include="Repositorios\RepositorioEstadia.cs" />
     <Compile Include="Repositorios\RepositorioEstadoReserva.cs" />
+    <Compile Include="Repositorios\RepositorioFactura.cs" />
+    <Compile Include="Repositorios\RepositorioItemFactura.cs" />
     <Compile Include="Repositorios\RepositorioReserva.cs" />
     <Compile Include="Repositorios\SafeSqlTypeReader.cs" />
     <Compile Include="Modelo\Regimen.cs" />
@@ -280,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCliente\AltaCliente.resx">
       <DependentUpon>AltaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCliente\ModificacionCliente.resx">
+      <DependentUpon>ModificacionCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHabitacion\ABMHabitacion.resx">
       <DependentUpon>ABMHabitacion.cs</DependentUpon>
@@ -334,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionRolYHotel.resx">
+      <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PantallaPrincipal.resx">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>

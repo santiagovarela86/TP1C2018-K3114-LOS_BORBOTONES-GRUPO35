@@ -13,32 +13,18 @@ using FrbaHotel.Excepciones;
 
 namespace FrbaHotel.AbmCliente
 {
-    public partial class AltaCliente : Form
+    public partial class ModificacionCliente : Form
     {
-        public AltaCliente()
+        Cliente cliente = null;
+
+        public ModificacionCliente(Cliente cliente)
         {
             InitializeComponent();
+            this.cliente = cliente;
         }
 
-        private void limpiarPantalla()
+        private void resetearDatos()
         {
-            //vacio todos los campos porque es el limpiar
-            textBoxNacionalidad.Text = "";
-            textBoxNombre.Text = "";
-            textBoxApellido.Text = "";
-            textBoxNroDoc.Text = "";
-            textBoxMail.Text = "";
-            textBoxTelefono.Text = "";
-            textBoxCalle.Text = "";
-            textBoxLocalidad.Text = "";
-            textBoxPaisOrigen.Text = "";
-            textBoxNroCalle.Text = "";
-            textBoxPiso.Text = "";
-            textBoxDepto.Text = "";
-
-            comboBoxTipoDoc.SelectedValue = "";
-            dateTime.ResetText();
-
             List<String> tipoDoc = new List<String>();
             tipoDoc.Add("DNI");
             tipoDoc.Add("CUIT");
@@ -49,20 +35,38 @@ namespace FrbaHotel.AbmCliente
             comboBoxTipoDoc.ValueMember = "Value";
             comboBoxTipoDoc.DisplayMember = "Key";
             comboBoxTipoDoc.DataSource = tipoDoc;
-            comboBoxTipoDoc.SelectedValue = "";
+                        
+            //obtengo todos los campos a mostrar
+            textBoxNacionalidad.Text = cliente.getIdentidad().getNacionalidad();
+            textBoxNombre.Text = cliente.getIdentidad().getNombre();
+            textBoxApellido.Text = cliente.getIdentidad().getApellido();
+            textBoxNroDoc.Text = cliente.getIdentidad().getNumeroDocumento();
+            textBoxMail.Text = cliente.getIdentidad().getMail();
+            textBoxTelefono.Text = cliente.getIdentidad().getTelefono();
+            textBoxCalle.Text = cliente.getIdentidad().getDireccion().getCalle();
+            textBoxLocalidad.Text = cliente.getIdentidad().getDireccion().getCiudad();
+            textBoxPaisOrigen.Text = cliente.getIdentidad().getDireccion().getPais();
+            textBoxNroCalle.Text = cliente.getIdentidad().getDireccion().getNumeroCalle().ToString(); ;
+            textBoxPiso.Text = cliente.getIdentidad().getDireccion().getPiso().ToString();
+            textBoxDepto.Text = cliente.getIdentidad().getDireccion().getDepartamento();
+
+            comboBoxTipoDoc.SelectedIndex = comboBoxTipoDoc.FindStringExact(cliente.getIdentidad().getTipoDocumento());
+            dateTime.Value = cliente.getIdentidad().getFechaNacimiento();
+            checkBoxActivo.Checked = cliente.getActivo();
         }
         
         private void button1_Click(object sender, EventArgs e)
         {
-            this.limpiarPantalla();
+            this.resetearDatos();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //GENERAR ALTA (no pido el estado ya que va como activo al momento de crearlo)
+            //ACTUALIZAR EL CLIENTE
+            RepositorioCliente repoCliente = new RepositorioCliente();
 
-            //traigo los valores
-            String nacionalidad = textBoxNacionalidad.Text;
+            //ESTOS VALORES SON LOS QUE CAMBIAN
+            //STRINGS
             String nombre = textBoxNombre.Text;
             String apellido = textBoxApellido.Text;
             String nroDoc = textBoxNroDoc.Text;
@@ -70,62 +74,56 @@ namespace FrbaHotel.AbmCliente
             String telefono = textBoxTelefono.Text;
             String calle = textBoxCalle.Text;
             String localidad = textBoxLocalidad.Text;
-            String paisOrigen = textBoxPaisOrigen.Text;
-            DateTime fechaNacimiento = dateTime.Value;
-            int nroCalle = 0;
-            if (textBoxNroCalle.Text != "")
-            {
-                nroCalle = int.Parse(textBoxNroCalle.Text);
-            }
-            int nroPiso = 0;
-            if (textBoxPiso.Text != "")
-            {
-                nroPiso = int.Parse(textBoxPiso.Text);
-            }
-
+            String pais = textBoxPaisOrigen.Text;
+            String nacionalidad = textBoxNacionalidad.Text;
             String depto = textBoxDepto.Text;
+
+            //NUMEROS
+            int nroCalle = 0;
+            if (textBoxNroCalle.Text != "") { nroCalle = int.Parse(textBoxNroCalle.Text); }
+            int nroPiso = 0;
+            if (textBoxPiso.Text != "") { nroPiso = int.Parse(textBoxPiso.Text); }
+
+            //OTROS
             String tipoDoc = "";
+            if (comboBoxTipoDoc.SelectedItem != null) { tipoDoc = (String)comboBoxTipoDoc.SelectedItem; }
+            Boolean activo = checkBoxActivo.Checked;
+            DateTime fechaNacimiento = dateTime.Value;
+
+            //VALORES QUE NO CAMBIAN
             String tipoIdentidad = "Cliente";
-            int idDir = 0;
-            int idIdentidad = 0;
-            int idCliente = 0;
-            Boolean activo = true;
-            List<Reserva> reservas = new List<Reserva>();
-            if (comboBoxTipoDoc.SelectedItem != null)
-            {
-                tipoDoc = (String)comboBoxTipoDoc.SelectedItem;
-            }
-            //armo direccion (id en 0)
-            Direccion adress = new Direccion(idDir, paisOrigen, localidad,
-            calle, nroCalle, nroPiso, depto);
-            //armo la identidad con la direccion(id en 0)
-            Identidad identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDoc, nroDoc,
-            mail, fechaNacimiento, nacionalidad, telefono, adress);
-            // armo el cliente con la identidad (id en 0)
-            Cliente cliente = new Cliente(idCliente,identidad, activo,reservas);
-            //ahora si ya lo puedo crear
-            RepositorioCliente repoCliente = new RepositorioCliente();
+            int idDir = this.cliente.getIdentidad().getDireccion().getIdDireccion();
+            int idIdentidad = this.cliente.getIdentidad().getIdIdentidad();
+            int idCliente = this.cliente.getIdCliente();
+            List<Reserva> reservas = this.cliente.getReservas();
+
+            Direccion adress = new Direccion(idDir, pais, localidad, calle, nroCalle, nroPiso, depto);
+            Identidad identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDoc, nroDoc, mail, fechaNacimiento, nacionalidad, telefono, adress);
+            Cliente updatedClient = new Cliente(idCliente, identidad, activo, reservas);            
 
             if (this.validoInput(this))
             {
                 try
                 {
-                    repoCliente.create(cliente);
-                    MessageBox.Show("Cliente creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.limpiarPantalla();
+                    repoCliente.update(updatedClient);
+                    MessageBox.Show("Cliente actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    //ME TRAIGO EL USUARIO ACTUALIZADO
+                    this.cliente = repoCliente.getById(cliente.getIdCliente());
+                    this.resetearDatos();
                 }
-                catch (ElementoYaExisteException exc)
+                catch (NoExisteIDException exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para crear el Cliente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para actualizar el Cliente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private Boolean validoInput(AltaCliente form)
+        private Boolean validoInput(ModificacionCliente form)
         {
             return !form.textBoxNombre.Text.Equals("") &&
                    !form.textBoxApellido.Text.Equals("") &&
@@ -140,11 +138,11 @@ namespace FrbaHotel.AbmCliente
                    !form.textBoxPaisOrigen.Text.Equals("") &&
                    !form.textBoxNacionalidad.Text.Equals("") &&
                    form.comboBoxTipoDoc.SelectedValue != null;
-        } 
+        }
 
-        private void AltaCliente_Load(object sender, EventArgs e)
+        private void ModificacionCliente_Load(object sender, EventArgs e)
         {
-            this.limpiarPantalla();
+            this.resetearDatos();
         }
 
         private void button3_Click(object sender, EventArgs e)

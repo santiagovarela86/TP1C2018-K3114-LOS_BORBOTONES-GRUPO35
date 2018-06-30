@@ -27,6 +27,8 @@ namespace FrbaHotel.AbmHotel
         private TextBox descripcionBajaText;
         private Label label2;
         private Label label1;
+        private Button buttonSalir;
+        private Button buttonLimpiarDatos;
 
 
         /// <summary>
@@ -74,11 +76,15 @@ namespace FrbaHotel.AbmHotel
             this.bajaHotel = new System.Windows.Forms.Button();
             this.calendarioDesde = new System.Windows.Forms.MonthCalendar();
             this.calendarioHasta = new System.Windows.Forms.MonthCalendar();
+            this.buttonLimpiarDatos = new System.Windows.Forms.Button();
+            this.buttonSalir = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonSalir);
+            this.groupBox1.Controls.Add(this.buttonLimpiarDatos);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.descripcionBajaLabel);
@@ -139,17 +145,38 @@ namespace FrbaHotel.AbmHotel
             // calendarioDesde
             // 
             this.calendarioDesde.Location = new System.Drawing.Point(26, 97);
+            this.calendarioDesde.MaxSelectionCount = 1;
             this.calendarioDesde.Name = "calendarioDesde";
             this.calendarioDesde.TabIndex = 12;
             // 
             // calendarioHasta
             // 
             this.calendarioHasta.Location = new System.Drawing.Point(292, 97);
+            this.calendarioHasta.MaxSelectionCount = 1;
             this.calendarioHasta.Name = "calendarioHasta";
             this.calendarioHasta.TabIndex = 13;
             // 
+            // buttonLimpiarDatos
+            // 
+            this.buttonLimpiarDatos.Location = new System.Drawing.Point(117, 271);
+            this.buttonLimpiarDatos.Name = "buttonLimpiarDatos";
+            this.buttonLimpiarDatos.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiarDatos.TabIndex = 18;
+            this.buttonLimpiarDatos.Text = "Limpiar";
+            this.buttonLimpiarDatos.Click += new System.EventHandler(this.buttonLimpiarDatos_Click);
+            // 
+            // buttonSalir
+            // 
+            this.buttonSalir.Location = new System.Drawing.Point(376, 271);
+            this.buttonSalir.Name = "buttonSalir";
+            this.buttonSalir.Size = new System.Drawing.Size(75, 23);
+            this.buttonSalir.TabIndex = 19;
+            this.buttonSalir.Text = "Salir";
+            this.buttonSalir.Click += new System.EventHandler(this.buttonSalir_Click);
+            // 
             // DropHotel
             // 
+            this.AcceptButton = this.bajaHotel;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(586, 334);
@@ -171,29 +198,45 @@ namespace FrbaHotel.AbmHotel
 
             if (fechaDesde > fechaHasta)
             {
-                MessageBox.Show("La fecha desde no puede ser superior a la fecha hasta", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
-
+                MessageBox.Show("La fecha desde no puede ser superior a la fecha hasta", "Error");
             }
             else
             {
-                try
+                if (descripcionBajaText.Text.Equals(""))
                 {
-                    CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
-                    RepositorioHotel repoHotel = new RepositorioHotel();
-                    repoHotel.crearBajaTemporal(cierreTemporal);
-                    MessageBox.Show("Cierre temporal creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
-
+                    MessageBox.Show("Debe ingresar una descripción válida para el cierre temporal", "Error");
                 }
-                catch (RequestInvalidoException exception)
+                else
                 {
-                    MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                    try
+                    {
+                        CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
+                        RepositorioHotel repoHotel = new RepositorioHotel();
+                        repoHotel.crearBajaTemporal(cierreTemporal);
+                        MessageBox.Show("Cierre temporal creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                        this.buttonLimpiarDatos_Click(sender, e);
 
+                    }
+                    catch (RequestInvalidoException exception)
+                    {
+                        MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+                    }
                 }
             }
         }
 
+        private void buttonSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
-
+        private void buttonLimpiarDatos_Click(object sender, EventArgs e)
+        {
+           calendarioDesde.SelectionStart = DateTime.Today;
+           calendarioHasta.SelectionStart = DateTime.Today;
+           descripcionBajaText.Text = "";
+        }
     }
 
 }

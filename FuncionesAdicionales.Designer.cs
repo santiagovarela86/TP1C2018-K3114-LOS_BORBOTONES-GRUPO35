@@ -38,6 +38,8 @@
             this.RegistrarConsumible = new System.Windows.Forms.Button();
             this.FacturarEstadia = new System.Windows.Forms.Button();
             this.GenerarListadoEstadistico = new System.Windows.Forms.Button();
+            this.labelHotel = new System.Windows.Forms.Label();
+            this.labelRol = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ABMUsuario
@@ -136,11 +138,31 @@
             this.GenerarListadoEstadistico.Text = "Listado Estadístico";
             this.GenerarListadoEstadistico.UseVisualStyleBackColor = true;
             // 
+            // labelHotel
+            // 
+            this.labelHotel.AutoSize = true;
+            this.labelHotel.Location = new System.Drawing.Point(13, 129);
+            this.labelHotel.Name = "labelHotel";
+            this.labelHotel.Size = new System.Drawing.Size(38, 13);
+            this.labelHotel.TabIndex = 10;
+            this.labelHotel.Text = "Hotel: ";
+            // 
+            // labelRol
+            // 
+            this.labelRol.AutoSize = true;
+            this.labelRol.Location = new System.Drawing.Point(13, 110);
+            this.labelRol.Name = "labelRol";
+            this.labelRol.Size = new System.Drawing.Size(29, 13);
+            this.labelRol.TabIndex = 11;
+            this.labelRol.Text = "Rol: ";
+            // 
             // FuncionesAdicionales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(645, 154);
+            this.Controls.Add(this.labelRol);
+            this.Controls.Add(this.labelHotel);
             this.Controls.Add(this.GenerarListadoEstadistico);
             this.Controls.Add(this.FacturarEstadia);
             this.Controls.Add(this.RegistrarConsumible);
@@ -155,6 +177,7 @@
             this.Text = "Gestión de Datos TP 2018 1C - LOS_BORBOTONES - FUNCIONES ADICIONALES";
             this.Load += new System.EventHandler(this.FuncionesAdicionales_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -170,5 +193,7 @@
         private System.Windows.Forms.Button RegistrarConsumible;
         private System.Windows.Forms.Button FacturarEstadia;
         private System.Windows.Forms.Button GenerarListadoEstadistico;
+        private System.Windows.Forms.Label labelHotel;
+        private System.Windows.Forms.Label labelRol;
     }
 }

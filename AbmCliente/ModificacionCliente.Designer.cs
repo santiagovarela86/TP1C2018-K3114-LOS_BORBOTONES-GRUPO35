@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.AbmCliente
 {
-    partial class AltaCliente
+    partial class ModificacionCliente
     {
         /// <summary>
         /// Required designer variable.
@@ -62,6 +62,7 @@
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
             this.buttonSalir = new System.Windows.Forms.Button();
+            this.checkBoxActivo = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -336,6 +337,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxActivo);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textBoxNacionalidad);
             this.groupBox1.Controls.Add(this.label2);
@@ -377,7 +379,7 @@
             this.buttonLimpiar.Name = "buttonLimpiar";
             this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
             this.buttonLimpiar.TabIndex = 15;
-            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.Text = "Resetear";
             this.buttonLimpiar.UseVisualStyleBackColor = true;
             this.buttonLimpiar.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -387,7 +389,7 @@
             this.buttonGuardar.Name = "buttonGuardar";
             this.buttonGuardar.Size = new System.Drawing.Size(75, 23);
             this.buttonGuardar.TabIndex = 16;
-            this.buttonGuardar.Text = "Guardar";
+            this.buttonGuardar.Text = "Actualizar";
             this.buttonGuardar.UseVisualStyleBackColor = true;
             this.buttonGuardar.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -401,7 +403,18 @@
             this.buttonSalir.UseVisualStyleBackColor = true;
             this.buttonSalir.Click += new System.EventHandler(this.button3_Click);
             // 
-            // AltaCliente
+            // checkBoxActivo
+            // 
+            this.checkBoxActivo.AutoSize = true;
+            this.checkBoxActivo.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxActivo.Location = new System.Drawing.Point(383, 193);
+            this.checkBoxActivo.Name = "checkBoxActivo";
+            this.checkBoxActivo.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxActivo.TabIndex = 15;
+            this.checkBoxActivo.Text = "Activo";
+            this.checkBoxActivo.UseVisualStyleBackColor = true;
+            // 
+            // ModificacionCliente
             // 
             this.AcceptButton = this.buttonGuardar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -411,9 +424,9 @@
             this.Controls.Add(this.buttonGuardar);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.groupBox1);
-            this.Name = "AltaCliente";
-            this.Text = "Alta Cliente";
-            this.Load += new System.EventHandler(this.AltaCliente_Load);
+            this.Name = "ModificacionCliente";
+            this.Text = "Modificacion Cliente";
+            this.Load += new System.EventHandler(this.ModificacionCliente_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -458,5 +471,6 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.ComboBox comboBoxTipoDoc;
         private System.Windows.Forms.DateTimePicker dateTime;
+        private System.Windows.Forms.CheckBox checkBoxActivo;
     }
 }

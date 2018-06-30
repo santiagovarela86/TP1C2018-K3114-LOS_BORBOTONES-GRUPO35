@@ -25,6 +25,7 @@ namespace FrbaHotel.AbmUsuario
             InitializeComponent();
             this.usuario = usuario;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             this.resetearDatos();
@@ -47,55 +48,55 @@ namespace FrbaHotel.AbmUsuario
             passwordChanged = false;
 
             //seteo la info
-            textBox1.Text = usuario.getUsername();
-            textBox3.Text = usuario.getIdentidad().getNombre();
-            textBox4.Text = usuario.getIdentidad().getApellido();
-            textBox5.Text = usuario.getIdentidad().getNumeroDocumento();
-            textBox6.Text = usuario.getIdentidad().getMail();
-            textBox7.Text = usuario.getIdentidad().getTelefono();
-            textBox8.Text = usuario.getIdentidad().getDireccion().getCalle();
-            textBox12.Text = usuario.getIdentidad().getDireccion().getNumeroCalle().ToString();
-            textBox13.Text = usuario.getIdentidad().getDireccion().getPiso().ToString();
-            textBox14.Text = usuario.getIdentidad().getDireccion().getDepartamento();
-            textBox15.Text = usuario.getIdentidad().getDireccion().getCiudad();
-            textBox16.Text = usuario.getIdentidad().getDireccion().getPais();
-            textBox17.Text = usuario.getIdentidad().getNacionalidad();
+            textBoxUsername.Text = usuario.getUsername();
+            textBoxNombre.Text = usuario.getIdentidad().getNombre();
+            textBoxApellido.Text = usuario.getIdentidad().getApellido();
+            textBoxNroDoc.Text = usuario.getIdentidad().getNumeroDocumento();
+            textBoxMail.Text = usuario.getIdentidad().getMail();
+            textBoxTelefono.Text = usuario.getIdentidad().getTelefono();
+            textBoxCalle.Text = usuario.getIdentidad().getDireccion().getCalle();
+            textBoxNroCalle.Text = usuario.getIdentidad().getDireccion().getNumeroCalle().ToString();
+            textBoxPiso.Text = usuario.getIdentidad().getDireccion().getPiso().ToString();
+            textBoxDepto.Text = usuario.getIdentidad().getDireccion().getDepartamento();
+            textBoxLocalidad.Text = usuario.getIdentidad().getDireccion().getCiudad();
+            textBoxPais.Text = usuario.getIdentidad().getDireccion().getPais();
+            textBoxNacionalidad.Text = usuario.getIdentidad().getNacionalidad();
             dateTime.Value = usuario.getIdentidad().getFechaNacimiento();
             comboBoxTipoDoc.SelectedIndex = comboBoxTipoDoc.FindStringExact(usuario.getIdentidad().getTipoDocumento());
-            checkBox1.Checked = usuario.getActivo();
+            checkBoxActivo.Checked = usuario.getActivo();
 
             //cargo todos los roles
             RepositorioRol repositorioRol = new RepositorioRol();
-            dataGridView1.DataSource = repositorioRol.getAll();
-            dataGridView1.CurrentCell = null;
-            dataGridView1.ClearSelection();
+            dataGridRoles.DataSource = repositorioRol.getAll();
+            dataGridRoles.CurrentCell = null;
+            dataGridRoles.ClearSelection();
 
             //cargo todos los hoteles
             RepositorioHotel repositorioHotel = new RepositorioHotel();
-            dataGridView2.DataSource = repositorioHotel.getAll();
-            dataGridView2.CurrentCell = null;
-            dataGridView2.ClearSelection();
+            dataGridHoteles.DataSource = repositorioHotel.getAll();
+            dataGridHoteles.CurrentCell = null;
+            dataGridHoteles.ClearSelection();
 
             //MARCO LOS ROLES QUE TIENE EL USUARIO
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in dataGridRoles.Rows)
             {
                 Rol rol = (Rol)row.DataBoundItem;
                 if (usuario.getRoles().Exists(r => r.getIdRol().Equals(rol.getIdRol())))
                 {
-                    dataGridView1.Rows[row.Index].Selected = true;
-                    dataGridView1.Rows[row.Index].Cells[0].Selected = true;
+                    dataGridRoles.Rows[row.Index].Selected = true;
+                    dataGridRoles.Rows[row.Index].Cells[0].Selected = true;
                 }
             }
 
             //MARCO LOS HOTELES EN LOS QUE TRABAJA EL USUARIO
-            foreach (DataGridViewRow row in dataGridView2.Rows)
+            foreach (DataGridViewRow row in dataGridHoteles.Rows)
             {
                 Hotel hotel = (Hotel)row.DataBoundItem;
                 //if (rol.getFuncionalidades().Exists(f => f.getDescripcion().Equals(funcionalidad.getDescripcion())))
                 if (usuario.getHoteles().Exists(h => h.getIdHotel().Equals(hotel.getIdHotel())))
                 {
-                    dataGridView2.Rows[row.Index].Selected = true;
-                    dataGridView2.Rows[row.Index].Cells[0].Selected = true;
+                    dataGridHoteles.Rows[row.Index].Selected = true;
+                    dataGridHoteles.Rows[row.Index].Cells[0].Selected = true;
                 }
             }
         }
@@ -107,28 +108,28 @@ namespace FrbaHotel.AbmUsuario
 
             //ESTOS VALORES SON LOS QUE CAMBIAN
             //STRINGS
-            String username = textBox1.Text;          
-            String nombre = textBox3.Text;
-            String apellido = textBox4.Text;
-            String nroDoc = textBox5.Text;
-            String mail = textBox6.Text;
-            String telefono = textBox7.Text;
-            String calle = textBox8.Text;
-            String localidad = textBox15.Text;
-            String pais = textBox16.Text;
-            String nacionalidad = textBox17.Text;
-            String depto = textBox14.Text;            
+            String username = textBoxUsername.Text;          
+            String nombre = textBoxNombre.Text;
+            String apellido = textBoxApellido.Text;
+            String nroDoc = textBoxNroDoc.Text;
+            String mail = textBoxMail.Text;
+            String telefono = textBoxTelefono.Text;
+            String calle = textBoxCalle.Text;
+            String localidad = textBoxLocalidad.Text;
+            String pais = textBoxPais.Text;
+            String nacionalidad = textBoxNacionalidad.Text;
+            String depto = textBoxDepto.Text;            
             
             //NUMEROS
             int nroCalle = 0;
-            if (textBox12.Text != "") { nroCalle = int.Parse(textBox12.Text); }
+            if (textBoxNroCalle.Text != "") { nroCalle = int.Parse(textBoxNroCalle.Text); }
             int nroPiso = 0; 
-            if (textBox13.Text != "") { nroPiso = int.Parse(textBox13.Text); }
+            if (textBoxPiso.Text != "") { nroPiso = int.Parse(textBoxPiso.Text); }
 
             //OTROS
             String tipoDoc = "";
             if (comboBoxTipoDoc.SelectedItem != null) { tipoDoc = (String)comboBoxTipoDoc.SelectedItem; }
-            Boolean activo = checkBox1.Checked;
+            Boolean activo = checkBoxActivo.Checked;
             DateTime fechaNacimiento = dateTime.Value;
 
             //SI SE CAMBIA LA PASSWORD SE VUELVE A GENERAR
@@ -144,19 +145,19 @@ namespace FrbaHotel.AbmUsuario
             
             //traigo los roles elegidos
             List<Rol> roles = new List<Rol>();
-            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+            foreach (DataGridViewRow item in this.dataGridRoles.SelectedRows)
                 {
                     roles.Add(item.DataBoundItem as Rol);
                 }
             //traigo los hoteles elegidos
             List<Hotel> hoteles = new List<Hotel>();
-            foreach (DataGridViewRow item in this.dataGridView2.SelectedRows)
+            foreach (DataGridViewRow item in this.dataGridHoteles.SelectedRows)
             {
                 hoteles.Add(item.DataBoundItem as Hotel);
             }
 
-            Direccion adress = new Direccion(idDir,pais, localidad, calle, nroCalle, nroPiso, depto);
-            Identidad identidad =new Identidad(idIdentidad,tipoIdentidad,nombre, apellido,tipoDoc,nroDoc,mail,fechaNacimiento,nacionalidad,telefono, adress);
+            Direccion address = new Direccion(idDir,pais, localidad, calle, nroCalle, nroPiso, depto);
+            Identidad identidad =new Identidad(idIdentidad,tipoIdentidad,nombre, apellido,tipoDoc,nroDoc,mail,fechaNacimiento,nacionalidad,telefono, address);
             Usuario user = new Usuario(idUsuario, identidad, username,password,intentosFallidosLogin, activo,roles,hoteles);
 
             if (this.validoInput(this))
@@ -183,22 +184,22 @@ namespace FrbaHotel.AbmUsuario
 
         private Boolean validoInput(ModificacionUsuario form)
         {
-            return !form.textBox1.Text.Equals("") &&
-                   !this.password.Equals("") && //!form.textBox2.Text.Equals("") &&
-                   !form.textBox3.Text.Equals("") &&
-                   !form.textBox4.Text.Equals("") &&
-                   !form.textBox5.Text.Equals("") &&
-                   !form.textBox6.Text.Equals("") &&
-                   !form.textBox7.Text.Equals("") &&
-                   !form.textBox8.Text.Equals("") &&
-                   !form.textBox12.Text.Equals("") &&
-                   !form.textBox13.Text.Equals("") &&
+            return !form.textBoxUsername.Text.Equals("") &&
+                   !this.password.Equals("") &&
+                   !form.textBoxNombre.Text.Equals("") &&
+                   !form.textBoxApellido.Text.Equals("") &&
+                   !form.textBoxNroDoc.Text.Equals("") &&
+                   !form.textBoxMail.Text.Equals("") &&
+                   !form.textBoxTelefono.Text.Equals("") &&
+                   !form.textBoxCalle.Text.Equals("") &&
+                   !form.textBoxNroCalle.Text.Equals("") &&
+                   !form.textBoxPiso.Text.Equals("") &&
                    //!form.textBox14.Text.Equals("") && //DEPTO PUEDE ESTAR VACIO (?)
-                   !form.textBox15.Text.Equals("") &&
-                   !form.textBox16.Text.Equals("") &&
-                   !form.textBox17.Text.Equals("") &&
-                   !form.dataGridView1.SelectedRows.Count.Equals(0) &&
-                   !form.dataGridView2.SelectedRows.Count.Equals(0) &&
+                   !form.textBoxLocalidad.Text.Equals("") &&
+                   !form.textBoxPais.Text.Equals("") &&
+                   !form.textBoxNacionalidad.Text.Equals("") &&
+                   !form.dataGridRoles.SelectedRows.Count.Equals(0) &&
+                   !form.dataGridHoteles.SelectedRows.Count.Equals(0) &&
                    form.comboBoxTipoDoc.SelectedValue != null;
         }
 
@@ -266,7 +267,7 @@ namespace FrbaHotel.AbmUsuario
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             passwordChanged = true;
-            this.password = textBox2.Text;
+            this.password = textBoxPassword.Text;
         }
     }
 }

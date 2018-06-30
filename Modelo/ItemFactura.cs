@@ -9,15 +9,19 @@ namespace FrbaHotel.Modelo
     public class ItemFactura
     {
         private int idItemFactura = 0;
+        private int idConsumible = 0;
+        private int idFactura = 0;
         private Consumible consumible = null;
         private float cantidad = 0;
         private float monto = 0;
         private DateTime fechaCreacion = new DateTime();
 
-        public ItemFactura(int idItemFactura, Consumible consumible, float cantidad, float monto, DateTime fechaCreacion)
+        public ItemFactura(int idItemFactura, int idConsumible, float cantidad, float monto, DateTime fechaCreacion,int idFactura)
         {
             this.idItemFactura = idItemFactura;
-            this.consumible = consumible;
+            this.idFactura = idFactura;
+            this.idConsumible = idConsumible;
+            //this.consumible = consumible;
             this.cantidad = cantidad;
             this.monto = monto;
             this.fechaCreacion = fechaCreacion;
@@ -26,6 +30,19 @@ namespace FrbaHotel.Modelo
         public int getIdItemFactura()
         {
             return idItemFactura;
+        }
+        public int getIdFactura()
+        {
+            return idFactura;
+        }
+        public void setIdFactura(int idFactura)
+        {
+            this.idFactura = idFactura;
+        }
+
+        public int getIdConsumible()
+        {
+            return idConsumible;
         }
 
         public Consumible getConsumible()

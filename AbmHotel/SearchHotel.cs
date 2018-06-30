@@ -35,8 +35,14 @@ namespace FrbaHotel.AbmHotel
             String ciudad = validateStringFields(ciudadText.Text);
             RepositorioHotel repositorioHotel = new RepositorioHotel();
 
+            this.modificarButton.Enabled = false;
+
             List<Hotel> hoteles = repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
             registroHoteles.DataSource = hoteles;
+
+            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+            registroHoteles.CurrentCell = null;
+            registroHoteles.ClearSelection();
         }
 
         private String validateStringFields(String field)
@@ -58,7 +64,6 @@ namespace FrbaHotel.AbmHotel
             estrellasComboBox.SelectedValue = "";
             estrellasComboBox.SelectedIndex = -1;
             this.modificarButton.Enabled = false;
-            this.cierreTemporalButton.Enabled = false;
         }
 
         //CIERRO LA VENTANA CON ESCAPE
@@ -80,7 +85,6 @@ namespace FrbaHotel.AbmHotel
             if (dgv.CurrentRow.Selected)
             {
                 this.modificarButton.Enabled = true;
-                this.cierreTemporalButton.Enabled = true;
             }
         }
 
@@ -91,19 +95,7 @@ namespace FrbaHotel.AbmHotel
             using (ModificacionHotel form = new ModificacionHotel(hotel))
             {
                 var result = form.ShowDialog();
-                    buscarHoteles();
-            }
-        }
-
-        private void registroHotel_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridView dgv = sender as DataGridView;
-
-            if (dgv == null) return;
-            if (dgv.CurrentRow.Selected)
-            {
-                this.modificarButton.Enabled = true;
-                this.cierreTemporalButton.Enabled = true;
+                this.buscarHoteles();
             }
         }
 
@@ -112,25 +104,9 @@ namespace FrbaHotel.AbmHotel
             using (CreateHotel form = new CreateHotel())
             {
                 var result = form.ShowDialog();
-
-                    buscarHoteles();
-               
+                this.buscarHoteles();
             }
         }
-
-        private void cierreTemporalButton_Click(object sender, EventArgs e)
-        {
-            Hotel hotel = (Hotel)registroHoteles.CurrentRow.DataBoundItem;
-
-            using (DropHotel form = new DropHotel(hotel))
-            {
-                var result = form.ShowDialog();
-
-                    buscarHoteles();
-                
-            }
-        }
-
     }
 
 }

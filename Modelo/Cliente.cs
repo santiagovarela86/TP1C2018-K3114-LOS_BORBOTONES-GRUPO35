@@ -46,6 +46,11 @@ namespace FrbaHotel.Modelo
             return idCliente.Equals(0);
         }
 
+        public void setActivo(Boolean activo)
+        {
+            this.activo = activo;
+        }
+
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdCliente { get { return this.getIdCliente(); } }
         public String Nombre { get { return this.getIdentidad().getNombre(); } }

@@ -14,7 +14,7 @@ namespace FrbaHotel.Commons
         {
             if (field == null)
             {
-                throw new RequestInvalidoException(fieldName + "no puede ser nulo");
+                throw new RequestInvalidoException(fieldName + " no puede ser nulo");
             }
             return field;
         }
@@ -38,10 +38,9 @@ namespace FrbaHotel.Commons
             {
                 return Int32.Parse(field);
             }
-            catch (Exception e)
+            catch (System.FormatException e)
             {
-                throw new RequestInvalidoException(fieldName + " debe ser numerico");
-
+                throw new RequestInvalidoException(fieldName + " debe ser numerico: " + e.Message);
             }
         }
 

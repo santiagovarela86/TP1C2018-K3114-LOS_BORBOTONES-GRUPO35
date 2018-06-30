@@ -89,8 +89,7 @@ namespace FrbaHotel.Repositorios
         //ASUMO QUE TENGO UNA SOLA DIRECCION SI TENGO MAS DE UNA ESTO ANDARIA MAL
         override public List<Cliente> getAll()
         {
-            List<Cliente> clientes = new List<Cliente>();
-            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();            
+            List<Cliente> clientes = new List<Cliente>();     
             
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -253,29 +252,87 @@ namespace FrbaHotel.Repositorios
         {
             if (this.exists(cliente))
             {
-                //Actualizo el registro
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+
+                //PARAMETERS DE LA DIRECCION
+                sqlCommand.Parameters.AddWithValue("@Pais", cliente.getIdentidad().getDireccion().getPais());
+                sqlCommand.Parameters.AddWithValue("@Ciudad", cliente.getIdentidad().getDireccion().getCiudad());
+                sqlCommand.Parameters.AddWithValue("@Calle", cliente.getIdentidad().getDireccion().getCalle());
+                sqlCommand.Parameters.AddWithValue("@NumeroCalle", cliente.getIdentidad().getDireccion().getNumeroCalle());
+                sqlCommand.Parameters.AddWithValue("@Piso", cliente.getIdentidad().getDireccion().getPiso());
+                sqlCommand.Parameters.AddWithValue("@Departamento", cliente.getIdentidad().getDireccion().getDepartamento());
+                sqlCommand.Parameters.AddWithValue("@idDireccion", cliente.getIdentidad().getDireccion().getIdDireccion());
+
+                //PARAMETERS DE LA IDENTIDAD
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", cliente.getIdentidad().getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", cliente.getIdentidad().getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", cliente.getIdentidad().getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", cliente.getIdentidad().getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", cliente.getIdentidad().getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", cliente.getIdentidad().getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", cliente.getIdentidad().getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", cliente.getIdentidad().getTelefono());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", cliente.getIdentidad().getIdIdentidad());
+
+                //PARAMETERS DEL CLIENTE
+                /////////////////////////
+                //POR EL MOMENTO NO CONSIDERAMOS LAS RESERVAS EN EL CLIENTE EN EL UPDATE
+                /////////////////////////
+                sqlCommand.Parameters.AddWithValue("@Activo", cliente.getActivo());
+                sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Direccion
+                    SET Pais = @Pais, Ciudad = @Ciudad, Calle = @Calle, NumeroCalle = @NumeroCalle, Piso = @Piso, Depto = @Departamento
+                    WHERE idDireccion = @idDireccion;
+
+                    UPDATE LOS_BORBOTONES.Identidad
+                    SET TipoIdentidad = @TipoIdent, Nombre = @Nombre, Apellido = @Apellido, TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail, FechaNacimiento = @FecNac, Nacionalidad = @Nacion, Telefono = @Tel
+                    WHERE idIdentidad = @idIdentidad;
+
+                    UPDATE LOS_BORBOTONES.Cliente
+                    SET Activo = @Activo, idIdentidad = @idIdentidad
+                    WHERE idCliente = @idCliente;
+
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
             }
             else
             {
-                //Error
+                throw new NoExisteIDException("No existe el cliente que intenta actualizar");
             }
         }
 
         override public void delete(Cliente cliente)
         {
-            if (this.exists(cliente))
-            {
-                //Borro el registro
-            }
-            else
-            {
-                //Error
-            }
+            throw new NotImplementedException();
         }
 
         override public void bajaLogica(Cliente cliente)
         {
-            throw new NotImplementedException();
+            cliente.setActivo(false);
+            this.update(cliente);
         }
 
         override public Boolean exists(Cliente cliente)

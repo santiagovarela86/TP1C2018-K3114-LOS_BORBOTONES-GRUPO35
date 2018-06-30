@@ -1243,6 +1243,16 @@ CROSS JOIN LOS_BORBOTONES.Usuario u
 WHERE u.Username = 'admin';
 GO
 
+--El usuario recepcionista trabaja en el hotel 1 y 3
+-------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Hotel_X_Usuario (idHotel, idUsuario)
+SELECT h.idHotel, u.idUsuario
+FROM LOS_BORBOTONES.Hotel h, LOS_BORBOTONES.Usuario u
+WHERE u.Username = 'recepcionista'
+AND (h.idHotel = 1 OR h.idhotel = 3)
+GO
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Migracion Factura (*) trae montototal con importes inconsistentes, se corrige luego de migrar itemFactura
 -- se define tipoDePago Efectivo, para los clientes migrados de la tablaMaestra
