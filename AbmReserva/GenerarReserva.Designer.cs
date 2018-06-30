@@ -133,9 +133,8 @@ namespace FrbaHotel.AbmReserva
             this.comboBoxRegimen.Name = "comboBoxRegimen";
             this.comboBoxRegimen.Size = new System.Drawing.Size(174, 21);
             this.comboBoxRegimen.TabIndex = 32;
-            // 
-            // habitacionesDisponiblesGrid
-            // 
+
+
             this.habitacionesDisponiblesGrid.AllowUserToAddRows = false;
             this.habitacionesDisponiblesGrid.AllowUserToDeleteRows = false;
             this.habitacionesDisponiblesGrid.AllowUserToOrderColumns = true;
