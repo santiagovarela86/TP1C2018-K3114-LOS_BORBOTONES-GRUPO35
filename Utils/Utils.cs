@@ -14,7 +14,7 @@ namespace FrbaHotel.Commons
         {
             if (field == null)
             {
-                throw new RequestInvalidoException(fieldName + "no puede ser nulo");
+                throw new RequestInvalidoException(fieldName + " no puede ser nulo");
             }
             return field;
         }

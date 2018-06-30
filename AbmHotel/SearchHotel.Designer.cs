@@ -75,7 +75,7 @@ namespace FrbaHotel.AbmHotel
             this.nombreText.Location = new System.Drawing.Point(86, 38);
             this.nombreText.Name = "nombreText";
             this.nombreText.Size = new System.Drawing.Size(117, 20);
-            this.nombreText.TabIndex = 0;
+            this.nombreText.TabIndex = 1;
             // 
             // nombreLabel
             // 
@@ -114,7 +114,7 @@ namespace FrbaHotel.AbmHotel
             this.altaButton.Location = new System.Drawing.Point(26, 477);
             this.altaButton.Name = "altaButton";
             this.altaButton.Size = new System.Drawing.Size(130, 23);
-            this.altaButton.TabIndex = 13;
+            this.altaButton.TabIndex = 8;
             this.altaButton.Text = "Alta";
             this.altaButton.Click += new System.EventHandler(this.altaButton_Click);
             // 
@@ -123,7 +123,7 @@ namespace FrbaHotel.AbmHotel
             this.button1.Location = new System.Drawing.Point(298, 156);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(117, 23);
-            this.button1.TabIndex = 12;
+            this.button1.TabIndex = 5;
             this.button1.Text = "Limpiar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -134,7 +134,7 @@ namespace FrbaHotel.AbmHotel
             this.cierreTemporalButton.Location = new System.Drawing.Point(410, 477);
             this.cierreTemporalButton.Name = "cierreTemporalButton";
             this.cierreTemporalButton.Size = new System.Drawing.Size(128, 23);
-            this.cierreTemporalButton.TabIndex = 7;
+            this.cierreTemporalButton.TabIndex = 10;
             this.cierreTemporalButton.Text = "Cierre Temporal";
             this.cierreTemporalButton.Click += new System.EventHandler(this.cierreTemporalButton_Click);
             // 
@@ -144,7 +144,7 @@ namespace FrbaHotel.AbmHotel
             this.modificarButton.Location = new System.Drawing.Point(218, 477);
             this.modificarButton.Name = "modificarButton";
             this.modificarButton.Size = new System.Drawing.Size(127, 23);
-            this.modificarButton.TabIndex = 6;
+            this.modificarButton.TabIndex = 9;
             this.modificarButton.Text = "Modificar";
             this.modificarButton.Click += new System.EventHandler(this.modificarButton_Click);
             // 
@@ -157,12 +157,12 @@ namespace FrbaHotel.AbmHotel
             this.estrellasLabel.TabIndex = 11;
             this.estrellasLabel.Text = "Estrellas:";
             // 
-            // buscarHoteles
+            // buscarHotelesButton
             // 
             this.buscarHotelesButton.Location = new System.Drawing.Point(421, 156);
             this.buscarHotelesButton.Name = "buscarHotelesButton";
             this.buscarHotelesButton.Size = new System.Drawing.Size(117, 23);
-            this.buscarHotelesButton.TabIndex = 4;
+            this.buscarHotelesButton.TabIndex = 6;
             this.buscarHotelesButton.Text = "Buscar";
             this.buscarHotelesButton.Click += new System.EventHandler(this.button_buscarHoteles);
             // 
@@ -172,7 +172,7 @@ namespace FrbaHotel.AbmHotel
             this.estrellasComboBox.Location = new System.Drawing.Point(421, 37);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
-            this.estrellasComboBox.TabIndex = 10;
+            this.estrellasComboBox.TabIndex = 2;
             // 
             // ciudadLabel
             // 
@@ -188,7 +188,7 @@ namespace FrbaHotel.AbmHotel
             this.ciudadText.Location = new System.Drawing.Point(421, 108);
             this.ciudadText.Name = "ciudadText";
             this.ciudadText.Size = new System.Drawing.Size(117, 20);
-            this.ciudadText.TabIndex = 3;
+            this.ciudadText.TabIndex = 4;
             // 
             // paisLabel
             // 
@@ -204,7 +204,7 @@ namespace FrbaHotel.AbmHotel
             this.paisText.Location = new System.Drawing.Point(86, 105);
             this.paisText.Name = "paisText";
             this.paisText.Size = new System.Drawing.Size(117, 20);
-            this.paisText.TabIndex = 2;
+            this.paisText.TabIndex = 3;
             // 
             // registroHoteles
             // 
@@ -223,7 +223,7 @@ namespace FrbaHotel.AbmHotel
             this.registroHoteles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.registroHoteles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.registroHoteles.Size = new System.Drawing.Size(513, 257);
-            this.registroHoteles.TabIndex = 5;
+            this.registroHoteles.TabIndex = 7;
             this.registroHoteles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.registroHoteles_CellClick);
             // 
             // SearchHotel
