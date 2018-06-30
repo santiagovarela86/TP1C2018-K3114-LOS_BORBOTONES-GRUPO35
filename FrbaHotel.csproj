@@ -118,6 +118,12 @@
     <Compile Include="AbmHotel\SearchHotel.Designer.cs">
       <DependentUpon>SearchHotel.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmReserva\ConfirmarReservaWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\ConfirmarReservaWindow.Designer.cs">
+      <DependentUpon>ConfirmarReservaWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmReserva\GenerarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHotel\SearchHotel.resx">
       <DependentUpon>SearchHotel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\ConfirmarReservaWindow.resx">
+      <DependentUpon>ConfirmarReservaWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\GenerarReserva.resx">
       <DependentUpon>GenerarReserva.cs</DependentUpon>

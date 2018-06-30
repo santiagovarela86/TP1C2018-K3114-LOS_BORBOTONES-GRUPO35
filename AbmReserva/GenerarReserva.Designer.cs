@@ -1,4 +1,5 @@
-﻿namespace FrbaHotel.AbmReserva
+﻿using System;
+namespace FrbaHotel.AbmReserva
 {
     public partial class GenerarReserva
     {
@@ -40,6 +41,7 @@
             this.labelRegimen = new System.Windows.Forms.Label();
             this.comboBoxRegimen = new System.Windows.Forms.ComboBox();
             this.habitacionesDisponiblesGrid = new System.Windows.Forms.DataGridView();
+            this.reservarHabitacionButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,6 +81,7 @@
             // calendarioHasta
             // 
             this.calendarioHasta.Location = new System.Drawing.Point(345, 138);
+            this.calendarioHasta.SelectionStart = DateTime.Today.AddDays(1);
             this.calendarioHasta.Name = "calendarioHasta";
             this.calendarioHasta.TabIndex = 20;
             // 
@@ -115,12 +118,12 @@
             this.comboBoxHotel.TabIndex = 30;
             this.comboBoxHotel.SelectedValueChanged += new System.EventHandler(this.eventHandlerHotelComboBox);
             // 
-            // label3
+            // labelRegimen
             // 
             this.labelRegimen.AutoSize = true;
             this.labelRegimen.Location = new System.Drawing.Point(37, 83);
             this.labelRegimen.Name = "labelRegimen";
-            this.labelRegimen.Size = new System.Drawing.Size(35, 13);
+            this.labelRegimen.Size = new System.Drawing.Size(52, 13);
             this.labelRegimen.TabIndex = 33;
             this.labelRegimen.Text = "Regimen:";
             // 
@@ -149,12 +152,24 @@
             this.habitacionesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(558, 194);
             this.habitacionesDisponiblesGrid.TabIndex = 34;
+            this.habitacionesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.habitaciones_cellClick);
+            // 
+            // reservarHabitacionButton
+            // 
+            this.reservarHabitacionButton.Enabled = false;
+            this.reservarHabitacionButton.Location = new System.Drawing.Point(243, 583);
+            this.reservarHabitacionButton.Name = "reservarHabitacionButton";
+            this.reservarHabitacionButton.Size = new System.Drawing.Size(192, 23);
+            this.reservarHabitacionButton.TabIndex = 35;
+            this.reservarHabitacionButton.Text = "Reservar";
+            this.reservarHabitacionButton.Click += new System.EventHandler(this.reservarHabitacion);
             // 
             // GenerarReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 573);
+            this.ClientSize = new System.Drawing.Size(684, 659);
+            this.Controls.Add(this.reservarHabitacionButton);
             this.Controls.Add(this.habitacionesDisponiblesGrid);
             this.Controls.Add(this.labelRegimen);
             this.Controls.Add(this.comboBoxRegimen);
@@ -189,5 +204,6 @@
         private System.Windows.Forms.Label labelRegimen;
         private System.Windows.Forms.ComboBox comboBoxRegimen;
         private System.Windows.Forms.DataGridView habitacionesDisponiblesGrid;
+        private System.Windows.Forms.Button reservarHabitacionButton;
     }
 }

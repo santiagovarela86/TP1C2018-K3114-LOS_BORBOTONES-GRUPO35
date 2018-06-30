@@ -19,6 +19,17 @@ namespace FrbaHotel.AbmReserva
             this.regimen = regimen;
         }
 
+        public Habitacion getHabitacion()
+        {
+            return this.habitacion;
+        }
+
+
+        public Regimen getRegimen()
+        {
+            return this.regimen;
+        }
+
         public String Regimen { get { return this.regimen.getDescripcion(); } }
         public String Hotel { get { return this.habitacion.getHotel().getNombre(); } }
         public String TipoHabitacion { get { return this.habitacion.getTipoHabitacion().getDescripcion(); } }

@@ -69,8 +69,33 @@ namespace FrbaHotel.AbmReserva
             habitacionesDisponiblesGrid.DataSource = habitacionesDisponibles;
         }
 
+        private void habitaciones_cellClick(object sender, EventArgs e)
+        {
+            this.reservarHabitacionButton.Enabled = true;
+        }
+
+        private void reservarHabitacion(object sender, EventArgs e)
+        {
+
+            DateTime fechaInicio = calendarioDesde.SelectionStart;
+            DateTime fechaFin = calendarioHasta.SelectionStart;
+            List<HabitacionDisponibleSearchDTO> habitacionesAReservar = new List<HabitacionDisponibleSearchDTO>();
+
+            foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
+            {
+                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponibleSearchDTO);
+            }
+
+            using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin))
+            {
+                var result = form.ShowDialog();
+            }
+        }
 
     }
+
+
+   
 
     
 }
