@@ -18,13 +18,29 @@ namespace FrbaHotel
 {
     public partial class FuncionesAdicionales : Form
     {
-        Usuario usuarioLogueado = null;
+        Sesion sesion = null;
 
-        public FuncionesAdicionales(Usuario usuarioLogueado)
+        public FuncionesAdicionales(Sesion sesion)
         {
             InitializeComponent();
-            this.usuarioLogueado = usuarioLogueado;
+            this.sesion = sesion;
         }
+
+        public Usuario getUsuarioLogueado()
+        {
+            return this.sesion.getUsuario();
+        }
+
+        public Rol getRolElegido()
+        {
+            return this.sesion.getRol();
+        }
+
+        public Hotel getHotelElegido()
+        {
+            return this.sesion.getHotel();
+        }
+
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -43,10 +59,13 @@ namespace FrbaHotel
             FacturarEstadia.Enabled = false;
             GenerarListadoEstadistico.Enabled = false;
             RegistrarConsumible.Enabled = false;
+
+            labelHotel.Text = "Hotel: " + this.getHotelElegido().getNombre();
+            labelRol.Text = "Rol: " + this.getRolElegido().getNombre();
             
             try
             {
-                this.HabilitarFuncionalidades(usuarioLogueado);
+                this.HabilitarFuncionalidades(this.getUsuarioLogueado());
             } catch (Exception exc){
                 MessageBox.Show(exc.Message, "Error al obtener los roles del usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -54,8 +73,7 @@ namespace FrbaHotel
 
         private void HabilitarFuncionalidades(Usuario usuarioLogueado)
         {
-            //SE SUPONE QUE PARA SIMPLIFICAR EL USUARIO VA A TENER UN SOLO ROL
-            List<Funcionalidad> funcionalidades = usuarioLogueado.getRoles().First().getFuncionalidades();
+            List<Funcionalidad> funcionalidades = this.getRolElegido().getFuncionalidades();
 
             ABMRol.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMRol.Name));
             ABMUsuario.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMUsuario.Name));

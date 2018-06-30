@@ -202,6 +202,12 @@
     <Compile Include="Login\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\SeleccionRolYHotel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\SeleccionRolYHotel.Designer.cs">
+      <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModelBuilder\HabitacionBuilder.cs" />
     <Compile Include="ModelBuilder\HotelBuilder.cs" />
     <Compile Include="ModelBuilder\TipoHabitacionBuilder.cs" />
@@ -218,6 +224,7 @@
     <Compile Include="Modelo\Hotel.cs" />
     <Compile Include="Modelo\Identidad.cs" />
     <Compile Include="Modelo\ItemFactura.cs" />
+    <Compile Include="Modelo\Sesion.cs" />
     <Compile Include="RegistrarConsumible\AltaConsumible.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -335,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\SeleccionRolYHotel.resx">
+      <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PantallaPrincipal.resx">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>
