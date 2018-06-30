@@ -59,7 +59,6 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdCierreTemporal { get { return this.getIdCierreTemporal(); } }
         public DateTime FechaInicio { get { return this.getFechaInicio(); } }
         public DateTime FechaFin { get { return this.getFechaFin(); } }
         public String Descripcion { get { return this.getDescripcion(); } }

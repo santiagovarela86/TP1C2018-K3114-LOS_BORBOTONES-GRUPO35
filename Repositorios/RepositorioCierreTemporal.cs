@@ -46,7 +46,7 @@ namespace FrbaHotel.Repositorios
         
         public List<CierreTemporal> getByIdHotel(Hotel hotel)
         {
-            List<CierreTemporal> cierreTemporales = new List<CierreTemporal>();
+            List<CierreTemporal> cierresTemporales = new List<CierreTemporal>();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -54,11 +54,11 @@ namespace FrbaHotel.Repositorios
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.AddWithValue("@cierreidHotel", hotel.getIdHotel());
-            sqlCommand.CommandText =
-                "SELECT CIERRE.idEstadoHotel,CIERRE.FechaInicio,CIERRE.FechaFin,CIERRE.Descripcion,CIERRE.idHotel FROM LOS_BORBOTONES.CierreTemporal " +
-                " WHERE CIERRE.idHotel = @cierreidHotel;";
-
+            sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
+            sqlCommand.CommandText = @"
+                SELECT *
+                FROM LOS_BORBOTONES.CierreTemporal c
+                WHERE c.idHotel = @idHotel;";
 
             sqlConnection.Open();
 
@@ -66,19 +66,19 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                int idEstadoHotel = reader.GetInt32(reader.GetOrdinal("CIERRE.idEstadoHotel"));
-                DateTime fechaInicio= reader.GetDateTime(reader.GetOrdinal("CIERRE.FechaInicio"));
-                DateTime fechaFin = reader.GetDateTime(reader.GetOrdinal("CIERRE.FechaFin"));
-                String descripcion= reader.SafeGetString(reader.GetOrdinal("CIERRE.Descripcion"));
+                int idEstadoHotel = reader.GetInt32(reader.GetOrdinal("idEstadoHotel"));
+                DateTime fechaInicio = reader.GetDateTime(reader.GetOrdinal("FechaInicio"));
+                DateTime fechaFin = reader.GetDateTime(reader.GetOrdinal("FechaFin"));
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
 
                 CierreTemporal cierreTemporal = new CierreTemporal(idEstadoHotel, fechaInicio, fechaFin, descripcion, hotel);
-                cierreTemporales.Add(cierreTemporal);
+                cierresTemporales.Add(cierreTemporal);
             }
 
             //Cierro Primera Consulta
             sqlConnection.Close();
 
-            return cierreTemporales;
+            return cierresTemporales;
 
         }
 

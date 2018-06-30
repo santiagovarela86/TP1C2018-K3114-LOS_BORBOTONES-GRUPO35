@@ -34,7 +34,11 @@ namespace FrbaHotel.AbmHotel
         private GroupBox groupBox1;
         private Label emailLabel;
         private TextBox emailText;
-        private Button button1;
+        private Button buttonResetear;
+        private DataGridView dataGridCierres;
+        private Label label1;
+        private Button buttonNuevoCierre;
+        private Button buttonSalir;
         private Button modificarHotel;
 
 
@@ -46,7 +50,6 @@ namespace FrbaHotel.AbmHotel
 
         private void initModificacionHotel()
         {
-
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
             this.estrellasComboBox.DataSource = repoCategoria.getAll();
             this.estrellasComboBox.ValueMember = "Estrellas";
@@ -79,6 +82,12 @@ namespace FrbaHotel.AbmHotel
                     this.regimenesGrid.Rows[row.Index].Selected = true;
                 }
             }
+
+            this.dataGridCierres.DataSource = this.hotel.getCierresTemporales();
+            dataGridCierres.CurrentCell = null;
+            dataGridCierres.ClearSelection();
+            this.dataGridCierres.Rows[0].Cells[0].Selected = false;
+            this.dataGridCierres.Rows[0].Selected = false;
 
         }
         /// <summary>
@@ -121,7 +130,7 @@ namespace FrbaHotel.AbmHotel
             this.nombreText = new System.Windows.Forms.TextBox();
             this.nombreLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonResetear = new System.Windows.Forms.Button();
             this.emailLabel = new System.Windows.Forms.Label();
             this.regimenesGrid = new System.Windows.Forms.DataGridView();
             this.regimenesLabel = new System.Windows.Forms.Label();
@@ -141,8 +150,13 @@ namespace FrbaHotel.AbmHotel
             this.creacionLabel = new System.Windows.Forms.Label();
             this.creacionTime = new System.Windows.Forms.DateTimePicker();
             this.modificarHotel = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dataGridCierres = new System.Windows.Forms.DataGridView();
+            this.buttonNuevoCierre = new System.Windows.Forms.Button();
+            this.buttonSalir = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridCierres)).BeginInit();
             this.SuspendLayout();
             // 
             // nombreText
@@ -163,7 +177,11 @@ namespace FrbaHotel.AbmHotel
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.buttonSalir);
+            this.groupBox1.Controls.Add(this.buttonNuevoCierre);
+            this.groupBox1.Controls.Add(this.dataGridCierres);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.buttonResetear);
             this.groupBox1.Controls.Add(this.emailLabel);
             this.groupBox1.Controls.Add(this.regimenesGrid);
             this.groupBox1.Controls.Add(this.regimenesLabel);
@@ -187,19 +205,19 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.Controls.Add(this.modificarHotel);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(687, 428);
+            this.groupBox1.Size = new System.Drawing.Size(720, 508);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Modificar Hotel";
             // 
-            // button1
+            // buttonResetear
             // 
-            this.button1.Location = new System.Drawing.Point(165, 379);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(161, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Resetear";
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonResetear.Location = new System.Drawing.Point(140, 479);
+            this.buttonResetear.Name = "buttonResetear";
+            this.buttonResetear.Size = new System.Drawing.Size(161, 23);
+            this.buttonResetear.TabIndex = 12;
+            this.buttonResetear.Text = "Resetear";
+            this.buttonResetear.Click += new System.EventHandler(this.button1_Click);
             // 
             // emailLabel
             // 
@@ -216,7 +234,7 @@ namespace FrbaHotel.AbmHotel
             this.regimenesGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.regimenesGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.regimenesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.regimenesGrid.Location = new System.Drawing.Point(106, 221);
+            this.regimenesGrid.Location = new System.Drawing.Point(137, 192);
             this.regimenesGrid.Name = "regimenesGrid";
             this.regimenesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.regimenesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -226,7 +244,7 @@ namespace FrbaHotel.AbmHotel
             // regimenesLabel
             // 
             this.regimenesLabel.AutoSize = true;
-            this.regimenesLabel.Location = new System.Drawing.Point(25, 238);
+            this.regimenesLabel.Location = new System.Drawing.Point(23, 192);
             this.regimenesLabel.Name = "regimenesLabel";
             this.regimenesLabel.Size = new System.Drawing.Size(55, 13);
             this.regimenesLabel.TabIndex = 5;
@@ -356,19 +374,60 @@ namespace FrbaHotel.AbmHotel
             // 
             // modificarHotel
             // 
-            this.modificarHotel.Location = new System.Drawing.Point(422, 379);
+            this.modificarHotel.Location = new System.Drawing.Point(326, 479);
             this.modificarHotel.Name = "modificarHotel";
             this.modificarHotel.Size = new System.Drawing.Size(161, 23);
             this.modificarHotel.TabIndex = 11;
             this.modificarHotel.Text = "Modificar";
             this.modificarHotel.Click += new System.EventHandler(this.modificarHotel_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 353);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 13);
+            this.label1.TabIndex = 18;
+            this.label1.Text = "Cierres Temporales:";
+            // 
+            // dataGridCierres
+            // 
+            this.dataGridCierres.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridCierres.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.dataGridCierres.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridCierres.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridCierres.Location = new System.Drawing.Point(137, 353);
+            this.dataGridCierres.MultiSelect = false;
+            this.dataGridCierres.Name = "dataGridCierres";
+            this.dataGridCierres.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridCierres.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridCierres.Size = new System.Drawing.Size(528, 97);
+            this.dataGridCierres.TabIndex = 19;
+            // 
+            // buttonNuevoCierre
+            // 
+            this.buttonNuevoCierre.Location = new System.Drawing.Point(25, 379);
+            this.buttonNuevoCierre.Name = "buttonNuevoCierre";
+            this.buttonNuevoCierre.Size = new System.Drawing.Size(97, 23);
+            this.buttonNuevoCierre.TabIndex = 20;
+            this.buttonNuevoCierre.Text = "Nuevo Cierre...";
+            this.buttonNuevoCierre.Click += new System.EventHandler(this.buttonNuevoCierre_Click);
+            // 
+            // buttonSalir
+            // 
+            this.buttonSalir.Location = new System.Drawing.Point(504, 479);
+            this.buttonSalir.Name = "buttonSalir";
+            this.buttonSalir.Size = new System.Drawing.Size(161, 23);
+            this.buttonSalir.TabIndex = 21;
+            this.buttonSalir.Text = "Salir";
+            this.buttonSalir.Click += new System.EventHandler(this.buttonSalir_Click);
+            // 
             // ModificacionHotel
             // 
             this.AcceptButton = this.modificarHotel;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 467);
+            this.ClientSize = new System.Drawing.Size(745, 532);
             this.Controls.Add(this.groupBox1);
             this.Name = "ModificacionHotel";
             this.Text = "Modificacion de Hoteles";
@@ -376,6 +435,7 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridCierres)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -409,8 +469,8 @@ namespace FrbaHotel.AbmHotel
                 Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),pais,ciudad,calle,numeroCalle,0,"");
                 Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
                 repoHotel.update(hotelToUpdateSave);
-                 MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
-                 hotel = hotelToUpdateSave;
+                MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                hotel = hotelToUpdateSave;
             } catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
@@ -425,7 +485,6 @@ namespace FrbaHotel.AbmHotel
         private void button1_Click(object sender, EventArgs e)
         {
             this.initModificacionHotel();
-
         }
 
         private void validarQuitaRegimen(List<Regimen> regimenesActuales, List<Regimen> regimenesPorActualizar)
@@ -453,6 +512,25 @@ namespace FrbaHotel.AbmHotel
             {
                 e.Handled = true;
             }
+        }
+
+        private void buttonNuevoCierre_Click(object sender, EventArgs e)
+        {
+            using (DropHotel cierreTemporalForm = new DropHotel(this.hotel))
+            {
+                var result = cierreTemporalForm.ShowDialog();
+
+                //ME TRAIGO EL HOTEL MODIFICADO
+                this.hotel.getCierresTemporales();
+
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO CIERRE TEMPORAL VUELVO A CARGAR LA LISTA
+                this.initModificacionHotel();
+            }
+        }
+
+        private void buttonSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
 

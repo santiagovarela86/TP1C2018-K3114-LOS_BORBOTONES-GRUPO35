@@ -56,7 +56,6 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.altaButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.cierreTemporalButton = new System.Windows.Forms.Button();
             this.modificarButton = new System.Windows.Forms.Button();
             this.estrellasLabel = new System.Windows.Forms.Label();
             this.buscarHotelesButton = new System.Windows.Forms.Button();
@@ -90,7 +89,6 @@ namespace FrbaHotel.AbmHotel
             // 
             this.groupBox1.Controls.Add(this.altaButton);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.cierreTemporalButton);
             this.groupBox1.Controls.Add(this.modificarButton);
             this.groupBox1.Controls.Add(this.estrellasLabel);
             this.groupBox1.Controls.Add(this.buscarHotelesButton);
@@ -111,7 +109,7 @@ namespace FrbaHotel.AbmHotel
             // 
             // altaButton
             // 
-            this.altaButton.Location = new System.Drawing.Point(26, 477);
+            this.altaButton.Location = new System.Drawing.Point(73, 477);
             this.altaButton.Name = "altaButton";
             this.altaButton.Size = new System.Drawing.Size(130, 23);
             this.altaButton.TabIndex = 8;
@@ -128,24 +126,14 @@ namespace FrbaHotel.AbmHotel
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // cierreTemporalButton
-            // 
-            this.cierreTemporalButton.Enabled = false;
-            this.cierreTemporalButton.Location = new System.Drawing.Point(410, 477);
-            this.cierreTemporalButton.Name = "cierreTemporalButton";
-            this.cierreTemporalButton.Size = new System.Drawing.Size(128, 23);
-            this.cierreTemporalButton.TabIndex = 10;
-            this.cierreTemporalButton.Text = "Cierre Temporal";
-            this.cierreTemporalButton.Click += new System.EventHandler(this.cierreTemporalButton_Click);
-            // 
             // modificarButton
             // 
             this.modificarButton.Enabled = false;
-            this.modificarButton.Location = new System.Drawing.Point(218, 477);
+            this.modificarButton.Location = new System.Drawing.Point(298, 477);
             this.modificarButton.Name = "modificarButton";
-            this.modificarButton.Size = new System.Drawing.Size(127, 23);
+            this.modificarButton.Size = new System.Drawing.Size(197, 23);
             this.modificarButton.TabIndex = 9;
-            this.modificarButton.Text = "Modificar";
+            this.modificarButton.Text = "Modificar / Cerrar Temporalmente";
             this.modificarButton.Click += new System.EventHandler(this.modificarButton_Click);
             // 
             // estrellasLabel
@@ -245,7 +233,6 @@ namespace FrbaHotel.AbmHotel
         #endregion
 
         private Button modificarButton;
-        private Button cierreTemporalButton;
         private Button button1;
         private Button altaButton;
 
