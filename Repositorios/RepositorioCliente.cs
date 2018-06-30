@@ -89,8 +89,7 @@ namespace FrbaHotel.Repositorios
         //ASUMO QUE TENGO UNA SOLA DIRECCION SI TENGO MAS DE UNA ESTO ANDARIA MAL
         override public List<Cliente> getAll()
         {
-            List<Cliente> clientes = new List<Cliente>();
-            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();            
+            List<Cliente> clientes = new List<Cliente>();     
             
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];

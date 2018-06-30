@@ -70,6 +70,11 @@ namespace FrbaHotel.Modelo
             return this.nombre;
         }
 
+        public String getNombreCompleto()
+        {
+            return this.getApellido() + ", " + this.getNombre();
+        }
+
         public String getApellido()
         {
             return this.apellido;

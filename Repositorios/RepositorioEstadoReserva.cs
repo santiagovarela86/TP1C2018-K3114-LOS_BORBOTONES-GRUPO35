@@ -13,12 +13,8 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioEstadoReserva : Repositorio<EstadoReserva>
     {
-
-
         public List<EstadoReserva> getByIdReserva(int idReserva)
         {
-
-
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
             RepositorioReserva repoReserva = new RepositorioReserva();
 
@@ -34,8 +30,11 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva = @idReserva" +
-                " ORDER BY idEstado DESC;";
+            sqlCommand.CommandText = @"
+                SELECT *
+                FROM LOS_BORBOTONES.EstadoReserva
+                WHERE idReserva = @idReserva
+                ORDER BY idEstado DESC;";
 
             sqlConnection.Open();
 
@@ -44,13 +43,12 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
                 int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
-                Usuario usuario = repoUsuario.getById(reader.GetOrdinal("IdUsuario"));
-                Reserva reserva = repoReserva.getById(reader.GetOrdinal("IdReserva"));
-                DateTime fecha = reader.SafeGetDateTime(reader.GetOrdinal("Fecha"));
                 String tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
+                DateTime fecha = DateTime.Parse(reader.GetString(reader.GetOrdinal("Fecha")));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
-
+                Usuario usuario = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("IdUsuario")));
+                Reserva reserva = repoReserva.getById(reader.GetInt32(reader.GetOrdinal("IdReserva")));
+                estadoReservas.Add(new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion));
             }
             
             sqlConnection.Close();

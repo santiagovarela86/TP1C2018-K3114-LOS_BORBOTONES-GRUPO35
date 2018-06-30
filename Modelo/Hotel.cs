@@ -102,10 +102,8 @@ namespace FrbaHotel.Modelo
 
         public List<Reserva> getReservas()
         {
-            if (this.reservas == null) {
-                RepositorioReserva repoReserva = new RepositorioReserva();
-                this.reservas = repoReserva.getByIdHotel(this.IdHotel);
-            }
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            this.reservas = repoReserva.getByIdHotel(this.getIdHotel());
             return this.reservas;
         }
 
@@ -115,19 +113,15 @@ namespace FrbaHotel.Modelo
             if (this.regimenes == null)
             {
                 RepositorioRegimen repoRegimen = new RepositorioRegimen();
-                this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
+                this.regimenes = repoRegimen.getByIdHotel(this.getIdHotel());
             }
             return this.regimenes;
         }
 
         public List<Habitacion> getHabitaciones()
         {
-
-            if (this.habitaciones == null)
-            {
-                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-                this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel,this);
-            }
+            RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+            this.habitaciones = repoHabitacion.getByHotelId(this.getIdHotel(), this);
             return this.habitaciones;
         }
 
@@ -152,8 +146,7 @@ namespace FrbaHotel.Modelo
         public String Ciudad { get { return this.getDireccion().getCiudad(); } }
         public String Pais { get { return this.getDireccion().getPais(); } }
         public int Estrellas { get { return this.getCategoria().Estrellas; } }
-        //ACA HAY QUE HACER UN METODO QUE CONCATENE LA LISTA DE REGIMENES Y LOS MUESTRE SEPARADOS POR COMA... EJ: ("Media pensión, All inclusive, ...)
-        public String Regimenes { get { return String.Join(",",this.getRegimenes().Select(regimen => regimen.Descripcion)); } }
+        public String Regimenes { get { return String.Join(",", this.getRegimenes().Select(regimen => regimen.Descripcion)); } }
         public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
 
     }

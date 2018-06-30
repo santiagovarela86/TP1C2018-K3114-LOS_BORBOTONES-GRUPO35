@@ -13,13 +13,15 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioReserva : Repositorio<Reserva>
     {
-
-
-
-
+        //ESTO TARDABA MUCHO EN TRAER LAS RESERVAS POR HOTEL
+        //COMENTE TODO LO QUE ES TRAER LOS OBJETOS CON OTROS REPOSITORIOS
+        //EN CASO DE QUE HAGA FALTA TRAER ESOS OBJETOS
+        //TENDREMOS QUE OBTENERLOS EN UNA SOLA CONSULTA EN ESTE REPOSITORIO
+        //SINO SE VUELVE MUY POCO PERFORMANTE
+        //HAY QUE VER BIEN EN QUE CASOS HACE FALTA QUE UNA RESERVA CONOZCA ESTOS OBJETOS
+        //POR EJEMPLO, ¿PARA QUE NECESITA OBTENER SU HOTEL DE LA BASE SI LA ESTOY BUSCANDO A PARTIR DEL IDHOTEL?, AL HOTEL YA LO CONOZCO
         public List<Reserva> getByIdHotel(int idHotel)
         {
-
             RepositorioHotel repoHotel = new RepositorioHotel();
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
             RepositorioCliente repoCliente = new RepositorioCliente();
@@ -46,23 +48,26 @@ namespace FrbaHotel.Repositorios
             {
                 int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
                 decimal codigoReserva = reader.GetDecimal(reader.GetOrdinal("CodigoReserva"));
+                DateTime fechaCreacion = reader.GetDateTime(reader.GetOrdinal("FechaCreacion"));
+                DateTime fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
+                DateTime fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
                 decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
-                DateTime fechaDesde = reader.SafeGetDateTime(reader.GetOrdinal("FechaDesde"));
-                DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
-                DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
-                Hotel hotel = repoHotel.getById(reader.GetOrdinal("IdHotel"));
-                Regimen regimen = repoRegimen.getById(reader.GetOrdinal("IdRegimen"));
-                Estadia estadia = repoEstadia.getById(reader.GetOrdinal("IdEstadia"));
-                Cliente cliente = repoCliente.getById(reader.GetOrdinal("IdCliente"));
-                List<EstadoReserva> estados= repoEstadoReserva.getByIdReserva(idReserva);
-                Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+                //Hotel hotel = repoHotel.getById(reader.GetOrdinal("idHotel"));
+                //Estadia estadia = repoEstadia.getById(reader.GetOrdinal("idEstadia"));
+                //Regimen regimen = repoRegimen.getById(reader.GetOrdinal("idRegimen"));                
+                //Cliente cliente = repoCliente.getById(reader.GetOrdinal("idCliente"));
+                //List<EstadoReserva> estados = repoEstadoReserva.getByIdReserva(idReserva);
+                //Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+                Reserva reserva = new Reserva(idReserva, null, null, null, null, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, null);
                 reservas.Add(reserva);
             }
+
             sqlConnection.Close();
 
             return reservas;
 
         }
+
         public Reserva getIdByIdEstadia(int idEstadia)
         {
             Reserva reserva = null;
@@ -203,6 +208,13 @@ namespace FrbaHotel.Repositorios
 
         override public List<Reserva> getAll()
         {
+            throw new NotImplementedException();            
+        }
+
+        //ESTO DEBE TARDAR 44 HORAS EN TRAER TODO
+        /*
+        override public List<Reserva> getAll()
+        {
             List<Reserva> reservas = new List<Reserva>();
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -228,6 +240,7 @@ namespace FrbaHotel.Repositorios
 
             return reservas;
         }
+        */
 
         override public int create(Reserva reserva)
         {
