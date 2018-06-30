@@ -174,7 +174,6 @@ namespace FrbaHotel.Repositorios
 
             //traigo regimen para sumarlo o ver si es all inclusive
             RepositorioRegimen repoRegimen= new RepositorioRegimen();
- //arreglar que setie en null el regimen al tener la reserva
             Regimen regimen = reserva.getRegimen();
             Boolean allInclusive = false;
             if (regimen.getCodigoRegimen().Equals("RGAI"))

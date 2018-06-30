@@ -71,7 +71,7 @@ namespace FrbaHotel.Repositorios
         public Reserva getIdByIdEstadia(int idEstadia)
         {
             Reserva reserva = null;
-
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -95,7 +95,8 @@ namespace FrbaHotel.Repositorios
                 DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
                 DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
                 Hotel hotel = null;
-                Regimen regimen = null;
+                //Regimen regimen = null;
+                Regimen regimen = repoRegimen.getById(reader.GetInt32(reader.GetOrdinal("idRegimen")));                
                 Estadia estadia = null;
                 Cliente cliente = null;
                 List<EstadoReserva> estados = new List<EstadoReserva>();
@@ -465,7 +466,51 @@ namespace FrbaHotel.Repositorios
 
              return exist;
          }
+    //metodo para traer el monto de una reserva
+    public Decimal getMonto(Reserva reserva)
+    {
+            /*El valor de la habitación se obtiene a través de su precio base (ver abm de régimen)
+            multiplicando la cantidad de personas que se alojarán en la habitación (tipo de habitación) y
+            luego de ello aplicando un incremento en función de la categoría del Hotel (cantidad de
+            estrellas)*/
+             Decimal total = 0;
+             RepositorioRegimen repoRegimen = new RepositorioRegimen();
+             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+        
+             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+             SqlConnection sqlConnection = new SqlConnection(connectionString);
+             SqlCommand sqlCommand = new SqlCommand();
+             SqlDataReader reader;
 
+        //traigo el monto del regimen
+             Decimal montoRegimen = repoRegimen.getMonto(reserva.getRegimen().getIdRegimen());
+        
+             sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+             sqlCommand.CommandType = CommandType.Text;
+             sqlCommand.Connection = sqlConnection;
+             sqlCommand.CommandText = "SELECT idHabitacion FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente INNER JOIN LOS_BORBOTONES. WHERE idReserva = @idReserva";
+
+             sqlConnection.Open();
+
+             reader = sqlCommand.ExecuteReader();
+
+             while (reader.Read())
+             {
+
+                 Habitacion habitacion = repoHabitacion.getById(reader.GetInt32(reader.GetOrdinal("idHabitacion")));
+                 TipoHabitacion tipoHabitacion= habitacion.getTipoHabitacion();
+
+                 total = montoRegimen * tipoHabitacion.getPorcentual();
+             }
+            
+            //falta la suma por cantidad de estrellas
+
+             sqlConnection.Close();
+             //Devuelve el monto total de las habitaciones para esa reserva.
+
+             return total;
+
+         }
     }
 }
 

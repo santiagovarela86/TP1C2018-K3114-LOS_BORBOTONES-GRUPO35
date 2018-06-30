@@ -144,6 +144,52 @@ namespace FrbaHotel.Repositorios
 
             return regimenes;
         }
+        public Decimal getMonto(int idRegimen)
+        {
+            
+            Decimal total = 0;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            SqlCommand sqlCommand = new SqlCommand();
+
+            SqlDataReader reader;
+
+
+
+            sqlCommand.Parameters.AddWithValue("@idRegimen", idRegimen);
+
+            sqlCommand.CommandType = CommandType.Text;
+
+            sqlCommand.Connection = sqlConnection;
+
+
+            sqlCommand.CommandText = "SELECT Precio FROM LOS_BORBOTONES.Regimen WHERE idRegimen = @idRegimen";
+
+            sqlConnection.Open();
+
+
+
+            reader = sqlCommand.ExecuteReader();
+
+
+
+            while (reader.Read())
+            {
+
+                total = reader.GetInt32(reader.GetOrdinal("Precio"));
+
+            }
+
+
+            sqlConnection.Close();
+            //Devuelve el monto de ese regimen.
+
+            return total;
+
+        }
     }
 }
 
