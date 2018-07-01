@@ -57,9 +57,10 @@ namespace FrbaHotel.AbmHabitacion
             String ubicacion =Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem,"Ubicacion");
             Hotel hotel= (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem,"Hotel");
 
-            Habitacion habitacionAModificar = new Habitacion(idHabitacion, tipoHabitacion,
-                activa, numero, piso, ubicacion, hotel);
-
+            Habitacion habitacionAModificar = new Habitacion(idHabitacion,
+                activa, numero, piso, ubicacion);
+            habitacionAModificar.setHotel(hotel);
+            habitacionAModificar.setTipoHabitacion(tipoHabitacion);
                 repoHabitacion.update(habitacionAModificar);
                 MessageBox.Show("Habitacion modificada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
                 habitacion = habitacionAModificar;

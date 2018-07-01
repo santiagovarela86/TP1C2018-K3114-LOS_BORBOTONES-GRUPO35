@@ -102,8 +102,10 @@ namespace FrbaHotel.Modelo
 
         public List<Reserva> getReservas()
         {
-            RepositorioReserva repoReserva = new RepositorioReserva();
-            this.reservas = repoReserva.getByIdHotel(this.getIdHotel());
+            if (this.reservas == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.reservas = repoReserva.getByIdHotel(this.IdHotel);
+            }
             return this.reservas;
         }
 
@@ -113,22 +115,29 @@ namespace FrbaHotel.Modelo
             if (this.regimenes == null)
             {
                 RepositorioRegimen repoRegimen = new RepositorioRegimen();
-                this.regimenes = repoRegimen.getByIdHotel(this.getIdHotel());
+                this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
             }
             return this.regimenes;
         }
 
         public List<Habitacion> getHabitaciones()
         {
-            RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            this.habitaciones = repoHabitacion.getByHotelId(this.getIdHotel(), this);
+
+            if (this.habitaciones == null)
+            {
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
+            }
             return this.habitaciones;
         }
 
         public List<CierreTemporal> getCierresTemporales()
         {
-            RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
-            this.cierresTemporales = repoCierres.getByIdHotel(this);
+            if (this.cierresTemporales == null)
+            {
+                RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
+                this.cierresTemporales = repoCierres.getByIdHotel(this);
+            }
             return this.cierresTemporales;
         }
 
@@ -146,7 +155,8 @@ namespace FrbaHotel.Modelo
         public String Ciudad { get { return this.getDireccion().getCiudad(); } }
         public String Pais { get { return this.getDireccion().getPais(); } }
         public int Estrellas { get { return this.getCategoria().Estrellas; } }
-        public String Regimenes { get { return String.Join(",", this.getRegimenes().Select(regimen => regimen.Descripcion)); } }
+        //ACA HAY QUE HACER UN METODO QUE CONCATENE LA LISTA DE REGIMENES Y LOS MUESTRE SEPARADOS POR COMA... EJ: ("Media pensión, All inclusive, ...)
+        public String Regimenes { get { return String.Join(",",this.getRegimenes().Select(regimen => regimen.Descripcion)); } }
         public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
 
     }

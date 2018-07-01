@@ -17,18 +17,19 @@ namespace FrbaHotel.AbmHotel
         {
             InitializeComponent();
             this.hotelBaja = hotel;
+            limpiarDatos();
         }
         private Hotel hotelBaja;
         private GroupBox groupBox1;
-        private MonthCalendar calendarioDesde;
-        private MonthCalendar calendarioHasta;
         private Button bajaHotel;
         private Label descripcionBajaLabel;
         private TextBox descripcionBajaText;
-        private Label label2;
-        private Label label1;
         private Button buttonSalir;
         private Button buttonLimpiarDatos;
+        private DateTimePicker calendarioDesde;
+        private Label label2;
+        private Label label1;
+        private DateTimePicker calendarioHasta;
 
 
         /// <summary>
@@ -69,29 +70,29 @@ namespace FrbaHotel.AbmHotel
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.buttonSalir = new System.Windows.Forms.Button();
+            this.buttonLimpiarDatos = new System.Windows.Forms.Button();
             this.descripcionBajaLabel = new System.Windows.Forms.Label();
             this.descripcionBajaText = new System.Windows.Forms.TextBox();
             this.bajaHotel = new System.Windows.Forms.Button();
-            this.calendarioDesde = new System.Windows.Forms.MonthCalendar();
-            this.calendarioHasta = new System.Windows.Forms.MonthCalendar();
-            this.buttonLimpiarDatos = new System.Windows.Forms.Button();
-            this.buttonSalir = new System.Windows.Forms.Button();
+            this.calendarioDesde = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.calendarioHasta = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.buttonSalir);
-            this.groupBox1.Controls.Add(this.buttonLimpiarDatos);
+            this.groupBox1.Controls.Add(this.calendarioHasta);
+            this.groupBox1.Controls.Add(this.calendarioDesde);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.buttonSalir);
+            this.groupBox1.Controls.Add(this.buttonLimpiarDatos);
             this.groupBox1.Controls.Add(this.descripcionBajaLabel);
             this.groupBox1.Controls.Add(this.descripcionBajaText);
             this.groupBox1.Controls.Add(this.bajaHotel);
-            this.groupBox1.Controls.Add(this.calendarioDesde);
-            this.groupBox1.Controls.Add(this.calendarioHasta);
             this.groupBox1.Location = new System.Drawing.Point(13, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(561, 314);
@@ -99,23 +100,23 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Baja Hotel";
             // 
-            // label2
+            // buttonSalir
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(380, 75);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
-            this.label2.TabIndex = 17;
-            this.label2.Text = "Fecha Hasta:";
+            this.buttonSalir.Location = new System.Drawing.Point(376, 271);
+            this.buttonSalir.Name = "buttonSalir";
+            this.buttonSalir.Size = new System.Drawing.Size(75, 23);
+            this.buttonSalir.TabIndex = 19;
+            this.buttonSalir.Text = "Salir";
+            this.buttonSalir.Click += new System.EventHandler(this.buttonSalir_Click);
             // 
-            // label1
+            // buttonLimpiarDatos
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(114, 75);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Fecha Desde:";
+            this.buttonLimpiarDatos.Location = new System.Drawing.Point(117, 271);
+            this.buttonLimpiarDatos.Name = "buttonLimpiarDatos";
+            this.buttonLimpiarDatos.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiarDatos.TabIndex = 18;
+            this.buttonLimpiarDatos.Text = "Limpiar";
+            this.buttonLimpiarDatos.Click += new System.EventHandler(this.buttonLimpiarDatos_Click);
             // 
             // descripcionBajaLabel
             // 
@@ -144,35 +145,35 @@ namespace FrbaHotel.AbmHotel
             // 
             // calendarioDesde
             // 
-            this.calendarioDesde.Location = new System.Drawing.Point(26, 97);
-            this.calendarioDesde.MaxSelectionCount = 1;
+            this.calendarioDesde.Location = new System.Drawing.Point(95, 87);
             this.calendarioDesde.Name = "calendarioDesde";
-            this.calendarioDesde.TabIndex = 12;
+            this.calendarioDesde.Size = new System.Drawing.Size(200, 20);
+            this.calendarioDesde.TabIndex = 43;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(23, 154);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 42;
+            this.label2.Text = "Fecha Hasta:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 41;
+            this.label1.Text = "Fecha Desde:";
             // 
             // calendarioHasta
             // 
-            this.calendarioHasta.Location = new System.Drawing.Point(292, 97);
-            this.calendarioHasta.MaxSelectionCount = 1;
+            this.calendarioHasta.Location = new System.Drawing.Point(95, 148);
             this.calendarioHasta.Name = "calendarioHasta";
-            this.calendarioHasta.TabIndex = 13;
-            // 
-            // buttonLimpiarDatos
-            // 
-            this.buttonLimpiarDatos.Location = new System.Drawing.Point(117, 271);
-            this.buttonLimpiarDatos.Name = "buttonLimpiarDatos";
-            this.buttonLimpiarDatos.Size = new System.Drawing.Size(75, 23);
-            this.buttonLimpiarDatos.TabIndex = 18;
-            this.buttonLimpiarDatos.Text = "Limpiar";
-            this.buttonLimpiarDatos.Click += new System.EventHandler(this.buttonLimpiarDatos_Click);
-            // 
-            // buttonSalir
-            // 
-            this.buttonSalir.Location = new System.Drawing.Point(376, 271);
-            this.buttonSalir.Name = "buttonSalir";
-            this.buttonSalir.Size = new System.Drawing.Size(75, 23);
-            this.buttonSalir.TabIndex = 19;
-            this.buttonSalir.Text = "Salir";
-            this.buttonSalir.Click += new System.EventHandler(this.buttonSalir_Click);
+            this.calendarioHasta.Size = new System.Drawing.Size(200, 20);
+            this.calendarioHasta.TabIndex = 44;
             // 
             // DropHotel
             // 
@@ -193,8 +194,8 @@ namespace FrbaHotel.AbmHotel
 
         private void bajaHotel_Click(object sender, EventArgs e)
         {
-            DateTime fechaDesde = calendarioDesde.SelectionStart;
-            DateTime fechaHasta = calendarioHasta.SelectionStart;
+            DateTime fechaDesde = calendarioDesde.Value;
+            DateTime fechaHasta = calendarioHasta.Value;
 
             if (fechaDesde > fechaHasta)
             {
@@ -233,9 +234,13 @@ namespace FrbaHotel.AbmHotel
 
         private void buttonLimpiarDatos_Click(object sender, EventArgs e)
         {
-           calendarioDesde.SelectionStart = DateTime.Today;
-           calendarioHasta.SelectionStart = DateTime.Today;
-           descripcionBajaText.Text = "";
+            limpiarDatos();
+        }
+
+        private void limpiarDatos() {
+            calendarioDesde.Value = DateTime.Now.Date;
+            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
+            descripcionBajaText.Text = "";
         }
     }
 
