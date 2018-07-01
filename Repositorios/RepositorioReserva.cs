@@ -97,7 +97,7 @@ namespace FrbaHotel.Repositorios
             return hotel;
         }
 
-
+        
         public Regimen getRegimenByIdReserva(Reserva reserva)
         {
             Regimen regimen = null;

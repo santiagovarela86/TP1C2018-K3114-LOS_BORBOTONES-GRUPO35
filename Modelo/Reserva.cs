@@ -115,6 +115,11 @@ namespace FrbaHotel.Modelo
 
         public List<EstadoReserva> getEstados()
         {
+
+            if (this.estados == null) {
+                RepositorioEstadoReserva repoEstados = new RepositorioEstadoReserva();
+                this.estados = repoEstados.getByIdReserva(this.idReserva);
+            }
             return this.estados;
         }
 
@@ -140,6 +145,10 @@ namespace FrbaHotel.Modelo
 
         public Usuario getUsuarioGenerador()
         {
+            if(this.usuarioGenerador ==null){
+                RepositorioEstadoReserva repoEstado = new RepositorioEstadoReserva();
+                this.usuarioGenerador=repoEstado.getUsuarioByIdReservaAndTipoEstado(idReserva, "RC");
+            }
             return this.usuarioGenerador;
         }
         //Estos metodos extra los necesito para popular los combo box y data grid view

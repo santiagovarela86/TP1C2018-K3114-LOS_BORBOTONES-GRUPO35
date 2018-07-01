@@ -13,7 +13,6 @@ namespace FrbaHotel.Repositorios
     public class RepositorioHabitacion : Repositorio<Habitacion>
     {
 
-        //private RepositorioTipoHabitacion repositorioTipoHabitacion;
 
         public override int create(Habitacion habitacion)
         {
