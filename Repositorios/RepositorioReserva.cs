@@ -71,7 +71,40 @@ namespace FrbaHotel.Repositorios
 
 
         public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
-        
+
+            decimal codigoReserva= reserva.getCodigoReserva();
+            bool isRecepcionista = usuario.getRoles().Any(rol=>rol.getNombre().Equals("Recepcionista"));
+            bool isGuest = usuario.getRoles().Any(rol => rol.getNombre().Equals("Guest"));
+
+            String tipoEstado="Desconocido";
+            if(isRecepcionista){
+            tipoEstado="RCR";
+            }else if(isGuest){
+            tipoEstado="RCC";
+            }
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@fecha", DateTime.Now);
+            sqlCommand.Parameters.AddWithValue("@descripcion", motivo);
+            sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.Parameters.AddWithValue("@tipoEstado", tipoEstado);
+            sqlCommand.Parameters.AddWithValue("@codigoReserva", codigoReserva);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
+                " VALUES(@tipoEstado,@fecha,@descripcion,@idUsuario,@idReserva);";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+            reader.Read();
+            sqlConnection.Close();
+            
         }
 
         public Reserva getReservaByCodigoReserva(int codigoReserva){
