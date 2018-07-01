@@ -209,6 +209,7 @@ namespace FrbaHotel.Repositorios
         {
             Reserva reserva = null;
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
+            RepositorioHotel repoHotel = new RepositorioHotel();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -231,7 +232,7 @@ namespace FrbaHotel.Repositorios
                 DateTime fechaDesde = reader.SafeGetDateTime(reader.GetOrdinal("FechaDesde"));
                 DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
                 DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
-                Hotel hotel = null;
+                Hotel hotel = repoHotel.getById(reader.GetInt32(reader.GetOrdinal("idHotel"))); ;
                 //Regimen regimen = null;
                 Regimen regimen = repoRegimen.getById(reader.GetInt32(reader.GetOrdinal("idRegimen")));                
                 Estadia estadia = null;
@@ -714,7 +715,7 @@ namespace FrbaHotel.Repositorios
              sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
              sqlCommand.CommandType = CommandType.Text;
              sqlCommand.Connection = sqlConnection;
-             sqlCommand.CommandText = "SELECT idHabitacion FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente INNER JOIN LOS_BORBOTONES. WHERE idReserva = @idReserva";
+             sqlCommand.CommandText = "SELECT idHabitacion FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente WHERE idReserva = @idReserva";
 
              sqlConnection.Open();
 

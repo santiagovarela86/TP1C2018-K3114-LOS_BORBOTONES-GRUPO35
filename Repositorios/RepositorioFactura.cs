@@ -51,9 +51,9 @@ namespace FrbaHotel.Repositorios
                 sqlBuilder.Append(@"
                     BEGIN TRY
                     BEGIN TRANSACTION
-                    INSERT INTO LOS_BORBOTONES.Factura(FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva)
+                    INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura,FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva)
                     OUTPUT INSERTED.idFactura
-                    VALUES(@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva);
+                    VALUES(@NumeroFactura,@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva);
                     DECLARE @idFactura int;
                     SET @idFactura = SCOPE_IDENTITY();
                 ");
@@ -228,7 +228,7 @@ namespace FrbaHotel.Repositorios
                     float diasAlojadosTotal = (float)reserva.getDiasAlojados();
                 
                 totalHabitacion = montoHabitacion * diasAlojadosTotal;
-                idConsumible = -1; //con -1 marco que es la habitacion
+                idConsumible = 10; //con -1 marco que es la habitacion
                 itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
 
@@ -242,7 +242,7 @@ namespace FrbaHotel.Repositorios
             float dias = (float)reserva.getDiasAlojados();
             puntos = (int)(montoHabitacion * dias) / 20;//puntos de habitacion
             puntos = puntos + (int)(montoTotal / 10);//puntos de consumibles
-
+            total = totalHabitacion + montoTotal;
             Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura);
             idFactura = this.create(factura);
             if (idFactura != 0)
@@ -258,6 +258,7 @@ namespace FrbaHotel.Repositorios
                 }
                 //hacer update de la estadia avisando que ya facture
                 repoEstadia.facturado(estadia.getIdEstadia());
+                repoEstadia.updateEstadoFacturado(reserva.getIdReserva());
                 resultado = 1;
             }
             else resultado = 2;//falla creando factura
@@ -287,7 +288,7 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                numeroFactura = reader.GetInt32(reader.GetOrdinal("NumeroFactura"));
+                numeroFactura = (int)reader.GetDecimal(reader.GetOrdinal("NumeroFactura"));
                 
             }
 

@@ -179,7 +179,7 @@ namespace FrbaHotel.Repositorios
             while (reader.Read())
             {
 
-                total = reader.GetInt32(reader.GetOrdinal("Precio"));
+                total = reader.GetDecimal(reader.GetOrdinal("Precio"));
 
             }
 
