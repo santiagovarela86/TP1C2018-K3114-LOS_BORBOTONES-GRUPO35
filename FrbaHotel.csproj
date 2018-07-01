@@ -137,6 +137,12 @@
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmReserva\HabitacionDisponibleSearchDTO.cs" />
+    <Compile Include="AbmReserva\EditarReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\EditarReserva.Designer.cs">
+      <DependentUpon>EditarReserva.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmReserva\ModificarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -346,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\GenerarReserva.resx">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\EditarReserva.resx">
+      <DependentUpon>EditarReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\ModificarReserva.resx">
       <DependentUpon>ModificarReserva.cs</DependentUpon>

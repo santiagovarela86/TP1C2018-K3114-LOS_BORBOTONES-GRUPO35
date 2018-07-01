@@ -60,6 +60,9 @@ namespace FrbaHotel.AbmReserva
             comboBoxHotel.DisplayMember = "Nombre";
             comboBoxHotel.ValueMember = "Nombre";
             comboBoxHotel.DataSource = repoHotel.getAll();
+
+            comboBoxTipoHabitacion.SelectedValue = "";
+            comboBoxTipoHabitacion.SelectedIndex = -1;
         }
 
         private void eventHandlerHotelComboBox(object sender, EventArgs e)
@@ -100,8 +103,12 @@ namespace FrbaHotel.AbmReserva
             if(Utils.validateTimeRanges(fechaInicio, fechaFin)){
             
             Hotel hotelSeleccionado = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
-            TipoHabitacion tipoHabitacionSeleccionada = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo Habitacion");
-            Regimen regimenSeleccionado = null;
+            TipoHabitacion tipoHabitacionSeleccionada = null;
+            if (comboBoxTipoHabitacion.SelectedItem != null)
+            {
+                 tipoHabitacionSeleccionada = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
+            }
+                Regimen regimenSeleccionado = null;
 
                 regimenSeleccionado = (Regimen)comboBoxRegimen.SelectedItem;
 
@@ -212,6 +219,11 @@ namespace FrbaHotel.AbmReserva
         private void button1_Click(object sender, EventArgs e)
         {
             limpiarFiltros();
+        }
+
+        private void habitaciones_cellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
 

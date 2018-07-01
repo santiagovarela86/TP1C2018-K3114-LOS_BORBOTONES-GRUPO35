@@ -329,7 +329,12 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
 
             sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
-            sqlCommand.Parameters.AddWithValue("@idtipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
+            
+            String queryTipoHab="";
+            if(tipoHabitacion!=null){
+                sqlCommand.Parameters.AddWithValue("@idtipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
+                queryTipoHab= "AND HAB.idTipoHabitacion=@idtipoHabitacion ";
+            }
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
@@ -342,8 +347,7 @@ namespace FrbaHotel.Repositorios
                 "WHERE REG.Activo=1 " +
                 "AND HAB.idHotel=@idHotel " +
                 "AND HAB.Activa=1 " +
-                "AND HAB.idTipoHabitacion=@idtipoHabitacion " +
-
+                queryTipoHab +
                 "AND NOT EXISTS ( " + 
                 "SELECT * FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente AS RXHXC " + 
                 "JOIN LOS_BORBOTONES.Reserva AS RES ON RES.idReserva = RXHXC.idReserva  " + 
