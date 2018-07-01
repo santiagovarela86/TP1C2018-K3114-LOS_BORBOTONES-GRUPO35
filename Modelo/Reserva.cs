@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.AbmReserva;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace FrbaHotel.Modelo
 {
     public class Reserva
     {
+        private List<Habitacion> habitacionesParaCrear;
         private int idReserva = 0;
         private Hotel hotel = null;
         private Estadia estadia = null;
@@ -34,6 +36,18 @@ namespace FrbaHotel.Modelo
             this.fechaDesde = fechaDesde;
             this.fechaHasta = fechaHasta;
             this.estados = estados;
+        }
+
+        public Reserva(List<Habitacion> habitacionesParaReservar,Regimen regimen, Cliente clienteDueñoDeLaReserva, DateTime fechaInicio, DateTime fechaFin, int diasAlojados)
+        {
+            Habitacion habitacionDeUnHotel = habitacionesParaReservar[0];
+            this.hotel = habitacionDeUnHotel.getHotel();
+            this.regimen = regimen;
+            this.cliente = clienteDueñoDeLaReserva;
+            this.fechaCreacion = DateTime.Now;
+            this.fechaDesde = fechaInicio;
+            this.fechaHasta = fechaFin;
+            this.diasAlojados = diasAlojados;
         }
 
         public int getIdReserva()

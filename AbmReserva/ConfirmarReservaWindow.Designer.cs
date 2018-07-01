@@ -48,6 +48,7 @@
             this.confirmarReservaButton.Size = new System.Drawing.Size(135, 23);
             this.confirmarReservaButton.TabIndex = 26;
             this.confirmarReservaButton.Text = "Reservar";
+            this.confirmarReservaButton.Click += new System.EventHandler(this.confirmarReservaButton_Click);
             // 
             // rechazarReservaButton
             // 
@@ -56,6 +57,7 @@
             this.rechazarReservaButton.Size = new System.Drawing.Size(135, 23);
             this.rechazarReservaButton.TabIndex = 27;
             this.rechazarReservaButton.Text = "Rechazar";
+            this.rechazarReservaButton.Click += new System.EventHandler(this.rechazarReservaButton_Click);
             // 
             // ConfirmarReservaWindow
             // 

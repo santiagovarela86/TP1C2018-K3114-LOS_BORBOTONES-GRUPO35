@@ -42,5 +42,18 @@ namespace FrbaHotel.AbmReserva
             this.labelTipoHabitacion.Text += "¿Desea realizar la reserva?";
         }
 
+        private void rechazarReservaButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void confirmarReservaButton_Click(object sender, EventArgs e)
+        {
+            using (VincularCliente form = new VincularCliente(habitaciones,fechaInicio,fechaFin,diasDeEstadia))
+            {
+                var result = form.ShowDialog();
+            }
+        }
+
     }
 }

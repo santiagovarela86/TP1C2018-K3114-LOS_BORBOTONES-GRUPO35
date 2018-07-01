@@ -131,6 +131,12 @@
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmReserva\HabitacionDisponibleSearchDTO.cs" />
+    <Compile Include="AbmReserva\VincularCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\VincularCliente.Designer.cs">
+      <DependentUpon>VincularCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRol\ABMRoles.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -325,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\GenerarReserva.resx">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\VincularCliente.resx">
+      <DependentUpon>VincularCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\ABMRoles.resx">
       <DependentUpon>ABMRoles.cs</DependentUpon>
