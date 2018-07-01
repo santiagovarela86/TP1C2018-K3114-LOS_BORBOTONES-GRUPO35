@@ -1,4 +1,5 @@
 ﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
@@ -36,11 +37,31 @@ namespace FrbaHotel.AbmReserva
 
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
-            int codigoReserva= Utils.validateIntField(textCodigoReserva.Text,"Codigo de Reserva");
-            RepositorioReserva repoReserva = new RepositorioReserva();
-            List<Reserva> reserva = new List<Reserva>();
-            reserva.Add(repoReserva.getReservaByCodigoReserva(codigoReserva));
-            dataGridReserva.DataSource = reserva;
+            try
+            {
+                int codigoReserva = Utils.validateIntField(textCodigoReserva.Text, "Codigo de Reserva");
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                Reserva reserva = repoReserva.getReservaByCodigoReserva(codigoReserva);
+
+                if (reserva != null)
+                {
+                    List<Reserva> reservas = new List<Reserva>();
+                    reservas.Add(reserva);
+                    dataGridReserva.DataSource = reservas;
+
+                    DateTime fechaAhora = DateTime.Now;
+                    DateTime fechaInicio = reserva.getFechaDesde();
+                    if (((fechaInicio - fechaAhora).TotalDays > 1) && (fechaInicio > fechaAhora))
+                    {
+                        this.buttonModificar.Enabled = true;
+                        this.buttonCancelar.Enabled = true;
+                    }
+                }
+            }catch(RequestInvalidoException exception){
+                MessageBox.Show(exception.Message, "Verifique los datos ingresados");
+
+                }
+
 
         }
     }
