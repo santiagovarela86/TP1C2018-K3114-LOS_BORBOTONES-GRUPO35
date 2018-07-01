@@ -68,6 +68,47 @@ namespace FrbaHotel.Repositorios
 
         }
 
+
+        public Reserva getReservaByCodigoReserva(int codigoReserva){
+
+
+            Reserva reserva = null;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@codigoReserva", codigoReserva);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva WHERE codigoReserva = @codigoReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                DateTime fechaCreacion = reader.GetDateTime(reader.GetOrdinal("FechaCreacion"));
+                DateTime fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
+                DateTime fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
+                decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
+                //Hotel hotel = repoHotel.getById(reader.GetOrdinal("idHotel"));
+                //Estadia estadia = repoEstadia.getById(reader.GetOrdinal("idEstadia"));
+                //Regimen regimen = repoRegimen.getById(reader.GetOrdinal("idRegimen"));                
+                //Cliente cliente = repoCliente.getById(reader.GetOrdinal("idCliente"));
+                //List<EstadoReserva> estados = repoEstadoReserva.getByIdReserva(idReserva);
+                //Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+                reserva = new Reserva(idReserva, null, null, null, null, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, null);
+            }
+
+            sqlConnection.Close();
+
+            return reserva;
+        }
+
         public Reserva getIdByIdEstadia(int idEstadia)
         {
             Reserva reserva = null;
