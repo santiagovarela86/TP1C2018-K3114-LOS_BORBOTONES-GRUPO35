@@ -64,6 +64,20 @@ namespace FrbaHotel.AbmReserva
 
 
         }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            Reserva reserva=null;
+            foreach (DataGridViewRow item in this.dataGridReserva.SelectedRows)
+            {
+                reserva = item.DataBoundItem as Reserva;
+            }
+            using (CancelarReserva form = new CancelarReserva(reserva, usuario))
+            {
+                var result = form.ShowDialog();
+                this.Close();
+            }
+        }
     }
 
 

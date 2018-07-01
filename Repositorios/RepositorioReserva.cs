@@ -69,6 +69,11 @@ namespace FrbaHotel.Repositorios
         }
 
 
+
+        public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
+        
+        }
+
         public Reserva getReservaByCodigoReserva(int codigoReserva){
 
 
