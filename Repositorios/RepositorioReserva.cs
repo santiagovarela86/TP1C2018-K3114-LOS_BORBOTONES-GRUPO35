@@ -419,16 +419,21 @@ namespace FrbaHotel.Repositorios
                 //comento lo de arriba ya que es un insert esto, no un update como pense al principio
                 int idEstadia = 0;
                 Boolean facturada = false;
-                Usuario userOut=null;
+                Usuario userOut=userIn;
                 Estadia estadia = new Estadia(idEstadia, userIn, userOut,date,fechaOut,facturada,cantidadNoches);
                 idEstadia= repoEstadia.create(estadia);
                 //repoEstadia.updateIn(estadia);
+               
+                //hago update de reserva para darle id estadia
+                Reserva reserva = getById(idReserva);
+                
+                this.updateIn(idReserva,idEstadia);
 
                 //hago update de EstadoReserva
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
-                RepositorioReserva repoReserva = new RepositorioReserva();
+                
                 int idEstadoReserva = 0;
-                Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
+                
                 String desc = "Reserva Con Ingreso";
                 String tipoEstado = "RCI";
                 EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, userIn, reserva, tipoEstado, date, desc);
@@ -502,15 +507,61 @@ namespace FrbaHotel.Repositorios
 
                  total = montoRegimen * tipoHabitacion.getPorcentual();
              }
-            
-            //falta la suma por cantidad de estrellas
 
-             sqlConnection.Close();
+             sqlConnection.Close();    
+             
+             //falta la suma por cantidad de estrellas
+             Hotel hotel= reserva.getHotel();
+             Categoria categoria=hotel.getCategoria();
+             Decimal recargaEstrellas = categoria.getRecargaEstrellas();
+             
              //Devuelve el monto total de las habitaciones para esa reserva.
+             total = total + recargaEstrellas;
 
              return total;
 
          }
+    public void updateIn(int idReserva,int idEstadia)
+    {
+        
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Reserva
+                    SET idEstadia = @idEstadia
+                    WHERE idReserva = @idReserva;
+                ");
+
+
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        
+        }
     }
 }
 

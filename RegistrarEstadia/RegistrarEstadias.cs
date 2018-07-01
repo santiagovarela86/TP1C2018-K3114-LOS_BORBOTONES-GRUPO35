@@ -43,7 +43,7 @@ namespace FrbaHotel.RegistrarEstadia
                 codReserva = int.Parse(textBox1.Text);
                 username = textBox2.Text;
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, date, username);
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, username);
                 if (estadoValidez==1)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
@@ -61,7 +61,7 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 2)
                 {
-                    MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In, generar otra nueva ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In o ya fue ingresada, generar otra nueva ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
 
                 }
