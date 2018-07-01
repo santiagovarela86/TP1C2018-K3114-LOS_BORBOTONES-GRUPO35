@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Modelo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,11 @@ namespace FrbaHotel.AbmReserva
 {
     public partial class ModificarReserva : Form
     {
-        public ModificarReserva()
+
+        private Usuario usuario;
+        public ModificarReserva(Usuario usuario)
         {
+            this.usuario = usuario;
             InitializeComponent();
         }
     }
