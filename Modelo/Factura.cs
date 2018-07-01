@@ -64,7 +64,7 @@ namespace FrbaHotel.Modelo
 
         public int getPuntos()
         {
-            return idFactura;
+            return puntos;
         }
 
         public String getTipoPago()

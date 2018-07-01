@@ -228,7 +228,7 @@ namespace FrbaHotel.Repositorios
                     float diasAlojadosTotal = (float)reserva.getDiasAlojados();
                 
                 totalHabitacion = montoHabitacion * diasAlojadosTotal;
-                idConsumible = -1; //con -1 marco que es la habitacion
+                idConsumible = 10; //con -1 marco que es la habitacion
                 itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
 
@@ -242,7 +242,7 @@ namespace FrbaHotel.Repositorios
             float dias = (float)reserva.getDiasAlojados();
             puntos = (int)(montoHabitacion * dias) / 20;//puntos de habitacion
             puntos = puntos + (int)(montoTotal / 10);//puntos de consumibles
-
+            total = totalHabitacion + montoTotal;
             Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura);
             idFactura = this.create(factura);
             if (idFactura != 0)
