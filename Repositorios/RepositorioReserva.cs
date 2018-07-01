@@ -246,8 +246,8 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Reserva reserva)
         {
-            int idHotel = 0;
-
+            decimal codigoReserva = 0;
+            int idReserva = 0;
 
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -264,6 +264,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHotel", reserva.getHotel().getIdHotel());
             sqlCommand.Parameters.AddWithValue("@idRegimen", reserva.getRegimen().getIdRegimen());
             sqlCommand.Parameters.AddWithValue("@idCliente", reserva.getCliente().getIdCliente());
+            sqlCommand.Parameters.AddWithValue("@idUsuario", reserva.getUsuarioGenerador().getIdUsuario());
 
 
 
@@ -271,17 +272,19 @@ namespace FrbaHotel.Repositorios
             String CREATE_STATEMENT = "BEGIN TRANSACTION " +
                                         "BEGIN TRY " +
                                         "DECLARE @idReserva int; " +
-                                        
+                                        "DECLARE @codigoReserva decimal(18,0); " + 
+                                        "SET @codigoReserva= (SELECT MAX(CodigoReserva) FROM LOS_BORBOTONES.Reserva) +1; " +
                                         "INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde, FechaHasta,DiasAlojados,idHotel,idRegimen,idCliente) " +
-                                        "VALUES((SELECT MAX(CodigoReserva) FROM LOS_BORBOTONES.Reserva) +1,GETDATE(),@fechaDesde,@fechaHasta,@diasAlojados,@idHotel,@idRegimen,@idCliente); " +
+                                        "VALUES(@codigoReserva,GETDATE(),@fechaDesde,@fechaHasta,@diasAlojados,@idHotel,@idRegimen,@idCliente); " +
                                         "SET @idReserva = SCOPE_IDENTITY(); " +
                                         
                                         "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
-                                        "VALUES('RC',GETDATE(),'Reserva Correcta',1,@idReserva); " +
+                                        "VALUES('RC',GETDATE(),'Reserva Correcta',@idUsuario,@idReserva); " +
                                         
                                         getReservaXHabitacionInserts(reserva,sqlCommand) +
                                         
                                         "COMMIT TRANSACTION " +
+                                        "SELECT @idReserva AS idReserva, @codigoReserva AS codigoReserva; " +
                                         "END TRY " +
                                         "BEGIN CATCH " +
                                         "RAISERROR('ERROR TRYING TO CREATE RESERVA', 16, 1) " +
@@ -297,10 +300,15 @@ namespace FrbaHotel.Repositorios
             reader = sqlCommand.ExecuteReader();
             if (reader.Read())
             {
-                idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+                idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                codigoReserva = reader.GetDecimal(reader.GetOrdinal("codigoReserva"));
             }
+            
             sqlConnection.Close();
-            return idHotel;
+
+            reserva.setIdReserva(idReserva);
+            reserva.setCodigoReserva(codigoReserva);
+            return idReserva;
 
         }
 

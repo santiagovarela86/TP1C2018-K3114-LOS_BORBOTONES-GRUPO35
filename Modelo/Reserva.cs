@@ -10,6 +10,7 @@ namespace FrbaHotel.Modelo
     public class Reserva
     {
         private List<Habitacion> habitaciones;
+        private Usuario usuarioGenerador;
         private int idReserva = 0;
         private Hotel hotel = null;
         private Estadia estadia = null;
@@ -38,7 +39,7 @@ namespace FrbaHotel.Modelo
             this.estados = estados;
         }
 
-        public Reserva(List<Habitacion> habitacionesParaReservar,Regimen regimen, Cliente clienteDueñoDeLaReserva, DateTime fechaInicio, DateTime fechaFin, int diasAlojados)
+        public Reserva(List<Habitacion> habitacionesParaReservar,Regimen regimen, Cliente clienteDueñoDeLaReserva, DateTime fechaInicio, DateTime fechaFin, int diasAlojados,Usuario usuario)
         {
             Habitacion habitacionDeUnHotel = habitacionesParaReservar[0];
             this.habitaciones = habitacionesParaReservar;
@@ -49,6 +50,7 @@ namespace FrbaHotel.Modelo
             this.fechaDesde = fechaInicio;
             this.fechaHasta = fechaFin;
             this.diasAlojados = diasAlojados;
+            this.usuarioGenerador = usuario;
         }
 
         public int getIdReserva()
@@ -113,6 +115,22 @@ namespace FrbaHotel.Modelo
 
         public List<Habitacion> getHabitaciones() {
             return this.habitaciones;
+        }
+
+        public void setIdReserva(int idReserva) {
+            this.idReserva = idReserva;
+        }
+
+        public void setCodigoReserva(decimal codigoReserva)
+        {
+            this.codigoReserva = codigoReserva;
+        }
+
+
+
+        public Usuario getUsuarioGenerador()
+        {
+            return this.usuarioGenerador;
         }
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public decimal CodigoReserva { get { return this.getCodigoReserva(); } }

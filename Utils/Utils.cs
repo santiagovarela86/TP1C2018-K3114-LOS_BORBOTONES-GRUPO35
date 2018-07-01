@@ -52,5 +52,16 @@ namespace FrbaHotel.Commons
             }
             
         }
+
+
+        public static bool validateTimeRanges( DateTime fechaDesde ,DateTime fechaHasta){
+
+            if (fechaDesde >= fechaHasta)
+            {
+                MessageBox.Show("La fecha desde no puede ser superior o igual a la fecha hasta", "Error");
+                return false;
+            }
+            return true;
+        }
     }
 }

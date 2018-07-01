@@ -19,12 +19,14 @@ namespace FrbaHotel.AbmReserva
         private DateTime fechaInicio;
         private DateTime fechaFin;
         private int diasDeEstadia;
-        public VincularCliente(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin, int diasDeEstadia)
+        private Usuario usuario;
+        public VincularCliente(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin, int diasDeEstadia, Usuario usuario)
         {
             this.habitaciones = habitaciones;
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             this.diasDeEstadia = diasDeEstadia;
+            this.usuario = usuario;
             InitializeComponent();
         }
 
@@ -152,11 +154,12 @@ namespace FrbaHotel.AbmReserva
                 cliente = (item.DataBoundItem as Cliente);
             }
             RepositorioReserva repoReserva = new RepositorioReserva();
-            Reserva reserva = new Reserva(habitacionesParaReservar, regimen, cliente, fechaInicio, fechaFin, diasDeEstadia);
+            Reserva reserva = new Reserva(habitacionesParaReservar, regimen, cliente, fechaInicio, fechaFin, diasDeEstadia,usuario);
             try
             {
                 repoReserva.create(reserva);
-                MessageBox.Show("Reserva creada exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Reserva creada exitosamente \n Codigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                this.Close();
             }
             catch (Exception exception)
             {

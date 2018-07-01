@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using FrbaHotel.Login;
 using FrbaHotel.Modelo;
 using FrbaHotel.AbmReserva;
+using FrbaHotel.Repositorios;
 
 namespace FrbaHotel
 {
@@ -79,7 +80,10 @@ namespace FrbaHotel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (GenerarReserva generarReserva = new GenerarReserva())
+
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            Usuario guest = repoUsuario.getByUsername("guest");
+            using (GenerarReserva generarReserva = new GenerarReserva(guest))
             {
                 var resultFormLogin = generarReserva.ShowDialog();
 

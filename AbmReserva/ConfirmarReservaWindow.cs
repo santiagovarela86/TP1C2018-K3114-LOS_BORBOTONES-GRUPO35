@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Modelo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,12 +18,14 @@ namespace FrbaHotel.AbmReserva
         private DateTime fechaInicio;
         private  DateTime fechaFin;
         private int diasDeEstadia;
-        public ConfirmarReservaWindow(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin)
+        private Usuario usuario;
+        public ConfirmarReservaWindow(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin,Usuario  usuario)
         {
             this.habitaciones = habitaciones;
             this.fechaInicio = fechaInicio;
             this.fechaFin = fechaFin;
             this.diasDeEstadia = (fechaFin - fechaInicio).Days;
+            this.usuario=usuario;
             InitializeComponent();
             init();
         }
@@ -49,7 +52,7 @@ namespace FrbaHotel.AbmReserva
 
         private void confirmarReservaButton_Click(object sender, EventArgs e)
         {
-            using (VincularCliente form = new VincularCliente(habitaciones,fechaInicio,fechaFin,diasDeEstadia))
+            using (VincularCliente form = new VincularCliente(habitaciones,fechaInicio,fechaFin,diasDeEstadia,usuario))
             {
                 var result = form.ShowDialog();
             }

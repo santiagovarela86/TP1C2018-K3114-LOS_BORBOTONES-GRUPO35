@@ -15,18 +15,25 @@ namespace FrbaHotel.AbmReserva
 {
     public partial class GenerarReserva : Form
     {
+        Usuario usuario;
 
       
-        public GenerarReserva()
+        public GenerarReserva(Usuario usuario)
         {
+            this.usuario = usuario;
             InitializeComponent();
             init();
         }
 
 
         private void limpiarFiltros() {
+            calendarioDesde.Value = DateTime.Now;
+            calendarioHasta.Value = DateTime.Now.AddDays(1);
+           
             init();
             limpiarGrids();
+
+
             this.reservarHabitacionButton.Enabled = false;
 
         }
@@ -41,6 +48,7 @@ namespace FrbaHotel.AbmReserva
 
         private void init()
         {
+            calendarioHasta.Value = DateTime.Now.AddDays(1);
             RepositorioTipoHabitacion repoTipoHabitacion = new RepositorioTipoHabitacion();
             RepositorioHotel repoHotel = new RepositorioHotel();
 
@@ -86,8 +94,10 @@ namespace FrbaHotel.AbmReserva
         {
             this.reservarHabitacionButton.Enabled = false;
 
-            DateTime fechaInicio = (DateTime)Utils.validateFields(calendarioDesde.SelectionStart, "Fecha Desde");
-            DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.SelectionStart, "Fecah Hasta");
+            DateTime fechaInicio = (DateTime)Utils.validateFields(calendarioDesde.Value, "Fecha Desde");
+            DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.Value, "Fecah Hasta");
+            if(Utils.validateTimeRanges(fechaInicio, fechaFin)){
+            
             Hotel hotelSeleccionado = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
             TipoHabitacion tipoHabitacionSeleccionada = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo Habitacion");
             Regimen regimenSeleccionado = null;
@@ -134,6 +144,7 @@ namespace FrbaHotel.AbmReserva
                     }
                 }
             }
+            }
         }
 
         private void limpiarRegimenesDataGrid()
@@ -169,8 +180,8 @@ namespace FrbaHotel.AbmReserva
         private void reservarHabitacion(object sender, EventArgs e)
         {
 
-            DateTime fechaInicio = calendarioDesde.SelectionStart;
-            DateTime fechaFin = calendarioHasta.SelectionStart;
+            DateTime fechaInicio = calendarioDesde.Value;
+            DateTime fechaFin = calendarioHasta.Value;
             List<HabitacionDisponibleSearchDTO> habitacionesAReservar = new List<HabitacionDisponibleSearchDTO>();
 
             foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
@@ -178,7 +189,7 @@ namespace FrbaHotel.AbmReserva
                 habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponibleSearchDTO);
             }
 
-            using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin))
+            using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin,usuario))
             {
                 var result = form.ShowDialog();
             }
