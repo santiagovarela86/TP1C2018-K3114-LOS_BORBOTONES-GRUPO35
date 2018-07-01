@@ -118,6 +118,12 @@
     <Compile Include="AbmHotel\SearchHotel.Designer.cs">
       <DependentUpon>SearchHotel.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmReserva\CancelarReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\CancelarReserva.Designer.cs">
+      <DependentUpon>CancelarReserva.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmReserva\ConfirmarReservaWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,12 @@
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmReserva\HabitacionDisponibleSearchDTO.cs" />
+    <Compile Include="AbmReserva\ModificarReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\ModificarReserva.Designer.cs">
+      <DependentUpon>ModificarReserva.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmReserva\VincularCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,11 +338,17 @@
     <EmbeddedResource Include="AbmHotel\SearchHotel.resx">
       <DependentUpon>SearchHotel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\CancelarReserva.resx">
+      <DependentUpon>CancelarReserva.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\ConfirmarReservaWindow.resx">
       <DependentUpon>ConfirmarReservaWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\GenerarReserva.resx">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\ModificarReserva.resx">
+      <DependentUpon>ModificarReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\VincularCliente.resx">
       <DependentUpon>VincularCliente.cs</DependentUpon>

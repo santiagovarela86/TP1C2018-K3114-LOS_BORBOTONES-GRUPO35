@@ -68,6 +68,85 @@ namespace FrbaHotel.Repositorios
 
         }
 
+
+
+        public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
+
+            decimal codigoReserva= reserva.getCodigoReserva();
+            bool isRecepcionista = usuario.getRoles().Any(rol=>rol.getNombre().Equals("Recepcionista"));
+            bool isGuest = usuario.getRoles().Any(rol => rol.getNombre().Equals("Guest"));
+
+            String tipoEstado="Desconocido";
+            if(isRecepcionista){
+            tipoEstado="RCR";
+            }else if(isGuest){
+            tipoEstado="RCC";
+            }
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@fecha", DateTime.Now);
+            sqlCommand.Parameters.AddWithValue("@descripcion", motivo);
+            sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.Parameters.AddWithValue("@tipoEstado", tipoEstado);
+            sqlCommand.Parameters.AddWithValue("@codigoReserva", codigoReserva);
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
+                " VALUES(@tipoEstado,@fecha,@descripcion,@idUsuario,@idReserva);";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+            reader.Read();
+            sqlConnection.Close();
+            
+        }
+
+        public Reserva getReservaByCodigoReserva(int codigoReserva){
+
+
+            Reserva reserva = null;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@codigoReserva", codigoReserva);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @codigoReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                DateTime fechaCreacion = reader.GetDateTime(reader.GetOrdinal("FechaCreacion"));
+                DateTime fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
+                DateTime fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
+                decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
+                //Hotel hotel = repoHotel.getById(reader.GetOrdinal("idHotel"));
+                //Estadia estadia = repoEstadia.getById(reader.GetOrdinal("idEstadia"));
+                //Regimen regimen = repoRegimen.getById(reader.GetOrdinal("idRegimen"));                
+                //Cliente cliente = repoCliente.getById(reader.GetOrdinal("idCliente"));
+                //List<EstadoReserva> estados = repoEstadoReserva.getByIdReserva(idReserva);
+                //Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+                reserva = new Reserva(idReserva, null, null, null, null, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, null);
+            }
+
+            sqlConnection.Close();
+
+            return reserva;
+        }
+
         public Reserva getIdByIdEstadia(int idEstadia)
         {
             Reserva reserva = null;

@@ -90,5 +90,17 @@ namespace FrbaHotel
                 
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            Usuario guest = repoUsuario.getByUsername("guest");
+            using (ModificarReserva modificarReserva = new ModificarReserva(guest))
+            {
+                var resultFormLogin = modificarReserva.ShowDialog();
+
+
+            }
+        }
     }
 }
