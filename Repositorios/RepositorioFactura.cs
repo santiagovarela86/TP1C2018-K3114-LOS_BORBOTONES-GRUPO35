@@ -174,7 +174,6 @@ namespace FrbaHotel.Repositorios
 
             //traigo regimen para sumarlo o ver si es all inclusive
             RepositorioRegimen repoRegimen= new RepositorioRegimen();
- //arreglar que setie en null el regimen al tener la reserva
             Regimen regimen = reserva.getRegimen();
             Boolean allInclusive = false;
             if (regimen.getCodigoRegimen().Equals("RGAI"))
@@ -210,6 +209,7 @@ namespace FrbaHotel.Repositorios
             float totalHabitacion = 0;
 
             //conseguir el montoHabitacion de la reserva
+            montoHabitacion = (float)repoReserva.getMonto(reserva);
 
             if( reserva.getDiasAlojados()==estadia.getCantidadNoches())
                 {
@@ -239,7 +239,10 @@ namespace FrbaHotel.Repositorios
                 
             
             //sumo los puntos
-      
+            float dias = (float)reserva.getDiasAlojados();
+            puntos = (int)(montoHabitacion * dias) / 20;//puntos de habitacion
+            puntos = puntos + (int)(montoTotal / 10);//puntos de consumibles
+
             Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura);
             idFactura = this.create(factura);
             if (idFactura != 0)

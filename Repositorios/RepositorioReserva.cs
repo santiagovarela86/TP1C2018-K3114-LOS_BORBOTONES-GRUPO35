@@ -71,7 +71,7 @@ namespace FrbaHotel.Repositorios
         public Reserva getIdByIdEstadia(int idEstadia)
         {
             Reserva reserva = null;
-
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -95,7 +95,8 @@ namespace FrbaHotel.Repositorios
                 DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
                 DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
                 Hotel hotel = null;
-                Regimen regimen = null;
+                //Regimen regimen = null;
+                Regimen regimen = repoRegimen.getById(reader.GetInt32(reader.GetOrdinal("idRegimen")));                
                 Estadia estadia = null;
                 Cliente cliente = null;
                 List<EstadoReserva> estados = new List<EstadoReserva>();
@@ -501,16 +502,21 @@ namespace FrbaHotel.Repositorios
                 //comento lo de arriba ya que es un insert esto, no un update como pense al principio
                 int idEstadia = 0;
                 Boolean facturada = false;
-                Usuario userOut=null;
+                Usuario userOut=userIn;
                 Estadia estadia = new Estadia(idEstadia, userIn, userOut,date,fechaOut,facturada,cantidadNoches);
                 idEstadia= repoEstadia.create(estadia);
                 //repoEstadia.updateIn(estadia);
+               
+                //hago update de reserva para darle id estadia
+                Reserva reserva = getById(idReserva);
+                
+                this.updateIn(idReserva,idEstadia);
 
                 //hago update de EstadoReserva
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
-                RepositorioReserva repoReserva = new RepositorioReserva();
+                
                 int idEstadoReserva = 0;
-                Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
+                
                 String desc = "Reserva Con Ingreso";
                 String tipoEstado = "RCI";
                 EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, userIn, reserva, tipoEstado, date, desc);
@@ -549,7 +555,97 @@ namespace FrbaHotel.Repositorios
 
              return exist;
          }
+    //metodo para traer el monto de una reserva
+    public Decimal getMonto(Reserva reserva)
+    {
+            /*El valor de la habitación se obtiene a través de su precio base (ver abm de régimen)
+            multiplicando la cantidad de personas que se alojarán en la habitación (tipo de habitación) y
+            luego de ello aplicando un incremento en función de la categoría del Hotel (cantidad de
+            estrellas)*/
+             Decimal total = 0;
+             RepositorioRegimen repoRegimen = new RepositorioRegimen();
+             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+        
+             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+             SqlConnection sqlConnection = new SqlConnection(connectionString);
+             SqlCommand sqlCommand = new SqlCommand();
+             SqlDataReader reader;
 
+        //traigo el monto del regimen
+             Decimal montoRegimen = repoRegimen.getMonto(reserva.getRegimen().getIdRegimen());
+        
+             sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+             sqlCommand.CommandType = CommandType.Text;
+             sqlCommand.Connection = sqlConnection;
+             sqlCommand.CommandText = "SELECT idHabitacion FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente INNER JOIN LOS_BORBOTONES. WHERE idReserva = @idReserva";
+
+             sqlConnection.Open();
+
+             reader = sqlCommand.ExecuteReader();
+
+             while (reader.Read())
+             {
+
+                 Habitacion habitacion = repoHabitacion.getById(reader.GetInt32(reader.GetOrdinal("idHabitacion")));
+                 TipoHabitacion tipoHabitacion= habitacion.getTipoHabitacion();
+
+                 total = montoRegimen * tipoHabitacion.getPorcentual();
+             }
+
+             sqlConnection.Close();    
+             
+             //falta la suma por cantidad de estrellas
+             Hotel hotel= reserva.getHotel();
+             Categoria categoria=hotel.getCategoria();
+             Decimal recargaEstrellas = categoria.getRecargaEstrellas();
+             
+             //Devuelve el monto total de las habitaciones para esa reserva.
+             total = total + recargaEstrellas;
+
+             return total;
+
+         }
+    public void updateIn(int idReserva,int idEstadia)
+    {
+        
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Reserva
+                    SET idEstadia = @idEstadia
+                    WHERE idReserva = @idReserva;
+                ");
+
+
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        
+        }
     }
 }
 
