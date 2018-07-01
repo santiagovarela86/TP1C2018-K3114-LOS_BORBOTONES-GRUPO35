@@ -192,6 +192,7 @@ namespace FrbaHotel.AbmReserva
             using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin,usuario))
             {
                 var result = form.ShowDialog();
+                this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
             }
         }
 

@@ -55,6 +55,7 @@ namespace FrbaHotel.AbmReserva
             using (VincularCliente form = new VincularCliente(habitaciones,fechaInicio,fechaFin,diasDeEstadia,usuario))
             {
                 var result = form.ShowDialog();
+                this.Close();
             }
         }
 
