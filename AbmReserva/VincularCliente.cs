@@ -109,13 +109,6 @@ namespace FrbaHotel.AbmReserva
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-
-
         //CIERRO LA VENTANA CON ESCAPE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -141,6 +134,35 @@ namespace FrbaHotel.AbmReserva
         private void botonLimpiar_Click(object sender, EventArgs e)
         {
             this.limpiarBusquedaYResultados();
+        }
+
+        private void botonReservar_Click(object sender, EventArgs e)
+        {
+
+            List<Habitacion> habitacionesParaReservar = new List<Habitacion>();
+            Regimen regimen=null;
+            Cliente cliente = null;
+            foreach (HabitacionDisponibleSearchDTO dto in habitaciones) {
+                habitacionesParaReservar.Add(dto.getHabitacion());
+                regimen = dto.getRegimen();
+            }
+
+            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+            {
+                cliente = (item.DataBoundItem as Cliente);
+            }
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            Reserva reserva = new Reserva(habitacionesParaReservar, regimen, cliente, fechaInicio, fechaFin, diasDeEstadia);
+            try
+            {
+                repoReserva.create(reserva);
+                MessageBox.Show("Reserva creada exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+            }
         }
 
        

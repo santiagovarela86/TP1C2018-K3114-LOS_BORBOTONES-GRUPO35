@@ -77,7 +77,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(547, 143);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-
             // 
             // groupBox1
             // 
@@ -186,6 +185,7 @@
             this.botonReservar.TabIndex = 10;
             this.botonReservar.Text = "Reservar";
             this.botonReservar.UseVisualStyleBackColor = true;
+            this.botonReservar.Click += new System.EventHandler(this.botonReservar_Click);
             // 
             // botonAlta
             // 

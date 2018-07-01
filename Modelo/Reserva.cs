@@ -9,7 +9,7 @@ namespace FrbaHotel.Modelo
 {
     public class Reserva
     {
-        private List<Habitacion> habitacionesParaCrear;
+        private List<Habitacion> habitaciones;
         private int idReserva = 0;
         private Hotel hotel = null;
         private Estadia estadia = null;
@@ -41,6 +41,7 @@ namespace FrbaHotel.Modelo
         public Reserva(List<Habitacion> habitacionesParaReservar,Regimen regimen, Cliente clienteDueñoDeLaReserva, DateTime fechaInicio, DateTime fechaFin, int diasAlojados)
         {
             Habitacion habitacionDeUnHotel = habitacionesParaReservar[0];
+            this.habitaciones = habitacionesParaReservar;
             this.hotel = habitacionDeUnHotel.getHotel();
             this.regimen = regimen;
             this.cliente = clienteDueñoDeLaReserva;
@@ -110,6 +111,9 @@ namespace FrbaHotel.Modelo
             return idReserva.Equals(0);
         }
 
+        public List<Habitacion> getHabitaciones() {
+            return this.habitaciones;
+        }
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public decimal CodigoReserva { get { return this.getCodigoReserva(); } }
         public String FechaCreacion { get { return this.getFechaCreacion().ToString(); } }

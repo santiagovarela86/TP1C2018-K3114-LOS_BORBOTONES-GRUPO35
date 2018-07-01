@@ -592,7 +592,7 @@ CREATE TABLE LOS_BORBOTONES.Reserva (
 	FechaHasta		DATETIME		NOT NULL,
 	DiasAlojados	NUMERIC(18,0),
 	idHotel			INT				NOT NULL,
-	idEstadia		INT				NOT NULL,
+	idEstadia		INT,
 	idRegimen		INT				NOT NULL,
 	idCliente		INT				NOT NULL,
 )

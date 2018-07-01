@@ -246,7 +246,80 @@ namespace FrbaHotel.Repositorios
 
         override public int create(Reserva reserva)
         {
-            throw new NotImplementedException();
+            int idHotel = 0;
+
+
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+
+            sqlCommand.Parameters.AddWithValue("@fechaDesde", reserva.getFechaDesde());
+            sqlCommand.Parameters.AddWithValue("@fechaHasta", reserva.getFechaHasta());
+            sqlCommand.Parameters.AddWithValue("@diasAlojados", reserva.getDiasAlojados());
+            sqlCommand.Parameters.AddWithValue("@idHotel", reserva.getHotel().getIdHotel());
+            sqlCommand.Parameters.AddWithValue("@idRegimen", reserva.getRegimen().getIdRegimen());
+            sqlCommand.Parameters.AddWithValue("@idCliente", reserva.getCliente().getIdCliente());
+
+
+
+
+            String CREATE_STATEMENT = "BEGIN TRANSACTION " +
+                                        "BEGIN TRY " +
+                                        "DECLARE @idReserva int; " +
+                                        
+                                        "INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde, FechaHasta,DiasAlojados,idHotel,idRegimen,idCliente) " +
+                                        "VALUES((SELECT MAX(CodigoReserva) FROM LOS_BORBOTONES.Reserva) +1,GETDATE(),@fechaDesde,@fechaHasta,@diasAlojados,@idHotel,@idRegimen,@idCliente); " +
+                                        "SET @idReserva = SCOPE_IDENTITY(); " +
+                                        
+                                        "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
+                                        "VALUES('RC',GETDATE(),'Reserva Correcta',1,@idReserva); " +
+                                        
+                                        getReservaXHabitacionInserts(reserva,sqlCommand) +
+                                        
+                                        "COMMIT TRANSACTION " +
+                                        "END TRY " +
+                                        "BEGIN CATCH " +
+                                        "RAISERROR('ERROR TRYING TO CREATE RESERVA', 16, 1) " +
+                                        "ROLLBACK TRANSACTION " +
+                                        "END CATCH";
+
+
+
+            sqlCommand.CommandText = CREATE_STATEMENT;
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+            if (reader.Read())
+            {
+                idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+            }
+            sqlConnection.Close();
+            return idHotel;
+
+        }
+
+
+        private String getReservaXHabitacionInserts(Reserva reserva, SqlCommand sqlCommand)
+        {
+            String insert="";
+            int index=0;
+
+            foreach(Habitacion habitacion in reserva.getHabitaciones())
+            {
+                sqlCommand.Parameters.AddWithValue("@idHabitacion" + index, habitacion.getIdHabitacion());
+
+                insert += "INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacion, idCliente) " +
+                         "VALUES(@idReserva,@idHabitacion" + index + ",@idCliente); ";
+            index++;
+
+            }
+            return insert;
 
         }
 
