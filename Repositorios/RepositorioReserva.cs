@@ -128,6 +128,35 @@ namespace FrbaHotel.Repositorios
         }
 
 
+        public Cliente getClienteByIdReserva(Reserva reserva) {
+            Cliente cliente = null;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idCliente FROM LOS_BORBOTONES.Reserva WHERE idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idCliente = reader.GetInt32(reader.GetOrdinal("idCliente"));
+                RepositorioCliente repoCliente = new RepositorioCliente();
+                cliente = repoCliente.getById(idCliente);
+            }
+
+            sqlConnection.Close();
+
+            return cliente;
+        }
+
+
         public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
 
             decimal codigoReserva= reserva.getCodigoReserva();

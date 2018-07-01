@@ -85,6 +85,10 @@ namespace FrbaHotel.Modelo
 
         public Cliente getCliente()
         {
+            if (this.cliente == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.cliente = repoReserva.getClienteByIdReserva(this);
+            }
             return this.cliente;
         }
 
@@ -129,6 +133,11 @@ namespace FrbaHotel.Modelo
         }
 
         public List<Habitacion> getHabitaciones() {
+
+            if (this.habitaciones == null) {
+                RepositorioHabitacion repoHab = new RepositorioHabitacion();
+                this.habitaciones = repoHab.getHabitacionesByReservaId(this);
+            }
             return this.habitaciones;
         }
 
