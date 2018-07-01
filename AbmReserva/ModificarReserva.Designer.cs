@@ -46,11 +46,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buscarHabitacionesButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelRegimenActual = new System.Windows.Forms.Label();
+            this.labelHotelActual = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.buttonModificarReserva = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupRegimenesDelHotel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesDisponiblesGrid)).BeginInit();
             this.groupHabitacionesDisponibles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox3
@@ -230,6 +236,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelRegimenActual);
+            this.groupBox1.Controls.Add(this.labelHotelActual);
+            this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Location = new System.Drawing.Point(868, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(303, 489);
@@ -237,11 +246,56 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Reserva Actual";
             // 
+            // labelRegimenActual
+            // 
+            this.labelRegimenActual.AutoSize = true;
+            this.labelRegimenActual.Location = new System.Drawing.Point(50, 76);
+            this.labelRegimenActual.Name = "labelRegimenActual";
+            this.labelRegimenActual.Size = new System.Drawing.Size(52, 13);
+            this.labelRegimenActual.TabIndex = 65;
+            this.labelRegimenActual.Text = "Regimen:";
+            // 
+            // labelHotelActual
+            // 
+            this.labelHotelActual.AutoSize = true;
+            this.labelHotelActual.Location = new System.Drawing.Point(50, 34);
+            this.labelHotelActual.Name = "labelHotelActual";
+            this.labelHotelActual.Size = new System.Drawing.Size(35, 13);
+            this.labelHotelActual.TabIndex = 64;
+            this.labelHotelActual.Text = "Hotel:";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 105);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(291, 174);
+            this.dataGridView1.TabIndex = 35;
+            // 
+            // button1
+            // 
+            this.buttonModificarReserva.Location = new System.Drawing.Point(563, 526);
+            this.buttonModificarReserva.Name = "button1";
+            this.buttonModificarReserva.Size = new System.Drawing.Size(192, 23);
+            this.buttonModificarReserva.TabIndex = 72;
+            this.buttonModificarReserva.Text = "Modificar reserva";
+            // 
             // ModificarReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1183, 589);
+            this.Controls.Add(this.buttonModificarReserva);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
             this.Name = "ModificarReserva";
@@ -252,6 +306,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.regimenesDisponiblesGrid)).EndInit();
             this.groupHabitacionesDisponibles.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -276,6 +333,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buscarHabitacionesButton;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label labelHotelActual;
+        private System.Windows.Forms.Label labelRegimenActual;
+        private System.Windows.Forms.Button buttonModificarReserva;
 
     }
 }

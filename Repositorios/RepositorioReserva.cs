@@ -69,6 +69,64 @@ namespace FrbaHotel.Repositorios
         }
 
 
+        public Hotel getHotelByIdReserva(Reserva reserva) {
+            Hotel hotel=null;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idHotel FROM LOS_BORBOTONES.Reserva WHERE idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+                RepositorioHotel repoHotel = new RepositorioHotel();
+                hotel= repoHotel.getById(idHotel);
+            }
+
+            sqlConnection.Close();
+
+            return hotel;
+        }
+
+
+        public Regimen getRegimenByIdReserva(Reserva reserva)
+        {
+            Regimen regimen = null;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idRegimen FROM LOS_BORBOTONES.Reserva WHERE idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idRegimen = reader.GetInt32(reader.GetOrdinal("idRegimen"));
+                RepositorioRegimen repoRegimen = new RepositorioRegimen();
+                regimen = repoRegimen.getById(idRegimen);
+            }
+
+            sqlConnection.Close();
+
+            return regimen;
+        }
+
 
         public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
 

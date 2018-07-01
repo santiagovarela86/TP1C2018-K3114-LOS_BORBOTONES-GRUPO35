@@ -1,4 +1,5 @@
 ﻿using FrbaHotel.AbmReserva;
+using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,10 @@ namespace FrbaHotel.Modelo
 
         public Hotel getHotel()
         {
+            if (this.hotel == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.hotel = repoReserva.getHotelByIdReserva(this);
+            }
             return this.hotel;
         }
 
@@ -70,6 +75,11 @@ namespace FrbaHotel.Modelo
 
         public Regimen getRegimen()
         {
+            if (this.regimen == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.regimen=repoReserva.getRegimenByIdReserva(this);
+            }
+
             return this.regimen;
         }
 

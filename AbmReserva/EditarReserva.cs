@@ -59,7 +59,6 @@ namespace FrbaHotel.AbmReserva
                 }
             }catch(RequestInvalidoException exception){
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados");
-
                 }
 
 
@@ -81,7 +80,12 @@ namespace FrbaHotel.AbmReserva
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            using (ModificarReserva form = new ModificarReserva())
+            Reserva reserva = null;
+            foreach (DataGridViewRow item in this.dataGridReserva.SelectedRows)
+            {
+                reserva = item.DataBoundItem as Reserva;
+            }
+            using (ModificarReserva form = new ModificarReserva(reserva,usuario))
             {
                 var result = form.ShowDialog();
                 this.Close();
