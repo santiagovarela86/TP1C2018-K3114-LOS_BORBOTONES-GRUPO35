@@ -186,6 +186,7 @@
             this.botonReservar.Text = "Reservar";
             this.botonReservar.UseVisualStyleBackColor = true;
             this.botonReservar.Click += new System.EventHandler(this.botonReservar_Click);
+            this.botonReservar.Enabled = false;
             // 
             // botonAlta
             // 

@@ -17,6 +17,7 @@ namespace FrbaHotel.AbmHotel
         {
             InitializeComponent();
             this.hotelBaja = hotel;
+            limpiarDatos();
         }
         private Hotel hotelBaja;
         private GroupBox groupBox1;
@@ -233,9 +234,13 @@ namespace FrbaHotel.AbmHotel
 
         private void buttonLimpiarDatos_Click(object sender, EventArgs e)
         {
-            calendarioDesde.Value = DateTime.Today;
-           calendarioHasta.Value = DateTime.Today;
-           descripcionBajaText.Text = "";
+            limpiarDatos();
+        }
+
+        private void limpiarDatos() {
+            calendarioDesde.Value = DateTime.Now.Date;
+            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
+            descripcionBajaText.Text = "";
         }
     }
 

@@ -27,8 +27,8 @@ namespace FrbaHotel.AbmReserva
 
 
         private void limpiarFiltros() {
-            calendarioDesde.Value = DateTime.Now;
-            calendarioHasta.Value = DateTime.Now.AddDays(1);
+            calendarioDesde.Value = DateTime.Now.Date;
+            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
            
             init();
             limpiarGrids();
@@ -48,7 +48,8 @@ namespace FrbaHotel.AbmReserva
 
         private void init()
         {
-            calendarioHasta.Value = DateTime.Now.AddDays(1);
+            calendarioDesde.Value = DateTime.Now.Date;
+            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
             RepositorioTipoHabitacion repoTipoHabitacion = new RepositorioTipoHabitacion();
             RepositorioHotel repoHotel = new RepositorioHotel();
 
