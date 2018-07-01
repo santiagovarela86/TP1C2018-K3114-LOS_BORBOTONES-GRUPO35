@@ -346,7 +346,7 @@ namespace FrbaHotel.Repositorios
                     BEGIN TRANSACTION
 
                     UPDATE LOS_BORBOTONES.Estadia
-                    SET Facturada = true
+                    SET Facturada = 1
                     WHERE idEstadia = @idEstadia;
                 ");
 
@@ -365,8 +365,45 @@ namespace FrbaHotel.Repositorios
                 reader = sqlCommand.ExecuteReader();
 
                 sqlConnection.Close();
-            }       
-        
+            }
+
+        public void updateEstadoFacturado(int idReserva)
+        {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.EstadoReserva
+                    SET TipoEstado= 'RF', Descripcion='Reserva Facturada'
+                    WHERE idReserva = @idReserva;
+                ");
+
+
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        }
     }
 }
 

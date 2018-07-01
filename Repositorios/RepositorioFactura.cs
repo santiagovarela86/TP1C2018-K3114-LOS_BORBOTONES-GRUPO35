@@ -51,9 +51,9 @@ namespace FrbaHotel.Repositorios
                 sqlBuilder.Append(@"
                     BEGIN TRY
                     BEGIN TRANSACTION
-                    INSERT INTO LOS_BORBOTONES.Factura(FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva)
+                    INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura,FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva)
                     OUTPUT INSERTED.idFactura
-                    VALUES(@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva);
+                    VALUES(@NumeroFactura,@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva);
                     DECLARE @idFactura int;
                     SET @idFactura = SCOPE_IDENTITY();
                 ");
@@ -258,6 +258,7 @@ namespace FrbaHotel.Repositorios
                 }
                 //hacer update de la estadia avisando que ya facture
                 repoEstadia.facturado(estadia.getIdEstadia());
+                repoEstadia.updateEstadoFacturado(reserva.getIdReserva());
                 resultado = 1;
             }
             else resultado = 2;//falla creando factura
@@ -287,7 +288,7 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                numeroFactura = reader.GetInt32(reader.GetOrdinal("NumeroFactura"));
+                numeroFactura = (int)reader.GetDecimal(reader.GetOrdinal("NumeroFactura"));
                 
             }
 
