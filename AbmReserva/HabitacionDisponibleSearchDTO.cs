@@ -31,16 +31,22 @@ namespace FrbaHotel.AbmReserva
         }
 
         public String Regimen { get { return this.regimen.getDescripcion(); } }
+        public decimal PrecioPorNoche
+        {
+            get
+            {
+                decimal precioRegimen = regimen.getPrecio();
+                decimal precioTipoHabitacion = habitacion.getTipoHabitacion().getPorcentual();
+                decimal categoriaPrecio = habitacion.getHotel().getCategoria().getRecargaEstrellas();
+                return ((precioRegimen * precioTipoHabitacion) + categoriaPrecio);
+            }
+        }
         public String Hotel { get { return this.habitacion.getHotel().getNombre(); } }
+        public int Numero { get { return this.habitacion.getNumero(); } }
+
         public String TipoHabitacion { get { return this.habitacion.getTipoHabitacion().getDescripcion(); } }
         public String Ubicacion { get { return this.habitacion.getUbicacion(); } }
-        public int Numero { get { return this.habitacion.getNumero(); } }
         public int Piso { get { return this.habitacion.getPiso(); } }
-        public decimal PrecioPorNoche { get {
-            decimal precioRegimen = regimen.getPrecio();
-            decimal precioTipoHabitacion = habitacion.getTipoHabitacion().getPorcentual();
-            decimal categoriaPrecio = habitacion.getHotel().getCategoria().getRecargaEstrellas();
-            return ( (precioRegimen * precioTipoHabitacion) + categoriaPrecio); } }
-
+       
     }
 }

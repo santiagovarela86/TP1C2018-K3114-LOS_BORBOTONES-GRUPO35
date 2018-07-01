@@ -139,7 +139,7 @@ namespace FrbaHotel.AbmReserva
             this.habitacionesDisponiblesGrid.ReadOnly = true;
             this.habitacionesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.habitacionesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(395, 194);
+            this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(452, 194);
             this.habitacionesDisponiblesGrid.TabIndex = 34;
             this.habitacionesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.habitaciones_cellClick);
             // 
@@ -199,7 +199,7 @@ namespace FrbaHotel.AbmReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(670, 536);
+            this.ClientSize = new System.Drawing.Size(725, 536);
             this.Controls.Add(this.calendarioHasta);
             this.Controls.Add(this.calendarioDesde);
             this.Controls.Add(this.limpiarButton);
