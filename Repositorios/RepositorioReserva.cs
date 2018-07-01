@@ -82,7 +82,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@codigoReserva", codigoReserva);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva WHERE codigoReserva = @codigoReserva";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva WHERE CodigoReserva = @codigoReserva";
 
             sqlConnection.Open();
 

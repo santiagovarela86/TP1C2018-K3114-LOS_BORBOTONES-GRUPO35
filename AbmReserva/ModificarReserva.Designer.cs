@@ -35,6 +35,7 @@
             this.buttonModificar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridReserva = new System.Windows.Forms.DataGridView();
+            this.buttonBuscar = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridReserva)).BeginInit();
@@ -43,7 +44,7 @@
             // labelCodigoReserva
             // 
             this.labelCodigoReserva.AutoSize = true;
-            this.labelCodigoReserva.Location = new System.Drawing.Point(121, 45);
+            this.labelCodigoReserva.Location = new System.Drawing.Point(121, 35);
             this.labelCodigoReserva.Name = "labelCodigoReserva";
             this.labelCodigoReserva.Size = new System.Drawing.Size(101, 13);
             this.labelCodigoReserva.TabIndex = 6;
@@ -51,10 +52,11 @@
             // 
             // textCodigoReserva
             // 
-            this.textCodigoReserva.Location = new System.Drawing.Point(239, 42);
+            this.textCodigoReserva.Location = new System.Drawing.Point(239, 32);
             this.textCodigoReserva.Name = "textCodigoReserva";
             this.textCodigoReserva.Size = new System.Drawing.Size(107, 20);
             this.textCodigoReserva.TabIndex = 7;
+            this.textCodigoReserva.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // groupBox3
             // 
@@ -92,7 +94,7 @@
             this.groupBox2.Controls.Add(this.dataGridReserva);
             this.groupBox2.Location = new System.Drawing.Point(43, 100);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(434, 85);
+            this.groupBox2.Size = new System.Drawing.Size(434, 112);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Resultados";
@@ -113,14 +115,25 @@
             this.dataGridReserva.ReadOnly = true;
             this.dataGridReserva.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridReserva.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridReserva.Size = new System.Drawing.Size(422, 45);
+            this.dataGridReserva.Size = new System.Drawing.Size(422, 73);
             this.dataGridReserva.TabIndex = 8;
+            // 
+            // buttonBuscar
+            // 
+            this.buttonBuscar.Location = new System.Drawing.Point(221, 61);
+            this.buttonBuscar.Name = "buttonBuscar";
+            this.buttonBuscar.Size = new System.Drawing.Size(75, 23);
+            this.buttonBuscar.TabIndex = 12;
+            this.buttonBuscar.Text = "Buscar";
+            this.buttonBuscar.UseVisualStyleBackColor = true;
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
             // 
             // ModificarReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(521, 326);
+            this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.labelCodigoReserva);
@@ -144,5 +157,6 @@
         private System.Windows.Forms.Button buttonModificar;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridReserva;
+        private System.Windows.Forms.Button buttonBuscar;
     }
 }
