@@ -60,6 +60,9 @@ namespace FrbaHotel.AbmReserva
             comboBoxHotel.DisplayMember = "Nombre";
             comboBoxHotel.ValueMember = "Nombre";
             comboBoxHotel.DataSource = repoHotel.getAll();
+
+            comboBoxTipoHabitacion.SelectedValue = "";
+            comboBoxTipoHabitacion.SelectedIndex = -1;
         }
 
         private void eventHandlerHotelComboBox(object sender, EventArgs e)
@@ -100,15 +103,19 @@ namespace FrbaHotel.AbmReserva
             if(Utils.validateTimeRanges(fechaInicio, fechaFin)){
             
             Hotel hotelSeleccionado = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
-            TipoHabitacion tipoHabitacionSeleccionada = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo Habitacion");
-            Regimen regimenSeleccionado = null;
+            TipoHabitacion tipoHabitacionSeleccionada = null;
+            if (comboBoxTipoHabitacion.SelectedItem != null)
+            {
+                 tipoHabitacionSeleccionada = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
+            }
+                Regimen regimenSeleccionado = null;
 
                 regimenSeleccionado = (Regimen)comboBoxRegimen.SelectedItem;
 
                 regimenSeleccionado = regimenParam;
           
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            List<HabitacionDisponibleSearchDTO> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado);
+            List<HabitacionDisponibleSearchDTO> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,null);
 
 
 
@@ -213,6 +220,8 @@ namespace FrbaHotel.AbmReserva
         {
             limpiarFiltros();
         }
+
+
 
 
     }

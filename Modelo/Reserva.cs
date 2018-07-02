@@ -1,4 +1,5 @@
 ﻿using FrbaHotel.AbmReserva;
+using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,10 @@ namespace FrbaHotel.Modelo
 
         public Hotel getHotel()
         {
+            if (this.hotel == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.hotel = repoReserva.getHotelByIdReserva(this);
+            }
             return this.hotel;
         }
 
@@ -70,11 +75,20 @@ namespace FrbaHotel.Modelo
 
         public Regimen getRegimen()
         {
+            if (this.regimen == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.regimen=repoReserva.getRegimenByIdReserva(this);
+            }
+
             return this.regimen;
         }
 
         public Cliente getCliente()
         {
+            if (this.cliente == null) {
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                this.cliente = repoReserva.getClienteByIdReserva(this);
+            }
             return this.cliente;
         }
 
@@ -105,6 +119,11 @@ namespace FrbaHotel.Modelo
 
         public List<EstadoReserva> getEstados()
         {
+
+            if (this.estados == null) {
+                RepositorioEstadoReserva repoEstados = new RepositorioEstadoReserva();
+                this.estados = repoEstados.getByIdReserva(this.idReserva);
+            }
             return this.estados;
         }
 
@@ -114,6 +133,11 @@ namespace FrbaHotel.Modelo
         }
 
         public List<Habitacion> getHabitaciones() {
+
+            if (this.habitaciones == null) {
+                RepositorioHabitacion repoHab = new RepositorioHabitacion();
+                this.habitaciones = repoHab.getHabitacionesByReservaId(this);
+            }
             return this.habitaciones;
         }
 
@@ -126,10 +150,47 @@ namespace FrbaHotel.Modelo
             this.codigoReserva = codigoReserva;
         }
 
+        public void setFechaDesde(DateTime fechaDesde)
+        {
+            this.fechaDesde = fechaDesde;
+        }
 
+        public void setFechaHasta(DateTime fechaHasta)
+        {
+            this.fechaHasta = fechaHasta;
+        }
+
+        public void setHotel(Hotel hotel)
+        {
+            this.hotel = hotel;
+        }
+
+        public void setHabitaciones(List<Habitacion> habitaciones) {
+            this.habitaciones = habitaciones;
+        }
+
+        public void setRegimen(Regimen regimen)
+        {
+            this.regimen = regimen;
+        }
+
+        public void setDiasAlojados(int diasAlojados)
+        {
+            this.diasAlojados = diasAlojados;
+        }
+
+
+        public void setUsuarioGenerador(Usuario usuarioGenerador)
+        {
+            this.usuarioGenerador = usuarioGenerador;
+        }
 
         public Usuario getUsuarioGenerador()
         {
+            if(this.usuarioGenerador ==null){
+                RepositorioEstadoReserva repoEstado = new RepositorioEstadoReserva();
+                this.usuarioGenerador=repoEstado.getUsuarioByIdReservaAndTipoEstado(idReserva, "RC");
+            }
             return this.usuarioGenerador;
         }
         //Estos metodos extra los necesito para popular los combo box y data grid view

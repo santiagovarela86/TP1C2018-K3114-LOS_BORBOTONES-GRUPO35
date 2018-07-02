@@ -44,8 +44,12 @@ namespace FrbaHotel.AbmReserva
             this.limpiarButton = new System.Windows.Forms.Button();
             this.calendarioDesde = new System.Windows.Forms.DateTimePicker();
             this.calendarioHasta = new System.Windows.Forms.DateTimePicker();
+            this.groupHabitacionesDisponibles = new System.Windows.Forms.GroupBox();
+            this.groupRegimenesDelHotel = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesDisponiblesGrid)).BeginInit();
+            this.groupHabitacionesDisponibles.SuspendLayout();
+            this.groupRegimenesDelHotel.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -134,12 +138,12 @@ namespace FrbaHotel.AbmReserva
             this.habitacionesDisponiblesGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.habitacionesDisponiblesGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.habitacionesDisponiblesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.habitacionesDisponiblesGrid.Location = new System.Drawing.Point(261, 251);
+            this.habitacionesDisponiblesGrid.Location = new System.Drawing.Point(6, 19);
             this.habitacionesDisponiblesGrid.Name = "habitacionesDisponiblesGrid";
             this.habitacionesDisponiblesGrid.ReadOnly = true;
             this.habitacionesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.habitacionesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(452, 194);
+            this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(451, 175);
             this.habitacionesDisponiblesGrid.TabIndex = 34;
             this.habitacionesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.habitaciones_cellClick);
             // 
@@ -163,12 +167,12 @@ namespace FrbaHotel.AbmReserva
             this.regimenesDisponiblesGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.regimenesDisponiblesGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.regimenesDisponiblesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.regimenesDisponiblesGrid.Location = new System.Drawing.Point(24, 251);
+            this.regimenesDisponiblesGrid.Location = new System.Drawing.Point(12, 19);
             this.regimenesDisponiblesGrid.Name = "regimenesDisponiblesGrid";
             this.regimenesDisponiblesGrid.ReadOnly = true;
             this.regimenesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.regimenesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.regimenesDisponiblesGrid.Size = new System.Drawing.Size(143, 194);
+            this.regimenesDisponiblesGrid.Size = new System.Drawing.Size(207, 170);
             this.regimenesDisponiblesGrid.TabIndex = 36;
             this.regimenesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.regimenesDisponiblesGrid_CellContentClick);
             // 
@@ -195,17 +199,37 @@ namespace FrbaHotel.AbmReserva
             this.calendarioHasta.Size = new System.Drawing.Size(200, 20);
             this.calendarioHasta.TabIndex = 40;
             // 
+            // groupHabitacionesDisponibles
+            // 
+            this.groupHabitacionesDisponibles.Controls.Add(this.habitacionesDisponiblesGrid);
+            this.groupHabitacionesDisponibles.Location = new System.Drawing.Point(250, 251);
+            this.groupHabitacionesDisponibles.Name = "groupHabitacionesDisponibles";
+            this.groupHabitacionesDisponibles.Size = new System.Drawing.Size(463, 203);
+            this.groupHabitacionesDisponibles.TabIndex = 41;
+            this.groupHabitacionesDisponibles.TabStop = false;
+            this.groupHabitacionesDisponibles.Text = "Habitaciones disponibles";
+            // 
+            // groupBox1
+            // 
+            this.groupRegimenesDelHotel.Controls.Add(this.regimenesDisponiblesGrid);
+            this.groupRegimenesDelHotel.Location = new System.Drawing.Point(12, 251);
+            this.groupRegimenesDelHotel.Name = "groupBox1";
+            this.groupRegimenesDelHotel.Size = new System.Drawing.Size(232, 198);
+            this.groupRegimenesDelHotel.TabIndex = 42;
+            this.groupRegimenesDelHotel.TabStop = false;
+            this.groupRegimenesDelHotel.Text = "Regimenes del hotel";
+            // 
             // GenerarReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 536);
+            this.Controls.Add(this.groupRegimenesDelHotel);
+            this.Controls.Add(this.groupHabitacionesDisponibles);
             this.Controls.Add(this.calendarioHasta);
             this.Controls.Add(this.calendarioDesde);
             this.Controls.Add(this.limpiarButton);
-            this.Controls.Add(this.regimenesDisponiblesGrid);
             this.Controls.Add(this.reservarHabitacionButton);
-            this.Controls.Add(this.habitacionesDisponiblesGrid);
             this.Controls.Add(this.labelRegimen);
             this.Controls.Add(this.comboBoxRegimen);
             this.Controls.Add(this.labelHotel);
@@ -219,6 +243,8 @@ namespace FrbaHotel.AbmReserva
             this.Text = "GenerarReserva";
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesDisponiblesGrid)).EndInit();
+            this.groupHabitacionesDisponibles.ResumeLayout(false);
+            this.groupRegimenesDelHotel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,5 +267,7 @@ namespace FrbaHotel.AbmReserva
         private System.Windows.Forms.Button limpiarButton;
         private System.Windows.Forms.DateTimePicker calendarioDesde;
         private System.Windows.Forms.DateTimePicker calendarioHasta;
+        private System.Windows.Forms.GroupBox groupHabitacionesDisponibles;
+        private System.Windows.Forms.GroupBox groupRegimenesDelHotel;
     }
 }

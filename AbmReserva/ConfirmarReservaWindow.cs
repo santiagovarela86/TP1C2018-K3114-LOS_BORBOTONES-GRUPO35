@@ -34,6 +34,8 @@ namespace FrbaHotel.AbmReserva
         private void init() {
 
             decimal precioTotal = 0;
+
+            this.labelTipoHabitacion.Text += "Reserva desde el dia: " + fechaInicio + " hasta " + fechaFin +".\n";
             foreach (HabitacionDisponibleSearchDTO habitacion in habitaciones)
             {
                 decimal precioHabitacion = (diasDeEstadia * habitacion.PrecioPorNoche);

@@ -294,6 +294,41 @@ namespace FrbaHotel.Repositorios
                 sqlConnection.Close();
         }
 
+
+        public Usuario getUsuarioByIdReservaAndTipoEstado(int idReserva, String tipoEstado) {
+            
+            Usuario usuario = null;
+           
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
+            sqlCommand.Parameters.AddWithValue("@tipoEstado", tipoEstado);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idUsuario FROM LOS_BORBOTONES.EstadoReserva WHERE idReserva =@idReserva  AND TipoEstado=tipoEstado;";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+               int idUsuario = reader.GetInt32(reader.GetOrdinal("idEstado"));
+                RepositorioUsuario repoUsuario= new RepositorioUsuario();
+
+                usuario=repoUsuario.getById(idUsuario);
+            }
+            sqlConnection.Close();
+
+            return usuario;
+        
+        }
+
         public EstadoReserva getByIdEstadia(int idEstadia)
         {
             EstadoReserva estadoReserva = null;

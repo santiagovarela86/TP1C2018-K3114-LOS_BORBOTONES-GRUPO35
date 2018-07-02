@@ -95,7 +95,7 @@ namespace FrbaHotel
         {
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
             Usuario guest = repoUsuario.getByUsername("guest");
-            using (ModificarReserva modificarReserva = new ModificarReserva(guest))
+            using (EditarReserva modificarReserva = new EditarReserva(guest))
             {
                 var resultFormLogin = modificarReserva.ShowDialog();
 

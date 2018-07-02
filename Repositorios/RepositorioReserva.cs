@@ -69,6 +69,93 @@ namespace FrbaHotel.Repositorios
         }
 
 
+        public Hotel getHotelByIdReserva(Reserva reserva) {
+            Hotel hotel=null;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idHotel FROM LOS_BORBOTONES.Reserva WHERE idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
+                RepositorioHotel repoHotel = new RepositorioHotel();
+                hotel= repoHotel.getById(idHotel);
+            }
+
+            sqlConnection.Close();
+
+            return hotel;
+        }
+
+        
+        public Regimen getRegimenByIdReserva(Reserva reserva)
+        {
+            Regimen regimen = null;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idRegimen FROM LOS_BORBOTONES.Reserva WHERE idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idRegimen = reader.GetInt32(reader.GetOrdinal("idRegimen"));
+                RepositorioRegimen repoRegimen = new RepositorioRegimen();
+                regimen = repoRegimen.getById(idRegimen);
+            }
+
+            sqlConnection.Close();
+
+            return regimen;
+        }
+
+
+        public Cliente getClienteByIdReserva(Reserva reserva) {
+            Cliente cliente = null;
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idCliente FROM LOS_BORBOTONES.Reserva WHERE idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                int idCliente = reader.GetInt32(reader.GetOrdinal("idCliente"));
+                RepositorioCliente repoCliente = new RepositorioCliente();
+                cliente = repoCliente.getById(idCliente);
+            }
+
+            sqlConnection.Close();
+
+            return cliente;
+        }
+
 
         public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
 
@@ -392,6 +479,62 @@ namespace FrbaHotel.Repositorios
             return idReserva;
 
         }
+
+
+        public void modificarReserva(Reserva reserva) {
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+
+            sqlCommand.Parameters.AddWithValue("@fechaDesde", reserva.getFechaDesde());
+            sqlCommand.Parameters.AddWithValue("@fechaHasta", reserva.getFechaHasta());
+            sqlCommand.Parameters.AddWithValue("@diasAlojados", reserva.getDiasAlojados());
+            sqlCommand.Parameters.AddWithValue("@idHotel", reserva.getHotel().getIdHotel());
+            sqlCommand.Parameters.AddWithValue("@idRegimen", reserva.getRegimen().getIdRegimen());
+            sqlCommand.Parameters.AddWithValue("@idCliente", reserva.getCliente().getIdCliente());
+            sqlCommand.Parameters.AddWithValue("@idUsuario", reserva.getUsuarioGenerador().getIdUsuario());
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+
+
+
+
+            String CREATE_STATEMENT = "BEGIN TRANSACTION " +
+                                        "BEGIN TRY " +
+
+                                        "UPDATE LOS_BORBOTONES.Reserva SET FechaDesde=@fechaDesde, FechaHasta=@fechaHasta,DiasAlojados=@diasAlojados,idHotel=@idHotel,idRegimen=@idRegimen,idCliente=@idCliente WHERE idReserva=@idReserva; " +
+
+                                        "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
+                                        "VALUES('RM',GETDATE(),'Reserva Modificada',@idUsuario,@idReserva); " +
+                                        "DELETE FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente WHERE idReserva=@idReserva; " +
+                                        getReservaXHabitacionInserts(reserva, sqlCommand) +
+
+                                        "COMMIT TRANSACTION " +
+                                        "END TRY " +
+                                        "BEGIN CATCH " +
+                                        "RAISERROR('ERROR TRYING TO MODIFY RESERVA', 16, 1) " +
+                                        "ROLLBACK TRANSACTION " +
+                                        "END CATCH";
+
+
+
+            sqlCommand.CommandText = CREATE_STATEMENT;
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+            reader.Read();
+
+
+            sqlConnection.Close();
+
+        
+        }
+
 
 
         private String getReservaXHabitacionInserts(Reserva reserva, SqlCommand sqlCommand)

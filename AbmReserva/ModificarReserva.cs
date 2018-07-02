@@ -1,5 +1,4 @@
 ﻿using FrbaHotel.Commons;
-using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
@@ -17,68 +16,251 @@ namespace FrbaHotel.AbmReserva
     public partial class ModificarReserva : Form
     {
 
+        private Reserva reserva;
         private Usuario usuario;
-        public ModificarReserva(Usuario usuario)
+        public ModificarReserva(Reserva reserva, Usuario usuario)
         {
+            this.reserva = reserva;
             this.usuario = usuario;
             InitializeComponent();
+            List<Habitacion> habitaciones = reserva.getHabitaciones();
+            Regimen regimen=reserva.getRegimen();
+            this.labelHotelActual.Text = "Hotel reservado : " + reserva.getHotel().getNombre();
+            this.labelRegimenActual.Text = "Regimen reservado : " + regimen.getDescripcion();
+            this.labelFechaDesde.Text += " " + reserva.getFechaDesde();
+            this.labelFechaHasta.Text += " " + reserva.getFechaHasta();
+
+            this.dataGridView1.DataSource=buildHabitacionesReservadas(habitaciones,regimen);
+            init();
+        }
+
+
+        private List<HabitacionDisponibleSearchDTO> buildHabitacionesReservadas(List<Habitacion> habitaciones,Regimen regimen){
+            List<HabitacionDisponibleSearchDTO> habitacionesReservadas = new List<HabitacionDisponibleSearchDTO>();
+            foreach(Habitacion hab in habitaciones){
+            habitacionesReservadas.Add(new HabitacionDisponibleSearchDTO(hab,regimen));
+            }
+            return habitacionesReservadas;
         }
 
 
 
-        private void onlyNumeric(object sender, KeyPressEventArgs e)
+        private void limpiarFiltros()
         {
-            // Verify that the pressed key isn't CTRL or any non-numeric digit
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            calendarioDesde.Value = DateTime.Now.Date;
+            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
+
+            init();
+            limpiarGrids();
+
+
+            this.buttonModificarReserva.Enabled = false;
+
+        }
+
+        private void limpiarGrids()
+        {
+            this.regimenesDisponiblesGrid.DataSource = null;
+            this.regimenesDisponiblesGrid.Rows.Clear();
+
+            this.habitacionesDisponiblesGrid.DataSource = null;
+            this.habitacionesDisponiblesGrid.Rows.Clear();
+        }
+
+        private void init()
+        {
+            calendarioDesde.Value = DateTime.Now.Date;
+            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
+            RepositorioTipoHabitacion repoTipoHabitacion = new RepositorioTipoHabitacion();
+            RepositorioHotel repoHotel = new RepositorioHotel();
+
+            comboBoxTipoHabitacion.DisplayMember = "Descripcion";
+            comboBoxTipoHabitacion.ValueMember = "Descripcion";
+            comboBoxTipoHabitacion.DataSource = repoTipoHabitacion.getAll();
+
+            comboBoxHotel.DisplayMember = "Nombre";
+            comboBoxHotel.ValueMember = "Nombre";
+            comboBoxHotel.DataSource = repoHotel.getAll();
+
+            comboBoxTipoHabitacion.SelectedValue = "";
+            comboBoxTipoHabitacion.SelectedIndex = -1;
+        }
+
+        private void eventHandlerHotelComboBox(object sender, EventArgs e)
+        {
+
+            this.regimenesDisponiblesGrid.DataSource = null;
+            this.regimenesDisponiblesGrid.Rows.Clear();
+
+            this.habitacionesDisponiblesGrid.DataSource = null;
+            this.habitacionesDisponiblesGrid.Rows.Clear();
+
+            if (this.comboBoxHotel.SelectedItem == null)
             {
-                e.Handled = true;
+                this.comboBoxRegimen.Enabled = false;
+                this.comboBoxRegimen.DataSource = new List<Hotel>();
+            }
+            else
+            {
+                Hotel hotel = (Hotel)this.comboBoxHotel.SelectedItem;
+                this.comboBoxRegimen.DataSource = hotel.getRegimenes();
+                this.comboBoxRegimen.Enabled = true;
+                this.comboBoxRegimen.DisplayMember = "Descripcion";
+                this.comboBoxRegimen.ValueMember = "Descripcion";
+                this.comboBoxRegimen.SelectedIndex = -1;
+                this.comboBoxRegimen.SelectedValue = "";
+
+
             }
         }
 
-        private void buttonBuscar_Click(object sender, EventArgs e)
+
+        private void buscarHabitaciones(Regimen regimenParam)
         {
-            try
+            this.buttonModificarReserva.Enabled = false;
+
+            DateTime fechaInicio = (DateTime)Utils.validateFields(calendarioDesde.Value, "Fecha Desde");
+            DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.Value, "Fecah Hasta");
+            if (Utils.validateTimeRanges(fechaInicio, fechaFin))
             {
-                int codigoReserva = Utils.validateIntField(textCodigoReserva.Text, "Codigo de Reserva");
-                RepositorioReserva repoReserva = new RepositorioReserva();
-                Reserva reserva = repoReserva.getReservaByCodigoReserva(codigoReserva);
 
-                if (reserva != null)
+                Hotel hotelSeleccionado = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
+                TipoHabitacion tipoHabitacionSeleccionada = null;
+                if (comboBoxTipoHabitacion.SelectedItem != null)
                 {
-                    List<Reserva> reservas = new List<Reserva>();
-                    reservas.Add(reserva);
-                    dataGridReserva.DataSource = reservas;
+                    tipoHabitacionSeleccionada = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
+                }
+                Regimen regimenSeleccionado = null;
 
-                    DateTime fechaAhora = DateTime.Now;
-                    DateTime fechaInicio = reserva.getFechaDesde();
-                    if (((fechaInicio - fechaAhora).TotalDays > 1) && (fechaInicio > fechaAhora))
+                regimenSeleccionado = (Regimen)comboBoxRegimen.SelectedItem;
+
+                regimenSeleccionado = regimenParam;
+
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                List<HabitacionDisponibleSearchDTO> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,reserva);
+
+
+
+                this.habitacionesDisponiblesGrid.DataSource = habitacionesDisponibles;
+                this.habitacionesDisponiblesGrid.CurrentCell = null;
+                this.habitacionesDisponiblesGrid.ClearSelection();
+                if (this.habitacionesDisponiblesGrid.Rows.Count > 0)
+                {
+                    this.habitacionesDisponiblesGrid.Rows[0].Cells[0].Selected = false;
+                    this.habitacionesDisponiblesGrid.Rows[0].Selected = false;
+                }
+
+                RepositorioRegimen repoRegimen = new RepositorioRegimen();
+
+                this.regimenesDisponiblesGrid.DataSource = repoRegimen.getByIdHotel(hotelSeleccionado.getIdHotel());
+
+
+
+                if (regimenSeleccionado == null)
+                {
+                    limpiarRegimenesDataGrid();
+
+                }
+                else
+                {
+                    limpiarRegimenesDataGrid();
+                    foreach (DataGridViewRow item in this.regimenesDisponiblesGrid.Rows)
                     {
-                        this.buttonModificar.Enabled = true;
-                        this.buttonCancelar.Enabled = true;
+                        Regimen regimen = item.DataBoundItem as Regimen;
+                        if (regimen.getIdRegimen() == regimenSeleccionado.getIdRegimen())
+                        {
+                            item.Selected = true;
+
+                        }
                     }
                 }
-            }catch(RequestInvalidoException exception){
-                MessageBox.Show(exception.Message, "Verifique los datos ingresados");
+            }
+        }
 
-                }
-
+        private void limpiarRegimenesDataGrid()
+        {
+            this.regimenesDisponiblesGrid.Enabled = true;
+            this.regimenesDisponiblesGrid.CurrentCell = null;
+            this.regimenesDisponiblesGrid.ClearSelection();
+            if (this.regimenesDisponiblesGrid.Rows.Count > 0)
+            {
+                this.regimenesDisponiblesGrid.Rows[0].Cells[0].Selected = false;
+                this.regimenesDisponiblesGrid.Rows[0].Selected = false;
+            }
+        }
+        private void buscarHabitaciones_Click(object sender, EventArgs e)
+        {
+            this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
 
         }
 
-        private void buttonCancelar_Click(object sender, EventArgs e)
+        private void habitaciones_cellClick(object sender, EventArgs e)
         {
-            Reserva reserva=null;
-            foreach (DataGridViewRow item in this.dataGridReserva.SelectedRows)
+            Regimen regimen = null;
+            foreach (DataGridViewRow item in this.regimenesDisponiblesGrid.SelectedRows)
             {
-                reserva = item.DataBoundItem as Reserva;
+                regimen = item.DataBoundItem as Regimen;
             }
-            using (CancelarReserva form = new CancelarReserva(reserva, usuario))
+            if (regimen != null)
+            {
+                this.buttonModificarReserva.Enabled = true;
+            }
+        }
+
+        private void reservarHabitacion(object sender, EventArgs e)
+        {
+
+            DateTime fechaInicio = calendarioDesde.Value;
+            DateTime fechaFin = calendarioHasta.Value;
+            List<HabitacionDisponibleSearchDTO> habitacionesAReservar = new List<HabitacionDisponibleSearchDTO>();
+
+            foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
+            {
+                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponibleSearchDTO);
+            }
+
+            using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin, usuario))
             {
                 var result = form.ShowDialog();
-                this.Close();
+                this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
             }
         }
+
+        private void regimenesDisponiblesGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Regimen regimenSelected = null;
+            foreach (DataGridViewRow item in this.regimenesDisponiblesGrid.SelectedRows)
+            {
+                regimenSelected = item.DataBoundItem as Regimen;
+            }
+
+
+            this.buscarHabitaciones(regimenSelected);
+        }
+
+        private void limpiarButton_Click(object sender, EventArgs e)
+        {
+            this.limpiarFiltros();
+        }
+
+        private void buttonModificarReserva_Click(object sender, EventArgs e)
+        {
+            DateTime fechaInicio = calendarioDesde.Value;
+            DateTime fechaFin = calendarioHasta.Value;
+            List<HabitacionDisponibleSearchDTO> habitacionesAReservar = new List<HabitacionDisponibleSearchDTO>();
+
+            foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
+            {
+                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponibleSearchDTO);
+            }
+
+            using (ConfirmarModificacionWindow form = new ConfirmarModificacionWindow(habitacionesAReservar, fechaInicio, fechaFin, usuario,reserva))
+            {
+                var result = form.ShowDialog();
+                this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
+            }
+        }
+
+
     }
-
-
 }

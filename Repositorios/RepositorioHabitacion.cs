@@ -13,7 +13,6 @@ namespace FrbaHotel.Repositorios
     public class RepositorioHabitacion : Repositorio<Habitacion>
     {
 
-        //private RepositorioTipoHabitacion repositorioTipoHabitacion;
 
         public override int create(Habitacion habitacion)
         {
@@ -315,7 +314,7 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public List<HabitacionDisponibleSearchDTO> getHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin,Hotel hotel, TipoHabitacion tipoHabitacion, Regimen regimen) { 
+        public List<HabitacionDisponibleSearchDTO> getHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin,Hotel hotel, TipoHabitacion tipoHabitacion, Regimen regimen,Reserva reserva) { 
 
             List<HabitacionDisponibleSearchDTO> habitacionesDisponibles= new List<HabitacionDisponibleSearchDTO>();
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
@@ -329,8 +328,13 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
 
             sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
-            sqlCommand.Parameters.AddWithValue("@idtipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
-
+            
+            String queryTipoHab="";
+            if(tipoHabitacion!=null){
+                sqlCommand.Parameters.AddWithValue("@idtipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
+                queryTipoHab= "AND HAB.idTipoHabitacion=@idtipoHabitacion ";
+            }
+            String queryModificarReservaParaTraerLaHabitacionQueYaReserve = reserva == null ? "" : "AND RES.idReserva!=" + reserva.getIdReserva();
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
@@ -342,12 +346,12 @@ namespace FrbaHotel.Repositorios
                 "WHERE REG.Activo=1 " +
                 "AND HAB.idHotel=@idHotel " +
                 "AND HAB.Activa=1 " +
-                "AND HAB.idTipoHabitacion=@idtipoHabitacion " +
-
+                queryTipoHab +
                 "AND NOT EXISTS ( " + 
                 "SELECT * FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente AS RXHXC " + 
                 "JOIN LOS_BORBOTONES.Reserva AS RES ON RES.idReserva = RXHXC.idReserva  " + 
                 "WHERE HAB.idHabitacion= RXHXC.idHabitacion " +
+                queryModificarReservaParaTraerLaHabitacionQueYaReserve +
                 "AND  (RES.FechaDesde < @fechaFin AND @fechaInicio < RES.FechaHasta  ) " +
                 "AND NOT EXISTS( "+
                 "SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE " + 
@@ -389,13 +393,45 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
             return habitacionesDisponibles;
         
-        
+        }
+
+
+        public List<Habitacion> getHabitacionesByReservaId(Reserva reserva) {
+
+            List<Habitacion> habitaciones = new List<Habitacion>();
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente AS RXH " +
+                                     "WHERE RXH.idReserva = @idReserva";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                int idHabitacion = reader.GetInt32(reader.GetOrdinal("idHabitacion"));
+
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                Habitacion habitacion = repoHabitacion.getById(idHabitacion);
+                habitaciones.Add(habitacion);
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return habitaciones;
         }
 
         public Hotel getHotelByIdHabitacion(int id)
         {
             Hotel hotel = null;
-            RepositorioTipoHabitacion repositorioTipoHabitacion = new RepositorioTipoHabitacion();
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
