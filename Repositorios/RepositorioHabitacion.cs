@@ -314,7 +314,7 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public List<HabitacionDisponibleSearchDTO> getHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin,Hotel hotel, TipoHabitacion tipoHabitacion, Regimen regimen) { 
+        public List<HabitacionDisponibleSearchDTO> getHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin,Hotel hotel, TipoHabitacion tipoHabitacion, Regimen regimen,Reserva reserva) { 
 
             List<HabitacionDisponibleSearchDTO> habitacionesDisponibles= new List<HabitacionDisponibleSearchDTO>();
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
@@ -334,7 +334,7 @@ namespace FrbaHotel.Repositorios
                 sqlCommand.Parameters.AddWithValue("@idtipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
                 queryTipoHab= "AND HAB.idTipoHabitacion=@idtipoHabitacion ";
             }
-
+            String queryModificarReservaParaTraerLaHabitacionQueYaReserve = reserva == null ? "" : "AND RES.idReserva!=" + reserva.getIdReserva();
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
@@ -351,6 +351,7 @@ namespace FrbaHotel.Repositorios
                 "SELECT * FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente AS RXHXC " + 
                 "JOIN LOS_BORBOTONES.Reserva AS RES ON RES.idReserva = RXHXC.idReserva  " + 
                 "WHERE HAB.idHabitacion= RXHXC.idHabitacion " +
+                queryModificarReservaParaTraerLaHabitacionQueYaReserve +
                 "AND  (RES.FechaDesde < @fechaFin AND @fechaInicio < RES.FechaHasta  ) " +
                 "AND NOT EXISTS( "+
                 "SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE " + 
@@ -391,7 +392,6 @@ namespace FrbaHotel.Repositorios
             //Cierro Primera Consulta
             sqlConnection.Close();
             return habitacionesDisponibles;
-        
         
         }
 

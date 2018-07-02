@@ -115,7 +115,7 @@ namespace FrbaHotel.AbmReserva
                 regimenSeleccionado = regimenParam;
           
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            List<HabitacionDisponibleSearchDTO> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado);
+            List<HabitacionDisponibleSearchDTO> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,null);
 
 
 
@@ -221,10 +221,7 @@ namespace FrbaHotel.AbmReserva
             limpiarFiltros();
         }
 
-        private void habitaciones_cellClick(object sender, DataGridViewCellEventArgs e)
-        {
 
-        }
 
 
     }

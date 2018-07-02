@@ -150,7 +150,40 @@ namespace FrbaHotel.Modelo
             this.codigoReserva = codigoReserva;
         }
 
+        public void setFechaDesde(DateTime fechaDesde)
+        {
+            this.fechaDesde = fechaDesde;
+        }
 
+        public void setFechaHasta(DateTime fechaHasta)
+        {
+            this.fechaHasta = fechaHasta;
+        }
+
+        public void setHotel(Hotel hotel)
+        {
+            this.hotel = hotel;
+        }
+
+        public void setHabitaciones(List<Habitacion> habitaciones) {
+            this.habitaciones = habitaciones;
+        }
+
+        public void setRegimen(Regimen regimen)
+        {
+            this.regimen = regimen;
+        }
+
+        public void setDiasAlojados(int diasAlojados)
+        {
+            this.diasAlojados = diasAlojados;
+        }
+
+
+        public void setUsuarioGenerador(Usuario usuarioGenerador)
+        {
+            this.usuarioGenerador = usuarioGenerador;
+        }
 
         public Usuario getUsuarioGenerador()
         {

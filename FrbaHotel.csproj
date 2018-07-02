@@ -124,6 +124,12 @@
     <Compile Include="AbmReserva\CancelarReserva.Designer.cs">
       <DependentUpon>CancelarReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmReserva\ConfirmarModificacionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\ConfirmarModificacionWindow.Designer.cs">
+      <DependentUpon>ConfirmarModificacionWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmReserva\ConfirmarReservaWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -346,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\CancelarReserva.resx">
       <DependentUpon>CancelarReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\ConfirmarModificacionWindow.resx">
+      <DependentUpon>ConfirmarModificacionWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\ConfirmarReservaWindow.resx">
       <DependentUpon>ConfirmarReservaWindow.cs</DependentUpon>

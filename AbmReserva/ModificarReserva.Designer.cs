@@ -46,6 +46,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buscarHabitacionesButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelFechaHasta = new System.Windows.Forms.Label();
+            this.labelFechaDesde = new System.Windows.Forms.Label();
             this.labelRegimenActual = new System.Windows.Forms.Label();
             this.labelHotelActual = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -109,6 +111,7 @@
             this.regimenesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.regimenesDisponiblesGrid.Size = new System.Drawing.Size(207, 170);
             this.regimenesDisponiblesGrid.TabIndex = 36;
+            this.regimenesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.regimenesDisponiblesGrid_CellContentClick);
             // 
             // groupHabitacionesDisponibles
             // 
@@ -137,6 +140,7 @@
             this.habitacionesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(451, 175);
             this.habitacionesDisponiblesGrid.TabIndex = 34;
+            this.habitacionesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.habitaciones_cellClick);
             // 
             // calendarioHasta
             // 
@@ -159,6 +163,7 @@
             this.limpiarButton.Size = new System.Drawing.Size(192, 23);
             this.limpiarButton.TabIndex = 66;
             this.limpiarButton.Text = "Limpiar filtros";
+            this.limpiarButton.Click += new System.EventHandler(this.limpiarButton_Click);
             // 
             // labelRegimen
             // 
@@ -191,6 +196,7 @@
             this.comboBoxHotel.Name = "comboBoxHotel";
             this.comboBoxHotel.Size = new System.Drawing.Size(174, 21);
             this.comboBoxHotel.TabIndex = 62;
+            this.comboBoxHotel.SelectedValueChanged += new System.EventHandler(this.eventHandlerHotelComboBox);
             // 
             // labelTipoHabitacion
             // 
@@ -233,9 +239,12 @@
             this.buscarHabitacionesButton.Size = new System.Drawing.Size(192, 23);
             this.buscarHabitacionesButton.TabIndex = 57;
             this.buscarHabitacionesButton.Text = "Buscar habitaciones disponibles";
+            this.buscarHabitacionesButton.Click += new System.EventHandler(this.buscarHabitaciones_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelFechaHasta);
+            this.groupBox1.Controls.Add(this.labelFechaDesde);
             this.groupBox1.Controls.Add(this.labelRegimenActual);
             this.groupBox1.Controls.Add(this.labelHotelActual);
             this.groupBox1.Controls.Add(this.dataGridView1);
@@ -245,6 +254,24 @@
             this.groupBox1.TabIndex = 71;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Reserva Actual";
+            // 
+            // labelFechaHasta
+            // 
+            this.labelFechaHasta.AutoSize = true;
+            this.labelFechaHasta.Location = new System.Drawing.Point(50, 160);
+            this.labelFechaHasta.Name = "labelFechaHasta";
+            this.labelFechaHasta.Size = new System.Drawing.Size(71, 13);
+            this.labelFechaHasta.TabIndex = 67;
+            this.labelFechaHasta.Text = "Fecha Hasta:";
+            // 
+            // labelFechaDesde
+            // 
+            this.labelFechaDesde.AutoSize = true;
+            this.labelFechaDesde.Location = new System.Drawing.Point(50, 119);
+            this.labelFechaDesde.Name = "labelFechaDesde";
+            this.labelFechaDesde.Size = new System.Drawing.Size(74, 13);
+            this.labelFechaDesde.TabIndex = 66;
+            this.labelFechaDesde.Text = "Fecha Desde:";
             // 
             // labelRegimenActual
             // 
@@ -274,7 +301,7 @@
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 105);
+            this.dataGridView1.Location = new System.Drawing.Point(6, 206);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
@@ -282,13 +309,14 @@
             this.dataGridView1.Size = new System.Drawing.Size(291, 174);
             this.dataGridView1.TabIndex = 35;
             // 
-            // button1
+            // buttonModificarReserva
             // 
             this.buttonModificarReserva.Location = new System.Drawing.Point(563, 526);
-            this.buttonModificarReserva.Name = "button1";
+            this.buttonModificarReserva.Name = "buttonModificarReserva";
             this.buttonModificarReserva.Size = new System.Drawing.Size(192, 23);
             this.buttonModificarReserva.TabIndex = 72;
             this.buttonModificarReserva.Text = "Modificar reserva";
+            this.buttonModificarReserva.Click += new System.EventHandler(this.buttonModificarReserva_Click);
             // 
             // ModificarReserva
             // 
@@ -337,6 +365,8 @@
         private System.Windows.Forms.Label labelHotelActual;
         private System.Windows.Forms.Label labelRegimenActual;
         private System.Windows.Forms.Button buttonModificarReserva;
+        private System.Windows.Forms.Label labelFechaDesde;
+        private System.Windows.Forms.Label labelFechaHasta;
 
     }
 }

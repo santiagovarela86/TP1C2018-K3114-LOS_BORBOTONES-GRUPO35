@@ -601,7 +601,7 @@ GO
 -- Tabla Asociacion Reserva - Habitacion - Cliente
 CREATE TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente (
 
-	idReserva		INT		UNIQUE 		NOT NULL,
+	idReserva		INT		NOT NULL,
 	idHabitacion	INT		NOT NULL,
 	idCliente		INT		NOT NULL,
 )
