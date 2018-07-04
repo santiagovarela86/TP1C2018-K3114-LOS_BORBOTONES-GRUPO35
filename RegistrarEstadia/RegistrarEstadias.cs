@@ -14,14 +14,15 @@ namespace FrbaHotel.RegistrarEstadia
 {
     public partial class RegistrarEstadias : Form
     {
-        public RegistrarEstadias()
+        private Usuario usuarioLogueado = null;
+        public RegistrarEstadias(Usuario usuario)
         {
             InitializeComponent();
+            this.usuarioLogueado=usuario;
         }
         private void ListadoRegistrarEstadia_Load(object sender, EventArgs e)
         {
             textBox1.Text = "";
-            textBox2.Text = "";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,17 +34,16 @@ namespace FrbaHotel.RegistrarEstadia
         {
             //CHECK IN
             int codReserva = 0;
-            String username = "";
             DateTime date = DateTime.Today;
             int estadoValidez = 0;
             DateTime dateTest = new DateTime(2017, 1, 1);
             RepositorioReserva repositorioReserva = new RepositorioReserva();
-            if (textBox1.Text != "" | textBox2.Text != "")
+            if (textBox1.Text != "" )
             {
                 codReserva = int.Parse(textBox1.Text);
-                username = textBox2.Text;
+                
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, username);
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, usuarioLogueado);
                 if (estadoValidez==1)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
@@ -85,24 +85,19 @@ namespace FrbaHotel.RegistrarEstadia
         {
             //CHECK OUT
             int codReserva = 0;
-            String username = "";
+            
             int idEstadia = 0;
             //si se va antes de la fecha de salida tengo que poner bien los dias porque dsp en la factura se hace algo con esto
             DateTime date = DateTime.Today;
             RepositorioEstadia repoEstadia = new RepositorioEstadia();
             RepositorioReserva repoReserva = new RepositorioReserva();
-            if (textBox1.Text != "" | textBox2.Text != "")
+            if (textBox1.Text != "" )
             {
                 codReserva = int.Parse(textBox1.Text);
-                //ESTO SE VA AL TRAER ID DIRECTO DEL LOGIN
-                username = textBox2.Text;
-                Usuario user = null;
-                RepositorioUsuario repoUser =new RepositorioUsuario();
-                user = repoUser.getByUsername(username);
                 //consigo del codigo de reserva el idEstadia
                 idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
 
-                Estadia estadia = new Estadia(idEstadia,user,date);
+                Estadia estadia = new Estadia(idEstadia,usuarioLogueado,date);
                 repoEstadia.update(estadia);
                 //hago update de EstadoReserva
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
@@ -110,7 +105,7 @@ namespace FrbaHotel.RegistrarEstadia
                 Reserva reserva =repoReserva.getIdByIdEstadia(estadia.getIdEstadia());
                 String desc="Reserva Con Egreso";
                 String tipoEstado="RCE";
-                EstadoReserva estadoReserva=new EstadoReserva(idEstadoReserva, user, reserva, tipoEstado, date, desc);
+                EstadoReserva estadoReserva=new EstadoReserva(idEstadoReserva, usuarioLogueado, reserva, tipoEstado, date, desc);
                 repoEstadoReserva.update(estadoReserva);
 
                 MessageBox.Show("Check out correcto, proceder a facturar Estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -13,6 +13,9 @@ using FrbaHotel.AbmUsuario;
 using FrbaHotel.AbmHotel;
 using FrbaHotel.AbmCliente;
 using FrbaHotel.AbmHabitacion;
+using FrbaHotel.RegistrarEstadia;
+using FrbaHotel.FacturarEstadia;
+using FrbaHotel.RegistrarConsumible;
 
 namespace FrbaHotel
 {
@@ -57,7 +60,7 @@ namespace FrbaHotel
             RegistrarConsumible.Enabled = false;
             FacturarEstadia.Enabled = false;
             GenerarListadoEstadistico.Enabled = false;
-            RegistrarConsumible.Enabled = false;
+            //RegistrarConsumible.Enabled = false;
 
             labelHotel.Text = "Hotel: " + this.getHotelElegido().getNombre();
             labelRol.Text = "Rol: " + this.getRolElegido().getNombre();
@@ -83,7 +86,7 @@ namespace FrbaHotel
             RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
             FacturarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(FacturarEstadia.Name));
             GenerarListadoEstadistico.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(GenerarListadoEstadistico.Name));
-            RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
+            //RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
         }
 
         private void ABMRol_Click(object sender, EventArgs e)
@@ -150,7 +153,42 @@ namespace FrbaHotel
                 }
             }
         }
+        private void RegistrarEstadia_Click(object sender, EventArgs e)
+        {
+            using (RegistrarEstadias formularioRegistrarEstadia = new RegistrarEstadias(this.getUsuarioLogueado()))
+            {
+                var resultFormRegistrarEstadia = formularioRegistrarEstadia.ShowDialog();
 
+                if (resultFormRegistrarEstadia == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
+        private void FacturarEstadia_Click(object sender, EventArgs e)
+        {
+            using (FacturarEstadias formularioFacturarEstadia = new FacturarEstadias())
+            {
+                var resultFormFacturarEstadia = formularioFacturarEstadia.ShowDialog();
+
+                if (resultFormFacturarEstadia == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
+        private void RegistrarConsumible_Click(object sender, EventArgs e)
+        {
+            using (AltaConsumible formularioRegistrarConsumible = new AltaConsumible())
+            {
+                var resultFormRegistrarConsumible = formularioRegistrarConsumible.ShowDialog();
+
+                if (resultFormRegistrarConsumible == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
+        }
         //CIERRO LA VENTANA CON ESCAPE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {

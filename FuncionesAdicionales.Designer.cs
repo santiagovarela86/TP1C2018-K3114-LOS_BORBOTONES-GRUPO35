@@ -110,6 +110,7 @@
             this.RegistrarEstadia.TabIndex = 5;
             this.RegistrarEstadia.Text = "Registrar Estadía";
             this.RegistrarEstadia.UseVisualStyleBackColor = true;
+            this.RegistrarEstadia.Click += new System.EventHandler(this.RegistrarEstadia_Click);
             // 
             // RegistrarConsumible
             // 
@@ -119,6 +120,7 @@
             this.RegistrarConsumible.TabIndex = 6;
             this.RegistrarConsumible.Text = "Registrar Consumibles";
             this.RegistrarConsumible.UseVisualStyleBackColor = true;
+            this.RegistrarConsumible.Click += new System.EventHandler(this.RegistrarConsumible_Click);
             // 
             // FacturarEstadia
             // 
@@ -128,6 +130,7 @@
             this.FacturarEstadia.TabIndex = 7;
             this.FacturarEstadia.Text = "Facturar Estadía";
             this.FacturarEstadia.UseVisualStyleBackColor = true;
+            this.FacturarEstadia.Click += new System.EventHandler(this.FacturarEstadia_Click);
             // 
             // GenerarListadoEstadistico
             // 

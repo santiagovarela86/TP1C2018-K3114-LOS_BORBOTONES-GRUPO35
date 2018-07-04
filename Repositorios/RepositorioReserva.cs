@@ -660,7 +660,7 @@ namespace FrbaHotel.Repositorios
             
             return idEstadia;
         }
-        public int GetReservaValida(int codReserva,DateTime date,String username)
+        public int GetReservaValida(int codReserva,DateTime date,Usuario user)
         {
             int idHotel = 0;
             int idReserva = 0;
@@ -668,9 +668,7 @@ namespace FrbaHotel.Repositorios
             decimal cantidadNoches = 0;
             DateTime fechaOut= new DateTime();
             RepositorioUsuario repouser = new RepositorioUsuario();
-            Usuario userIn = null;
-            //SACAR ESTO CUANDO INVOQUE DESDE FUNCIONALIDES ADICIONALES, TRAIGO DE UNA LA ID YA VALIDA
-            userIn = repouser.getByUsername(username);
+            Usuario userIn = user;
             if (userIn == null)
                 return 4;
 
