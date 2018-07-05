@@ -104,9 +104,9 @@ namespace FrbaHotel.FacturarEstadia
             int idFactura = 0;
             String tipoPago = "";
             String nombreTarjeta = "";
-            String vencTarjeta = "";
-            String nroTarjeta = "";
-            String codSegTarjeta = "";
+            int vencTarjeta = 0;
+            Decimal nroTarjeta = 0;
+            int codSegTarjeta = 0;
 
             if (comboBoxTipoPago.SelectedItem != null)
             {
@@ -116,7 +116,7 @@ namespace FrbaHotel.FacturarEstadia
             {
                 //es efectivo llamo aca no necesito los datos de tarjeta
                 //tomo la informacion de la estadia, consumibles por estadia y datos de pago
-                idFactura = repoFact.facturar(estadias, consumiblesXEstadia, tipoPago);
+                idFactura = repoFact.facturar(estadias, consumiblesXEstadia, tipoPago,nombreTarjeta,nroTarjeta,codSegTarjeta,vencTarjeta);
                 if (idFactura == 0)
                     MessageBox.Show("Error cargando algun item de la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (idFactura == 2)
@@ -129,17 +129,26 @@ namespace FrbaHotel.FacturarEstadia
             {
                 //traigo los datos de la tarjeta
                 nombreTarjeta = textBox2.Text;
-                nroTarjeta = textBox3.Text;
-                codSegTarjeta= textBox4.Text;
-                vencTarjeta = textBox5.Text;
-                if (vencTarjeta=="" |codSegTarjeta==""| nroTarjeta=="" | nombreTarjeta=="")
+                if (textBox3.Text != "" )
+                {
+                    nroTarjeta = Decimal.Parse(textBox3.Text);
+                }
+                if (textBox4.Text != "")
+                {
+                    codSegTarjeta = int.Parse(textBox4.Text);
+                }
+                if (textBox5.Text != "")
+                {
+                    vencTarjeta = int.Parse(textBox5.Text);
+                }
+                if (vencTarjeta==0 |codSegTarjeta==0| nroTarjeta==0 | nombreTarjeta=="")
                 {
                     MessageBox.Show("por favor completar todos los campos de informacion de tarjeta ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.ListadoFacturarEstadia_Load(sender, e);    
                 }else
                 {
                     //tomo la informacion de la estadia, consumibles por estadia y datos de pago
-                    idFactura= repoFact.facturar(estadias, consumiblesXEstadia, tipoPago);
+                    idFactura= repoFact.facturar(estadias, consumiblesXEstadia, tipoPago,nombreTarjeta,nroTarjeta,codSegTarjeta,vencTarjeta);
                     if (idFactura==0)
                         MessageBox.Show("Error cargando algun item de la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     if (idFactura == 2)

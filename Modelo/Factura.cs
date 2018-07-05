@@ -15,11 +15,15 @@ namespace FrbaHotel.Modelo
         private DateTime fechaFacturacion = new DateTime();
         private float total = 0;
         private int puntos = 0;
+        private int vencTarjeta = 0;
+        private int codSegTarjeta = 0;
+        private Decimal nroTarjeta = 0;
         private String tipoPago = "";
+        private String nombreTarjeta = "";
         private List<ItemFactura> itemsFactura = new List<ItemFactura>();
 
         public Factura(int idFactura, Estadia estadia, Reserva reserva, int numeroFactura, DateTime fechaFacturacion,
-            float total, int puntos, String tipoPago, List<ItemFactura> itemsFactura)
+            float total, int puntos, String tipoPago, List<ItemFactura> itemsFactura,String nombreTarjeta,Decimal nroTarjeta,int codSegTarjeta,int vencTarjeta)
         {
             this.idFactura = idFactura;
             this.estadia = estadia;
@@ -30,11 +34,31 @@ namespace FrbaHotel.Modelo
             this.puntos = puntos;
             this.tipoPago = tipoPago;
             this.itemsFactura = itemsFactura;
+            this.nombreTarjeta = nombreTarjeta;
+            this.nroTarjeta = nroTarjeta;
+            this.codSegTarjeta = codSegTarjeta;
+            this.vencTarjeta = vencTarjeta;
         }
 
         public int getIdFactura()
         {
             return idFactura;
+        }
+        public int getCodSegTarjeta()
+        {
+            return codSegTarjeta;
+        }
+        public int getVencTarjeta()
+        {
+            return vencTarjeta;
+        }
+        public Decimal getNroTarjeta()
+        {
+            return nroTarjeta;
+        }
+        public String getNombreTarjeta()
+        {
+            return nombreTarjeta;
         }
 
         public Estadia getEstadia()

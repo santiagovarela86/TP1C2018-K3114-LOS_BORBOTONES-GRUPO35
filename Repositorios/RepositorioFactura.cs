@@ -46,14 +46,18 @@ namespace FrbaHotel.Repositorios
                 sqlCommand.Parameters.AddWithValue("@TipoPago", factura.getTipoPago());
                 sqlCommand.Parameters.AddWithValue("@IdEstadia", factura.getEstadia().getIdEstadia());
                 sqlCommand.Parameters.AddWithValue("@IdReserva", factura.getReserva().getIdReserva());
+                sqlCommand.Parameters.AddWithValue("@Titular", factura.getNombreTarjeta());
+                sqlCommand.Parameters.AddWithValue("@NroTarjeta", factura.getNroTarjeta());
+                sqlCommand.Parameters.AddWithValue("@CodSegTarjeta", factura.getCodSegTarjeta());
+                sqlCommand.Parameters.AddWithValue("@VencTarjeta", factura.getVencTarjeta());
 
                 StringBuilder sqlBuilder = new StringBuilder();
                 sqlBuilder.Append(@"
                     BEGIN TRY
                     BEGIN TRANSACTION
-                    INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura,FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva)
+                    INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura,FechaFacturacion,Total,Puntos,TipoPago,idEstadia,idReserva,Titular,NroTarjeta,CodigoSeguridad,Vencimiento)
                     OUTPUT INSERTED.idFactura
-                    VALUES(@NumeroFactura,@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva);
+                    VALUES(@NumeroFactura,@FechaFacturacion,@Total,@Puntos,@TipoPago,@IdEstadia,@IdReserva,@Titular,@NroTarjeta,@CodSegTarjeta,@VencTarjeta);
                     DECLARE @idFactura int;
                     SET @idFactura = SCOPE_IDENTITY();
                 ");
@@ -141,7 +145,7 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public int facturar(List<Estadia> estadias, List<Consumible> consumiblesXEstadia, String tipoPago)
+        public int facturar(List<Estadia> estadias, List<Consumible> consumiblesXEstadia, String tipoPago,String nombreTarjeta,decimal nroTarjeta,int codSegTarjeta,int vencTarjeta)
         {
             int idFactura = 0;
             int resultado = 0;
@@ -243,7 +247,7 @@ namespace FrbaHotel.Repositorios
             puntos = (int)(montoHabitacion * dias) / 20;//puntos de habitacion
             puntos = puntos + (int)(montoTotal / 10);//puntos de consumibles
             total = totalHabitacion + montoTotal;
-            Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura);
+            Factura factura = new Factura(idFactura,estadia,reserva,numeroFactura,fecha,total,puntos,tipoPago,itemsFactura,nombreTarjeta,nroTarjeta,codSegTarjeta,vencTarjeta);
             idFactura = this.create(factura);
             if (idFactura != 0)
             {
