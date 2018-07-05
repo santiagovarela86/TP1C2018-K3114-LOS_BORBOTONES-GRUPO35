@@ -616,6 +616,10 @@ CREATE TABLE LOS_BORBOTONES.Factura (
 	Total				NUMERIC(18,2)		NOT NULL,
 	Puntos				INT,
 	TipoPago			VARCHAR(45),
+	Titular 			NVARCHAR(255),
+	CodigoSeguridad 	INT,
+	NroTarjeta 			NUMERIC(16,0), 
+	Vencimiento 		INT,
 	idEstadia			INT					NOT NULL,
 	idReserva			INT					NOT NULL,
 )
