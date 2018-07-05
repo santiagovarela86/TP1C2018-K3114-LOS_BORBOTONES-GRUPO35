@@ -49,7 +49,7 @@ namespace FrbaHotel.RegistrarEstadia
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
                     //Traigo otra pantalla para los huespedes
                     MessageBox.Show("La reserva es valida", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
+                    using (VincularHuespedes form = new VincularHuespedes(codReserva))
                       {
                           var result = form.ShowDialog();
 
@@ -57,7 +57,7 @@ namespace FrbaHotel.RegistrarEstadia
                           {
 
                           }
-                      }*/
+                      }
                 }
                 else if (estadoValidez == 2)
                 {

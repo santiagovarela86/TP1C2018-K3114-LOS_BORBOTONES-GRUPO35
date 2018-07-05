@@ -404,6 +404,54 @@ namespace FrbaHotel.Repositorios
 
             sqlConnection.Close();
         }
+        public void vincularHuespedes(int codReserva, List<Cliente> clientes)
+        {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            Reserva reserva = repoReserva.getReservaByCodigoReserva(codReserva);
+            int idHabitacion=0;
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
+            foreach (Habitacion item in reserva.getHabitaciones())
+            {
+                idHabitacion=item.getIdHabitacion();
+            }
+            sqlCommand.Parameters.AddWithValue("@idHabitacion", idHabitacion);
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                ");
+            foreach (Cliente item in clientes)
+            {
+                sqlCommand.Parameters.AddWithValue("@idCliente", item.getIdCliente());
+                sqlBuilder.Append(@"
+                    INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva,idHabitacion,idCliente)
+                    VALUES(@idReserva,@idHabitacion,@idCliente);
+               ");                
+            }
+
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        }
     }
 }
 
