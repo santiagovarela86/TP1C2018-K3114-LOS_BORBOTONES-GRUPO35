@@ -133,7 +133,7 @@ namespace FrbaHotel
 
         private void ABMHabitacion_Click(object sender, EventArgs e)
         {
-            using (ABMHabitacion formularioABMHabitacion = new ABMHabitacion())
+            using (ABMHabitacion formularioABMHabitacion = new ABMHabitacion(this.getSesion()))
             {
                 var resultFormABMHabitacion = formularioABMHabitacion.ShowDialog();
 

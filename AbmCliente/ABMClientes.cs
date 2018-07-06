@@ -93,7 +93,7 @@ namespace FrbaHotel.AbmCliente
 
             //PONGO ESTO ACA PARA QUE DESPUES DE DAR DE ALTA, MODIFICAR O DAR DE BAJA
             //Y SE VUELVA A CARGAR LA LISTA, NO SE PUEDA MODIFICAR O DAR DE BAJA
-            //UN ROL NULL...
+            //UN CLIENTE NULL...
             this.button4.Enabled = false;
             this.button5.Enabled = false;
 

@@ -51,7 +51,7 @@ namespace FrbaHotel.AbmReserva
 
                 decimal precioHabitacion = (reserva.getDiasAlojados() * precioNocheHab);
                 precioTotalReservaActual += precioHabitacion;
-                this.labelInformacionDeModificacion.Text += "Habitacion numero " + habitacion.Numero + " de tipo " + habitacion.getTipoHabitacion().getDescripcion() + " con el regimen " + reserva.getRegimen().getDescripcion() + ". Cantidad de dias: " + reserva.getDiasAlojados() + " por la suma de " + precioHabitacion + "\n";
+                this.labelInformacionDeModificacion.Text += "Habitacion numero " + habitacion.getNumero() + " de tipo " + habitacion.getTipoHabitacion().getDescripcion() + " con el regimen " + reserva.getRegimen().getDescripcion() + ". Cantidad de dias: " + reserva.getDiasAlojados() + " por la suma de " + precioHabitacion + "\n";
 
             }
             this.labelInformacionDeModificacion.Text += " en el hotel " + reserva.getHotel().getNombre() + " por la suma de " + precioTotalReservaActual + "USD\n";

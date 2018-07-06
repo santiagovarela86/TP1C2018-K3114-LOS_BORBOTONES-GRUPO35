@@ -94,14 +94,11 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-       
-        public String TipoHabitacion { get { return this.getTipoHabitacion().getDescripcion(); } }
-        public Boolean Activa { get { return this.getActiva(); } }
-        public int Numero { get { return this.getNumero(); } }
+        public int NumeroHabitacion { get { return this.getNumero(); } }
         public int Piso { get { return this.getPiso(); } }
         public String Ubicacion { get { return this.getUbicacion(); } }
-        public int IdHabitacion { get { return this.getIdHabitacion(); } }
-        public String Hotel { get { return this.getHotel().getNombre(); } }
-
+        public String TipoHabitacion { get { return this.getTipoHabitacion().getDescripcion(); } }
+        public Boolean Activa { get { return this.getActiva(); } }
+        //public String Hotel { get { return this.getHotel().getNombre(); } }
     }
 }

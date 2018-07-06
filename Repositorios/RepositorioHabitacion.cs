@@ -26,11 +26,11 @@ namespace FrbaHotel.Repositorios
                 throw new RequestInvalidoException("Ya existe una habitacion con el mismo numero en el hotel");
             }
 
-            sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.Activa);
-            sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
-            sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.Piso);
-            sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.Ubicacion);
-            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.getActiva());
+            sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.getNumero());
+            sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.getPiso());
+            sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.getUbicacion());
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().getIdHotel());
             sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.getTipoHabitacion().getIdTipoHabitacion());
 
             sqlCommand.CommandType = CommandType.Text;
@@ -53,20 +53,10 @@ namespace FrbaHotel.Repositorios
 
         override public void bajaLogica(Habitacion habitacion)
         {
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
-            sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.Activa);
-            sqlCommand.Parameters.AddWithValue("@habidHabitacion", habitacion.IdHabitacion);
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva WHERE idHabitacion=@habidHabitacion";
-
-            sqlConnection.Open();
-            reader = sqlCommand.ExecuteReader();
-            sqlConnection.Close();
+            habitacion.setActiva(false);
+            this.update(habitacion);
         }
+
         public override void delete(Habitacion t)
         {
             throw new NotImplementedException();
@@ -79,14 +69,18 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@habIdHabitacion", habitacion.IdHabitacion);
-            sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.Numero);
-            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().IdHotel);
+            sqlCommand.Parameters.AddWithValue("@habIdHabitacion", habitacion.getIdHabitacion());
+            //sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.getNumero());
+            //sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().getIdHotel());
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Habitacion "+
-                " WHERE Numero=@habNumero AND idHotel=@habIdHotel AND idHabitacion!=@habIdHabitacion;";
+            //sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Habitacion "+" WHERE Numero=@habNumero AND idHotel=@habIdHotel AND idHabitacion!=@habIdHabitacion;";
+            sqlCommand.CommandText = @"
+                SELECT 1
+                FROM LOS_BORBOTONES.Habitacion h
+                WHERE h.idHabitacion = @habIdHabitacion
+            ";
 
             sqlConnection.Open();
             reader = sqlCommand.ExecuteReader();
@@ -168,37 +162,57 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        
+        public bool existeNumeroHabitacion(Habitacion habitacion)
+        {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
 
+            sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.getNumero());
+            sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().getIdHotel());
 
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT 1
+                FROM LOS_BORBOTONES.Habitacion h
+                WHERE h.Numero = @habNumero
+                  AND h.idHotel = @habIdHotel
+            ";
+
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+            bool exists = reader.Read();
+            sqlConnection.Close();
+            return exists;
+        }
 
         public override void update(Habitacion habitacion)
         {
-            if (!this.exists(habitacion))
+            //ACA VALIDO SI EXISTE EL ID REAL DE LA HABITACION... SI EXISTE LO PUEDO ACTUALIZAR SINO FALLA
+            if (this.exists(habitacion))
             {
-                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-                SqlConnection sqlConnection = new SqlConnection(connectionString);
-                SqlCommand sqlCommand = new SqlCommand();
-                SqlDataReader reader;
-                sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().getIdHotel());
-                sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.getUbicacion());
-                sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.getNumero());
-                sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.getPiso());
-                sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.getActiva());
-                sqlCommand.Parameters.AddWithValue("@habidHabitacion", habitacion.getIdHabitacion());
-                sqlCommand.CommandType = CommandType.Text;
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva,Numero=@habNumero,Piso=@habPiso,Ubicacion=@habUbicacion,idHotel=@habIdHotel WHERE idHabitacion=@habidHabitacion";
+                    String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                    SqlConnection sqlConnection = new SqlConnection(connectionString);
+                    SqlCommand sqlCommand = new SqlCommand();
+                    SqlDataReader reader;
+                    sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.getUbicacion());
+                    sqlCommand.Parameters.AddWithValue("@habNumero", habitacion.getNumero());
+                    sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.getPiso());
+                    sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.getActiva());
+                    sqlCommand.Parameters.AddWithValue("@habidHabitacion", habitacion.getIdHabitacion());
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.Connection = sqlConnection;
+                    sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva,Numero=@habNumero,Piso=@habPiso,Ubicacion=@habUbicacion WHERE idHabitacion=@habidHabitacion";
 
-                sqlConnection.Open();
-                reader = sqlCommand.ExecuteReader();
-                sqlConnection.Close();
+                    sqlConnection.Open();
+                    reader = sqlCommand.ExecuteReader();
+                    sqlConnection.Close();
             }else{
-                throw new RequestInvalidoException("El numero de habitacion en el hotel al cual se quiere actualizar ya existe");
+                throw new RequestInvalidoException("No existe la habitación que desea actualizar");
             }
         }
-
-
 
         public List<Habitacion> getByQuery(String numero, String piso, Hotel hotel,TipoHabitacion tipoHabitacion,bool activa )
         {
@@ -491,6 +505,39 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             return tipoHabitacion;
+        }
+
+        public List<String> getAllUbicaciones(Hotel hotel)
+        {
+            List<String> result = new List<String>();
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT DISTINCT Ubicacion
+                FROM LOS_BORBOTONES.Habitacion
+                WHERE idHotel = @idHotel
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                String descUbicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
+                result.Add(descUbicacion);
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return result;
         }
     }
 }

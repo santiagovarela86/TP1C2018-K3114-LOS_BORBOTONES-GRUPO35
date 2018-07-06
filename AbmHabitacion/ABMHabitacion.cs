@@ -14,18 +14,17 @@ namespace FrbaHotel.AbmHabitacion
 {
     public partial class ABMHabitacion : Form
     {
-        public ABMHabitacion()
+        private Sesion sesion = null;
+
+        public ABMHabitacion(Sesion sesion)
         {
             InitializeComponent();
 
-            RepositorioHotel repositorioHotel = new RepositorioHotel();
+            this.sesion = sesion;
+
+            this.Text = "ABM Habitación: " + this.sesion.getHotel().getNombre();
+
             RepositorioTipoHabitacion repositorioTipoHab = new RepositorioTipoHabitacion();
-
-
-            comboBoxHotel.DataSource = repositorioHotel.getAll();
-            comboBoxHotel.SelectedIndex = -1;
-            comboBoxHotel.ValueMember = "Nombre";
-
 
             comboBoxTipoHabitacion.DataSource = repositorioTipoHab.getAll();
             comboBoxTipoHabitacion.ValueMember = "Descripcion";            
@@ -35,28 +34,27 @@ namespace FrbaHotel.AbmHabitacion
 
         private void buttonCrearHabitacion_Click(object sender, EventArgs e)
         {
-            using (CrearHabitacion crearHabitacion = new CrearHabitacion())
+            using (CrearHabitacion crearHabitacion = new CrearHabitacion(this.sesion.getHotel()))
             {
                 var resultFormCrearHabitacion = crearHabitacion.ShowDialog();
 
-                if (resultFormCrearHabitacion == DialogResult.OK)
-                {
-                    //Hago algo con el return value
-                }
+                //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UNA NUEVA HABITACION VUELVO A CARGAR LA LISTA
+                this.buttonBbuscarHoteles_Click(sender, e);
             }
         }
 
         private void buttonBajaHabitacion_Click(object sender, EventArgs e)
         {
-            Habitacion habitacion = (Habitacion)registroHabitaciones.CurrentRow.DataBoundItem;
-            using (BajaHabitacion bajaHabitacion = new BajaHabitacion(habitacion))
+            DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja la Habitación?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
             {
-                var resultFormBajaHabitacion = bajaHabitacion.ShowDialog();
+                RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+                Habitacion habitacion = (Habitacion)registroHabitaciones.CurrentRow.DataBoundItem;
 
-                if (resultFormBajaHabitacion == DialogResult.OK)
-                {
-                    //Hago algo con el return value
-                }
+                repoHabitacion.bajaLogica(habitacion);
+
+                //AL CERRAR LA VENTANA DESPUES DE MODIFICAR UNA HABITACION VUELVO A CARGAR LA LISTA
+                this.buttonBbuscarHoteles_Click(sender, e);
             }
         }
 
@@ -64,11 +62,25 @@ namespace FrbaHotel.AbmHabitacion
         {
             String numero = validateStringFields(textNumero.Text);
             String piso = validateStringFields(textPiso.Text);
-            Hotel hotel = (Hotel)comboBoxHotel.SelectedItem;
             TipoHabitacion tipoHabitacion = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
             RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
             bool activa = checkBoxActiva.Checked;
-            registroHabitaciones.DataSource= repositorioHabitacion.getByQuery(numero, piso, hotel, tipoHabitacion, activa);
+
+            //MEJORA DE PERFORMANCE DEL DGV
+            registroHabitaciones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
+            registroHabitaciones.RowHeadersVisible = false;
+            registroHabitaciones.DataSource = repositorioHabitacion.getByQuery(numero, piso, this.sesion.getHotel(), tipoHabitacion, activa).OrderBy(hab => hab.getNumero()).ToList();
+            registroHabitaciones.RowHeadersVisible = true;
+
+            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+            registroHabitaciones.CurrentCell = null;
+            registroHabitaciones.ClearSelection();
+
+            //PONGO ESTO ACA PARA QUE DESPUES DE DAR DE ALTA, MODIFICAR O DAR DE BAJA
+            //Y SE VUELVA A CARGAR LA LISTA, NO SE PUEDA MODIFICAR O DAR DE BAJA
+            //UNA HABITACION NULL...
+            this.buttonModificarHabitacion.Enabled = false;
+            this.buttonBajaHabitacion.Enabled = false;
         }
 
         private String validateStringFields(String field)
@@ -76,7 +88,7 @@ namespace FrbaHotel.AbmHabitacion
             return field == "" ? null : field;
         }
 
-//CIERRO LA VENTANA CON ESCAPE
+        //CIERRO LA VENTANA CON ESCAPE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape)
@@ -107,10 +119,8 @@ namespace FrbaHotel.AbmHabitacion
             {
                 var resultFormModificarHabitacion = modificarHabitacion.ShowDialog();
 
-                if (resultFormModificarHabitacion == DialogResult.OK)
-                {
-                    //Hago algo con el return value
-                }
+                //AL CERRAR LA VENTANA DESPUES DE MODIFICAR UNA HABITACION VUELVO A CARGAR LA LISTA
+                this.buttonBbuscarHoteles_Click(sender, e);
             }
         }
 
@@ -124,12 +134,10 @@ namespace FrbaHotel.AbmHabitacion
             textPiso.Text = "";
             comboBoxTipoHabitacion.SelectedValue = "";
             comboBoxTipoHabitacion.SelectedIndex = -1;
-            checkBoxActiva.Checked = false;
-
-            comboBoxHotel.SelectedValue = "";
-            comboBoxHotel.SelectedIndex = -1;
+            checkBoxActiva.Checked = true;
+            this.buttonModificarHabitacion.Enabled = false;
+            this.buttonBajaHabitacion.Enabled = false;
         }
-
         
     }
 

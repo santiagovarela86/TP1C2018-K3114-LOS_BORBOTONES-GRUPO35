@@ -85,12 +85,6 @@
     <Compile Include="AbmHabitacion\ABMHabitacion.Designer.cs">
       <DependentUpon>ABMHabitacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmHabitacion\BajaHabitacion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmHabitacion\BajaHabitacion.Designer.cs">
-      <DependentUpon>BajaHabitacion.cs</DependentUpon>
-    </Compile>
     <Compile Include="AbmHabitacion\CrearHabitacion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -334,9 +328,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHabitacion\ABMHabitacion.resx">
       <DependentUpon>ABMHabitacion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmHabitacion\BajaHabitacion.resx">
-      <DependentUpon>BajaHabitacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmHabitacion\CrearHabitacion.resx">
       <DependentUpon>CrearHabitacion.cs</DependentUpon>

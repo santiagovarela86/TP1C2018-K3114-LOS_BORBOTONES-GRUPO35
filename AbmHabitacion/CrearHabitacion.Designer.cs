@@ -33,8 +33,6 @@ namespace FrbaHotel.AbmHabitacion
             this.textNumero = new System.Windows.Forms.TextBox();
             this.labelPiso = new System.Windows.Forms.Label();
             this.textPiso = new System.Windows.Forms.TextBox();
-            this.labelHotel = new System.Windows.Forms.Label();
-            this.comboBoxHotel = new System.Windows.Forms.ComboBox();
             this.labelUbicacion = new System.Windows.Forms.Label();
             this.comboBoxUbicacion = new System.Windows.Forms.ComboBox();
             this.labelTipoHabitacion = new System.Windows.Forms.Label();
@@ -57,9 +55,8 @@ namespace FrbaHotel.AbmHabitacion
             this.textNumero.Location = new System.Drawing.Point(61, 34);
             this.textNumero.Name = "textNumero";
             this.textNumero.Size = new System.Drawing.Size(100, 20);
-            this.textNumero.TabIndex = 2;
+            this.textNumero.TabIndex = 1;
             this.textNumero.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
-
             // 
             // labelPiso
             // 
@@ -75,31 +72,13 @@ namespace FrbaHotel.AbmHabitacion
             this.textPiso.Location = new System.Drawing.Point(292, 34);
             this.textPiso.Name = "textPiso";
             this.textPiso.Size = new System.Drawing.Size(100, 20);
-            this.textPiso.TabIndex = 4;
+            this.textPiso.TabIndex = 2;
             this.textPiso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
-
-
-            // 
-            // labelHotel
-            // 
-            this.labelHotel.AutoSize = true;
-            this.labelHotel.Location = new System.Drawing.Point(13, 164);
-            this.labelHotel.Name = "labelHotel";
-            this.labelHotel.Size = new System.Drawing.Size(35, 13);
-            this.labelHotel.TabIndex = 13;
-            this.labelHotel.Text = "Hotel:";
-            // 
-            // comboBoxHotel
-            // 
-            this.comboBoxHotel.Location = new System.Drawing.Point(61, 161);
-            this.comboBoxHotel.Name = "comboBoxHotel";
-            this.comboBoxHotel.Size = new System.Drawing.Size(134, 21);
-            this.comboBoxHotel.TabIndex = 12;
             // 
             // labelUbicacion
             // 
             this.labelUbicacion.AutoSize = true;
-            this.labelUbicacion.Location = new System.Drawing.Point(217, 164);
+            this.labelUbicacion.Location = new System.Drawing.Point(217, 100);
             this.labelUbicacion.Name = "labelUbicacion";
             this.labelUbicacion.Size = new System.Drawing.Size(58, 13);
             this.labelUbicacion.TabIndex = 15;
@@ -107,33 +86,33 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // comboBoxUbicacion
             // 
-            this.comboBoxUbicacion.Location = new System.Drawing.Point(292, 161);
+            this.comboBoxUbicacion.Location = new System.Drawing.Point(292, 94);
             this.comboBoxUbicacion.Name = "comboBoxUbicacion";
             this.comboBoxUbicacion.Size = new System.Drawing.Size(100, 21);
-            this.comboBoxUbicacion.TabIndex = 14;
+            this.comboBoxUbicacion.TabIndex = 5;
             // 
             // labelTipoHabitacion
             // 
             this.labelTipoHabitacion.AutoSize = true;
             this.labelTipoHabitacion.Location = new System.Drawing.Point(10, 100);
             this.labelTipoHabitacion.Name = "labelTipoHabitacion";
-            this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
+            this.labelTipoHabitacion.Size = new System.Drawing.Size(31, 13);
             this.labelTipoHabitacion.TabIndex = 17;
-            this.labelTipoHabitacion.Text = "Tipo : ";
+            this.labelTipoHabitacion.Text = "Tipo:";
             // 
             // comboBoxTipoHabitacion
             // 
             this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(61, 94);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
-            this.comboBoxTipoHabitacion.TabIndex = 16;
+            this.comboBoxTipoHabitacion.TabIndex = 3;
             // 
             // buttonCrearHabitacion
             // 
-            this.buttonCrearHabitacion.Location = new System.Drawing.Point(164, 259);
+            this.buttonCrearHabitacion.Location = new System.Drawing.Point(317, 139);
             this.buttonCrearHabitacion.Name = "buttonCrearHabitacion";
             this.buttonCrearHabitacion.Size = new System.Drawing.Size(75, 23);
-            this.buttonCrearHabitacion.TabIndex = 18;
+            this.buttonCrearHabitacion.TabIndex = 7;
             this.buttonCrearHabitacion.Text = "Crear Habitacion";
             this.buttonCrearHabitacion.UseVisualStyleBackColor = true;
             this.buttonCrearHabitacion.Click += new System.EventHandler(this.buttonCrearHabitacion_Click);
@@ -141,32 +120,31 @@ namespace FrbaHotel.AbmHabitacion
             // checkBoxActiva
             // 
             this.checkBoxActiva.AutoSize = true;
-            this.checkBoxActiva.Location = new System.Drawing.Point(16, 226);
+            this.checkBoxActiva.Location = new System.Drawing.Point(219, 141);
             this.checkBoxActiva.Name = "checkBoxActiva";
             this.checkBoxActiva.Size = new System.Drawing.Size(56, 17);
-            this.checkBoxActiva.TabIndex = 19;
+            this.checkBoxActiva.TabIndex = 6;
             this.checkBoxActiva.Text = "Activa";
             this.checkBoxActiva.UseVisualStyleBackColor = true;
             // 
             // CrearHabitacion
             // 
+            this.AcceptButton = this.buttonCrearHabitacion;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(427, 309);
+            this.ClientSize = new System.Drawing.Size(427, 175);
             this.Controls.Add(this.checkBoxActiva);
             this.Controls.Add(this.buttonCrearHabitacion);
             this.Controls.Add(this.labelTipoHabitacion);
             this.Controls.Add(this.comboBoxTipoHabitacion);
             this.Controls.Add(this.labelUbicacion);
             this.Controls.Add(this.comboBoxUbicacion);
-            this.Controls.Add(this.labelHotel);
-            this.Controls.Add(this.comboBoxHotel);
             this.Controls.Add(this.labelPiso);
             this.Controls.Add(this.textPiso);
             this.Controls.Add(this.labelNumero);
             this.Controls.Add(this.textNumero);
             this.Name = "CrearHabitacion";
-            this.Text = "CrearHabitacion";
+            this.Text = "Crear Habitacion";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,8 +166,6 @@ namespace FrbaHotel.AbmHabitacion
         private System.Windows.Forms.TextBox textPiso;
         private System.Windows.Forms.Label labelUbicacion;
         private System.Windows.Forms.ComboBox comboBoxUbicacion;
-        private System.Windows.Forms.Label labelHotel;
-        private System.Windows.Forms.ComboBox comboBoxHotel;
         private System.Windows.Forms.Label labelTipoHabitacion;
         private System.Windows.Forms.ComboBox comboBoxTipoHabitacion;
         private System.Windows.Forms.Button buttonCrearHabitacion;
