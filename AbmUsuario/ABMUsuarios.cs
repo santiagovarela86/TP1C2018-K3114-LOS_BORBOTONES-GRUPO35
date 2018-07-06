@@ -14,12 +14,12 @@ namespace FrbaHotel.AbmUsuario
 {
     public partial class ABMUsuarios : Form
     {
-        private Hotel hotelSeleccionadoParaTrabajar = null;
+        private Sesion sesion = null;
 
-        public ABMUsuarios(Hotel hotel)
+        public ABMUsuarios(Sesion sesion)
         {
             InitializeComponent();
-            this.hotelSeleccionadoParaTrabajar = hotel;
+            this.sesion = sesion;
         }
 
         private void ListadoUsuarios_Load(object sender, EventArgs e)
@@ -114,8 +114,10 @@ namespace FrbaHotel.AbmUsuario
         {
             Usuario usuarioAModificar = (Usuario) dataGridView1.CurrentRow.DataBoundItem;
 
-            //SI EL USUARIO A SER MODIFICADO TRABAJA EN EL HOTEL SELECCIONADO PARA TRABAJAR
-            if (usuarioAModificar.getHoteles().Exists(hotel => hotel.getIdHotel().Equals(this.hotelSeleccionadoParaTrabajar.getIdHotel())))
+            //SI EL USUARIO A SER MODIFICADO TRABAJA EN EL MISMO HOTEL QUE EL USUARIO QUE TIENE EL ROL DE ABM USUARIO
+            if (usuarioAModificar.getHoteles().Any(hotelDelUserAModificar => 
+                    this.sesion.getUsuario().getHoteles().Any(hotelDelAdmin =>
+                        hotelDelAdmin.getIdHotel().Equals(hotelDelUserAModificar.getIdHotel()))))
             {
                 using (ModificacionUsuario form = new ModificacionUsuario(usuarioAModificar))
                 {
@@ -127,7 +129,7 @@ namespace FrbaHotel.AbmUsuario
             }
             else
             {
-                MessageBox.Show("El usuario no trabaja en el Hotel seleccionado para trabajar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El usuario que desea modificar no trabaja en el mismo Hotel que el usuario logueado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -156,10 +158,12 @@ namespace FrbaHotel.AbmUsuario
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Usuario usuarioAModificar = (Usuario)dataGridView1.CurrentRow.DataBoundItem;            
-            
-            //SI EL USUARIO A SER MODIFICADO TRABAJA EN EL HOTEL SELECCIONADO PARA TRABAJAR
-            if (usuarioAModificar.getHoteles().Exists(hotel => hotel.getIdHotel().Equals(this.hotelSeleccionadoParaTrabajar.getIdHotel())))
+            Usuario usuarioAModificar = (Usuario)dataGridView1.CurrentRow.DataBoundItem;
+
+            //SI EL USUARIO A SER MODIFICADO TRABAJA EN EL MISMO HOTEL QUE EL USUARIO QUE TIENE EL ROL DE ABM USUARIO
+            if (usuarioAModificar.getHoteles().Any(hotelDelUserAModificar =>
+                    this.sesion.getUsuario().getHoteles().Any(hotelDelAdmin =>
+                        hotelDelAdmin.getIdHotel().Equals(hotelDelUserAModificar.getIdHotel()))))
             {
                 DialogResult result = MessageBox.Show("¿Está seguro que desea dar de baja el Usuario?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 if (result == System.Windows.Forms.DialogResult.Yes)
@@ -173,7 +177,7 @@ namespace FrbaHotel.AbmUsuario
             }
             else
             {
-                MessageBox.Show("El usuario no trabaja en el Hotel seleccionado para trabajar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El usuario que desea dar de baja no trabaja en el mismo Hotel que el usuario logueado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

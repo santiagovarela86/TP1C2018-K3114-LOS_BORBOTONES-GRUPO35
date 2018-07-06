@@ -29,19 +29,9 @@ namespace FrbaHotel
             this.sesion = sesion;
         }
 
-        public Usuario getUsuarioLogueado()
+        private Sesion getSesion()
         {
-            return this.sesion.getUsuario();
-        }
-
-        public Rol getRolElegido()
-        {
-            return this.sesion.getRol();
-        }
-
-        public Hotel getHotelElegido()
-        {
-            return this.sesion.getHotel();
+            return this.sesion;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -60,14 +50,14 @@ namespace FrbaHotel
             RegistrarConsumible.Enabled = false;
             FacturarEstadia.Enabled = false;
             GenerarListadoEstadistico.Enabled = false;
-            //RegistrarConsumible.Enabled = false;
+            RegistrarConsumible.Enabled = false;
 
-            labelHotel.Text = "Hotel: " + this.getHotelElegido().getNombre();
-            labelRol.Text = "Rol: " + this.getRolElegido().getNombre();
+            labelHotel.Text = "Hotel: " + this.getSesion().getHotel().getNombre();
+            labelRol.Text = "Rol: " + this.getSesion().getRol().getNombre();
             
             try
             {
-                this.HabilitarFuncionalidades(this.getUsuarioLogueado());
+                this.HabilitarFuncionalidades(this.getSesion().getUsuario());
             } catch (Exception exc){
                 MessageBox.Show(exc.Message, "Error al obtener los roles del usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -75,7 +65,7 @@ namespace FrbaHotel
 
         private void HabilitarFuncionalidades(Usuario usuarioLogueado)
         {
-            List<Funcionalidad> funcionalidades = this.getRolElegido().getFuncionalidades();
+            List<Funcionalidad> funcionalidades = this.getSesion().getRol().getFuncionalidades();
 
             ABMRol.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMRol.Name));
             ABMUsuario.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMUsuario.Name));
@@ -86,7 +76,7 @@ namespace FrbaHotel
             RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
             FacturarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(FacturarEstadia.Name));
             GenerarListadoEstadistico.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(GenerarListadoEstadistico.Name));
-            //RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
+            RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
         }
 
         private void ABMRol_Click(object sender, EventArgs e)
@@ -104,7 +94,7 @@ namespace FrbaHotel
 
         private void ABMUsuario_Click(object sender, EventArgs e)
         {
-            using (ABMUsuarios formularioABMUsuarios = new ABMUsuarios(this.getHotelElegido()))
+            using (ABMUsuarios formularioABMUsuarios = new ABMUsuarios(this.getSesion()))
             {
                 var resultFormABMUsuarios = formularioABMUsuarios.ShowDialog();
 
@@ -130,7 +120,7 @@ namespace FrbaHotel
 
         private void ABMHotel_Click(object sender, EventArgs e)
         {
-            using (SearchHotel formularioABMHotel = new SearchHotel())
+            using (SearchHotel formularioABMHotel = new SearchHotel(this.getSesion()))
             {
                 var resultFormABMHotel = formularioABMHotel.ShowDialog();
 
@@ -155,7 +145,7 @@ namespace FrbaHotel
         }
         private void RegistrarEstadia_Click(object sender, EventArgs e)
         {
-            using (RegistrarEstadias formularioRegistrarEstadia = new RegistrarEstadias(this.getUsuarioLogueado()))
+            using (RegistrarEstadias formularioRegistrarEstadia = new RegistrarEstadias(this.getSesion()))
             {
                 var resultFormRegistrarEstadia = formularioRegistrarEstadia.ShowDialog();
 

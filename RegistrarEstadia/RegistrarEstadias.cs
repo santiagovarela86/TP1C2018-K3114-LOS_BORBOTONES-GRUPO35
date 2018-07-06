@@ -14,11 +14,12 @@ namespace FrbaHotel.RegistrarEstadia
 {
     public partial class RegistrarEstadias : Form
     {
-        private Usuario usuarioLogueado = null;
-        public RegistrarEstadias(Usuario usuario)
+        private Sesion sesion = null;
+
+        public RegistrarEstadias(Sesion sesion)
         {
             InitializeComponent();
-            this.usuarioLogueado=usuario;
+            this.sesion = sesion;
         }
         private void ListadoRegistrarEstadia_Load(object sender, EventArgs e)
         {
@@ -43,7 +44,7 @@ namespace FrbaHotel.RegistrarEstadia
                 codReserva = int.Parse(textBox1.Text);
                 
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, usuarioLogueado);
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
                 if (estadoValidez==1)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
@@ -97,7 +98,7 @@ namespace FrbaHotel.RegistrarEstadia
                 //consigo del codigo de reserva el idEstadia
                 idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
 
-                Estadia estadia = new Estadia(idEstadia,usuarioLogueado,date);
+                Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
                 repoEstadia.update(estadia);
                 //hago update de EstadoReserva
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
@@ -105,7 +106,7 @@ namespace FrbaHotel.RegistrarEstadia
                 Reserva reserva =repoReserva.getIdByIdEstadia(estadia.getIdEstadia());
                 String desc="Reserva Con Egreso";
                 String tipoEstado="RCE";
-                EstadoReserva estadoReserva=new EstadoReserva(idEstadoReserva, usuarioLogueado, reserva, tipoEstado, date, desc);
+                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
                 repoEstadoReserva.update(estadoReserva);
 
                 MessageBox.Show("Check out correcto, proceder a facturar Estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);

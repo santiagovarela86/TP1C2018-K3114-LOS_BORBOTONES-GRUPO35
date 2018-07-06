@@ -11,11 +11,13 @@ namespace FrbaHotel.AbmHotel
     public partial class SearchHotel : Form
 
     {
+        private Sesion sesion = null;
 
-        public SearchHotel()
+        public SearchHotel(Sesion sesion)
         {
             InitializeComponent();
 
+            this.sesion = sesion;
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
             this.estrellasComboBox.DataSource = repoCategoria.getAll();
             this.estrellasComboBox.ValueMember = "Estrellas";
@@ -90,12 +92,20 @@ namespace FrbaHotel.AbmHotel
 
         private void modificarButton_Click(object sender, EventArgs e)
         {
-            Hotel hotel = (Hotel)registroHoteles.CurrentRow.DataBoundItem;
+            Hotel hotelAModificar = (Hotel) registroHoteles.CurrentRow.DataBoundItem;
 
-            using (ModificacionHotel form = new ModificacionHotel(hotel))
+            //SI EL USUARIO TRABAJA EN EL HOTEL SELECCIONADO PARA TRABAJAR
+            if (this.sesion.getUsuario().getHoteles().Exists(hotel => hotel.getIdHotel().Equals(hotelAModificar.getIdHotel())))
             {
-                var result = form.ShowDialog();
-                this.buscarHoteles();
+                using (ModificacionHotel form = new ModificacionHotel(hotelAModificar))
+                {
+                    var result = form.ShowDialog();
+                    this.buscarHoteles();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Usuario sin permisos para modificar el Hotel seleccionado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -107,6 +117,7 @@ namespace FrbaHotel.AbmHotel
                 this.buscarHoteles();
             }
         }
+
     }
 
 }
