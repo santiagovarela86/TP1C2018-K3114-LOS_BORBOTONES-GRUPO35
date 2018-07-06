@@ -35,9 +35,13 @@ namespace FrbaHotel.AbmHabitacion
             comboBoxTipoHabitacion.DisplayMember = "Descripcion";
             comboBoxTipoHabitacion.SelectedIndex = -1;
 
+            RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+            comboBoxUbicacion.DataSource = repoHabitacion.getAllUbicaciones(this.hotel);
+            comboBoxUbicacion.SelectedIndex = -1;
+            /*
             comboBoxUbicacion.DataSource = new[] { "Vista al exterior", "Interior" };
             comboBoxUbicacion.SelectedIndex = -1;
-
+            */
             checkBoxActiva.Checked = false;
 
             textNumero.Text = "";

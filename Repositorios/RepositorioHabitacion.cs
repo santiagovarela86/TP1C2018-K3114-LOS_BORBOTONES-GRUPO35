@@ -528,7 +528,7 @@ namespace FrbaHotel.Repositorios
 
             reader = sqlCommand.ExecuteReader();
 
-            if (reader.Read())
+            while (reader.Read())
             {
                 String descUbicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
                 result.Add(descUbicacion);
