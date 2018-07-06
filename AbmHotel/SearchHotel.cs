@@ -94,8 +94,13 @@ namespace FrbaHotel.AbmHotel
         {
             Hotel hotelAModificar = (Hotel) registroHoteles.CurrentRow.DataBoundItem;
 
-            //SI EL USUARIO TRABAJA EN EL HOTEL SELECCIONADO PARA TRABAJAR
-            if (this.sesion.getUsuario().getHoteles().Exists(hotel => hotel.getIdHotel().Equals(hotelAModificar.getIdHotel())))
+            //EL ENUNCIADO DICE QUE SI QUIERO REALIZAR ACCIONES SOBRE UN HOTEL TENGO QUE ELEGIRLO AL INICIAR SESION
+            //ENTONCES SI EL HOTEL QUE QUIERO MODIFICAR ES EL MISMO QUE ELEGI AL INICIAR SESION PUEDO EDITARLO SINO NO
+            //
+            //el criterio anterior era que se puede editar un hotel, si el usuario logueado trabaja en ese hotel
+            //if (this.sesion.getUsuario().getHoteles().Exists(hotel => hotel.getIdHotel().Equals(hotelAModificar.getIdHotel())))
+            //
+            if (this.sesion.getHotel().getIdHotel().Equals(hotelAModificar.getIdHotel()))
             {
                 using (ModificacionHotel form = new ModificacionHotel(hotelAModificar))
                 {
@@ -105,7 +110,8 @@ namespace FrbaHotel.AbmHotel
             }
             else
             {
-                MessageBox.Show("Usuario sin permisos para modificar el Hotel seleccionado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("Usuario sin permisos para modificar el Hotel seleccionado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Si desea editar este hotel debe elegirlo al iniciar sesión", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
