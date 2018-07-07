@@ -136,7 +136,66 @@ namespace FrbaHotel.Repositorios
             //Devuelve verdadero si el ID coincide
             return idItemFactura != 0;
         }
+        public void createTodos(List<ItemFactura> itemsFactura)
+        {
+            
 
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                ");
+            int k = 1;
+            foreach (ItemFactura item in itemsFactura)
+            {    
+                if (this.exists(item))
+                {
+                    throw new ElementoYaExisteException("Ya existe el itemFactura que intenta crear");
+                }
+                else
+                {
+                    String paramName = "@FechaCreacion" + k.ToString();
+                    String paramName1 = "@Cantidad" + k.ToString();
+                    String paramName2 = "@Monto" + k.ToString();
+                    String paramName3 = "@IdFactura" + k.ToString();
+                    String paramName4 = "@IdConsumible" + k.ToString();
+                    sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.ItemFactura(FechaCreacion,Cantidad,Monto,idFactura,idConsumible) VALUES({0},{1},{2},{3},{4})", paramName, paramName1, paramName2, paramName3, paramName4);
+                    
+                    sqlCommand.Parameters.AddWithValue(paramName, item.getFechaCreacion());
+                    sqlCommand.Parameters.AddWithValue(paramName1, item.getCantidad());
+                    sqlCommand.Parameters.AddWithValue(paramName2, item.getMonto());
+                    sqlCommand.Parameters.AddWithValue(paramName3, item.getIdFactura());
+                    sqlCommand.Parameters.AddWithValue(paramName4, item.getIdConsumible());
+
+                    k++;
+                }
+            }
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+
+            
+        }
 
     }
 }
