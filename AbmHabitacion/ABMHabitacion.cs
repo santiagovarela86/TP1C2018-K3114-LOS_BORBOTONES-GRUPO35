@@ -27,7 +27,15 @@ namespace FrbaHotel.AbmHabitacion
             RepositorioTipoHabitacion repositorioTipoHab = new RepositorioTipoHabitacion();
 
             comboBoxTipoHabitacion.DataSource = repositorioTipoHab.getAll();
-            comboBoxTipoHabitacion.ValueMember = "Descripcion";            
+            comboBoxTipoHabitacion.ValueMember = "Descripcion";
+
+            List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
+            estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
+            estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
+            comboBoxEstados.ValueMember = "Value";
+            comboBoxEstados.DisplayMember = "Key";
+            comboBoxEstados.DataSource = estados;
+            comboBoxEstados.SelectedValue = "";
 
             limpiarBusquedaYResultados();
         }
@@ -64,12 +72,18 @@ namespace FrbaHotel.AbmHabitacion
             String piso = validateStringFields(textPiso.Text);
             TipoHabitacion tipoHabitacion = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
             RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
-            bool activa = checkBoxActiva.Checked;
+            //bool activa = checkBoxActiva.Checked;
+
+            KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
+            if (comboBoxEstados.SelectedItem != null)
+            {
+                estado = (KeyValuePair<String, Boolean>)comboBoxEstados.SelectedItem;
+            }
 
             //MEJORA DE PERFORMANCE DEL DGV
             registroHabitaciones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
             registroHabitaciones.RowHeadersVisible = false;
-            registroHabitaciones.DataSource = repositorioHabitacion.getByQuery(numero, piso, this.sesion.getHotel(), tipoHabitacion, activa).OrderBy(hab => hab.getNumero()).ToList();
+            registroHabitaciones.DataSource = repositorioHabitacion.getByQuery(numero, piso, this.sesion.getHotel(), tipoHabitacion, estado).OrderBy(hab => hab.getNumero()).ToList();
             registroHabitaciones.RowHeadersVisible = true;
 
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
@@ -134,7 +148,7 @@ namespace FrbaHotel.AbmHabitacion
             textPiso.Text = "";
             comboBoxTipoHabitacion.SelectedValue = "";
             comboBoxTipoHabitacion.SelectedIndex = -1;
-            checkBoxActiva.Checked = true;
+            comboBoxEstados.SelectedValue = "";
             this.buttonModificarHabitacion.Enabled = false;
             this.buttonBajaHabitacion.Enabled = false;
         }

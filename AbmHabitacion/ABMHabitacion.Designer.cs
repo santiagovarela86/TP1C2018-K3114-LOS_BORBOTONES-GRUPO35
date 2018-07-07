@@ -32,8 +32,9 @@ namespace FrbaHotel.AbmHabitacion
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBoxEstados = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.checkBoxActiva = new System.Windows.Forms.CheckBox();
             this.buttonAltaHabitacion = new System.Windows.Forms.Button();
             this.labelTipoHabitacion = new System.Windows.Forms.Label();
             this.buttonModificarHabitacion = new System.Windows.Forms.Button();
@@ -51,8 +52,9 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.comboBoxEstados);
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Controls.Add(this.checkBoxActiva);
             this.groupBox2.Controls.Add(this.buttonAltaHabitacion);
             this.groupBox2.Controls.Add(this.labelTipoHabitacion);
             this.groupBox2.Controls.Add(this.buttonModificarHabitacion);
@@ -71,6 +73,25 @@ namespace FrbaHotel.AbmHabitacion
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Buscar Hotel";
             // 
+            // comboBoxEstados
+            // 
+            this.comboBoxEstados.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEstados.DropDownWidth = 100;
+            this.comboBoxEstados.FormattingEnabled = true;
+            this.comboBoxEstados.Location = new System.Drawing.Point(67, 70);
+            this.comboBoxEstados.Name = "comboBoxEstados";
+            this.comboBoxEstados.Size = new System.Drawing.Size(107, 21);
+            this.comboBoxEstados.TabIndex = 32;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(15, 74);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.TabIndex = 33;
+            this.label2.Text = "Estado";
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(398, 70);
@@ -79,18 +100,6 @@ namespace FrbaHotel.AbmHabitacion
             this.button1.TabIndex = 7;
             this.button1.Text = "Limpiar";
             this.button1.Click += new System.EventHandler(this.limpiarBusquedaYResultados);
-            // 
-            // checkBoxActiva
-            // 
-            this.checkBoxActiva.AutoSize = true;
-            this.checkBoxActiva.Checked = true;
-            this.checkBoxActiva.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxActiva.Location = new System.Drawing.Point(19, 74);
-            this.checkBoxActiva.Name = "checkBoxActiva";
-            this.checkBoxActiva.Size = new System.Drawing.Size(56, 17);
-            this.checkBoxActiva.TabIndex = 5;
-            this.checkBoxActiva.Text = "Activa";
-            this.checkBoxActiva.UseVisualStyleBackColor = true;
             // 
             // buttonAltaHabitacion
             // 
@@ -124,6 +133,7 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // comboBoxTipoHabitacion
             // 
+            this.comboBoxTipoHabitacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(459, 29);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
@@ -235,7 +245,6 @@ namespace FrbaHotel.AbmHabitacion
         private Button buttonBajaHabitacion;
         private Button buttonBbuscarHoteles;
         private DataGridView registroHabitaciones;
-        private CheckBox checkBoxActiva;
         private Label labelTipoHabitacion;
         private ComboBox comboBoxTipoHabitacion;
         private TextBox textNumero;
@@ -243,6 +252,8 @@ namespace FrbaHotel.AbmHabitacion
         private TextBox textPiso;
         private Label labelPiso;
         private Button button1;
+        private ComboBox comboBoxEstados;
+        private Label label2;
 
     }
 }

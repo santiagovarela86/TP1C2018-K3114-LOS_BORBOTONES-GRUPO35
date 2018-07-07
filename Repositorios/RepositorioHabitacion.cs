@@ -214,7 +214,7 @@ namespace FrbaHotel.Repositorios
             }
         }
 
-        public List<Habitacion> getByQuery(String numero, String piso, Hotel hotel,TipoHabitacion tipoHabitacion,bool activa )
+        public List<Habitacion> getByQuery(String numero, String piso, Hotel hotel, TipoHabitacion tipoHabitacion, KeyValuePair<String, Boolean> estado)
         {
             List<Habitacion> habitaciones = new List<Habitacion>();
 
@@ -228,7 +228,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
                 "SELECT  DISTINCT (HAB.idHabitacion) ,HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
-                getCondiciones(numero,piso,hotel,tipoHabitacion,activa,sqlCommand) + ";";
+                getCondiciones(numero, piso, hotel, tipoHabitacion, estado, sqlCommand) + ";";
             
             sqlConnection.Open();
 
@@ -251,7 +251,7 @@ namespace FrbaHotel.Repositorios
 
         }
 
-        private String getCondiciones(String numero, String piso, Hotel hotel,TipoHabitacion tipoHabitacion,bool activa,  SqlCommand sqlCommand)
+        private String getCondiciones(String numero, String piso, Hotel hotel, TipoHabitacion tipoHabitacion, KeyValuePair<String, Boolean> estado, SqlCommand sqlCommand)
         {
 
             List<String> condiciones = new List<String>();
@@ -280,9 +280,13 @@ namespace FrbaHotel.Repositorios
                 condiciones.Add("HAB.idTipoHabitacion=@habidTipoHabitacion");
                 sqlCommand.Parameters.AddWithValue("@habidTipoHabitacion", tipoHabitacion.getIdTipoHabitacion());
             }
-            
+
+            if (estado.Key != null)
+            {
                 condiciones.Add("HAB.Activa=@habActiva");
-                sqlCommand.Parameters.AddWithValue("@habActiva",activa);
+                sqlCommand.Parameters.AddWithValue("@habActiva", estado.Value);
+            }           
+                
             
             if (condiciones.Count != 0)
             {
