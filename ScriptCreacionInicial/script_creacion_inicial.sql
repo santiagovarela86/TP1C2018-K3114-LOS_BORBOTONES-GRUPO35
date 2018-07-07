@@ -334,7 +334,7 @@ GO
 CREATE FUNCTION LOS_BORBOTONES.fn_getDate()
 RETURNS DATETIME AS
 BEGIN
-	RETURN '2018-06-01 00:00:00.000'
+	RETURN CONVERT(DATETIME, '2018/06/01 00:00:00.000', 121)
 END
 GO
 
@@ -660,7 +660,7 @@ CREATE TABLE LOS_BORBOTONES.EstadoReserva (
 
 	idEstado		INT				IDENTITY(1,1)	NOT NULL,
 	TipoEstado		VARCHAR(45),
-	Fecha			VARCHAR(45)		NOT NULL,
+	Fecha			DATETIME		NOT NULL,
 	Descripcion		VARCHAR(45),
 	idUsuario		INT				NOT NULL,
 	idReserva		INT				NOT NULL,
@@ -963,20 +963,20 @@ GO
 -- Genero Identidad de los Usuarios
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
-	   VALUES('Usuario', 'Jose', 'Perez', 'DNI', '30213210',  'admin2@frba_utn.com', '1968-01-09 00:00:00.000', 'ARGENTINO')
+	   VALUES('Usuario', 'Jose', 'Perez', 'DNI', '30213210',  'admin2@frba_utn.com', CONVERT(DATETIME, '1968-01-09 00:00:00.000', 121), 'ARGENTINO')
 GO
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
-	   VALUES('Usuario', 'Guest', 'Guest', 'DNI', '1',  'guest@frba_utn.com', '1998-05-05 00:00:00.000', 'GUESTa')
+	   VALUES('Usuario', 'Guest', 'Guest', 'DNI', '1',  'guest@frba_utn.com', CONVERT(DATETIME, '1998-05-05 00:00:00.000',121), 'GUESTa')
 GO
 
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
-	   VALUES('Usuario', 'Carolina', 'Mengoche', 'DNI', '17309573',  'recepcionista@frba_utn.com', '1988-09-11 00:00:00.000', 'COLOMBIANO')
+	   VALUES('Usuario', 'Carolina', 'Mengoche', 'DNI', '17309573',  'recepcionista@frba_utn.com', CONVERT(DATETIME, '1988-09-11 00:00:00.000',121), 'COLOMBIANO')
 GO
 
 --Identidad del admin del enunciado
 INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad)
-	   VALUES('Usuario', 'Pedro', 'Uteniano', 'DNI', '28450395',  'admin@frba_utn.com', '1984-02-07 00:00:00.000', 'ARGENTINO')
+	   VALUES('Usuario', 'Pedro', 'Uteniano', 'DNI', '28450395',  'admin@frba_utn.com', CONVERT(DATETIME, '1984-02-07 00:00:00.000',121), 'ARGENTINO')
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
