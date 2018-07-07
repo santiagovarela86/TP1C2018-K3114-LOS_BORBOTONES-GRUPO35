@@ -69,14 +69,15 @@ namespace FrbaHotel.FacturarEstadia
                 estadoReserva = repoEstadoReserva.getByIdEstadia(idEstadia);
              if (estadia.getCantidadNoches()==0 | !estadoReserva.getTipoEstado().Equals("RCE") | estadia.getFacturada()==true)
              {
-                 if(estadoReserva.getTipoEstado().Equals("RCE"))
+                 if(estadoReserva.getTipoEstado().Equals("RCI"))
                      MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  if (estadoReserva.getTipoEstado().Equals("RF"))
                      MessageBox.Show("La estadia ya fue facturada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  if (estadia.getFacturada() == true)
                      MessageBox.Show("la estadia ingresada ya fue facturada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  if (estadia.getCantidadNoches() == 0)
-                 MessageBox.Show("La estadia ingresada no es correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La estadia ingresada no es correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 
              }else
              {
                 //lleno los datos de la estadia aca se puede ver la cantidad de noches que de verdad se alojo.
