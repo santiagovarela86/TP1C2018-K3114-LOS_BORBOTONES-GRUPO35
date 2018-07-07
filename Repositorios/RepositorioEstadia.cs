@@ -428,13 +428,13 @@ namespace FrbaHotel.Repositorios
                     BEGIN TRANSACTION
 
                 ");
+            int k = 1;
             foreach (Cliente item in clientes)
             {
-                sqlCommand.Parameters.AddWithValue("@idCliente", item.getIdCliente());
-                sqlBuilder.Append(@"
-                    INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva,idHabitacion,idCliente)
-                    VALUES(@idReserva,@idHabitacion,@idCliente);
-               ");                
+                String paramName = "@idCliente" + k.ToString();                
+                sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva,idHabitacion,idCliente) VALUES(@idReserva,@idHabitacion,{0})", paramName);
+                sqlCommand.Parameters.AddWithValue(paramName, item.getIdCliente());
+                k++;
             }
 
             sqlBuilder.Append(@"

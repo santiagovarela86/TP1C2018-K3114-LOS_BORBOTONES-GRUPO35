@@ -201,7 +201,7 @@ namespace FrbaHotel.Repositorios
             }else
             {
                 //es all inclusive, hago un solo itemFactura all inclusive y no se cobra nada
-                idConsumible = 0;
+                idConsumible = 6;//poner el idConsumible del all inclusive
                 monto = 0;
                 //necesito un nuevo campo que sea descripcion por regimen de estadia
                 itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
@@ -220,7 +220,7 @@ namespace FrbaHotel.Repositorios
                     float diasAlojados=(float)reserva.getDiasAlojados();
                     //se quedo toda la estadia hago solo un item factura con los dias x el monto
                     totalHabitacion = montoHabitacion * diasAlojados;
-                    idConsumible = -1; //con -1 marco que es la habitacion
+                    idConsumible = 5; //con 5 marco que es la habitacion
                     itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
                     itemsFactura.Add(itemFactura);
                 
@@ -232,7 +232,7 @@ namespace FrbaHotel.Repositorios
                     float diasAlojadosTotal = (float)reserva.getDiasAlojados();
                 
                 totalHabitacion = montoHabitacion * diasAlojadosTotal;
-                idConsumible = 10; //con -1 marco que es la habitacion
+                idConsumible = 5; //con 5 marco que es la habitacion
                 itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
 
@@ -255,11 +255,8 @@ namespace FrbaHotel.Repositorios
                 {
                     //hago el set de idFactura para el create
                     item.setIdFactura(idFactura);
-                    idItemFactura = repoItemFactura.create(item);
-
-                    if (idItemFactura == 0)
-                        resultado = 0;//falla creando algun itemFactura
                 }
+                repoItemFactura.createTodos(itemsFactura);
                 //hacer update de la estadia avisando que ya facture
                 repoEstadia.facturado(estadia.getIdEstadia());
                 repoEstadia.updateEstadoFacturado(reserva.getIdReserva());
