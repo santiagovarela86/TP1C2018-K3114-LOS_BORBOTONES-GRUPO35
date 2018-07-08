@@ -201,7 +201,7 @@
             // labelTipoHabitacion
             // 
             this.labelTipoHabitacion.AutoSize = true;
-            this.labelTipoHabitacion.Location = new System.Drawing.Point(371, 40);
+            this.labelTipoHabitacion.Location = new System.Drawing.Point(371, 82);
             this.labelTipoHabitacion.Name = "labelTipoHabitacion";
             this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
             this.labelTipoHabitacion.TabIndex = 61;
@@ -209,7 +209,7 @@
             // 
             // comboBoxTipoHabitacion
             // 
-            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(422, 34);
+            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(422, 76);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
             this.comboBoxTipoHabitacion.TabIndex = 60;

@@ -40,13 +40,14 @@
             this.GenerarListadoEstadistico = new System.Windows.Forms.Button();
             this.labelHotel = new System.Windows.Forms.Label();
             this.labelRol = new System.Windows.Forms.Label();
+            this.buttonABMReserva = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ABMUsuario
             // 
-            this.ABMUsuario.Location = new System.Drawing.Point(138, 12);
+            this.ABMUsuario.Location = new System.Drawing.Point(115, 12);
             this.ABMUsuario.Name = "ABMUsuario";
-            this.ABMUsuario.Size = new System.Drawing.Size(120, 41);
+            this.ABMUsuario.Size = new System.Drawing.Size(97, 41);
             this.ABMUsuario.TabIndex = 1;
             this.ABMUsuario.Text = "ABM Usuario";
             this.ABMUsuario.UseVisualStyleBackColor = true;
@@ -54,9 +55,9 @@
             // 
             // ABMCliente
             // 
-            this.ABMCliente.Location = new System.Drawing.Point(264, 12);
+            this.ABMCliente.Location = new System.Drawing.Point(218, 12);
             this.ABMCliente.Name = "ABMCliente";
-            this.ABMCliente.Size = new System.Drawing.Size(120, 41);
+            this.ABMCliente.Size = new System.Drawing.Size(95, 41);
             this.ABMCliente.TabIndex = 2;
             this.ABMCliente.Text = "ABM Cliente";
             this.ABMCliente.UseVisualStyleBackColor = true;
@@ -74,9 +75,9 @@
             // 
             // ABMRol
             // 
-            this.ABMRol.Location = new System.Drawing.Point(12, 12);
+            this.ABMRol.Location = new System.Drawing.Point(1, 12);
             this.ABMRol.Name = "ABMRol";
-            this.ABMRol.Size = new System.Drawing.Size(120, 41);
+            this.ABMRol.Size = new System.Drawing.Size(108, 41);
             this.ABMRol.TabIndex = 0;
             this.ABMRol.Text = "ABM Rol";
             this.ABMRol.UseVisualStyleBackColor = true;
@@ -84,9 +85,9 @@
             // 
             // ABMHotel
             // 
-            this.ABMHotel.Location = new System.Drawing.Point(390, 12);
+            this.ABMHotel.Location = new System.Drawing.Point(319, 12);
             this.ABMHotel.Name = "ABMHotel";
-            this.ABMHotel.Size = new System.Drawing.Size(120, 41);
+            this.ABMHotel.Size = new System.Drawing.Size(101, 41);
             this.ABMHotel.TabIndex = 3;
             this.ABMHotel.Text = "ABM Hotel";
             this.ABMHotel.UseVisualStyleBackColor = true;
@@ -94,9 +95,9 @@
             // 
             // ABMHabitacion
             // 
-            this.ABMHabitacion.Location = new System.Drawing.Point(516, 12);
+            this.ABMHabitacion.Location = new System.Drawing.Point(426, 12);
             this.ABMHabitacion.Name = "ABMHabitacion";
-            this.ABMHabitacion.Size = new System.Drawing.Size(120, 41);
+            this.ABMHabitacion.Size = new System.Drawing.Size(100, 41);
             this.ABMHabitacion.TabIndex = 4;
             this.ABMHabitacion.Text = "ABM Habitacion";
             this.ABMHabitacion.UseVisualStyleBackColor = true;
@@ -159,11 +160,22 @@
             this.labelRol.TabIndex = 11;
             this.labelRol.Text = "Rol: ";
             // 
+            // button1
+            // 
+            this.buttonABMReserva.Location = new System.Drawing.Point(532, 12);
+            this.buttonABMReserva.Name = "buttonABMReserva";
+            this.buttonABMReserva.Size = new System.Drawing.Size(109, 41);
+            this.buttonABMReserva.TabIndex = 12;
+            this.buttonABMReserva.Text = "ABM Reserva";
+            this.buttonABMReserva.UseVisualStyleBackColor = true;
+            this.buttonABMReserva.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FuncionesAdicionales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(645, 154);
+            this.Controls.Add(this.buttonABMReserva);
             this.Controls.Add(this.labelRol);
             this.Controls.Add(this.labelHotel);
             this.Controls.Add(this.GenerarListadoEstadistico);
@@ -198,5 +210,6 @@
         private System.Windows.Forms.Button GenerarListadoEstadistico;
         private System.Windows.Forms.Label labelHotel;
         private System.Windows.Forms.Label labelRol;
+        private System.Windows.Forms.Button buttonABMReserva;
     }
 }

@@ -15,12 +15,20 @@ namespace FrbaHotel.AbmReserva
 {
     public partial class GenerarReserva : Form
     {
-        Usuario usuario;
-
+        private Usuario usuario;
+        private Sesion sesion;
       
         public GenerarReserva(Usuario usuario)
         {
             this.usuario = usuario;
+            InitializeComponent();
+            init();
+        }
+
+        public GenerarReserva(Sesion sesion)
+        {
+            this.sesion = sesion;
+            this.usuario = sesion.getUsuario();
             InitializeComponent();
             init();
         }
@@ -63,6 +71,11 @@ namespace FrbaHotel.AbmReserva
 
             comboBoxTipoHabitacion.SelectedValue = "";
             comboBoxTipoHabitacion.SelectedIndex = -1;
+
+            if (sesion != null && sesion.getHotel() != null) {
+                this.comboBoxHotel.Visible = false;
+                this.labelHotel.Visible = false;
+            }
         }
 
         private void eventHandlerHotelComboBox(object sender, EventArgs e)
@@ -101,9 +114,16 @@ namespace FrbaHotel.AbmReserva
             DateTime fechaInicio = (DateTime)Utils.validateFields(calendarioDesde.Value, "Fecha Desde");
             DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.Value, "Fecah Hasta");
             if(Utils.validateTimeRanges(fechaInicio, fechaFin)){
-            
-            Hotel hotelSeleccionado = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
-            TipoHabitacion tipoHabitacionSeleccionada = null;
+                Hotel hotelSeleccionado = null;
+                if (sesion != null && sesion.getHotel() != null)
+                {
+                    hotelSeleccionado = sesion.getHotel();
+                }
+                else
+                {
+                    hotelSeleccionado = (Hotel)Utils.validateFields(comboBoxHotel.SelectedItem, "Hotel");
+
+                } TipoHabitacion tipoHabitacionSeleccionada = null;
             if (comboBoxTipoHabitacion.SelectedItem != null)
             {
                  tipoHabitacionSeleccionada = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
