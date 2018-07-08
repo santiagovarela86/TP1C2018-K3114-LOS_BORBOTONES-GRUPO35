@@ -341,9 +341,9 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public List<HabitacionDisponibleSearchDTO> getHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin,Hotel hotel, TipoHabitacion tipoHabitacion, Regimen regimen,Reserva reserva) { 
+        public List<HabitacionDisponible> getHabitacionesDisponibles(DateTime fechaInicio, DateTime fechaFin,Hotel hotel, TipoHabitacion tipoHabitacion, Regimen regimen,Reserva reserva) { 
 
-            List<HabitacionDisponibleSearchDTO> habitacionesDisponibles= new List<HabitacionDisponibleSearchDTO>();
+            List<HabitacionDisponible> habitacionesDisponibles= new List<HabitacionDisponible>();
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -415,7 +415,7 @@ namespace FrbaHotel.Repositorios
 
                 Regimen qregimen = repoRegimen.getById(qidRegimen);
                 Habitacion qhabitacion = new Habitacion(qidHabitacion, qactiva, qnumero, qpiso, qubicacion, qdescripcion);
-                habitacionesDisponibles.Add(new HabitacionDisponibleSearchDTO(qhabitacion,qregimen));
+                habitacionesDisponibles.Add(new HabitacionDisponible(qhabitacion,qregimen));
             }
 
             //Cierro Primera Consulta

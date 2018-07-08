@@ -28,72 +28,85 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.buttonReservar = new System.Windows.Forms.Button();
+            this.buttonEditarReserva = new System.Windows.Forms.Button();
+            this.buttonFuncionesAdicionales = new System.Windows.Forms.Button();
+            this.buttonSalir = new System.Windows.Forms.Button();
+            this.labelUsuario = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // buttonReservar
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 41);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Reservar...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonReservar.Location = new System.Drawing.Point(12, 12);
+            this.buttonReservar.Name = "buttonReservar";
+            this.buttonReservar.Size = new System.Drawing.Size(120, 41);
+            this.buttonReservar.TabIndex = 0;
+            this.buttonReservar.Text = "Reservar...";
+            this.buttonReservar.UseVisualStyleBackColor = true;
+            this.buttonReservar.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button3
+            // buttonEditarReserva
             // 
-            this.button3.Location = new System.Drawing.Point(185, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(120, 41);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Editar una reserva...";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.buttonEditarReserva.Location = new System.Drawing.Point(185, 12);
+            this.buttonEditarReserva.Name = "buttonEditarReserva";
+            this.buttonEditarReserva.Size = new System.Drawing.Size(120, 41);
+            this.buttonEditarReserva.TabIndex = 1;
+            this.buttonEditarReserva.Text = "Editar una reserva...";
+            this.buttonEditarReserva.UseVisualStyleBackColor = true;
+            this.buttonEditarReserva.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button2
+            // buttonFuncionesAdicionales
             // 
-            this.button2.Location = new System.Drawing.Point(352, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 41);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Funciones Adicionales";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonFuncionesAdicionales.Location = new System.Drawing.Point(352, 12);
+            this.buttonFuncionesAdicionales.Name = "buttonFuncionesAdicionales";
+            this.buttonFuncionesAdicionales.Size = new System.Drawing.Size(120, 41);
+            this.buttonFuncionesAdicionales.TabIndex = 2;
+            this.buttonFuncionesAdicionales.Text = "Funciones Adicionales";
+            this.buttonFuncionesAdicionales.UseVisualStyleBackColor = true;
+            this.buttonFuncionesAdicionales.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button4
+            // buttonSalir
             // 
-            this.button4.Location = new System.Drawing.Point(185, 62);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(120, 41);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Salir";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.buttonSalir.Location = new System.Drawing.Point(185, 62);
+            this.buttonSalir.Name = "buttonSalir";
+            this.buttonSalir.Size = new System.Drawing.Size(120, 41);
+            this.buttonSalir.TabIndex = 3;
+            this.buttonSalir.Text = "Salir";
+            this.buttonSalir.UseVisualStyleBackColor = true;
+            this.buttonSalir.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // labelUsuario
+            // 
+            this.labelUsuario.AutoSize = true;
+            this.labelUsuario.Location = new System.Drawing.Point(12, 75);
+            this.labelUsuario.Name = "labelUsuario";
+            this.labelUsuario.Size = new System.Drawing.Size(121, 13);
+            this.labelUsuario.TabIndex = 13;
+            this.labelUsuario.Text = "Usuario: guest (invitado)";
             // 
             // PantallaPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 115);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.labelUsuario);
+            this.Controls.Add(this.buttonSalir);
+            this.Controls.Add(this.buttonFuncionesAdicionales);
+            this.Controls.Add(this.buttonEditarReserva);
+            this.Controls.Add(this.buttonReservar);
             this.Name = "PantallaPrincipal";
             this.Text = "Gestión de Datos TP 2018 1C - LOS_BORBOTONES";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonReservar;
+        private System.Windows.Forms.Button buttonEditarReserva;
+        private System.Windows.Forms.Button buttonFuncionesAdicionales;
+        private System.Windows.Forms.Button buttonSalir;
+        private System.Windows.Forms.Label labelUsuario;
     }
 }

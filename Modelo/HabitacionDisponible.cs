@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.AbmReserva
 {
-    public class HabitacionDisponibleSearchDTO
+    public class HabitacionDisponible
     {
 
         private Habitacion habitacion;
         private Regimen regimen;
 
-        public HabitacionDisponibleSearchDTO(Habitacion habitacion, Regimen regimen)
+        public HabitacionDisponible(Habitacion habitacion, Regimen regimen)
         {
             this.habitacion = habitacion;
             this.regimen = regimen;

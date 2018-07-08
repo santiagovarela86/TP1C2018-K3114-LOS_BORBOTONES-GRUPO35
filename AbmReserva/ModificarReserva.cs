@@ -41,10 +41,10 @@ namespace FrbaHotel.AbmReserva
         }
 
 
-        private List<HabitacionDisponibleSearchDTO> buildHabitacionesReservadas(List<Habitacion> habitaciones,Regimen regimen){
-            List<HabitacionDisponibleSearchDTO> habitacionesReservadas = new List<HabitacionDisponibleSearchDTO>();
+        private List<HabitacionDisponible> buildHabitacionesReservadas(List<Habitacion> habitaciones,Regimen regimen){
+            List<HabitacionDisponible> habitacionesReservadas = new List<HabitacionDisponible>();
             foreach(Habitacion hab in habitaciones){
-            habitacionesReservadas.Add(new HabitacionDisponibleSearchDTO(hab,regimen));
+            habitacionesReservadas.Add(new HabitacionDisponible(hab,regimen));
             }
             return habitacionesReservadas;
         }
@@ -149,7 +149,7 @@ namespace FrbaHotel.AbmReserva
                 regimenSeleccionado = regimenParam;
 
                 RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-                List<HabitacionDisponibleSearchDTO> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,reserva);
+                List<HabitacionDisponible> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,reserva);
 
 
 
@@ -224,11 +224,11 @@ namespace FrbaHotel.AbmReserva
 
             DateTime fechaInicio = calendarioDesde.Value;
             DateTime fechaFin = calendarioHasta.Value;
-            List<HabitacionDisponibleSearchDTO> habitacionesAReservar = new List<HabitacionDisponibleSearchDTO>();
+            List<HabitacionDisponible> habitacionesAReservar = new List<HabitacionDisponible>();
 
             foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
             {
-                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponibleSearchDTO);
+                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponible);
             }
 
             using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin, usuario))
@@ -259,11 +259,11 @@ namespace FrbaHotel.AbmReserva
         {
             DateTime fechaInicio = calendarioDesde.Value;
             DateTime fechaFin = calendarioHasta.Value;
-            List<HabitacionDisponibleSearchDTO> habitacionesAReservar = new List<HabitacionDisponibleSearchDTO>();
+            List<HabitacionDisponible> habitacionesAReservar = new List<HabitacionDisponible>();
 
             foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
             {
-                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponibleSearchDTO);
+                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponible);
             }
 
             using (ConfirmarModificacionWindow form = new ConfirmarModificacionWindow(habitacionesAReservar, fechaInicio, fechaFin, usuario,reserva))

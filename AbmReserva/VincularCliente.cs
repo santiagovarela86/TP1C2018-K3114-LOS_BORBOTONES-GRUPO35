@@ -15,12 +15,12 @@ namespace FrbaHotel.AbmReserva
 {
     public partial class VincularCliente : Form
     {
-        private List<HabitacionDisponibleSearchDTO> habitaciones;
+        private List<HabitacionDisponible> habitaciones;
         private DateTime fechaInicio;
         private DateTime fechaFin;
         private int diasDeEstadia;
         private Usuario usuario;
-        public VincularCliente(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin, int diasDeEstadia, Usuario usuario)
+        public VincularCliente(List<HabitacionDisponible> habitaciones, DateTime fechaInicio, DateTime fechaFin, int diasDeEstadia, Usuario usuario)
         {
             this.habitaciones = habitaciones;
             this.fechaInicio = fechaInicio;
@@ -144,7 +144,7 @@ namespace FrbaHotel.AbmReserva
             List<Habitacion> habitacionesParaReservar = new List<Habitacion>();
             Regimen regimen=null;
             Cliente cliente = null;
-            foreach (HabitacionDisponibleSearchDTO dto in habitaciones) {
+            foreach (HabitacionDisponible dto in habitaciones) {
                 habitacionesParaReservar.Add(dto.getHabitacion());
                 regimen = dto.getRegimen();
             }

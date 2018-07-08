@@ -14,12 +14,12 @@ namespace FrbaHotel.AbmReserva
     public partial class ConfirmarReservaWindow : Form
     {
 
-        private List<HabitacionDisponibleSearchDTO> habitaciones;
+        private List<HabitacionDisponible> habitaciones;
         private DateTime fechaInicio;
         private  DateTime fechaFin;
         private int diasDeEstadia;
         private Usuario usuario;
-        public ConfirmarReservaWindow(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin,Usuario  usuario)
+        public ConfirmarReservaWindow(List<HabitacionDisponible> habitaciones, DateTime fechaInicio, DateTime fechaFin,Usuario  usuario)
         {
             this.habitaciones = habitaciones;
             this.fechaInicio = fechaInicio;
@@ -36,7 +36,7 @@ namespace FrbaHotel.AbmReserva
             decimal precioTotal = 0;
 
             this.labelTipoHabitacion.Text += "Reserva desde el dia: " + fechaInicio + " hasta " + fechaFin +".\n";
-            foreach (HabitacionDisponibleSearchDTO habitacion in habitaciones)
+            foreach (HabitacionDisponible habitacion in habitaciones)
             {
                 decimal precioHabitacion = (diasDeEstadia * habitacion.PrecioPorNoche);
                 precioTotal += precioHabitacion;

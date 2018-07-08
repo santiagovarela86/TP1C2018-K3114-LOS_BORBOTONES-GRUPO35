@@ -15,14 +15,14 @@ namespace FrbaHotel.AbmReserva
     public partial class ConfirmarModificacionWindow : Form
     {
 
-        private List<HabitacionDisponibleSearchDTO> habitaciones;
+        private List<HabitacionDisponible> habitaciones;
         private DateTime fechaInicio;
         private DateTime fechaFin;
         private int diasDeEstadia;
         private Usuario usuario;
         private Reserva reserva;
 
-        public ConfirmarModificacionWindow(List<HabitacionDisponibleSearchDTO> habitaciones, DateTime fechaInicio, DateTime fechaFin, Usuario usuario,Reserva reserva)
+        public ConfirmarModificacionWindow(List<HabitacionDisponible> habitaciones, DateTime fechaInicio, DateTime fechaFin, Usuario usuario,Reserva reserva)
         {
 
             this.habitaciones = habitaciones;
@@ -61,7 +61,7 @@ namespace FrbaHotel.AbmReserva
             this.labelInformacionDeModificacion.Text += "\n \n \n";
             this.labelInformacionDeModificacion.Text+= "Nueva Reserva desde el dia: " + fechaInicio + " hasta " + fechaFin +".\n";
             decimal precioTotal = 0;
-            foreach (HabitacionDisponibleSearchDTO habitacion in habitaciones)
+            foreach (HabitacionDisponible habitacion in habitaciones)
             {
                 decimal precioHabitacion = (diasDeEstadia * habitacion.PrecioPorNoche);
                 precioTotal += precioHabitacion;
@@ -94,7 +94,7 @@ namespace FrbaHotel.AbmReserva
             List<Habitacion> habitacionesParaReservar = new List<Habitacion>();
             Regimen regimen=null;
             Hotel hotel=null;
-            foreach (HabitacionDisponibleSearchDTO dto in habitaciones) {
+            foreach (HabitacionDisponible dto in habitaciones) {
                 habitacionesParaReservar.Add(dto.getHabitacion());
                 regimen = dto.getRegimen();
                 hotel=dto.getHabitacion().getHotel();

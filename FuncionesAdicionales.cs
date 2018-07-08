@@ -191,16 +191,23 @@ namespace FrbaHotel
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonGenerarReserva_Click(object sender, EventArgs e)
         {
-            using (RecepcionABMReserva formRecepcionABMReserva = new RecepcionABMReserva(this.getSesion()))
+            using (GenerarReserva generarReserva = new GenerarReserva(sesion))
             {
-                var resultFormRecepcionABMReserva = formRecepcionABMReserva.ShowDialog();
+                var resultFormLogin = generarReserva.ShowDialog();
 
-                if (resultFormRecepcionABMReserva == DialogResult.OK)
-                {
-                    //Hago algo con el return value
-                }
+
+            }
+        }
+
+        private void buttonModificarReserva_Click(object sender, EventArgs e)
+        {
+            using (EditarReserva modificarReserva = new EditarReserva(sesion))
+            {
+                var resultFormLogin = modificarReserva.ShowDialog();
+
+
             }
         }
     }
