@@ -35,6 +35,7 @@ namespace FrbaHotel.AbmReserva
                 RepositorioReserva repoReserva = new RepositorioReserva();
                 repoReserva.cancelarReserva(reserva, usuario, motivo);
                 MessageBox.Show("Reserva cancelada exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                this.Close();
             }
             catch (RequestInvalidoException exception)
             {

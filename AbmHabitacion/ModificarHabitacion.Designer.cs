@@ -39,12 +39,14 @@ namespace FrbaHotel.AbmHabitacion
             this.textNumero = new System.Windows.Forms.TextBox();
             this.labelTipoHabitacion = new System.Windows.Forms.Label();
             this.comboBoxTipoHabitacion = new System.Windows.Forms.ComboBox();
+            this.labelDescripcion = new System.Windows.Forms.Label();
+            this.textDescripcion = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // checkBoxActiva
             // 
             this.checkBoxActiva.AutoSize = true;
-            this.checkBoxActiva.Location = new System.Drawing.Point(372, 49);
+            this.checkBoxActiva.Location = new System.Drawing.Point(353, 86);
             this.checkBoxActiva.Name = "checkBoxActiva";
             this.checkBoxActiva.Size = new System.Drawing.Size(56, 17);
             this.checkBoxActiva.TabIndex = 33;
@@ -53,7 +55,7 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // buttonModificarHabitacion
             // 
-            this.buttonModificarHabitacion.Location = new System.Drawing.Point(354, 89);
+            this.buttonModificarHabitacion.Location = new System.Drawing.Point(353, 179);
             this.buttonModificarHabitacion.Name = "buttonModificarHabitacion";
             this.buttonModificarHabitacion.Size = new System.Drawing.Size(75, 23);
             this.buttonModificarHabitacion.TabIndex = 32;
@@ -127,12 +129,31 @@ namespace FrbaHotel.AbmHabitacion
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
             this.comboBoxTipoHabitacion.TabIndex = 34;
             // 
+            // labelDescripcion
+            // 
+            this.labelDescripcion.AutoSize = true;
+            this.labelDescripcion.Location = new System.Drawing.Point(15, 152);
+            this.labelDescripcion.Name = "labelDescripcion";
+            this.labelDescripcion.Size = new System.Drawing.Size(63, 13);
+            this.labelDescripcion.TabIndex = 37;
+            this.labelDescripcion.Text = "Descripcion";
+            // 
+            // textDescripcion
+            // 
+            this.textDescripcion.Location = new System.Drawing.Point(84, 122);
+            this.textDescripcion.Multiline = true;
+            this.textDescripcion.Name = "textDescripcion";
+            this.textDescripcion.Size = new System.Drawing.Size(196, 115);
+            this.textDescripcion.TabIndex = 36;
+            // 
             // ModificarHabitacion
             // 
             this.AcceptButton = this.buttonModificarHabitacion;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 124);
+            this.ClientSize = new System.Drawing.Size(441, 277);
+            this.Controls.Add(this.labelDescripcion);
+            this.Controls.Add(this.textDescripcion);
             this.Controls.Add(this.labelTipoHabitacion);
             this.Controls.Add(this.comboBoxTipoHabitacion);
             this.Controls.Add(this.checkBoxActiva);
@@ -171,5 +192,7 @@ namespace FrbaHotel.AbmHabitacion
         private System.Windows.Forms.TextBox textNumero;
         private Label labelTipoHabitacion;
         private ComboBox comboBoxTipoHabitacion;
+        private Label labelDescripcion;
+        private TextBox textDescripcion;
     }
 }

@@ -153,6 +153,11 @@ namespace FrbaHotel.AbmReserva
             {
                 cliente = (item.DataBoundItem as Cliente);
             }
+
+            if (!cliente.getActivo()) {
+                MessageBox.Show("El cliente no tiene permitido generar reservas. Seleccione otro cliente para confirmar su reserva por favor", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                return;
+            }
             RepositorioReserva repoReserva = new RepositorioReserva();
             Reserva reserva = new Reserva(habitacionesParaReservar, regimen, cliente, fechaInicio, fechaFin, diasDeEstadia,usuario);
             try

@@ -46,6 +46,7 @@ namespace FrbaHotel.AbmHabitacion
 
             textNumero.Text = "";
             textPiso.Text = "";
+            textDescripcion.Text = "";
         }
 
         private void buttonCrearHabitacion_Click(object sender, EventArgs e)
@@ -56,10 +57,11 @@ namespace FrbaHotel.AbmHabitacion
                 int piso = Utils.validateIntField(textPiso.Text, "Piso");
                 Hotel hotel = this.hotel;
                 String ubicacion = Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem, "Ubicacion");
+                String descripcion = textDescripcion.Text;
                 TipoHabitacion tipoHabitacion = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo");
                 RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
                 bool activa= checkBoxActiva.Checked;
-                Habitacion habitacion = new Habitacion(0, activa, numero, piso, ubicacion);
+                Habitacion habitacion = new Habitacion(0, activa, numero, piso, ubicacion,descripcion);
                 habitacion.setHotel(hotel);
                 habitacion.setTipoHabitacion(tipoHabitacion);
                 repositorioHabitacion.create(habitacion);

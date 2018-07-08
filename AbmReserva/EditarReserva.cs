@@ -45,17 +45,39 @@ namespace FrbaHotel.AbmReserva
 
                 if (reserva != null)
                 {
-                    List<Reserva> reservas = new List<Reserva>();
-                    reservas.Add(reserva);
-                    dataGridReserva.DataSource = reservas;
+
+                    List<EstadoReserva> estadosDeLaReserva = reserva.getEstados();
+                    List<String> estadosNoModificables = new List<String>(new String[] { "RCC", "RCR", "RCNS", "RCE", "RCI", "RF" });
+                    bool noPuedeModificar = estadosDeLaReserva.Exists(estado => estadosNoModificables.Exists(estadoNoModificable => estadoNoModificable.Equals(estado.getTipoEstado())));
+
+                    if (noPuedeModificar)
+                    { 
+                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado final", "Editar reserva");
+                        return;
+                    }
+
 
                     DateTime fechaAhora = DateTime.Now;
                     DateTime fechaInicio = reserva.getFechaDesde();
+
+
                     if (((fechaInicio - fechaAhora).TotalDays > 1) && (fechaInicio > fechaAhora))
                     {
                         this.buttonModificar.Enabled = true;
                         this.buttonCancelar.Enabled = true;
                     }
+                    else
+                    {
+                        MessageBox.Show("Ha pasado el plazo maximo de 24 para modificar/cancelar su reserva.", "Editar reserva");
+                        return;
+                    }
+
+
+
+                    List<Reserva> reservas = new List<Reserva>();
+                    reservas.Add(reserva);
+                    dataGridReserva.DataSource = reservas;
+
                 }
             }catch(RequestInvalidoException exception){
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados");
@@ -85,12 +107,14 @@ namespace FrbaHotel.AbmReserva
             {
                 reserva = item.DataBoundItem as Reserva;
             }
+
             using (ModificarReserva form = new ModificarReserva(reserva,usuario))
             {
                 var result = form.ShowDialog();
                 this.Close();
             }
         }
+        
     }
 
 
