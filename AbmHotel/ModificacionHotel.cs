@@ -520,9 +520,14 @@ namespace FrbaHotel.AbmHotel
                 repoHotel.update(hotelToUpdateSave);
                 MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
                 hotel = hotelToUpdateSave;
-            } catch (Exception exception)
+            }
+            catch (NoExisteIDException exceptionUpdateHotel)
             {
-                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show(exceptionUpdateHotel.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+            }
+            catch (RequestInvalidoException reqInvalido )
+            {
+                MessageBox.Show(reqInvalido.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
             }
         }
 

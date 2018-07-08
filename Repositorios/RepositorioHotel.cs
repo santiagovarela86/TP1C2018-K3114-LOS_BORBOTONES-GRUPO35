@@ -349,7 +349,8 @@ namespace FrbaHotel.Repositorios {
             }
             else
             {
-                throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
+                //throw new RequestInvalidoException("No es posible actualizar: No existe el hotel con id " + hotel.getIdHotel() + "en la base de datos");
+                throw new NoExisteIDException("No existe el Hotel que intenta actualizar");
             }
         }
 
