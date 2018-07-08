@@ -1,7 +1,6 @@
 ---------------------------------------------- Creacion del Modelo de Datos --------------------------------------------------------------------
 USE GD1C2018
 GO
-
 ---------------------------------------------- DROPEO DE FK CONSTRAINTS ----------------------------------------------
 
 -- Tabla Funcionalidad_X_Rol 
@@ -316,6 +315,26 @@ IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalConsumible', 'FN') IS NOT NULL
     DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible
 GO
 
+
+---------------------------------------------------------------DROPEO PROCEDURE---------------------------------------------------------------
+IF OBJECT_ID('LOS_BORBOTONES.listaMaximosPuntajes', 'P') IS NOT NULL
+    DROP PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
+GO
+IF OBJECT_ID('LOS_BORBOTONES.listaHabitacionesVecesOcupada', 'P') IS NOT NULL
+    DROP PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
+GO
+IF OBJECT_ID('LOS_BORBOTONES.lista_hoteles_maxResCancel', 'P') IS NOT NULL
+    DROP PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
+GO
+IF OBJECT_ID('LOS_BORBOTONES.lista_Hotel_DiasFueraServ', 'P') IS NOT NULL
+    DROP PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
+GO
+IF OBJECT_ID('LOS_BORBOTONES.lista_hoteles_maxConFacturados', 'P') IS NOT NULL
+    DROP PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
+GO
+
+---------------------------------------------------------------------- Eliminacion de schema LOS_BORBOTONES --------------------------------------------------------------------------
+
 ---------------------------------------------------------------------- Eliminacion de schema LOS_BORBOTONES --------------------------------------------------------------------------
 
 IF EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'LOS_BORBOTONES')
@@ -398,7 +417,375 @@ CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible(@CostoTotalConsumible num
 			END
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Creacion de Store Procedures para listado Estadistico
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---Clientes con mayor cantidad de puntos
+--------------------------------------------------------------
+/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.listaHabitacionesVecesOcupada > Ejecutar ...
+Se paso como parametros (viendo las fechas de Facturacion) trimestre = 2, año = 2018
+Funciona ok
+*/
+CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
+				@trimestre numeric(18,0), @Anio numeric(18,0) 
+	AS				
+	  BEGIN	
+		DECLARE @inicio datetime,
+				@fin datetime,
+				@AnioAux char(4)
+		SET @AnioAux = CAST(@Anio AS CHAR(4))
+		
+		IF (@trimestre = 1)
+			BEGIN
+			SET @inicio = '01-01-'+@AnioAux
+			SET @fin = '31-03-'+@AnioAux
+			END
+			ELSE IF (@trimestre = 2)
+				BEGIN
+				SET @inicio = '01-04-'+@AnioAux
+				SET @fin = '30-06-'+@AnioAux
+				END
+				ELSE IF (@trimestre = 3)
+					BEGIN 
+					SET @inicio = '01-07-'+@AnioAux
+					SET @fin = '30-09-'+@AnioAux
+					END
+					ELSE IF (@trimestre = 4)
+						BEGIN
+						SET @inicio = '01-10-'+@AnioAux
+						SET @fin = '31-12-'+@AnioAux
+						END
+						ELSE 
+							BEGIN
+							SET @inicio = '01-01-'+@AnioAux
+							SET @fin = '31-12-'+@AnioAux
+							END
 
+SELECT TOP 5 cli.idCliente, --ide.Nombre Nombre, ide.Apellido Apellido, 
+		punEs.Puntos+punCon.Puntos Puntaje
+FROM
+(	SELECT es.idEstadia, (re.Precio * es.CantidadNoches) Gasto, (re.Precio * es.CantidadNoches)/20 Puntos
+		FROM  LOS_BORBOTONES.Regimen re,
+			  LOS_BORBOTONES.Estadia es,
+			  LOS_BORBOTONES.Reserva res
+	WHERE res.idEstadia = es.idEstadia AND
+		  res.idRegimen = re.idRegimen AND
+		  es.FechaEntrada BETWEEN @inicio AND @fin
+	GROUP BY es.idEstadia, re.Precio, es.CantidadNoches
+	) AS punEs, 
+
+(	SELECT exc.idEstadia, (con.Precio) Gasto, (con.Precio)/10 Puntos
+		FROM LOS_BORBOTONES.Estadia_X_Consumible exc,
+			 LOS_BORBOTONES.Consumible con,
+			 LOS_BORBOTONES.Reserva res
+	WHERE exc.idConsumible = con.idConsumible AND
+			res.idEstadia = exc.idEstadia AND
+			res.FechaDesde BETWEEN @inicio AND @fin
+	GROUP BY exc.idEstadia, con.Precio
+	) AS punCon,
+
+LOS_BORBOTONES.Cliente cli,
+LOS_BORBOTONES.Estadia es,
+LOS_BORBOTONES.Reserva res
+WHERE  cli.idCliente = res.idCliente AND 
+		es.idEstadia = res.idEstadia AND 
+		punCon.idEstadia = es.idEstadia AND 
+		punEs.idEstadia = es.idEstadia
+ORDER BY Puntaje DESC
+END
+
+GO
+--------------------------------------------------------------
+--Habitaciones  con mayor cantidad de dias y veces ocupada
+--------------------------------------------------------------
+/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.listaHabitacionesVecesOcupada > Ejecutar ...
+Se paso como parametros (viendo las fechas de Estadias disponibles) trimestre = 4, año = 2017
+Funciona ok
+*/
+CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
+				@trimestre numeric(18,0), @Anio numeric(18,0) 
+	AS				
+	 BEGIN		
+		DECLARE @inicio datetime,
+				@fin datetime,
+				@AnioAux char(4)
+		SET @AnioAux = CAST(@Anio as CHAR(4))
+		
+		IF (@trimestre = 1)
+			BEGIN
+			SET @inicio = '01-01-'+@AnioAux
+			SET @fin = '31-03-'+@AnioAux
+			END
+			ELSE IF (@trimestre = 2)
+				BEGIN
+				SET @inicio = '01-04-'+@AnioAux
+				SET @fin = '30-06-'+@AnioAux
+				END
+				ELSE IF (@trimestre = 3)
+					BEGIN 
+					SET @inicio = '01-07-'+@AnioAux
+					SET @fin = '30-09-'+@AnioAux
+					END
+					ELSE IF (@trimestre = 4)
+						BEGIN
+						SET @inicio = '01-10-'+@AnioAux
+						SET @fin = '31-12-'+@AnioAux
+						END
+						ELSE 
+							BEGIN
+							SET @inicio = '01-01-'+@AnioAux
+							SET @fin = '31-12-'+@AnioAux
+							END
+
+SELECT DISTINCT TOP 5 ho.Nombre Hotel_Nombre,
+		hab.Numero NumeroHab,
+		hab.Piso PisoHab,
+		consulCantXHab.cantEst VecesOcupada,
+		consultaCantDias.Dias cantDias
+FROM				(
+
+					SELECT  hab.idHabitacion,
+							hab.idHotel,
+							COUNT(hab.idHabitacion) cantEst
+					FROM 
+							LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
+							LOS_BORBOTONES.Habitacion hab,
+							LOS_BORBOTONES.Reserva res,
+							LOS_BORBOTONES.Hotel ho,
+							LOS_BORBOTONES.Estadia es
+					WHERE rxhxc.idHabitacion = hab.idHabitacion AND
+						  rxhxc.idReserva = res.idReserva AND
+						  ho.idHotel = hab.idHotel AND
+						  es.idEstadia = res.idEstadia
+					GROUP BY hab.idHabitacion, hab.idHotel) AS consulCantXHab,
+					
+					(
+						SELECT  hab.idHabitacion, hab.idHotel,
+								SUM(CAST(es.FechaSalida-es.FechaEntrada AS numeric(18,0))) Dias
+						FROM 
+								LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
+								LOS_BORBOTONES.Habitacion hab,
+								LOS_BORBOTONES.Reserva res,
+								LOS_BORBOTONES.Hotel ho,
+								LOS_BORBOTONES.Estadia es
+						WHERE rxhxc.idHabitacion = hab.idHabitacion AND
+							  rxhxc.idReserva = res.idReserva AND
+							  ho.idHotel = hab.idHotel AND
+							  es.idEstadia = res.idEstadia
+						GROUP BY hab.idHabitacion,hab.idHotel) AS consultaCantDias,
+
+				LOS_BORBOTONES.Hotel ho,
+				LOS_BORBOTONES.Habitacion hab,
+				LOS_BORBOTONES.Estadia es
+WHERE consulCantXHab.idHotel = ho.idHotel AND
+		hab.idHabitacion = consulCantXHab.idHabitacion AND
+		consulCantXHab.idHabitacion = consultaCantDias.idHabitacion	AND
+		es.FechaEntrada BETWEEN @inicio AND @fin
+ORDER BY cantEst DESC
+END
+GO
+--------------------------------------------------------------
+--hoteles con mayor cantidad de reservas canceladas
+--------------------------------------------------------------
+/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.lista_hoteles_maxResCancel > Ejecutar ...
+Se paso como parametros (viendo las fechas de Estado Reserva) trimestre = 1, año = 2018
+Funciona ok
+*/
+CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
+				@trimestre numeric(18,0), @Anio numeric(18,0) 
+	AS	
+	  BEGIN	
+		DECLARE @inicio datetime,
+				@fin datetime,
+				@AnioAux char(4)
+		SET @AnioAux = CAST(@Anio AS CHAR(4))
+		
+		IF (@trimestre = 1)
+			BEGIN
+			SET @inicio = '01-01-'+@AnioAux
+			SET @fin = '31-03-'+@AnioAux
+			END
+			ELSE IF (@trimestre = 2)
+				BEGIN
+				SET @inicio = '01-04-'+@AnioAux
+				SET @fin = '30-06-'+@AnioAux
+				END
+				ELSE IF (@trimestre = 3)
+					BEGIN 
+					SET @inicio = '01-07-'+@AnioAux
+					SET @fin = '30-09-'+@AnioAux
+					END
+					ELSE IF (@trimestre = 4)
+						BEGIN
+						SET @inicio = '01-10-'+@AnioAux
+						SET @fin = '31-12-'+@AnioAux
+						END
+						ELSE 
+							BEGIN
+							SET @inicio = '01-01-'+@AnioAux
+							SET @fin = '31-12-'+@AnioAux
+							END
+							
+		SELECT TOP 5 hot.Nombre, COUNT(er.TipoEstado) cancelaciones
+			FROM LOS_BORBOTONES.Reserva res,
+				 LOS_BORBOTONES.Hotel hot,
+				 LOS_BORBOTONES.Habitacion hab,
+				 LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
+				 LOS_BORBOTONES.EstadoReserva er
+		where res.idReserva = er.idReserva AND (
+		  er.Descripcion = 'Reserva Cancelada Por Recepcion' OR
+		  er.Descripcion = 'Reserva Cancelada Por Cliente' OR
+		  er.Descripcion = 'Reserva Cancelada Por NO-SHOW' OR
+		  er.Descripcion = 'Reserva Cancelada Desde Tabla Maestra'
+		  ) AND
+		  hab.idHabitacion = rxhxc.idHabitacion AND
+		  hab.idHotel = hot.idHotel AND
+		  rxhxc.idReserva = res.idReserva AND
+		  er.Fecha BETWEEN @inicio AND @fin
+		GROUP BY hot.Nombre
+		ORDER BY cancelaciones DESC					
+		END
+GO
+--------------------------------------------------------------
+--Hoteles con mayor cantidad de dias fuera de servicio (CierreTemporal)
+--------------------------------------------------------------
+/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.lista_Hotel_DiasFueraServ > Ejecutar ...
+Se paso como parametros (viendo las fechas de cierre temporal) trimestre = 1, año = 2021
+Funciona ok
+*/
+CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
+				@trimestre numeric(18,0), @Anio numeric(18,0) 
+	AS		
+	  BEGIN
+		
+		DECLARE @inicio datetime,
+				@fin datetime,
+				@AnioAux char(4)
+		SET @AnioAux = CAST(@Anio as CHAR(4))
+		
+		IF (@trimestre = 1)
+			BEGIN
+			SET @inicio = '01-01-'+@AnioAux
+			SET @fin = '31-03-'+@AnioAux
+			END
+			ELSE IF (@trimestre = 2)
+				BEGIN
+				SET @inicio = '01-04-'+@AnioAux
+				SET @fin = '30-06-'+@AnioAux
+				END
+				ELSE IF (@trimestre = 3)
+					BEGIN 
+					SET @inicio = '01-07-'+@AnioAux
+					SET @fin = '30-09-'+@AnioAux
+					END
+					ELSE IF (@trimestre = 4)
+						BEGIN
+						SET @inicio = '01-10-'+@AnioAux
+						SET @fin = '31-12-'+@AnioAux
+						END
+						ELSE 
+							BEGIN
+							SET @inicio = '01-01-'+@AnioAux
+							SET @fin = '31-12-'+@AnioAux
+							end
+
+SELECT TOP 5 consTotal.hot, hot.nombre ,SUM(consTotal.Dias) Dias_Baja FROM 
+
+	( SELECT * FROM
+
+			(SELECT ho.idHotel hot, SUM(DATEDIFF(day,ct.FechaInicio, ct.FechaFin)) Dias
+			FROM LOS_BORBOTONES.CierreTemporal ct,
+					LOS_BORBOTONES.Hotel ho
+			WHERE ct.idHotel = ho.idHotel 
+					AND ct.FechaInicio BETWEEN @inicio AND @fin
+					AND ct.FechaFin < @fin
+			GROUP BY ho.idHotel ) AS consPre
+		
+		UNION ALL
+
+	SELECT * FROM
+
+			(SELECT ho.idHotel hot, SUM(DATEDIFF(day,ct.FechaInicio,@fin)) Dias
+			FROM LOS_BORBOTONES.CierreTemporal ct,
+					LOS_BORBOTONES.Hotel ho
+			WHERE ct.idHotel = ho.idHotel 
+					AND ct.FechaInicio BETWEEN @inicio AND @fin
+					AND ct.FechaFin > @fin
+			GROUP BY ho.idHotel) as consPost 
+		) as consTotal,
+		LOS_BORBOTONES.Hotel hot
+		WHERE hot.idHotel = consTotal.hot
+		GROUP BY consTotal.hot, hot.nombre
+		ORDER BY Dias_Baja desc
+	END
+	GO
+--------------------------------------------------------------
+--Hoteles con mayor cantidad de consumibles facturados
+--------------------------------------------------------------
+/*Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.lista_hoteles_maxConFacturados > Ejecutar ...
+Se paso como parametros (viendo las fechas de facturacion) trimestre = 1, año = 2017
+Funciona ok
+*/
+CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
+				@trimestre numeric(18,0), @Anio numeric(18,0) 
+	AS				
+		BEGIN
+		
+		DECLARE @inicio datetime,
+				@fin datetime,
+				@AnioAux char(4)
+		SET @AnioAux = CAST(@Anio as CHAR(4))
+		
+		IF (@trimestre = 1)
+			BEGIN
+			SET @inicio = '01-01-'+@AnioAux
+			SET @fin = '31-03-'+@AnioAux
+			END
+			ELSE IF (@trimestre = 2)
+				BEGIN
+				SET @inicio = '01-04-'+@AnioAux
+				SET @fin = '30-06-'+@AnioAux
+				END
+				ELSE IF (@trimestre = 3)
+					BEGIN 
+					SET @inicio = '01-07-'+@AnioAux
+					SET @fin = '30-09-'+@AnioAux
+					END
+					ELSE IF (@trimestre = 4)
+						BEGIN
+						SET @inicio = '01-10-'+@AnioAux
+						SET @fin = '31-12-'+@AnioAux
+						END
+						ELSE 
+							BEGIN
+							SET @inicio = '01-01-'+@AnioAux
+							SET @fin = '31-12-'+@AnioAux
+							END
+
+				SELECT TOP 5
+					ho.Nombre Nombre_Hotel,
+					COUNT(con.idConsumible) Cons_Facturados
+				FROM LOS_BORBOTONES.Consumible con,
+					 LOS_BORBOTONES.Estadia_X_Consumible exc,
+					 LOS_BORBOTONES.Estadia es,
+					 LOS_BORBOTONES.Factura fc,
+					 LOS_BORBOTONES.Hotel ho,
+					 LOS_BORBOTONES.Reserva res,
+					 LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
+					 LOS_BORBOTONES.Habitacion hab
+				WHERE 
+					fc.idEstadia = es.idEstadia AND
+					exc.idEstadia = es.idEstadia AND
+					exc.idConsumible = con.idConsumible AND
+					fc.idReserva = res.idReserva AND
+					res.idReserva = rxhxc.idReserva AND
+					rxhxc.idHabitacion = hab.idHabitacion AND
+					hab.idHotel = ho.idHotel
+					AND fc.FechaFacturacion BETWEEN @inicio AND @fin
+				GROUP BY ho.Nombre
+				ORDER BY  Cons_Facturados DESC
+				END
+GO
 -----------------------------------------------------------------------Creacion Tablas---------------------------------------------------------------------------------------------------------
 --Tabla Rol
 CREATE TABLE LOS_BORBOTONES.Rol (
