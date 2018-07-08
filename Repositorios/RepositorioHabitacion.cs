@@ -32,11 +32,12 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@habUbicacion", habitacion.getUbicacion());
             sqlCommand.Parameters.AddWithValue("@habIdHotel", habitacion.getHotel().getIdHotel());
             sqlCommand.Parameters.AddWithValue("@habIdTipoHabitacion", habitacion.getTipoHabitacion().getIdTipoHabitacion());
+            sqlCommand.Parameters.AddWithValue("@habDescripcion", habitacion.getDescripcion());
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "INSERT INTO  LOS_BORBOTONES.Habitacion(Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion) OUTPUT INSERTED.idHabitacion" +
-                " VALUES (@habActiva,@habNumero,@habPiso,@habUbicacion,@habIdHotel,@habIdTipoHabitacion);";
+            sqlCommand.CommandText = "INSERT INTO  LOS_BORBOTONES.Habitacion(Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion,Descripcion) OUTPUT INSERTED.idHabitacion" +
+                " VALUES (@habActiva,@habNumero,@habPiso,@habUbicacion,@habIdHotel,@habIdTipoHabitacion,@habDescripcion);";
 
             sqlConnection.Open();
             reader = sqlCommand.ExecuteReader();
@@ -99,7 +100,7 @@ namespace FrbaHotel.Repositorios
             Habitacion habitacion = null;
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion;";
+            sqlCommand.CommandText = "SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,Descripcion,idHotel,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion;";
 
             sqlConnection.Open();
 
@@ -114,8 +115,10 @@ namespace FrbaHotel.Repositorios
                 String Ubicacion = reader.SafeGetString(reader.GetOrdinal("Ubicacion"));
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 int idTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
-                
-                habitacion = new Habitacion(idHabitacion, Activa, Numero, Piso, Ubicacion);
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
+
+
+                habitacion = new Habitacion(idHabitacion, Activa, Numero, Piso, Ubicacion, descripcion);
                 habitaciones.Add(habitacion);
             }
 
@@ -135,7 +138,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHabitacion", id);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText ="SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,idHotel,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB WHERE HAB.idHabitacion = @idHabitacion";
+            sqlCommand.CommandText ="SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,Descripcion,idHotel,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB WHERE HAB.idHabitacion = @idHabitacion";
 
             sqlConnection.Open();
 
@@ -150,8 +153,9 @@ namespace FrbaHotel.Repositorios
                 String Ubicacion = reader.SafeGetString(reader.GetOrdinal("Ubicacion"));
                 int idHotel = reader.GetInt32(reader.GetOrdinal("idHotel"));
                 int idTipoHabitacion = reader.GetInt32(reader.GetOrdinal("idTipoHabitacion"));
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
 
-                habitacion = new Habitacion(idHabitacion, Activa, Numero, Piso, Ubicacion);
+                habitacion = new Habitacion(idHabitacion, Activa, Numero, Piso, Ubicacion,descripcion);
                 
             }
 
@@ -202,9 +206,11 @@ namespace FrbaHotel.Repositorios
                     sqlCommand.Parameters.AddWithValue("@habPiso", habitacion.getPiso());
                     sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.getActiva());
                     sqlCommand.Parameters.AddWithValue("@habidHabitacion", habitacion.getIdHabitacion());
+                    sqlCommand.Parameters.AddWithValue("@habDescripcion", habitacion.getDescripcion());
+
                     sqlCommand.CommandType = CommandType.Text;
                     sqlCommand.Connection = sqlConnection;
-                    sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva,Numero=@habNumero,Piso=@habPiso,Ubicacion=@habUbicacion WHERE idHabitacion=@habidHabitacion";
+                    sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Habitacion SET Activa= @habActiva,Numero=@habNumero,Piso=@habPiso,Ubicacion=@habUbicacion,Descripcion=@habDescripcion WHERE idHabitacion=@habidHabitacion";
 
                     sqlConnection.Open();
                     reader = sqlCommand.ExecuteReader();
@@ -227,7 +233,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
-                "SELECT  DISTINCT (HAB.idHabitacion) ,HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
+                "SELECT  DISTINCT (HAB.idHabitacion) ,HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.Descripcion,HAB.idHotel,HAB.idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB" +
                 getCondiciones(numero, piso, hotel, tipoHabitacion, estado, sqlCommand) + ";";
             
             sqlConnection.Open();
@@ -241,7 +247,9 @@ namespace FrbaHotel.Repositorios
                 int qnumero = reader.GetInt32(reader.GetOrdinal("Numero"));
                 int qpiso = reader.GetInt32(reader.GetOrdinal("Piso"));
                 String qubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
-                habitaciones.Add(new Habitacion(qidHabitacion, qactiva, qnumero, qpiso, qubicacion));
+                String qdescripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
+
+                habitaciones.Add(new Habitacion(qidHabitacion, qactiva, qnumero, qpiso, qubicacion, qdescripcion));
            
             }
 
@@ -308,7 +316,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHotel", idHotel);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB WHERE HAB.idHotel = @idHotel";
+            sqlCommand.CommandText = "SELECT idHabitacion,Activa,Numero,Piso,Ubicacion,Descripcion,idTipoHabitacion FROM LOS_BORBOTONES.Habitacion AS HAB WHERE HAB.idHotel = @idHotel";
 
             sqlConnection.Open();
 
@@ -322,8 +330,9 @@ namespace FrbaHotel.Repositorios
                 int numero = reader.GetInt32(reader.GetOrdinal("Numero"));
                 int piso = reader.GetInt32(reader.GetOrdinal("Piso"));
                 String ubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
+                String descripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
 
-                habitaciones.Add(new Habitacion(idHabitacion, activa, numero, piso, ubicacion));
+                habitaciones.Add(new Habitacion(idHabitacion, activa, numero, piso, ubicacion,descripcion));
             }
             //Cierro Primera Consulta
             sqlConnection.Close();
@@ -356,7 +365,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText =
-                "SELECT HAB.idHabitacion,HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion,REG.idRegimen FROM LOS_BORBOTONES.Habitacion AS HAB " +
+                "SELECT HAB.idHabitacion,HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,Hab.Descripcion,HAB.idHotel,HAB.idTipoHabitacion,REG.idRegimen FROM LOS_BORBOTONES.Habitacion AS HAB " +
                 "JOIN LOS_BORBOTONES.Hotel AS HOT ON HOT.idHotel=HAB.idHotel " +
                 "JOIN LOS_BORBOTONES.Regimen_X_Hotel AS RXH ON RXH.idHotel=HOT.idHotel " +
                 "JOIN LOS_BORBOTONES.Regimen AS REG ON REG.idRegimen = RXH.idRegimen " +
@@ -402,8 +411,10 @@ namespace FrbaHotel.Repositorios
                 int qpiso = reader.GetInt32(reader.GetOrdinal("Piso"));
                 int qidRegimen=  reader.GetInt32(reader.GetOrdinal("idRegimen"));
                 String qubicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
+                String qdescripcion = reader.SafeGetString(reader.GetOrdinal("Descripcion"));
+
                 Regimen qregimen = repoRegimen.getById(qidRegimen);
-                Habitacion qhabitacion =new Habitacion(qidHabitacion, qactiva, qnumero, qpiso, qubicacion);
+                Habitacion qhabitacion = new Habitacion(qidHabitacion, qactiva, qnumero, qpiso, qubicacion, qdescripcion);
                 habitacionesDisponibles.Add(new HabitacionDisponibleSearchDTO(qhabitacion,qregimen));
             }
 

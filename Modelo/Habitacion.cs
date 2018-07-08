@@ -16,15 +16,17 @@ namespace FrbaHotel.Modelo
         private int piso = 0;
         private String ubicacion = "";
         private Hotel hotel=null;
+        private String descripcion;
 
         public Habitacion(int idHabitacion,
-            Boolean activa, int numero, int piso, String ubicacion)
+            Boolean activa, int numero, int piso, String ubicacion,String descripcion)
         {
             this.idHabitacion = idHabitacion;
             this.activa = activa;
             this.numero = numero;
             this.piso = piso;
             this.ubicacion = ubicacion;
+            this.descripcion = descripcion;
         }
 
 
@@ -91,6 +93,10 @@ namespace FrbaHotel.Modelo
         public void setTipoHabitacion(TipoHabitacion tipo)
         {
             this.tipoHabitacion = tipo;
+        }
+
+        public String getDescripcion(){
+            return this.descripcion;
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view

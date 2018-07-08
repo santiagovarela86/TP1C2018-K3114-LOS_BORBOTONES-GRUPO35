@@ -37,6 +37,7 @@ namespace FrbaHotel.AbmHabitacion
             
             this.textNumero.Text = habitacion.getNumero().ToString();
             this.checkBoxActiva.Checked = habitacion.getActiva();
+            this.textDescripcion.Text = habitacion.getDescripcion();
             this.textPiso.Text = habitacion.getPiso().ToString();
             this.comboBoxUbicacion.SelectedItem = habitacion.getUbicacion();
             this.Text = "Modificar Habitación: " + habitacion.getNumero().ToString() + ", Hotel: " + habitacion.getHotel().getNombre();
@@ -51,8 +52,8 @@ namespace FrbaHotel.AbmHabitacion
             int numero = Utils.validateIntField(textNumero.Text, "Numero");
             int piso = Utils.validateIntField(textPiso.Text, "Piso");
             String ubicacion = Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem, "Ubicacion");
-
-            Habitacion habitacionAModificar = new Habitacion(this.habitacion.getIdHabitacion(), activa, numero, piso, ubicacion);
+            String descripcion = textDescripcion.Text;
+            Habitacion habitacionAModificar = new Habitacion(this.habitacion.getIdHabitacion(), activa, numero, piso, ubicacion, descripcion);
             habitacionAModificar.setHotel(this.habitacion.getHotel());
             habitacionAModificar.setTipoHabitacion(tipoHabitacion);
 
