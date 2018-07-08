@@ -34,13 +34,13 @@ namespace FrbaHotel.AbmHabitacion
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.comboBoxEstados = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAltaHabitacion = new System.Windows.Forms.Button();
             this.labelTipoHabitacion = new System.Windows.Forms.Label();
             this.buttonModificarHabitacion = new System.Windows.Forms.Button();
             this.comboBoxTipoHabitacion = new System.Windows.Forms.ComboBox();
             this.buttonBajaHabitacion = new System.Windows.Forms.Button();
-            this.buttonBbuscarHoteles = new System.Windows.Forms.Button();
+            this.buttonBuscar = new System.Windows.Forms.Button();
             this.registroHabitaciones = new System.Windows.Forms.DataGridView();
             this.textNumero = new System.Windows.Forms.TextBox();
             this.labelNumero = new System.Windows.Forms.Label();
@@ -54,13 +54,13 @@ namespace FrbaHotel.AbmHabitacion
             // 
             this.groupBox2.Controls.Add(this.comboBoxEstados);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.buttonLimpiar);
             this.groupBox2.Controls.Add(this.buttonAltaHabitacion);
             this.groupBox2.Controls.Add(this.labelTipoHabitacion);
             this.groupBox2.Controls.Add(this.buttonModificarHabitacion);
             this.groupBox2.Controls.Add(this.comboBoxTipoHabitacion);
             this.groupBox2.Controls.Add(this.buttonBajaHabitacion);
-            this.groupBox2.Controls.Add(this.buttonBbuscarHoteles);
+            this.groupBox2.Controls.Add(this.buttonBuscar);
             this.groupBox2.Controls.Add(this.registroHabitaciones);
             this.groupBox2.Controls.Add(this.textNumero);
             this.groupBox2.Controls.Add(this.labelNumero);
@@ -92,14 +92,14 @@ namespace FrbaHotel.AbmHabitacion
             this.label2.TabIndex = 33;
             this.label2.Text = "Estado";
             // 
-            // button1
+            // buttonLimpiar
             // 
-            this.button1.Location = new System.Drawing.Point(398, 70);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(161, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Limpiar";
-            this.button1.Click += new System.EventHandler(this.limpiarBusquedaYResultados);
+            this.buttonLimpiar.Location = new System.Drawing.Point(223, 68);
+            this.buttonLimpiar.Name = "buttonLimpiar";
+            this.buttonLimpiar.Size = new System.Drawing.Size(161, 23);
+            this.buttonLimpiar.TabIndex = 7;
+            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.Click += new System.EventHandler(this.limpiarBusquedaYResultados);
             // 
             // buttonAltaHabitacion
             // 
@@ -150,14 +150,14 @@ namespace FrbaHotel.AbmHabitacion
             this.buttonBajaHabitacion.UseVisualStyleBackColor = true;
             this.buttonBajaHabitacion.Click += new System.EventHandler(this.buttonBajaHabitacion_Click);
             // 
-            // buttonBbuscarHoteles
+            // buttonBuscar
             // 
-            this.buttonBbuscarHoteles.Location = new System.Drawing.Point(223, 70);
-            this.buttonBbuscarHoteles.Name = "buttonBbuscarHoteles";
-            this.buttonBbuscarHoteles.Size = new System.Drawing.Size(161, 23);
-            this.buttonBbuscarHoteles.TabIndex = 6;
-            this.buttonBbuscarHoteles.Text = "Buscar";
-            this.buttonBbuscarHoteles.Click += new System.EventHandler(this.buttonBbuscarHoteles_Click);
+            this.buttonBuscar.Location = new System.Drawing.Point(398, 68);
+            this.buttonBuscar.Name = "buttonBuscar";
+            this.buttonBuscar.Size = new System.Drawing.Size(161, 23);
+            this.buttonBuscar.TabIndex = 6;
+            this.buttonBuscar.Text = "Buscar";
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBbuscarHoteles_Click);
             // 
             // registroHabitaciones
             // 
@@ -214,6 +214,7 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // ABMHabitacion
             // 
+            this.AcceptButton = this.buttonBuscar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(603, 601);
@@ -243,7 +244,7 @@ namespace FrbaHotel.AbmHabitacion
         private Button buttonAltaHabitacion;
         private Button buttonModificarHabitacion;
         private Button buttonBajaHabitacion;
-        private Button buttonBbuscarHoteles;
+        private Button buttonBuscar;
         private DataGridView registroHabitaciones;
         private Label labelTipoHabitacion;
         private ComboBox comboBoxTipoHabitacion;
@@ -251,7 +252,7 @@ namespace FrbaHotel.AbmHabitacion
         private Label labelNumero;
         private TextBox textPiso;
         private Label labelPiso;
-        private Button button1;
+        private Button buttonLimpiar;
         private ComboBox comboBoxEstados;
         private Label label2;
 

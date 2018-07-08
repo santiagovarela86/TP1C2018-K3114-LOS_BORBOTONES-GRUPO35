@@ -105,6 +105,7 @@ namespace FrbaHotel.Modelo
         public String Ubicacion { get { return this.getUbicacion(); } }
         public String TipoHabitacion { get { return this.getTipoHabitacion().getDescripcion(); } }
         public Boolean Activa { get { return this.getActiva(); } }
+        public String Descripcion { get { return this.getDescripcion(); } }
         //public String Hotel { get { return this.getHotel().getNombre(); } }
     }
 }
