@@ -395,7 +395,7 @@ namespace FrbaHotel.Repositorios
                 sqlCommand.CommandText+=" AND REG.idRegimen=@idRegimen ";
             }
 
-            sqlCommand.CommandText += " GROUP BY HAB.idHabitacion, REG.idRegimen, HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion " +
+            sqlCommand.CommandText += " GROUP BY HAB.idHabitacion, REG.idRegimen, HAB.Activa,HAB.Numero,HAB.Piso,HAB.Ubicacion,HAB.idHotel,HAB.idTipoHabitacion,HAB.Descripcion " +
                 " ORDER BY HAB.idHabitacion;";
 
             sqlConnection.Open();

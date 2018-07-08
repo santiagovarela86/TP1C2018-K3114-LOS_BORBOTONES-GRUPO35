@@ -119,6 +119,7 @@
             this.dataGridReserva.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridReserva.Size = new System.Drawing.Size(422, 73);
             this.dataGridReserva.TabIndex = 8;
+
             // 
             // buttonBuscar
             // 

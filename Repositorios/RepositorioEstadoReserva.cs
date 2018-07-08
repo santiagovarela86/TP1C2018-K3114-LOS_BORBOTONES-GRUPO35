@@ -44,7 +44,7 @@ namespace FrbaHotel.Repositorios
             {
                 int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
                 String tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
-                DateTime fecha = DateTime.Parse(reader.GetString(reader.GetOrdinal("Fecha")));
+                DateTime fecha = reader.SafeGetDateTime(reader.GetOrdinal("Fecha"));
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
                 Usuario usuario = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("IdUsuario")));
                 Reserva reserva = repoReserva.getById(reader.GetInt32(reader.GetOrdinal("IdReserva")));
