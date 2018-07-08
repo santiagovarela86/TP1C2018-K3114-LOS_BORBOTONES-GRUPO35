@@ -42,7 +42,7 @@
             // labelRoles
             // 
             this.labelRoles.AutoSize = true;
-            this.labelRoles.Location = new System.Drawing.Point(9, 31);
+            this.labelRoles.Location = new System.Drawing.Point(9, 33);
             this.labelRoles.Name = "labelRoles";
             this.labelRoles.Size = new System.Drawing.Size(34, 13);
             this.labelRoles.TabIndex = 0;
@@ -51,7 +51,7 @@
             // labelHoteles
             // 
             this.labelHoteles.AutoSize = true;
-            this.labelHoteles.Location = new System.Drawing.Point(244, 31);
+            this.labelHoteles.Location = new System.Drawing.Point(11, 150);
             this.labelHoteles.Name = "labelHoteles";
             this.labelHoteles.Size = new System.Drawing.Size(43, 13);
             this.labelHoteles.TabIndex = 1;
@@ -73,22 +73,22 @@
             this.dataGridRoles.MultiSelect = false;
             this.dataGridRoles.Name = "dataGridRoles";
             this.dataGridRoles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridRoles.Size = new System.Drawing.Size(232, 236);
+            this.dataGridRoles.Size = new System.Drawing.Size(693, 91);
             this.dataGridRoles.TabIndex = 3;
             // 
             // dataGridHoteles
             // 
             this.dataGridHoteles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridHoteles.Location = new System.Drawing.Point(247, 53);
+            this.dataGridHoteles.Location = new System.Drawing.Point(9, 170);
             this.dataGridHoteles.MultiSelect = false;
             this.dataGridHoteles.Name = "dataGridHoteles";
             this.dataGridHoteles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridHoteles.Size = new System.Drawing.Size(455, 236);
+            this.dataGridHoteles.Size = new System.Drawing.Size(693, 255);
             this.dataGridHoteles.TabIndex = 4;
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(239, 295);
+            this.buttonOK.Location = new System.Drawing.Point(279, 440);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 5;
@@ -98,7 +98,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(438, 295);
+            this.buttonCancel.Location = new System.Drawing.Point(360, 440);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 6;
@@ -111,7 +111,7 @@
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(714, 330);
+            this.ClientSize = new System.Drawing.Size(714, 475);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.dataGridHoteles);
