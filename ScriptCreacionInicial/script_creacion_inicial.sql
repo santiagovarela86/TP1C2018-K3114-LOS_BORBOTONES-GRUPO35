@@ -949,6 +949,7 @@ CREATE TABLE LOS_BORBOTONES.Habitacion (
 	Activa				BIT				DEFAULT 1,
 	Numero				INT	NOT NULL,
 	Piso				INT	NOT NULL,
+	Descripcion			VARCHAR(500),
 	Ubicacion			NVARCHAR(50)	NOT NULL,
 	idHotel				INT				NOT NULL,
 	idTipoHabitacion	INT				NOT NULL,	
