@@ -16,6 +16,7 @@ using FrbaHotel.AbmHabitacion;
 using FrbaHotel.RegistrarEstadia;
 using FrbaHotel.FacturarEstadia;
 using FrbaHotel.RegistrarConsumible;
+using FrbaHotel.AbmReserva;
 
 namespace FrbaHotel
 {
@@ -188,6 +189,19 @@ namespace FrbaHotel
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (RecepcionABMReserva formRecepcionABMReserva = new RecepcionABMReserva(this.getSesion()))
+            {
+                var resultFormRecepcionABMReserva = formRecepcionABMReserva.ShowDialog();
+
+                if (resultFormRecepcionABMReserva == DialogResult.OK)
+                {
+                    //Hago algo con el return value
+                }
+            }
         }
     }
 }

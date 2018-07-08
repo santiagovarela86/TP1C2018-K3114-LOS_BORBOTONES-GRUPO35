@@ -82,7 +82,7 @@ namespace FrbaHotel.AbmReserva
             // labelTipoHabitacion
             // 
             this.labelTipoHabitacion.AutoSize = true;
-            this.labelTipoHabitacion.Location = new System.Drawing.Point(368, 44);
+            this.labelTipoHabitacion.Location = new System.Drawing.Point(343, 81);
             this.labelTipoHabitacion.Name = "labelTipoHabitacion";
             this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
             this.labelTipoHabitacion.TabIndex = 24;
@@ -90,7 +90,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // comboBoxTipoHabitacion
             // 
-            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(419, 38);
+            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(394, 75);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
             this.comboBoxTipoHabitacion.TabIndex = 23;
@@ -209,11 +209,11 @@ namespace FrbaHotel.AbmReserva
             this.groupHabitacionesDisponibles.TabStop = false;
             this.groupHabitacionesDisponibles.Text = "Habitaciones disponibles";
             // 
-            // groupBox1
+            // groupRegimenesDelHotel
             // 
             this.groupRegimenesDelHotel.Controls.Add(this.regimenesDisponiblesGrid);
             this.groupRegimenesDelHotel.Location = new System.Drawing.Point(12, 251);
-            this.groupRegimenesDelHotel.Name = "groupBox1";
+            this.groupRegimenesDelHotel.Name = "groupRegimenesDelHotel";
             this.groupRegimenesDelHotel.Size = new System.Drawing.Size(232, 198);
             this.groupRegimenesDelHotel.TabIndex = 42;
             this.groupRegimenesDelHotel.TabStop = false;

@@ -149,6 +149,12 @@
     <Compile Include="AbmReserva\ModificarReserva.Designer.cs">
       <DependentUpon>ModificarReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmReserva\RecepcionABMReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmReserva\RecepcionABMReserva.Designer.cs">
+      <DependentUpon>RecepcionABMReserva.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmReserva\VincularCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -364,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\ModificarReserva.resx">
       <DependentUpon>ModificarReserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmReserva\RecepcionABMReserva.resx">
+      <DependentUpon>RecepcionABMReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmReserva\VincularCliente.resx">
       <DependentUpon>VincularCliente.cs</DependentUpon>

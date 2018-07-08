@@ -18,6 +18,14 @@ namespace FrbaHotel.AbmReserva
     {
 
         private Usuario usuario;
+        private Sesion sesion;
+        public EditarReserva(Sesion sesion)
+        {
+            this.sesion = sesion;
+            this.usuario = sesion != null ? sesion.getUsuario() : null;
+            InitializeComponent();
+        }
+
         public EditarReserva(Usuario usuario)
         {
             this.usuario = usuario;
@@ -45,6 +53,12 @@ namespace FrbaHotel.AbmReserva
 
                 if (reserva != null)
                 {
+
+                    if (sesion != null && reserva.getHotel().getIdHotel() != sesion.getHotel().getIdHotel())
+                    {
+                        MessageBox.Show("La reserva buscada no corresponde al hotel " + sesion.getHotel().getNombre(), "Editar reserva");
+                        return;
+                    }
 
                     List<EstadoReserva> estadosDeLaReserva = reserva.getEstados();
                     List<String> estadosNoModificables = new List<String>(new String[] { "RCC", "RCR", "RCNS", "RCE", "RCI", "RF" });
@@ -78,6 +92,8 @@ namespace FrbaHotel.AbmReserva
                     reservas.Add(reserva);
                     dataGridReserva.DataSource = reservas;
 
+                }else{
+                    MessageBox.Show("No se ha encontrado la reserva.", "Editar reserva");
                 }
             }catch(RequestInvalidoException exception){
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados");

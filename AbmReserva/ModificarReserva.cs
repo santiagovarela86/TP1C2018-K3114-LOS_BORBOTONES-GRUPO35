@@ -18,6 +18,12 @@ namespace FrbaHotel.AbmReserva
 
         private Reserva reserva;
         private Usuario usuario;
+        private Sesion sesion;
+
+        private ModificarReserva(Reserva reserva, Sesion sesion) : this(reserva, sesion.getUsuario())
+        {
+            this.sesion = sesion;
+        }
         public ModificarReserva(Reserva reserva, Usuario usuario)
         {
             this.reserva = reserva;
@@ -84,6 +90,12 @@ namespace FrbaHotel.AbmReserva
 
             comboBoxTipoHabitacion.SelectedValue = "";
             comboBoxTipoHabitacion.SelectedIndex = -1;
+
+            if (sesion != null && sesion.getHotel() != null)
+            {
+                this.comboBoxHotel.Visible = false;
+                this.labelHotel.Visible = false;
+            }
         }
 
         private void eventHandlerHotelComboBox(object sender, EventArgs e)
