@@ -35,7 +35,7 @@
             // 
             // rechazarReservaButton
             // 
-            this.rechazarReservaButton.Location = new System.Drawing.Point(359, 364);
+            this.rechazarReservaButton.Location = new System.Drawing.Point(561, 485);
             this.rechazarReservaButton.Name = "rechazarReservaButton";
             this.rechazarReservaButton.Size = new System.Drawing.Size(135, 23);
             this.rechazarReservaButton.TabIndex = 29;
@@ -44,7 +44,7 @@
             // 
             // modificarReservaButton
             // 
-            this.modificarReservaButton.Location = new System.Drawing.Point(156, 364);
+            this.modificarReservaButton.Location = new System.Drawing.Point(358, 485);
             this.modificarReservaButton.Name = "modificarReservaButton";
             this.modificarReservaButton.Size = new System.Drawing.Size(135, 23);
             this.modificarReservaButton.TabIndex = 28;
@@ -64,7 +64,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(661, 470);
+            this.ClientSize = new System.Drawing.Size(992, 638);
             this.Controls.Add(this.labelInformacionDeModificacion);
             this.Controls.Add(this.rechazarReservaButton);
             this.Controls.Add(this.modificarReservaButton);
