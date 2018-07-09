@@ -177,6 +177,7 @@
             // 
             // comboBoxRegimen
             // 
+            this.comboBoxRegimen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRegimen.Location = new System.Drawing.Point(73, 51);
             this.comboBoxRegimen.Name = "comboBoxRegimen";
             this.comboBoxRegimen.Size = new System.Drawing.Size(174, 21);
@@ -193,6 +194,7 @@
             // 
             // comboBoxHotel
             // 
+            this.comboBoxHotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxHotel.Location = new System.Drawing.Point(73, 22);
             this.comboBoxHotel.Name = "comboBoxHotel";
             this.comboBoxHotel.Size = new System.Drawing.Size(174, 21);
@@ -210,6 +212,7 @@
             // 
             // comboBoxTipoHabitacion
             // 
+            this.comboBoxTipoHabitacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(98, 82);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(147, 21);

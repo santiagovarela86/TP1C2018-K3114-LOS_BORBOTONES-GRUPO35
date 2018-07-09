@@ -46,6 +46,7 @@
             // textMotivo
             // 
             this.textMotivo.Location = new System.Drawing.Point(21, 49);
+            this.textMotivo.MaxLength = 45;
             this.textMotivo.Multiline = true;
             this.textMotivo.Name = "textMotivo";
             this.textMotivo.Size = new System.Drawing.Size(238, 183);

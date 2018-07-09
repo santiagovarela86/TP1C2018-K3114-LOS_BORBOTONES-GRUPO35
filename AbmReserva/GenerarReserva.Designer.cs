@@ -90,6 +90,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // comboBoxTipoHabitacion
             // 
+            this.comboBoxTipoHabitacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(109, 72);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(135, 21);
@@ -106,6 +107,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // comboBoxHotel
             // 
+            this.comboBoxHotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxHotel.Location = new System.Drawing.Point(70, 8);
             this.comboBoxHotel.Name = "comboBoxHotel";
             this.comboBoxHotel.Size = new System.Drawing.Size(174, 21);
@@ -123,6 +125,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // comboBoxRegimen
             // 
+            this.comboBoxRegimen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRegimen.Location = new System.Drawing.Point(70, 39);
             this.comboBoxRegimen.Name = "comboBoxRegimen";
             this.comboBoxRegimen.Size = new System.Drawing.Size(174, 21);
