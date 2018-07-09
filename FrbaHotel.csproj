@@ -136,6 +136,16 @@
     <Compile Include="AbmReserva\GenerarReserva.Designer.cs">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListadoEstadistico\HomeListado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ConectorSQL.cs" />
+    <Compile Include="ListadoEstadistico\ListadoEstadistico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modelo\HabitacionDisponible.cs" />
     <Compile Include="AbmReserva\EditarReserva.cs">
       <SubType>Form</SubType>
@@ -207,10 +217,10 @@
     <Compile Include="FacturarEstadia\FacturarEstadias.Designer.cs">
       <DependentUpon>FacturarEstadias.cs</DependentUpon>
     </Compile>
-    <Compile Include="FuncionesAdicionales.cs">
+    <Compile Include="PantallaPrincipal\FuncionesAdicionales.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FuncionesAdicionales.Designer.cs">
+    <Compile Include="PantallaPrincipal\FuncionesAdicionales.Designer.cs">
       <DependentUpon>FuncionesAdicionales.cs</DependentUpon>
     </Compile>
     <Compile Include="Excepciones\NoExisteIDException.cs" />
@@ -219,12 +229,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerarModificacionReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListadoEstadistico\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\FormLogin.cs">
@@ -289,10 +293,10 @@
     <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\TipoHabitacion.cs" />
     <Compile Include="Modelo\Usuario.cs" />
-    <Compile Include="PantallaPrincipal.cs">
+    <Compile Include="PantallaPrincipal\PantallaPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PantallaPrincipal.Designer.cs">
+    <Compile Include="PantallaPrincipal\PantallaPrincipal.Designer.cs">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -389,7 +393,7 @@
     <EmbeddedResource Include="FacturarEstadia\FacturarEstadias.resx">
       <DependentUpon>FacturarEstadias.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FuncionesAdicionales.resx">
+    <EmbeddedResource Include="PantallaPrincipal\FuncionesAdicionales.resx">
       <DependentUpon>FuncionesAdicionales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\FormLogin.resx">
@@ -398,7 +402,7 @@
     <EmbeddedResource Include="Login\SeleccionRolYHotel.resx">
       <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PantallaPrincipal.resx">
+    <EmbeddedResource Include="PantallaPrincipal\PantallaPrincipal.resx">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
