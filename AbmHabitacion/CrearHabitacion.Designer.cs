@@ -55,6 +55,7 @@ namespace FrbaHotel.AbmHabitacion
             // textNumero
             // 
             this.textNumero.Location = new System.Drawing.Point(61, 34);
+            this.textNumero.MaxLength = 9;
             this.textNumero.Name = "textNumero";
             this.textNumero.Size = new System.Drawing.Size(100, 20);
             this.textNumero.TabIndex = 1;
@@ -72,6 +73,7 @@ namespace FrbaHotel.AbmHabitacion
             // textPiso
             // 
             this.textPiso.Location = new System.Drawing.Point(292, 34);
+            this.textPiso.MaxLength = 9;
             this.textPiso.Name = "textPiso";
             this.textPiso.Size = new System.Drawing.Size(100, 20);
             this.textPiso.TabIndex = 2;
@@ -88,6 +90,7 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // comboBoxUbicacion
             // 
+            this.comboBoxUbicacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxUbicacion.Location = new System.Drawing.Point(292, 94);
             this.comboBoxUbicacion.Name = "comboBoxUbicacion";
             this.comboBoxUbicacion.Size = new System.Drawing.Size(100, 21);
@@ -104,6 +107,7 @@ namespace FrbaHotel.AbmHabitacion
             // 
             // comboBoxTipoHabitacion
             // 
+            this.comboBoxTipoHabitacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(61, 94);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
             this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
@@ -141,6 +145,7 @@ namespace FrbaHotel.AbmHabitacion
             // textDescripcion
             // 
             this.textDescripcion.Location = new System.Drawing.Point(81, 139);
+            this.textDescripcion.MaxLength = 500;
             this.textDescripcion.Multiline = true;
             this.textDescripcion.Name = "textDescripcion";
             this.textDescripcion.Size = new System.Drawing.Size(196, 115);

@@ -181,6 +181,7 @@ namespace FrbaHotel.AbmHabitacion
             // textNumero
             // 
             this.textNumero.Location = new System.Drawing.Point(67, 30);
+            this.textNumero.MaxLength = 9;
             this.textNumero.Name = "textNumero";
             this.textNumero.Size = new System.Drawing.Size(71, 20);
             this.textNumero.TabIndex = 1;
@@ -198,6 +199,7 @@ namespace FrbaHotel.AbmHabitacion
             // textPiso
             // 
             this.textPiso.Location = new System.Drawing.Point(253, 30);
+            this.textPiso.MaxLength = 9;
             this.textPiso.Name = "textPiso";
             this.textPiso.Size = new System.Drawing.Size(78, 20);
             this.textPiso.TabIndex = 2;
