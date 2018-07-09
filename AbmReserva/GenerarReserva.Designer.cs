@@ -55,7 +55,7 @@ namespace FrbaHotel.AbmReserva
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(342, 139);
+            this.label2.Location = new System.Drawing.Point(256, 42);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 22;
@@ -64,7 +64,7 @@ namespace FrbaHotel.AbmReserva
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 139);
+            this.label1.Location = new System.Drawing.Point(253, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 21;
@@ -72,9 +72,9 @@ namespace FrbaHotel.AbmReserva
             // 
             // buscarHabitacionesButton
             // 
-            this.buscarHabitacionesButton.Location = new System.Drawing.Point(98, 210);
+            this.buscarHabitacionesButton.Location = new System.Drawing.Point(259, 71);
             this.buscarHabitacionesButton.Name = "buscarHabitacionesButton";
-            this.buscarHabitacionesButton.Size = new System.Drawing.Size(192, 23);
+            this.buscarHabitacionesButton.Size = new System.Drawing.Size(193, 23);
             this.buscarHabitacionesButton.TabIndex = 18;
             this.buscarHabitacionesButton.Text = "Buscar habitaciones disponibles";
             this.buscarHabitacionesButton.Click += new System.EventHandler(this.buscarHabitaciones_Click);
@@ -82,23 +82,23 @@ namespace FrbaHotel.AbmReserva
             // labelTipoHabitacion
             // 
             this.labelTipoHabitacion.AutoSize = true;
-            this.labelTipoHabitacion.Location = new System.Drawing.Point(343, 81);
+            this.labelTipoHabitacion.Location = new System.Drawing.Point(12, 75);
             this.labelTipoHabitacion.Name = "labelTipoHabitacion";
-            this.labelTipoHabitacion.Size = new System.Drawing.Size(37, 13);
+            this.labelTipoHabitacion.Size = new System.Drawing.Size(88, 13);
             this.labelTipoHabitacion.TabIndex = 24;
-            this.labelTipoHabitacion.Text = "Tipo : ";
+            this.labelTipoHabitacion.Text = "Tipo Habitacion: ";
             // 
             // comboBoxTipoHabitacion
             // 
-            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(394, 75);
+            this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(109, 72);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
-            this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(100, 21);
+            this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(135, 21);
             this.comboBoxTipoHabitacion.TabIndex = 23;
             // 
             // labelHotel
             // 
             this.labelHotel.AutoSize = true;
-            this.labelHotel.Location = new System.Drawing.Point(37, 38);
+            this.labelHotel.Location = new System.Drawing.Point(12, 11);
             this.labelHotel.Name = "labelHotel";
             this.labelHotel.Size = new System.Drawing.Size(35, 13);
             this.labelHotel.TabIndex = 31;
@@ -106,7 +106,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // comboBoxHotel
             // 
-            this.comboBoxHotel.Location = new System.Drawing.Point(85, 35);
+            this.comboBoxHotel.Location = new System.Drawing.Point(70, 8);
             this.comboBoxHotel.Name = "comboBoxHotel";
             this.comboBoxHotel.Size = new System.Drawing.Size(174, 21);
             this.comboBoxHotel.TabIndex = 30;
@@ -115,7 +115,7 @@ namespace FrbaHotel.AbmReserva
             // labelRegimen
             // 
             this.labelRegimen.AutoSize = true;
-            this.labelRegimen.Location = new System.Drawing.Point(37, 83);
+            this.labelRegimen.Location = new System.Drawing.Point(12, 42);
             this.labelRegimen.Name = "labelRegimen";
             this.labelRegimen.Size = new System.Drawing.Size(52, 13);
             this.labelRegimen.TabIndex = 33;
@@ -123,7 +123,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // comboBoxRegimen
             // 
-            this.comboBoxRegimen.Location = new System.Drawing.Point(85, 80);
+            this.comboBoxRegimen.Location = new System.Drawing.Point(70, 39);
             this.comboBoxRegimen.Name = "comboBoxRegimen";
             this.comboBoxRegimen.Size = new System.Drawing.Size(174, 21);
             this.comboBoxRegimen.TabIndex = 32;
@@ -138,19 +138,19 @@ namespace FrbaHotel.AbmReserva
             this.habitacionesDisponiblesGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.habitacionesDisponiblesGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.habitacionesDisponiblesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.habitacionesDisponiblesGrid.Location = new System.Drawing.Point(6, 19);
+            this.habitacionesDisponiblesGrid.Location = new System.Drawing.Point(12, 19);
             this.habitacionesDisponiblesGrid.Name = "habitacionesDisponiblesGrid";
             this.habitacionesDisponiblesGrid.ReadOnly = true;
             this.habitacionesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.habitacionesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(451, 175);
+            this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(677, 190);
             this.habitacionesDisponiblesGrid.TabIndex = 34;
             this.habitacionesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.habitaciones_cellClick);
             // 
             // reservarHabitacionButton
             // 
             this.reservarHabitacionButton.Enabled = false;
-            this.reservarHabitacionButton.Location = new System.Drawing.Point(227, 481);
+            this.reservarHabitacionButton.Location = new System.Drawing.Point(277, 455);
             this.reservarHabitacionButton.Name = "reservarHabitacionButton";
             this.reservarHabitacionButton.Size = new System.Drawing.Size(192, 23);
             this.reservarHabitacionButton.TabIndex = 35;
@@ -172,29 +172,29 @@ namespace FrbaHotel.AbmReserva
             this.regimenesDisponiblesGrid.ReadOnly = true;
             this.regimenesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.regimenesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.regimenesDisponiblesGrid.Size = new System.Drawing.Size(207, 170);
+            this.regimenesDisponiblesGrid.Size = new System.Drawing.Size(677, 85);
             this.regimenesDisponiblesGrid.TabIndex = 36;
             this.regimenesDisponiblesGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.regimenesDisponiblesGrid_CellContentClick);
             // 
             // limpiarButton
             // 
-            this.limpiarButton.Location = new System.Drawing.Point(355, 210);
+            this.limpiarButton.Location = new System.Drawing.Point(458, 71);
             this.limpiarButton.Name = "limpiarButton";
-            this.limpiarButton.Size = new System.Drawing.Size(192, 23);
+            this.limpiarButton.Size = new System.Drawing.Size(76, 23);
             this.limpiarButton.TabIndex = 37;
-            this.limpiarButton.Text = "Limpiar filtros";
+            this.limpiarButton.Text = "Limpiar";
             this.limpiarButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // calendarioDesde
             // 
-            this.calendarioDesde.Location = new System.Drawing.Point(98, 139);
+            this.calendarioDesde.Location = new System.Drawing.Point(333, 8);
             this.calendarioDesde.Name = "calendarioDesde";
             this.calendarioDesde.Size = new System.Drawing.Size(200, 20);
             this.calendarioDesde.TabIndex = 39;
             // 
             // calendarioHasta
             // 
-            this.calendarioHasta.Location = new System.Drawing.Point(419, 139);
+            this.calendarioHasta.Location = new System.Drawing.Point(333, 39);
             this.calendarioHasta.Name = "calendarioHasta";
             this.calendarioHasta.Size = new System.Drawing.Size(200, 20);
             this.calendarioHasta.TabIndex = 40;
@@ -202,9 +202,9 @@ namespace FrbaHotel.AbmReserva
             // groupHabitacionesDisponibles
             // 
             this.groupHabitacionesDisponibles.Controls.Add(this.habitacionesDisponiblesGrid);
-            this.groupHabitacionesDisponibles.Location = new System.Drawing.Point(250, 251);
+            this.groupHabitacionesDisponibles.Location = new System.Drawing.Point(12, 233);
             this.groupHabitacionesDisponibles.Name = "groupHabitacionesDisponibles";
-            this.groupHabitacionesDisponibles.Size = new System.Drawing.Size(463, 203);
+            this.groupHabitacionesDisponibles.Size = new System.Drawing.Size(701, 216);
             this.groupHabitacionesDisponibles.TabIndex = 41;
             this.groupHabitacionesDisponibles.TabStop = false;
             this.groupHabitacionesDisponibles.Text = "Habitaciones disponibles";
@@ -212,18 +212,19 @@ namespace FrbaHotel.AbmReserva
             // groupRegimenesDelHotel
             // 
             this.groupRegimenesDelHotel.Controls.Add(this.regimenesDisponiblesGrid);
-            this.groupRegimenesDelHotel.Location = new System.Drawing.Point(12, 251);
+            this.groupRegimenesDelHotel.Location = new System.Drawing.Point(12, 110);
             this.groupRegimenesDelHotel.Name = "groupRegimenesDelHotel";
-            this.groupRegimenesDelHotel.Size = new System.Drawing.Size(232, 198);
+            this.groupRegimenesDelHotel.Size = new System.Drawing.Size(701, 117);
             this.groupRegimenesDelHotel.TabIndex = 42;
             this.groupRegimenesDelHotel.TabStop = false;
             this.groupRegimenesDelHotel.Text = "Regimenes del hotel";
             // 
             // GenerarReserva
             // 
+            this.AcceptButton = this.reservarHabitacionButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(725, 536);
+            this.ClientSize = new System.Drawing.Size(725, 487);
             this.Controls.Add(this.groupRegimenesDelHotel);
             this.Controls.Add(this.groupHabitacionesDisponibles);
             this.Controls.Add(this.calendarioHasta);
@@ -240,7 +241,7 @@ namespace FrbaHotel.AbmReserva
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buscarHabitacionesButton);
             this.Name = "GenerarReserva";
-            this.Text = "GenerarReserva";
+            this.Text = "Generar Reserva";
             ((System.ComponentModel.ISupportInitialize)(this.habitacionesDisponiblesGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesDisponiblesGrid)).EndInit();
             this.groupHabitacionesDisponibles.ResumeLayout(false);

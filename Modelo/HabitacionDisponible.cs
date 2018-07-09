@@ -30,6 +30,11 @@ namespace FrbaHotel.AbmReserva
             return this.regimen;
         }
 
+        public int getNumeroHabitacion()
+        {
+            return this.getHabitacion().getNumero();
+        }
+
         public String Regimen { get { return this.regimen.getDescripcion(); } }
         public decimal PrecioPorNoche
         {

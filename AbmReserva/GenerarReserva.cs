@@ -95,7 +95,7 @@ namespace FrbaHotel.AbmReserva
             else
             {
                 Hotel hotel = (Hotel)this.comboBoxHotel.SelectedItem;
-                this.comboBoxRegimen.DataSource = hotel.getRegimenes();
+                this.comboBoxRegimen.DataSource = hotel.getRegimenes().OrderBy(r => r.getDescripcion()).ToList();
                 this.comboBoxRegimen.Enabled = true;
                 this.comboBoxRegimen.DisplayMember = "Descripcion";
                 this.comboBoxRegimen.ValueMember = "Descripcion";
@@ -135,7 +135,7 @@ namespace FrbaHotel.AbmReserva
                 regimenSeleccionado = regimenParam;
           
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            List<HabitacionDisponible> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,null);
+            List<HabitacionDisponible> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,null).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
 
 
 
@@ -241,9 +241,16 @@ namespace FrbaHotel.AbmReserva
             limpiarFiltros();
         }
 
-
-
-
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 
 

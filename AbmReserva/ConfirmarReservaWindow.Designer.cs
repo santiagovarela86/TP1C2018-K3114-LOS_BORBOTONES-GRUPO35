@@ -68,7 +68,7 @@
             this.Controls.Add(this.confirmarReservaButton);
             this.Controls.Add(this.labelTipoHabitacion);
             this.Name = "ConfirmarReservaWindow";
-            this.Text = "ConfirmarReservaWindow";
+            this.Text = "Confirmar Reserva";
             this.ResumeLayout(false);
             this.PerformLayout();
 

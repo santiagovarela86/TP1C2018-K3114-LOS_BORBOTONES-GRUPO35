@@ -119,7 +119,6 @@
             this.dataGridReserva.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridReserva.Size = new System.Drawing.Size(422, 73);
             this.dataGridReserva.TabIndex = 8;
-
             // 
             // buttonBuscar
             // 
@@ -142,7 +141,7 @@
             this.Controls.Add(this.labelCodigoReserva);
             this.Controls.Add(this.textCodigoReserva);
             this.Name = "EditarReserva";
-            this.Text = "EditarReserva";
+            this.Text = "Editar Reserva";
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridReserva)).EndInit();

@@ -70,15 +70,15 @@ namespace FrbaHotel.AbmHotel
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.calendarioHasta = new System.Windows.Forms.DateTimePicker();
+            this.calendarioDesde = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.buttonSalir = new System.Windows.Forms.Button();
             this.buttonLimpiarDatos = new System.Windows.Forms.Button();
             this.descripcionBajaLabel = new System.Windows.Forms.Label();
             this.descripcionBajaText = new System.Windows.Forms.TextBox();
             this.bajaHotel = new System.Windows.Forms.Button();
-            this.calendarioDesde = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.calendarioHasta = new System.Windows.Forms.DateTimePicker();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -99,6 +99,38 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Baja Hotel";
+            // 
+            // calendarioHasta
+            // 
+            this.calendarioHasta.Location = new System.Drawing.Point(95, 148);
+            this.calendarioHasta.Name = "calendarioHasta";
+            this.calendarioHasta.Size = new System.Drawing.Size(200, 20);
+            this.calendarioHasta.TabIndex = 44;
+            // 
+            // calendarioDesde
+            // 
+            this.calendarioDesde.Location = new System.Drawing.Point(95, 87);
+            this.calendarioDesde.Name = "calendarioDesde";
+            this.calendarioDesde.Size = new System.Drawing.Size(200, 20);
+            this.calendarioDesde.TabIndex = 43;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(23, 154);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 42;
+            this.label2.Text = "Fecha Hasta:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 41;
+            this.label1.Text = "Fecha Desde:";
             // 
             // buttonSalir
             // 
@@ -136,44 +168,12 @@ namespace FrbaHotel.AbmHotel
             // 
             // bajaHotel
             // 
-            this.bajaHotel.Location = new System.Drawing.Point(246, 271);
+            this.bajaHotel.Location = new System.Drawing.Point(198, 271);
             this.bajaHotel.Name = "bajaHotel";
-            this.bajaHotel.Size = new System.Drawing.Size(75, 23);
+            this.bajaHotel.Size = new System.Drawing.Size(172, 23);
             this.bajaHotel.TabIndex = 0;
-            this.bajaHotel.Text = "Baja";
+            this.bajaHotel.Text = "Agregar Cierre Temporal";
             this.bajaHotel.Click += new System.EventHandler(this.bajaHotel_Click);
-            // 
-            // calendarioDesde
-            // 
-            this.calendarioDesde.Location = new System.Drawing.Point(95, 87);
-            this.calendarioDesde.Name = "calendarioDesde";
-            this.calendarioDesde.Size = new System.Drawing.Size(200, 20);
-            this.calendarioDesde.TabIndex = 43;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(23, 154);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
-            this.label2.TabIndex = 42;
-            this.label2.Text = "Fecha Hasta:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 87);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 41;
-            this.label1.Text = "Fecha Desde:";
-            // 
-            // calendarioHasta
-            // 
-            this.calendarioHasta.Location = new System.Drawing.Point(95, 148);
-            this.calendarioHasta.Name = "calendarioHasta";
-            this.calendarioHasta.Size = new System.Drawing.Size(200, 20);
-            this.calendarioHasta.TabIndex = 44;
             // 
             // DropHotel
             // 
@@ -183,7 +183,7 @@ namespace FrbaHotel.AbmHotel
             this.ClientSize = new System.Drawing.Size(586, 334);
             this.Controls.Add(this.groupBox1);
             this.Name = "DropHotel";
-            this.Text = "Baja temporal de Hoteles";
+            this.Text = "Crear Cierre Temporal del Hotel";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
