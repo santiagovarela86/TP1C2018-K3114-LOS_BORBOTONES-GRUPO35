@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Modelo;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace FrbaHotel.RegistrarEstadia
         {
             //CHECK IN
             int codReserva = 0;
-            DateTime date = DateTime.Today;
+            DateTime date = Utils.getSystemDatetimeNow();
             int estadoValidez = 0;
             //DateTime dateTest = new DateTime(2017, 1, 1);
             RepositorioReserva repositorioReserva = new RepositorioReserva();
@@ -94,7 +95,7 @@ namespace FrbaHotel.RegistrarEstadia
             
             int idEstadia = 0;
             //si se va antes de la fecha de salida tengo que poner bien los dias porque dsp en la factura se hace algo con esto
-            DateTime date = DateTime.Today;
+            DateTime date = Utils.getSystemDatetimeNow();
             RepositorioEstadia repoEstadia = new RepositorioEstadia();
             RepositorioReserva repoReserva = new RepositorioReserva();
             if (textBox1.Text != "")

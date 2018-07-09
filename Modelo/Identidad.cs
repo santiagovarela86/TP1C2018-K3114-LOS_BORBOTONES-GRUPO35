@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace FrbaHotel.Modelo
         private String tipoDocumento = "";
         private String numeroDocumento = "";
         private String mail = "";
-        private DateTime fechaNacimiento = new DateTime();
+        private DateTime fechaNacimiento = Utils.getSystemDatetimeNow();
         private String nacionalidad = "";
         private String telefono = "";
         private List<Direccion> direcciones = new List<Direccion>();

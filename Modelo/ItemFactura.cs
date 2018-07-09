@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace FrbaHotel.Modelo
         private Consumible consumible = null;
         private float cantidad = 0;
         private float monto = 0;
-        private DateTime fechaCreacion = new DateTime();
+        private DateTime fechaCreacion = Utils.getSystemDatetimeNow();
 
         public ItemFactura(int idItemFactura, int idConsumible, float cantidad, float monto, DateTime fechaCreacion,int idFactura)
         {

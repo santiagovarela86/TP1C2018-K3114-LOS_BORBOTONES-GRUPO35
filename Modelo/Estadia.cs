@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,8 @@ namespace FrbaHotel.Modelo
         private decimal cantidadNoches = 0;
         private Usuario usuarioCheckIn = null;
         private Usuario usuarioCheckOut = null;
-        private DateTime fechaEntrada = new DateTime();
-        private DateTime fechaSalida = new DateTime();
+        private DateTime fechaEntrada =  Utils.getSystemDatetimeNow();
+        private DateTime fechaSalida =  Utils.getSystemDatetimeNow();
         private Boolean facturada = false;
 
         public Estadia(int idEstadia, Usuario usuarioCheckIn, Usuario usuarioCheckOut,
