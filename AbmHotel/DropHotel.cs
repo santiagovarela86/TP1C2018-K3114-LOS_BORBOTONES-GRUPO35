@@ -5,6 +5,7 @@ using System.Drawing;
 using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using FrbaHotel.Excepciones;
+using FrbaHotel.Commons;
 
 namespace FrbaHotel.AbmHotel
 {
@@ -240,8 +241,8 @@ namespace FrbaHotel.AbmHotel
         }
 
         private void limpiarDatos() {
-            calendarioDesde.Value = DateTime.Now.Date;
-            calendarioHasta.Value = DateTime.Now.Date.AddDays(1);
+            calendarioDesde.Value = Utils.getSystemDatetimeNow().Date;
+            calendarioHasta.Value = Utils.getSystemDatetimeNow().Date.AddDays(1);
             descripcionBajaText.Text = "";
         }
     }

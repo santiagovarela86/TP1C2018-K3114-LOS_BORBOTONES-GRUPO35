@@ -80,7 +80,7 @@ namespace FrbaHotel.AbmReserva
                     }
 
 
-                    DateTime fechaAhora = DateTime.Now;
+                    DateTime fechaAhora = Utils.getSystemDatetimeNow();
                     DateTime fechaInicio = reserva.getFechaDesde();
 
 

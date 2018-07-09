@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace FrbaHotel.Repositorios
             String tipoDocumento = "";
             String numeroDocumento = "";
             String mail = "";
-            DateTime fechaNacimiento = new DateTime();
+            DateTime fechaNacimiento = Utils.getSystemDatetimeNow();
             String nacionalidad = "";
             String telefono = "";
             List<Direccion> direcciones = new List<Direccion>();

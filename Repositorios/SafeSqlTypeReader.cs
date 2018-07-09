@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using FrbaHotel.Commons;
 
 namespace FrbaHotel.Modelo
 {
@@ -24,7 +25,7 @@ namespace FrbaHotel.Modelo
         {
             if (!reader.IsDBNull(colIndex))
                 return reader.GetDateTime(colIndex);
-            return new DateTime();
+            return Utils.getSystemDatetimeNow();
         }
 
         //Metodo de extensión del SqlDataReader

@@ -171,7 +171,7 @@ namespace FrbaHotel
         }
         private void RegistrarConsumible_Click(object sender, EventArgs e)
         {
-            using (AltaConsumible formularioRegistrarConsumible = new AltaConsumible())
+            using (Consumibles formularioRegistrarConsumible = new Consumibles(this.getSesion()))
             {
                 var resultFormRegistrarConsumible = formularioRegistrarConsumible.ShowDialog();
 

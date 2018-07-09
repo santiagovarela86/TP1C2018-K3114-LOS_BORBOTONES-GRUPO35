@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using System;
 using System.Collections.Generic;
@@ -168,10 +169,9 @@ namespace FrbaHotel.Repositorios
 
             float cant = 1;//pongo cant siempre en 1 ya que no marco mas que 1 solo consumible y lo mismo con la habitacion
             float monto = 0;//va a ser siempre el precio del cons ya que no marco mas que 1 solo consumible
-            DateTime fecha = new DateTime();
+            DateTime fecha = Utils.getSystemDatetimeNow();
             int idItemFactura = 0;
-            int idConsumible = 0;
-            fecha = DateTime.Today;               
+            int idConsumible = 0;          
                   
             //traigo el numero de factura asi le sumo 1 que sera el nuevo.
             numeroFactura = getLastNumeroFactura()+1 ;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace FrbaHotel.Modelo
         private Estadia estadia = null;
         private Reserva reserva = null;
         private int numeroFactura = 0;
-        private DateTime fechaFacturacion = new DateTime();
+        private DateTime fechaFacturacion =  Utils.getSystemDatetimeNow();
         private float total = 0;
         private int puntos = 0;
         private int vencTarjeta = 0;

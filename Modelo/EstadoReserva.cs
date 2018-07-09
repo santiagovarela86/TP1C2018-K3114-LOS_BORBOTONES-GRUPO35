@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaHotel.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace FrbaHotel.Modelo
         private Usuario usuario = null;
         private Reserva reserva = null;
         private String tipoEstado = "";
-        private DateTime fecha = new DateTime();
+        private DateTime fecha = Utils.getSystemDatetimeNow();
         private String descripcion = "";
 
         public EstadoReserva(int idEstadoReserva, Usuario usuario, Reserva reserva, String tipoEstado, DateTime fecha, String descripcion)

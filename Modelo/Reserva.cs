@@ -1,4 +1,5 @@
 ﻿using FrbaHotel.AbmReserva;
+using FrbaHotel.Commons;
 using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,9 @@ namespace FrbaHotel.Modelo
         private Cliente cliente = null;
         private decimal codigoReserva = 0;
         private decimal diasAlojados = 0;
-        private DateTime fechaCreacion = new DateTime();
-        private DateTime fechaDesde = new DateTime();
-        private DateTime fechaHasta = new DateTime();
+        private DateTime fechaCreacion = Utils.getSystemDatetimeNow();
+        private DateTime fechaDesde = Utils.getSystemDatetimeNow();
+        private DateTime fechaHasta = Utils.getSystemDatetimeNow();
         private List<EstadoReserva> estados = new List<EstadoReserva>();
 
         public Reserva(int idReserva, Hotel hotel, Estadia estadia, Regimen regimen, Cliente cliente, decimal codigoReserva,
@@ -47,7 +48,7 @@ namespace FrbaHotel.Modelo
             this.hotel = habitacionDeUnHotel.getHotel();
             this.regimen = regimen;
             this.cliente = clienteDueñoDeLaReserva;
-            this.fechaCreacion = DateTime.Now;
+            this.fechaCreacion = Utils.getSystemDatetimeNow();
             this.fechaDesde = fechaInicio;
             this.fechaHasta = fechaFin;
             this.diasAlojados = diasAlojados;
