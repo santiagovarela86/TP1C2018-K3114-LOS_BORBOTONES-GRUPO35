@@ -56,7 +56,7 @@ namespace FrbaHotel.AbmReserva
 
                     if (sesion != null && reserva.getHotel().getIdHotel() != sesion.getHotel().getIdHotel())
                     {
-                        MessageBox.Show("La reserva buscada no corresponde al hotel " + sesion.getHotel().getNombre(), "Editar reserva");
+                        MessageBox.Show("La reserva buscada no corresponde al hotel " + sesion.getHotel().getNombre() + ".", "Error al editar reserva");
                         return;
                     }
 
@@ -65,8 +65,8 @@ namespace FrbaHotel.AbmReserva
                     bool noPuedeModificar = estadosDeLaReserva.Exists(estado => estadosNoModificables.Exists(estadoNoModificable => estadoNoModificable.Equals(estado.getTipoEstado())));
 
                     if (noPuedeModificar)
-                    { 
-                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado final", "Editar reserva");
+                    {
+                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado final.", "Error al editar reserva");
                         return;
                     }
 
@@ -82,7 +82,7 @@ namespace FrbaHotel.AbmReserva
                     }
                     else
                     {
-                        MessageBox.Show("Ha pasado el plazo maximo de 24 para modificar/cancelar su reserva.", "Editar reserva");
+                        MessageBox.Show("Las reservas pueden ser editadas hasta 24 horas antes de la fecha de inicio de la misma.", "Error al editar reserva");
                         return;
                     }
 
@@ -92,8 +92,10 @@ namespace FrbaHotel.AbmReserva
                     reservas.Add(reserva);
                     dataGridReserva.DataSource = reservas;
 
+                    this.AcceptButton = this.buttonModificar;
+
                 }else{
-                    MessageBox.Show("No se ha encontrado la reserva.", "Editar reserva");
+                    MessageBox.Show("No se ha encontrado la reserva que intenta modificar.", "Error al editar reserva");
                 }
             }catch(RequestInvalidoException exception){
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados");
@@ -112,7 +114,7 @@ namespace FrbaHotel.AbmReserva
             using (CancelarReserva form = new CancelarReserva(reserva, usuario))
             {
                 var result = form.ShowDialog();
-                this.Close();
+                //this.Close();
             }
         }
 
@@ -127,9 +129,26 @@ namespace FrbaHotel.AbmReserva
             using (ModificarReserva form = new ModificarReserva(reserva,usuario))
             {
                 var result = form.ShowDialog();
-                this.Close();
+                //this.Close();
             }
         }
+
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         
     }
 

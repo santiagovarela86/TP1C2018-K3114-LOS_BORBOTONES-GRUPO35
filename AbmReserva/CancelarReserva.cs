@@ -28,9 +28,11 @@ namespace FrbaHotel.AbmReserva
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-
             try
             {
+                //no se valida el string que ingreso como motivo
+                //el repositorio reserva no tira excepciones si falla al actualizar la reserva
+                //y este codigo no las agarra esas excepciones
                 String motivo = textMotivo.Text;
                 RepositorioReserva repoReserva = new RepositorioReserva();
                 repoReserva.cancelarReserva(reserva, usuario, motivo);
@@ -41,6 +43,22 @@ namespace FrbaHotel.AbmReserva
             {
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados");
             }
+        }
+
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

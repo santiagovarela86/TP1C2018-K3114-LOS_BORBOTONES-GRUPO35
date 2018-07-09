@@ -31,6 +31,7 @@
             this.labelMotivo = new System.Windows.Forms.Label();
             this.textMotivo = new System.Windows.Forms.TextBox();
             this.buttonCancelar = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelMotivo
@@ -52,24 +53,35 @@
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(102, 252);
+            this.buttonCancelar.Location = new System.Drawing.Point(21, 252);
             this.buttonCancelar.Name = "buttonCancelar";
-            this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancelar.Size = new System.Drawing.Size(106, 23);
             this.buttonCancelar.TabIndex = 13;
-            this.buttonCancelar.Text = "Cancelar";
+            this.buttonCancelar.Text = "Cancelar Reserva";
             this.buttonCancelar.UseVisualStyleBackColor = true;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(161, 252);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(98, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "Salir";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // CancelarReserva
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 300);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.labelMotivo);
             this.Controls.Add(this.textMotivo);
             this.Name = "CancelarReserva";
-            this.Text = "CancelarReserva";
+            this.Text = "Cancelar Reserva";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -80,5 +92,6 @@
         private System.Windows.Forms.Label labelMotivo;
         private System.Windows.Forms.TextBox textMotivo;
         private System.Windows.Forms.Button buttonCancelar;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -179,22 +179,22 @@
             // 
             // botonReservar
             // 
-            this.botonReservar.Location = new System.Drawing.Point(239, 20);
+            this.botonReservar.Enabled = false;
+            this.botonReservar.Location = new System.Drawing.Point(303, 19);
             this.botonReservar.Name = "botonReservar";
-            this.botonReservar.Size = new System.Drawing.Size(75, 23);
+            this.botonReservar.Size = new System.Drawing.Size(174, 23);
             this.botonReservar.TabIndex = 10;
-            this.botonReservar.Text = "Reservar";
+            this.botonReservar.Text = "Reservar Cliente Seleccionado";
             this.botonReservar.UseVisualStyleBackColor = true;
             this.botonReservar.Click += new System.EventHandler(this.botonReservar_Click);
-            this.botonReservar.Enabled = false;
             // 
             // botonAlta
             // 
-            this.botonAlta.Location = new System.Drawing.Point(9, 20);
+            this.botonAlta.Location = new System.Drawing.Point(99, 19);
             this.botonAlta.Name = "botonAlta";
-            this.botonAlta.Size = new System.Drawing.Size(75, 23);
+            this.botonAlta.Size = new System.Drawing.Size(149, 23);
             this.botonAlta.TabIndex = 9;
-            this.botonAlta.Text = "Alta";
+            this.botonAlta.Text = "Alta Nuevo Cliente...";
             this.botonAlta.UseVisualStyleBackColor = true;
             this.botonAlta.Click += new System.EventHandler(this.buttonAlta_click);
             // 
@@ -207,7 +207,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "VincularCliente";
-            this.Text = "VincularCliente";
+            this.Text = "Vincular Cliente";
             this.Load += new System.EventHandler(this.ListadoClientes_Load);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

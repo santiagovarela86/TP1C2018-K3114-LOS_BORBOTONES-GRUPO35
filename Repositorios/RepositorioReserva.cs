@@ -157,6 +157,8 @@ namespace FrbaHotel.Repositorios
         }
 
 
+        //el repositorio reserva no tira excepciones si falla al actualizar la reserva
+        //pincha la aplicacion si falla
         public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
 
             decimal codigoReserva= reserva.getCodigoReserva();

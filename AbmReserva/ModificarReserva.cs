@@ -31,12 +31,13 @@ namespace FrbaHotel.AbmReserva
             InitializeComponent();
             List<Habitacion> habitaciones = reserva.getHabitaciones();
             Regimen regimen=reserva.getRegimen();
-            this.labelHotelActual.Text = "Hotel reservado : " + reserva.getHotel().getNombre();
-            this.labelRegimenActual.Text = "Regimen reservado : " + regimen.getDescripcion();
+            this.labelHotelActual.Text += " " + reserva.getHotel().getNombre();
+            this.labelRegimenActual.Text += " " + regimen.getDescripcion();
             this.labelFechaDesde.Text += " " + reserva.getFechaDesde();
             this.labelFechaHasta.Text += " " + reserva.getFechaHasta();
+            this.buttonModificarReserva.Enabled = false;
 
-            this.dataGridView1.DataSource=buildHabitacionesReservadas(habitaciones,regimen);
+            this.dataGridView1.DataSource=buildHabitacionesReservadas(habitaciones,regimen).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
             init();
         }
 
@@ -149,7 +150,7 @@ namespace FrbaHotel.AbmReserva
                 regimenSeleccionado = regimenParam;
 
                 RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-                List<HabitacionDisponible> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,reserva);
+                List<HabitacionDisponible> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,reserva).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
 
 
 
@@ -271,6 +272,17 @@ namespace FrbaHotel.AbmReserva
                 var result = form.ShowDialog();
                 this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
             }
+        }
+
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
 
