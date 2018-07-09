@@ -140,7 +140,7 @@ namespace FrbaHotel.AbmUsuario
                 try
                 {
                     repoUser.create(user);
-                    MessageBox.Show("Usuario creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Usuario creado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.limpiarPantalla();
                 }
                 catch (ElementoYaExisteException exc)
@@ -150,7 +150,7 @@ namespace FrbaHotel.AbmUsuario
             }
             else
             {
-                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para crear el usuario, incluyendo los roles que el usuario desempeña y los hoteles donde el usuario trabaja", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para crear el usuario, incluyendo los roles que el usuario desempeña y los hoteles donde el usuario trabaja.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

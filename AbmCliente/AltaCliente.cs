@@ -111,7 +111,7 @@ namespace FrbaHotel.AbmCliente
                 try
                 {
                     repoCliente.create(cliente);
-                    MessageBox.Show("Cliente creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Cliente creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.limpiarPantalla();
                 }
                 catch (ElementoYaExisteException exc)

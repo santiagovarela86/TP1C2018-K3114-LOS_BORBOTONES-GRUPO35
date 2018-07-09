@@ -141,7 +141,7 @@ namespace FrbaHotel.AbmReserva
                     limpiarRegimenesDataGrid();
                     this.regimenesDisponiblesGrid.DataSource = null;
                     this.habitacionesDisponiblesGrid.DataSource = null;
-                    MessageBox.Show("No se encontraron habitaciones disponibles" ,"Generar Reserva");
+                    MessageBox.Show("No se encontraron habitaciones disponibles.", "Generar Reserva", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 

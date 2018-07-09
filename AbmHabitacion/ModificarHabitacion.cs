@@ -62,22 +62,22 @@ namespace FrbaHotel.AbmHabitacion
             if (repoHabitacion.existeNumeroHabitacion(habitacionAModificar) 
              && !numero.Equals(this.habitacion.getNumero()))
             {
-                MessageBox.Show("Ya existe una habitación con ese número, elija otro", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Ya existe una habitación con ese número, elija otro.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
                 try
                 {
                     repoHabitacion.update(habitacionAModificar);
-                
-                    MessageBox.Show("Habitacion modificada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+
+                    MessageBox.Show("Habitacion modificada.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     habitacion = habitacionAModificar;
 
                     this.initFields();
                 }
                 catch (RequestInvalidoException exception1)
                 {
-                    MessageBox.Show(exception1.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                    MessageBox.Show(exception1.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

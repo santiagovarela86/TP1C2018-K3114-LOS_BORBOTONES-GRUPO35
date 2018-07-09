@@ -65,7 +65,7 @@ namespace FrbaHotel.AbmReserva
 
                     if (sesion != null && reserva.getHotel().getIdHotel() != sesion.getHotel().getIdHotel())
                     {
-                        MessageBox.Show("La reserva buscada no corresponde al hotel " + sesion.getHotel().getNombre() + ".", "Error al editar reserva");
+                        MessageBox.Show("La reserva buscada no corresponde al hotel " + sesion.getHotel().getNombre() + ".", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -75,7 +75,7 @@ namespace FrbaHotel.AbmReserva
 
                     if (noPuedeModificar)
                     {
-                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado final.", "Error al editar reserva");
+                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado final.", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -91,7 +91,7 @@ namespace FrbaHotel.AbmReserva
                     }
                     else
                     {
-                        MessageBox.Show("Las reservas pueden ser editadas hasta 24 horas antes de la fecha de inicio de la misma.", "Error al editar reserva");
+                        MessageBox.Show("Las reservas pueden ser editadas hasta 24 horas antes de la fecha de inicio de la misma.", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -106,12 +106,12 @@ namespace FrbaHotel.AbmReserva
                 }
                 else
                 {
-                    MessageBox.Show("No se ha encontrado la reserva que intenta modificar.", "Error al editar reserva");
+                    MessageBox.Show("No se ha encontrado la reserva que intenta modificar.", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (RequestInvalidoException exception)
             {
-                MessageBox.Show(exception.Message, "Verifique los datos ingresados");
+                MessageBox.Show(exception.Message, "Verifique los datos ingresados", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }

@@ -106,7 +106,7 @@ namespace FrbaHotel.AbmCliente
                 try
                 {
                     repoCliente.update(updatedClient);
-                    MessageBox.Show("Cliente actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Cliente actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     //ME TRAIGO EL USUARIO ACTUALIZADO
                     this.cliente = repoCliente.getById(cliente.getIdCliente());

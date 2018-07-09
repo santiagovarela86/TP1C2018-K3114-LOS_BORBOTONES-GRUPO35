@@ -82,7 +82,7 @@ namespace FrbaHotel.Login
             if (!this.dataGridRoles.SelectedRows.Count.Equals(1) || 
                 !this.dataGridHoteles.SelectedRows.Count.Equals(1))
             {
-                MessageBox.Show("Debe elegir un rol y un hotel antes de continuar", "Error Seleccionando Hotel y Rol", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Debe elegir un rol y un hotel antes de continuar.", "Error Seleccionando Hotel y Rol", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             //SI ELIGE OK
             else 

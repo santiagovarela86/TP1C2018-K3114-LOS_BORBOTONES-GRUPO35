@@ -510,16 +510,16 @@ namespace FrbaHotel.AbmHotel
                 Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),pais,ciudad,calle,numeroCalle,0,"");
                 Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
                 repoHotel.update(hotelToUpdateSave);
-                MessageBox.Show("Hotel modificado", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Hotel modificado correctamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hotel = hotelToUpdateSave;
             }
             catch (NoExisteIDException exceptionUpdateHotel)
             {
-                MessageBox.Show(exceptionUpdateHotel.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show(exceptionUpdateHotel.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (RequestInvalidoException reqInvalido )
             {
-                MessageBox.Show(reqInvalido.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show(reqInvalido.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

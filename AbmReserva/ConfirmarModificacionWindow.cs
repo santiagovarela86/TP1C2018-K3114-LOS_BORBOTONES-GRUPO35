@@ -114,12 +114,12 @@ namespace FrbaHotel.AbmReserva
             try
             {
                 repoReserva.modificarReserva(reserva);
-                MessageBox.Show("Reserva modificada exitosamente \n Codigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Reserva modificada exitosamente \n Codigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         

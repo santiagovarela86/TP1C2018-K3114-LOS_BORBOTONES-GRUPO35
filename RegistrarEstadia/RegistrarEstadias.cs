@@ -49,7 +49,7 @@ namespace FrbaHotel.RegistrarEstadia
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
                     //Traigo otra pantalla para los huespedes
-                    MessageBox.Show("La reserva es valida", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("La reserva es valida.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     using (VincularHuespedes form = new VincularHuespedes(codReserva))
                       {
                           var result = form.ShowDialog();
@@ -62,22 +62,22 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 2)
                 {
-                    MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In o ya fue ingresada, generar otra nueva ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In o ya fue ingresada, generar otra nueva.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
 
                 }
                 else if (estadoValidez == 3)
                 {
-                    MessageBox.Show("La reserva ingresada no corresponde al hotel al que el usuario tiene permisos ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La reserva ingresada no corresponde al hotel al que el usuario tiene permisos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else if (estadoValidez == 4)
                 {
-                    MessageBox.Show("No se pudo dar de alta la estadia", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo dar de alta la estadia.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Por favor ingresar codigo de reserva y username", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por favor ingresar codigo de reserva y username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
 
@@ -109,7 +109,7 @@ namespace FrbaHotel.RegistrarEstadia
                 EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
                 repoEstadoReserva.update(estadoReserva);
 
-                MessageBox.Show("Check out correcto, proceder a facturar Estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
             }
             //llamo a facturar estadia para que sea mas happy path

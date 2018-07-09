@@ -39,17 +39,17 @@ namespace FrbaHotel.ListadoEstadistico
         {
             if (string.IsNullOrEmpty(anio.Text))
             {
-                MessageBox.Show("Debe seleccionar un año", "Listado estadistico");
+                MessageBox.Show("Debe seleccionar un año.", "Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (string.IsNullOrEmpty(trimestre.Text))
             {
-                MessageBox.Show("Debe seleccionar un trimestre", "Listado estadistico");
+                MessageBox.Show("Debe seleccionar un trimestre.", "Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error));
                 return;
             }
             if (string.IsNullOrEmpty(tipoListado.Text))
             {
-                MessageBox.Show("Debe seleccionar el tipo de listado","Listado estadistico");
+                MessageBox.Show("Debe seleccionar el tipo de listado.","Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error));
                 return;
             }
             String tipoSeleccionado = "";
