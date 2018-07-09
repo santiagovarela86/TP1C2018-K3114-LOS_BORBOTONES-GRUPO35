@@ -70,11 +70,11 @@ namespace FrbaHotel.FacturarEstadia
              if (estadia.getCantidadNoches()==0 | !estadoReserva.getTipoEstado().Equals("RCE") | estadia.getFacturada()==true)
              {
                  if(estadoReserva.getTipoEstado().Equals("RCI"))
-                     MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                     MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  if (estadoReserva.getTipoEstado().Equals("RF"))
-                     MessageBox.Show("La estadia ya fue facturada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                     MessageBox.Show("La estadia ya fue facturada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  if (estadia.getFacturada() == true)
-                     MessageBox.Show("la estadia ingresada ya fue facturada ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                     MessageBox.Show("La estadia ingresada ya fue facturada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  if (estadia.getCantidadNoches() == 0)
                     MessageBox.Show("La estadia ingresada no es correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  
@@ -93,7 +93,7 @@ namespace FrbaHotel.FacturarEstadia
              }
             }else
             {
-                MessageBox.Show("por favor ingresar id de estadia ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por favor ingresar ID de estadia.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }            
             
         }
@@ -119,11 +119,11 @@ namespace FrbaHotel.FacturarEstadia
                 //tomo la informacion de la estadia, consumibles por estadia y datos de pago
                 idFactura = repoFact.facturar(estadias, consumiblesXEstadia, tipoPago,nombreTarjeta,nroTarjeta,codSegTarjeta,vencTarjeta);
                 if (idFactura == 0)
-                    MessageBox.Show("Error cargando algun item de la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error cargando item de factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (idFactura == 2)
-                    MessageBox.Show("Error cargando la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error cargando la factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (idFactura == 1)
-                    MessageBox.Show("estadia facturada correctamente ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Estadia facturada correctamente.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         
                 
             }else
@@ -144,18 +144,18 @@ namespace FrbaHotel.FacturarEstadia
                 }
                 if (vencTarjeta==0 |codSegTarjeta==0| nroTarjeta==0 | nombreTarjeta=="")
                 {
-                    MessageBox.Show("por favor completar todos los campos de informacion de tarjeta ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Por favor completar todos los campos de informacion de tarjeta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.ListadoFacturarEstadia_Load(sender, e);    
                 }else
                 {
                     //tomo la informacion de la estadia, consumibles por estadia y datos de pago
                     idFactura= repoFact.facturar(estadias, consumiblesXEstadia, tipoPago,nombreTarjeta,nroTarjeta,codSegTarjeta,vencTarjeta);
                     if (idFactura==0)
-                        MessageBox.Show("Error cargando algun item de la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error cargando item de factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     if (idFactura == 2)
-                        MessageBox.Show("Error cargando la factura ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error cargando la factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     if (idFactura == 1)
-                         MessageBox.Show("estadia facturada correctamente ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                         MessageBox.Show("Estadia facturada correctamente.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }    
         }

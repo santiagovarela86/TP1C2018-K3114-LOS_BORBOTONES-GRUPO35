@@ -200,13 +200,13 @@ namespace FrbaHotel.AbmHotel
 
             if (fechaDesde > fechaHasta)
             {
-                MessageBox.Show("La fecha desde no puede ser superior a la fecha hasta", "Error");
+                MessageBox.Show("La fecha inicio no puede ser superior a la fecha final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
                 if (descripcionBajaText.Text.Equals(""))
                 {
-                    MessageBox.Show("Debe ingresar una descripción válida para el cierre temporal", "Error");
+                    MessageBox.Show("Debe ingresar una descripción válida para el cierre temporal.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -215,13 +215,14 @@ namespace FrbaHotel.AbmHotel
                         CierreTemporal cierreTemporal = new CierreTemporal(0, fechaDesde, fechaHasta, descripcionBajaText.Text, hotelBaja);
                         RepositorioHotel repoHotel = new RepositorioHotel();
                         repoHotel.crearBajaTemporal(cierreTemporal);
-                        MessageBox.Show("Cierre temporal creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                        MessageBox.Show("Cierre temporal creado exitosamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.buttonLimpiarDatos_Click(sender, e);
 
                     }
-                    catch (RequestInvalidoException exception)
+                    //catch (RequestInvalidoException exception)
+                    catch (Exception exception)
                     {
-                        MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                        MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     }
                 }

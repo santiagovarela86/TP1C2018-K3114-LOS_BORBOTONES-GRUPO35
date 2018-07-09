@@ -110,7 +110,7 @@ namespace FrbaHotel.AbmHotel
             else
             {
                 //MessageBox.Show("Usuario sin permisos para modificar el Hotel seleccionado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MessageBox.Show("Si desea editar este hotel debe elegirlo al iniciar sesión", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Si desea editar este hotel debe elegirlo al iniciar sesión.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

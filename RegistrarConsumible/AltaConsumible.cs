@@ -70,7 +70,7 @@ namespace FrbaHotel.RegistrarConsumible
                 if (idEstadia2 == 0 | consumible == null)
                 {
                     //warning ya que algo esta mal en los datos
-                    MessageBox.Show("Faltan datos para registrar el consumible", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Faltan datos para registrar el consumible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -80,12 +80,12 @@ namespace FrbaHotel.RegistrarConsumible
                     idConsumible = repoConsumible.registrar(consumible);
                     if (idConsumible == consumible.getIdConsumible())
                     {
-                        MessageBox.Show("Consumible Registrado correctamente en la estadia", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Consumible Registrado correctamente en la estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.AltaConsumible_Load(sender, e);
                     }
                     else
                     {
-                        MessageBox.Show("Error al registrar el consumible", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Error al registrar el consumible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.AltaConsumible_Load(sender, e);
                     }
                 }
@@ -97,7 +97,7 @@ namespace FrbaHotel.RegistrarConsumible
                 idConsumible= repoConsumible.create(nuevoConsumible);
                 if (idConsumible!=0)
                     {
-                        MessageBox.Show("Consumible dado de alta", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Consumible dado de alta.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.AltaConsumible_Load(sender, e);
                     }
             }

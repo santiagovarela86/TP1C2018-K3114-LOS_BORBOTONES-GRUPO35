@@ -1463,6 +1463,11 @@ INSERT INTO LOS_BORBOTONES.Categoria(Estrellas, RecargaEstrellas)
 		SELECT  DISTINCT Hotel_CantEstrella, Hotel_Recarga_Estrella
 		FROM gd_esquema.Maestra
 GO
+
+INSERT INTO LOS_BORBOTONES.Categoria(Estrellas, RecargaEstrellas) 
+	VALUES(2, 5)
+GO
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Migracion y Carga de Hotel
 --Se define como FechaInicioActividades, la fecha actual y como Nombre del Hotel Calle+NroCalle

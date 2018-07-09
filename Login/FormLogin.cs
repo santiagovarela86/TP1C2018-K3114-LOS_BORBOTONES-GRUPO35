@@ -42,6 +42,11 @@ namespace FrbaHotel.Login
             {
                 MessageBox.Show(exc1.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            catch (Exception exc2)
+            {
+                MessageBox.Show(exc2.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         public Usuario getUsuarioLogueado()

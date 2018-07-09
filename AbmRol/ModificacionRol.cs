@@ -102,13 +102,14 @@ namespace FrbaHotel.AbmRol
                 try
                 {
                     repositorioRol.update(rol);
-                    MessageBox.Show("Rol actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Rol actualizado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     //ME TRAIGO EL ROL ACTUALIZADO
                     this.rol = repositorioRol.getById(rol.getIdRol());
                     this.inicializarResetear();
                 }
-                catch (NoExisteIDException exc)
+                //catch (NoExisteIDException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

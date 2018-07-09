@@ -82,17 +82,18 @@ namespace FrbaHotel.AbmRol
                 try
                 {
                     repositorioRol.create(rol);
-                    MessageBox.Show("Rol creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Rol creado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.limpiarPantalla();
                 }
-                catch (ElementoYaExisteException exc)
+                //catch (ElementoYaExisteException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Ingrese nombre del Rol y seleccione sus Funcionalidades", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ingrese nombre del Rol y seleccione sus Funcionalidades.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

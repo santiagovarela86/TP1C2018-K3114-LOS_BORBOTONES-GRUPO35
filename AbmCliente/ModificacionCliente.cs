@@ -106,13 +106,14 @@ namespace FrbaHotel.AbmCliente
                 try
                 {
                     repoCliente.update(updatedClient);
-                    MessageBox.Show("Cliente actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Cliente actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     //ME TRAIGO EL USUARIO ACTUALIZADO
                     this.cliente = repoCliente.getById(cliente.getIdCliente());
                     this.resetearDatos();
                 }
-                catch (NoExisteIDException exc)
+                //catch (NoExisteIDException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

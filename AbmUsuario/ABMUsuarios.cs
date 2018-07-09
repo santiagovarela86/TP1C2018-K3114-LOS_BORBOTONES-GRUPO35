@@ -127,7 +127,7 @@ namespace FrbaHotel.AbmUsuario
             }
             else
             {
-                MessageBox.Show("El usuario que desea modificar no trabaja en el mismo Hotel que el usuario logueado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El usuario que desea modificar no trabaja en el mismo Hotel que el usuario logueado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

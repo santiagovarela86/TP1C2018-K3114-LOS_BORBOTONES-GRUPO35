@@ -103,43 +103,63 @@ namespace FrbaHotel.Modelo
 
         public List<Reserva> getReservas()
         {
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            this.reservas = repoReserva.getByIdHotel(this.IdHotel);
+            return this.reservas;
+            /*
             if (this.reservas == null) {
                 RepositorioReserva repoReserva = new RepositorioReserva();
                 this.reservas = repoReserva.getByIdHotel(this.IdHotel);
             }
-            return this.reservas;
+            */            
         }
 
         public List<Regimen> getRegimenes()
         {
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
+            this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
+            return this.regimenes;
 
+            /*
             if (this.regimenes == null)
             {
                 RepositorioRegimen repoRegimen = new RepositorioRegimen();
                 this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
             }
             return this.regimenes;
+            */
         }
 
         public List<Habitacion> getHabitaciones()
         {
+            RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+            this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
+            return this.habitaciones;
 
+            /*
             if (this.habitaciones == null)
             {
                 RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
                 this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
             }
             return this.habitaciones;
+            */
         }
 
         public List<CierreTemporal> getCierresTemporales()
         {
+            RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
+            this.cierresTemporales = repoCierres.getByIdHotel(this);
+            return this.cierresTemporales;
+
+            /* ESTO ASI CACHEA LAS QUERIES...
             if (this.cierresTemporales == null)
             {
                 RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
                 this.cierresTemporales = repoCierres.getByIdHotel(this);
             }
             return this.cierresTemporales;
+            */
         }
 
         public Boolean esNuevo()

@@ -165,20 +165,21 @@ namespace FrbaHotel.AbmUsuario
                 try
                 {
                     repoUser.update(user);
-                    MessageBox.Show("Usuario actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Usuario actualizado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     //ME TRAIGO EL USUARIO ACTUALIZADO
                     this.usuario = repoUser.getById(usuario.getIdUsuario());
                     this.resetearDatos();
                 }
-                catch (NoExisteIDException exc)
+                //catch (NoExisteIDException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para actualizar el usuario, incluyendo los roles que el usuario desempeña y los hoteles donde el usuario trabaja", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para actualizar el usuario, incluyendo los roles que el usuario desempeña y los hoteles donde el usuario trabaja.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -111,17 +111,18 @@ namespace FrbaHotel.AbmCliente
                 try
                 {
                     repoCliente.create(cliente);
-                    MessageBox.Show("Cliente creado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Cliente creado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.limpiarPantalla();
                 }
-                catch (ElementoYaExisteException exc)
+                //catch (ElementoYaExisteException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para crear el Cliente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Verifique haber ingresado todos los datos necesarios para crear el Cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

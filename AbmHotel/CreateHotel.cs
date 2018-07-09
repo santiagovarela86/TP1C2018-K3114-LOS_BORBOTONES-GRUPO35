@@ -394,12 +394,13 @@ namespace FrbaHotel.AbmHotel
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
                 Hotel hotelToUpdateSave = new Hotel(0, categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
                 repoHotel.create(hotelToUpdateSave);
-                MessageBox.Show("Hotel creado exitosamente", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Hotel creado exitosamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.initModificacionHotel();
             }
-            catch (RequestInvalidoException exception)
+            //catch (RequestInvalidoException exception)
+            catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Verifique los datos ingresados");
+                MessageBox.Show(exception.Message, "Verifique los datos ingresados.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

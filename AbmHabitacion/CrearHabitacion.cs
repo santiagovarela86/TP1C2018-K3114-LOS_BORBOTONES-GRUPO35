@@ -61,14 +61,15 @@ namespace FrbaHotel.AbmHabitacion
                 habitacion.setHotel(hotel);
                 habitacion.setTipoHabitacion(tipoHabitacion);
                 repositorioHabitacion.create(habitacion);
-                MessageBox.Show("Habitacion creada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Habitacion creada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 this.limpiarDatos();
 
             }
-            catch (RequestInvalidoException exception)
+            //catch (RequestInvalidoException exception)
+            catch (Exception exception)
             {
-                MessageBox.Show(exception.Message,"Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show(exception.Message,"Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

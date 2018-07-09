@@ -155,7 +155,7 @@ namespace FrbaHotel.AbmReserva
             }
 
             if (!cliente.getActivo()) {
-                MessageBox.Show("El cliente no tiene permitido generar reservas. Seleccione otro cliente para confirmar su reserva por favor", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("El cliente no tiene permitido generar reservas ya que se encuentra dado de baja.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             RepositorioReserva repoReserva = new RepositorioReserva();
@@ -163,12 +163,12 @@ namespace FrbaHotel.AbmReserva
             try
             {
                 repoReserva.create(reserva);
-                MessageBox.Show("Reserva creada exitosamente \nCodigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Reserva creada exitosamente \nCodigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }
