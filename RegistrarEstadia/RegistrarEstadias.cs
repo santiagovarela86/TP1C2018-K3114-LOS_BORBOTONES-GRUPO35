@@ -97,35 +97,39 @@ namespace FrbaHotel.RegistrarEstadia
             DateTime date = DateTime.Today;
             RepositorioEstadia repoEstadia = new RepositorioEstadia();
             RepositorioReserva repoReserva = new RepositorioReserva();
-            if (textBox1.Text != "" )
+            if (textBox1.Text != "")
             {
                 codReserva = int.Parse(textBox1.Text);
                 //consigo del codigo de reserva el idEstadia
                 idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
-                if(idEstadia!=0)
+                if (idEstadia != 0)
                 {
                     //veo que este con RCI
                     String estado = "";
                     estado = repoEstadia.getEstado(codReserva);
-                    if(estado.Equals("RCI"))
-                        {
-                Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
-                repoEstadia.update(estadia);
-                //hago update de EstadoReserva
-                RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
-                int idEstadoReserva=0;
-                Reserva reserva =repoReserva.getIdByIdEstadia(estadia.getIdEstadia());
-                String desc="Reserva Con Egreso";
-                String tipoEstado="RCE";
-                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
-                repoEstadoReserva.update(estadoReserva);
-                            MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
+                    if (estado.Equals("RCI"))
+                    {
+                        Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
+                        repoEstadia.update(estadia);
+                        //hago update de EstadoReserva
+                        RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+                        int idEstadoReserva = 0;
+                        Reserva reserva = repoReserva.getIdByIdEstadia(estadia.getIdEstadia());
+                        String desc = "Reserva Con Egreso";
+                        String tipoEstado = "RCE";
+                        EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
+                        repoEstadoReserva.update(estadoReserva);
+                        MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     else MessageBox.Show("La estadia ingresada no esta actualmente en estado 'Reserva con Ingreso'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                     MessageBox.Show("La estadia ingresada no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un numero de reserva válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             //llamo a facturar estadia para que sea mas happy path
             /*using (AltaFacturaEstadia form = new AltaFacturaEstadia())
