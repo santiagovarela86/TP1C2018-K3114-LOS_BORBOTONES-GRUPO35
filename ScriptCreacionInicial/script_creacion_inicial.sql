@@ -656,7 +656,7 @@ GO
 Se paso como parametros (viendo las fechas de cierre temporal) trimestre = 1, año = 2021
 Funciona ok
 */
-ALTER PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
+CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
 				@trimestre numeric(18,0), @Anio numeric(18,0) 
 	AS		
 	  BEGIN

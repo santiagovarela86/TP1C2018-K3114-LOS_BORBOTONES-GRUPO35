@@ -163,7 +163,7 @@ namespace FrbaHotel.AbmReserva
             try
             {
                 repoReserva.create(reserva);
-                MessageBox.Show("Reserva creada exitosamente \n Codigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Reserva creada exitosamente \nCodigo de reserva: " + reserva.getCodigoReserva(), "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
                 this.Close();
             }
             catch (Exception exception)
