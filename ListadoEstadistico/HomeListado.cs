@@ -26,7 +26,14 @@ namespace FrbaHotel
 
         private void InitializeComponent()
         {
-//            throw new NotImplementedException();
+            this.SuspendLayout();
+            // 
+            // HomeListado
+            // 
+            this.ClientSize = new System.Drawing.Size(426, 347);
+            this.Name = "HomeListado";
+            this.ResumeLayout(false);
+
         }
 
         private void label1_Click(object sender, EventArgs e)

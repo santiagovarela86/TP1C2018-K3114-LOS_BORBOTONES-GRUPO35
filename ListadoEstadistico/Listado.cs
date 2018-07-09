@@ -11,11 +11,11 @@ using System.Data.SqlClient;
 
 namespace FrbaHotel.ListadoEstadistico
 {
-    public partial class ListadoEstadistico : Form
+    public partial class Listado : Form
     {
         SqlDataAdapter sAdapter;
         DataTable dTable;
-        public ListadoEstadistico()
+        public Listado()
         {
             InitializeComponent();
             trimestre.Items.Add("1");

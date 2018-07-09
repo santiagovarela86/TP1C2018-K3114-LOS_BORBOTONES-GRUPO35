@@ -1,6 +1,6 @@
 ﻿namespace FrbaHotel.ListadoEstadistico
 {
-    partial class ListadoEstadistico
+    public partial class Listado
     {
        
         private System.ComponentModel.IContainer components = null;

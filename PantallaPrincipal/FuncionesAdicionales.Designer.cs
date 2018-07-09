@@ -142,6 +142,7 @@
             this.GenerarListadoEstadistico.TabIndex = 10;
             this.GenerarListadoEstadistico.Text = "Listado Estadístico";
             this.GenerarListadoEstadistico.UseVisualStyleBackColor = true;
+            this.GenerarListadoEstadistico.Click += new System.EventHandler(this.GenerarListadoEstadistico_Click);
             // 
             // labelHotel
             // 

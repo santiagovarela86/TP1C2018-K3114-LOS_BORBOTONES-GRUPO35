@@ -17,6 +17,7 @@ using FrbaHotel.RegistrarEstadia;
 using FrbaHotel.FacturarEstadia;
 using FrbaHotel.RegistrarConsumible;
 using FrbaHotel.AbmReserva;
+using FrbaHotel.ListadoEstadistico;
 
 namespace FrbaHotel
 {
@@ -215,6 +216,16 @@ namespace FrbaHotel
             using (EditarReserva modificarReserva = new EditarReserva(sesion))
             {
                 var resultFormLogin = modificarReserva.ShowDialog();
+
+
+            }
+        }
+
+        private void GenerarListadoEstadistico_Click(object sender, EventArgs e)
+        {
+            using (Listado listado= new Listado())
+            {
+                var resultFormLogin = listado.ShowDialog();
 
 
             }
