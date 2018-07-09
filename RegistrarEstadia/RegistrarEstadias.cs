@@ -45,11 +45,15 @@ namespace FrbaHotel.RegistrarEstadia
                 
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
                 estadoValidez = repositorioReserva.GetReservaValida(codReserva, date, this.sesion.getUsuario());
-                if (estadoValidez==1)
+                if (estadoValidez!=2 && estadoValidez!=3 && estadoValidez!=4 && estadoValidez!=0)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
                     //Traigo otra pantalla para los huespedes
-                    MessageBox.Show("La reserva es valida.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show("La reserva es valida, numero de Estadia: ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Check in realizado exitosamente \n Numero de Estadia: " + estadoValidez, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                    DialogResult result1 = MessageBox.Show("¿Hay mas huespedes ademas del cliente que reservo?", "Vinculacion huespedes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result1 == System.Windows.Forms.DialogResult.Yes)
+                    {    
                     using (VincularHuespedes form = new VincularHuespedes(codReserva))
                       {
                           var result = form.ShowDialog();
@@ -59,6 +63,7 @@ namespace FrbaHotel.RegistrarEstadia
 
                           }
                       }
+                }
                 }
                 else if (estadoValidez == 2)
                 {
@@ -97,7 +102,13 @@ namespace FrbaHotel.RegistrarEstadia
                 codReserva = int.Parse(textBox1.Text);
                 //consigo del codigo de reserva el idEstadia
                 idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
-
+                if(idEstadia!=0)
+                {
+                    //veo que este con RCI
+                    String estado = "";
+                    estado = repoEstadia.getEstado(codReserva);
+                    if(estado.Equals("RCI"))
+                        {
                 Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
                 repoEstadia.update(estadia);
                 //hago update de EstadoReserva
@@ -108,8 +119,12 @@ namespace FrbaHotel.RegistrarEstadia
                 String tipoEstado="RCE";
                 EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
                 repoEstadoReserva.update(estadoReserva);
-
-                MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    else MessageBox.Show("La estadia ingresada no esta actualmente en estado 'Reserva con Ingreso'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    MessageBox.Show("La estadia ingresada no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 
             }
             //llamo a facturar estadia para que sea mas happy path
@@ -132,6 +147,15 @@ namespace FrbaHotel.RegistrarEstadia
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+        //ESTO LO PONGO PARA QUE EL NUMERO DE CALLE SOLO PUEDA SER UN NUMERO
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
 
     }

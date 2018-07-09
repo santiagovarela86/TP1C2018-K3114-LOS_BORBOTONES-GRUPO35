@@ -152,7 +152,8 @@ namespace FrbaHotel.RegistrarEstadia
             try
             {
                 repoEstadia.vincularHuespedes(codReserva, clientesElegidos);
-                MessageBox.Show("Check in realizado exitosamente \n Codigo de reserva: " + codReserva, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Check in realizado exitosamente \n Codigo de reserva: " + codReserva, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                MessageBox.Show("Huespedes vinculados correctamente a la reserva. ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (Exception exception)
