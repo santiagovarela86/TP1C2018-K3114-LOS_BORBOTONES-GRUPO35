@@ -164,7 +164,7 @@
             // buttonGenerarReserva
             // 
             this.buttonGenerarReserva.Location = new System.Drawing.Point(532, 12);
-            this.buttonGenerarReserva.Name = "ABMReserva";
+            this.buttonGenerarReserva.Name = "buttonGenerarReserva";
             this.buttonGenerarReserva.Size = new System.Drawing.Size(108, 41);
             this.buttonGenerarReserva.TabIndex = 5;
             this.buttonGenerarReserva.Text = "Reservar...";
@@ -174,7 +174,7 @@
             // buttonModificarReserva
             // 
             this.buttonModificarReserva.Location = new System.Drawing.Point(12, 59);
-            this.buttonModificarReserva.Name = "ABMReserva";
+            this.buttonModificarReserva.Name = "buttonModificarReserva";
             this.buttonModificarReserva.Size = new System.Drawing.Size(120, 41);
             this.buttonModificarReserva.TabIndex = 6;
             this.buttonModificarReserva.Text = "Editar una reserva...";

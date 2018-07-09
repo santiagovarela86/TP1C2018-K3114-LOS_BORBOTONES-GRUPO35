@@ -237,10 +237,10 @@
     <Compile Include="Login\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login\SeleccionRolYHotel.cs">
+    <Compile Include="PantallaPrincipal\SeleccionRolYHotel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login\SeleccionRolYHotel.Designer.cs">
+    <Compile Include="PantallaPrincipal\SeleccionRolYHotel.Designer.cs">
       <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
     </Compile>
     <Compile Include="Modelo\Categoria.cs" />
@@ -399,7 +399,7 @@
     <EmbeddedResource Include="Login\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login\SeleccionRolYHotel.resx">
+    <EmbeddedResource Include="PantallaPrincipal\SeleccionRolYHotel.resx">
       <DependentUpon>SeleccionRolYHotel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PantallaPrincipal\PantallaPrincipal.resx">

@@ -58,13 +58,17 @@ namespace FrbaHotel
 
             labelHotel.Text = "Hotel: " + this.getSesion().getHotel().getNombre();
             labelRol.Text = "Rol: " + this.getSesion().getRol().getNombre();
+
+            this.HabilitarFuncionalidades(this.getSesion().getUsuario());
             
+            /*
             try
             {
-                this.HabilitarFuncionalidades(this.getSesion().getUsuario());
+                
             } catch (Exception exc){
                 MessageBox.Show(exc.Message, "Error al obtener los roles del usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            */
         }
 
         private void HabilitarFuncionalidades(Usuario usuarioLogueado)
@@ -76,8 +80,8 @@ namespace FrbaHotel
             ABMCliente.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMCliente.Name));
             ABMHotel.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMHotel.Name));
             ABMHabitacion.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMHabitacion.Name));
-            buttonGenerarReserva.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(buttonGenerarReserva.Name));
-            buttonModificarReserva.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(buttonModificarReserva.Name));
+            buttonGenerarReserva.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals("ABMReserva"));
+            buttonModificarReserva.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals("ABMReserva"));
             RegistrarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarEstadia.Name));
             RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
             FacturarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(FacturarEstadia.Name));
