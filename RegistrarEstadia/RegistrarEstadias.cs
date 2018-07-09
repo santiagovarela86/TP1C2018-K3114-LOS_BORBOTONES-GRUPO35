@@ -50,7 +50,7 @@ namespace FrbaHotel.RegistrarEstadia
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
                     //Traigo otra pantalla para los huespedes
                     //MessageBox.Show("La reserva es valida, numero de Estadia: ", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    MessageBox.Show("Check in realizado exitosamente \n Numero de Estadia: " + estadoValidez, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES");
+                    MessageBox.Show("Check in realizado exitosamente \nNumero de Estadia: " + estadoValidez, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     DialogResult result1 = MessageBox.Show("¿Hay mas huespedes ademas del cliente que reservo?", "Vinculacion huespedes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                     if (result1 == System.Windows.Forms.DialogResult.Yes)
                     {    
@@ -67,7 +67,7 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 2)
                 {
-                    MessageBox.Show("La reserva ingresada difiere de la Fecha de Check In o ya fue ingresada, generar otra nueva.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No es posible realizar check in sobre la reserva indicada; no está en fecha de realizar check in o ya fue realizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
 
                 }
