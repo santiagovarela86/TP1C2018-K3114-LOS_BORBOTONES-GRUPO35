@@ -59,5 +59,11 @@ namespace FrbaHotel.Login
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void txtUsername_TextChanged(object sender, EventArgs e)
+        {
+            //GUEST NO LOGIN
+            loginButton.Enabled = !txtUsername.Text.ToUpper().Equals("GUEST");
+        }
     }
 }

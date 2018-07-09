@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.login = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // login
+            // loginButton
             // 
-            this.login.Location = new System.Drawing.Point(146, 57);
-            this.login.Name = "login";
-            this.login.Size = new System.Drawing.Size(75, 23);
-            this.login.TabIndex = 3;
-            this.login.Text = "Login";
-            this.login.UseVisualStyleBackColor = true;
-            this.login.Click += new System.EventHandler(this.BotonLoginClick);
+            this.loginButton.Location = new System.Drawing.Point(146, 57);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(75, 23);
+            this.loginButton.TabIndex = 3;
+            this.loginButton.Text = "Login";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.BotonLoginClick);
             // 
             // txtPassword
             // 
@@ -63,6 +63,7 @@
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(148, 20);
             this.txtUsername.TabIndex = 1;
+            this.txtUsername.TextChanged += new System.EventHandler(this.txtUsername_TextChanged);
             // 
             // label1
             // 
@@ -84,7 +85,7 @@
             // 
             // FormLogin
             // 
-            this.AcceptButton = this.login;
+            this.AcceptButton = this.loginButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(232, 88);
@@ -92,7 +93,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtUsername);
             this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.login);
+            this.Controls.Add(this.loginButton);
             this.Name = "FormLogin";
             this.Text = "Login";
             this.ResumeLayout(false);
@@ -102,7 +103,7 @@
 
         #endregion
     
-        private System.Windows.Forms.Button login;
+        private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.TextBox txtPassword;
         public System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Label label1;
