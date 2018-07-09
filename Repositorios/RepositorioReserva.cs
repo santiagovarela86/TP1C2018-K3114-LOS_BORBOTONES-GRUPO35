@@ -445,11 +445,11 @@ namespace FrbaHotel.Repositorios
                                         "DECLARE @codigoReserva decimal(18,0); " + 
                                         "SET @codigoReserva= (SELECT MAX(CodigoReserva) FROM LOS_BORBOTONES.Reserva) +1; " +
                                         "INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde, FechaHasta,DiasAlojados,idHotel,idRegimen,idCliente) " +
-                                        "VALUES(@codigoReserva,GETDATE(),@fechaDesde,@fechaHasta,@diasAlojados,@idHotel,@idRegimen,@idCliente); " +
+                                        "VALUES(@codigoReserva, LOS_BORBOTONES.fn_getDate(),@fechaDesde,@fechaHasta,@diasAlojados,@idHotel,@idRegimen,@idCliente); " +
                                         "SET @idReserva = SCOPE_IDENTITY(); " +
                                         
                                         "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
-                                        "VALUES('RC',GETDATE(),'Reserva Correcta',@idUsuario,@idReserva); " +
+                                        "VALUES('RC', LOS_BORBOTONES.fn_getDate(),'Reserva Correcta',@idUsuario,@idReserva); " +
                                         
                                         getReservaXHabitacionInserts(reserva,sqlCommand) +
                                         
@@ -511,7 +511,7 @@ namespace FrbaHotel.Repositorios
                                         "UPDATE LOS_BORBOTONES.Reserva SET FechaDesde=@fechaDesde, FechaHasta=@fechaHasta,DiasAlojados=@diasAlojados,idHotel=@idHotel,idRegimen=@idRegimen,idCliente=@idCliente WHERE idReserva=@idReserva; " +
 
                                         "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
-                                        "VALUES('RM',GETDATE(),'Reserva Modificada',@idUsuario,@idReserva); " +
+                                        "VALUES('RM', LOS_BORBOTONES.fn_getDate(),'Reserva Modificada',@idUsuario,@idReserva); " +
                                         "DELETE FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente WHERE idReserva=@idReserva; " +
                                         getReservaXHabitacionInserts(reserva, sqlCommand) +
 
@@ -766,7 +766,7 @@ namespace FrbaHotel.Repositorios
              sqlCommand.CommandText =
                  "SELECT idReserva FROM LOS_BORBOTONES.Reserva AS RES WHERE RES.idRegimen = @idRegimen " +
                  "AND RES.idHotel=@idHotel " +
-                 "AND RES.FechaHasta >GETDATE()" +
+                 "AND RES.FechaHasta > LOS_BORBOTONES.fn_getDate()" +
                  "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE WHERE ESRE.idReserva = res.idReserva AND  ESRE.TipoEstado IN ('RCR','RCC','RCNS'));";
 
              sqlConnection.Open();
