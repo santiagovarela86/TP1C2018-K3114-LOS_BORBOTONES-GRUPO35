@@ -104,6 +104,7 @@
             // textBoxUsername
             // 
             this.textBoxUsername.Location = new System.Drawing.Point(68, 26);
+            this.textBoxUsername.MaxLength = 255;
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(156, 20);
             this.textBoxUsername.TabIndex = 1;
@@ -120,6 +121,7 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Location = new System.Drawing.Point(292, 27);
+            this.textBoxPassword.MaxLength = 255;
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(156, 20);
             this.textBoxPassword.TabIndex = 2;
@@ -163,7 +165,8 @@
             // 
             // textBoxNombre
             // 
-            this.textBoxNombre.Location = new System.Drawing.Point(59, 56);
+            this.textBoxNombre.Location = new System.Drawing.Point(59, 53);
+            this.textBoxNombre.MaxLength = 255;
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(165, 20);
             this.textBoxNombre.TabIndex = 4;
@@ -180,6 +183,7 @@
             // textBoxApellido
             // 
             this.textBoxApellido.Location = new System.Drawing.Point(283, 53);
+            this.textBoxApellido.MaxLength = 255;
             this.textBoxApellido.Name = "textBoxApellido";
             this.textBoxApellido.Size = new System.Drawing.Size(165, 20);
             this.textBoxApellido.TabIndex = 5;
@@ -196,6 +200,7 @@
             // textBoxNroDoc
             // 
             this.textBoxNroDoc.Location = new System.Drawing.Point(321, 80);
+            this.textBoxNroDoc.MaxLength = 45;
             this.textBoxNroDoc.Name = "textBoxNroDoc";
             this.textBoxNroDoc.Size = new System.Drawing.Size(127, 20);
             this.textBoxNroDoc.TabIndex = 8;
@@ -213,6 +218,7 @@
             // textBoxMail
             // 
             this.textBoxMail.Location = new System.Drawing.Point(491, 27);
+            this.textBoxMail.MaxLength = 255;
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.Size = new System.Drawing.Size(156, 20);
             this.textBoxMail.TabIndex = 3;
@@ -229,6 +235,7 @@
             // textBoxTelefono
             // 
             this.textBoxTelefono.Location = new System.Drawing.Point(512, 53);
+            this.textBoxTelefono.MaxLength = 45;
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.Size = new System.Drawing.Size(135, 20);
             this.textBoxTelefono.TabIndex = 6;
@@ -246,6 +253,7 @@
             // textBoxCalle
             // 
             this.textBoxCalle.Location = new System.Drawing.Point(365, 103);
+            this.textBoxCalle.MaxLength = 255;
             this.textBoxCalle.Name = "textBoxCalle";
             this.textBoxCalle.Size = new System.Drawing.Size(282, 20);
             this.textBoxCalle.TabIndex = 11;
@@ -271,6 +279,7 @@
             // textBoxNroCalle
             // 
             this.textBoxNroCalle.Location = new System.Drawing.Point(39, 127);
+            this.textBoxNroCalle.MaxLength = 9;
             this.textBoxNroCalle.Name = "textBoxNroCalle";
             this.textBoxNroCalle.Size = new System.Drawing.Size(31, 20);
             this.textBoxNroCalle.TabIndex = 12;
@@ -279,6 +288,7 @@
             // textBoxPiso
             // 
             this.textBoxPiso.Location = new System.Drawing.Point(112, 127);
+            this.textBoxPiso.MaxLength = 9;
             this.textBoxPiso.Name = "textBoxPiso";
             this.textBoxPiso.Size = new System.Drawing.Size(30, 20);
             this.textBoxPiso.TabIndex = 13;
@@ -287,6 +297,7 @@
             // textBoxDepto
             // 
             this.textBoxDepto.Location = new System.Drawing.Point(193, 127);
+            this.textBoxDepto.MaxLength = 50;
             this.textBoxDepto.Name = "textBoxDepto";
             this.textBoxDepto.Size = new System.Drawing.Size(33, 20);
             this.textBoxDepto.TabIndex = 14;
@@ -294,6 +305,7 @@
             // textBoxLocalidad
             // 
             this.textBoxLocalidad.Location = new System.Drawing.Point(296, 127);
+            this.textBoxLocalidad.MaxLength = 255;
             this.textBoxLocalidad.Name = "textBoxLocalidad";
             this.textBoxLocalidad.Size = new System.Drawing.Size(152, 20);
             this.textBoxLocalidad.TabIndex = 15;
@@ -301,6 +313,7 @@
             // textBoxPaisOrigen
             // 
             this.textBoxPaisOrigen.Location = new System.Drawing.Point(491, 129);
+            this.textBoxPaisOrigen.MaxLength = 45;
             this.textBoxPaisOrigen.Name = "textBoxPaisOrigen";
             this.textBoxPaisOrigen.Size = new System.Drawing.Size(156, 20);
             this.textBoxPaisOrigen.TabIndex = 16;
@@ -308,6 +321,7 @@
             // textBoxNacionalidad
             // 
             this.textBoxNacionalidad.Location = new System.Drawing.Point(512, 78);
+            this.textBoxNacionalidad.MaxLength = 255;
             this.textBoxNacionalidad.Name = "textBoxNacionalidad";
             this.textBoxNacionalidad.Size = new System.Drawing.Size(135, 20);
             this.textBoxNacionalidad.TabIndex = 9;

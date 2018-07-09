@@ -112,28 +112,28 @@
     <Compile Include="AbmHotel\SearchHotel.Designer.cs">
       <DependentUpon>SearchHotel.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMReserva\CancelarReserva.cs">
+    <Compile Include="AbmReserva\CancelarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\CancelarReserva.Designer.cs">
+    <Compile Include="AbmReserva\CancelarReserva.Designer.cs">
       <DependentUpon>CancelarReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMReserva\ConfirmarModificacionWindow.cs">
+    <Compile Include="AbmReserva\ConfirmarModificacionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\ConfirmarModificacionWindow.Designer.cs">
+    <Compile Include="AbmReserva\ConfirmarModificacionWindow.Designer.cs">
       <DependentUpon>ConfirmarModificacionWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMReserva\ConfirmarReservaWindow.cs">
+    <Compile Include="AbmReserva\ConfirmarReservaWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\ConfirmarReservaWindow.Designer.cs">
+    <Compile Include="AbmReserva\ConfirmarReservaWindow.Designer.cs">
       <DependentUpon>ConfirmarReservaWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMReserva\GenerarReserva.cs">
+    <Compile Include="AbmReserva\GenerarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\GenerarReserva.Designer.cs">
+    <Compile Include="AbmReserva\GenerarReserva.Designer.cs">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\HomeListado.cs">
@@ -147,22 +147,22 @@
       <DependentUpon>Listado.cs</DependentUpon>
     </Compile>
     <Compile Include="Modelo\HabitacionDisponible.cs" />
-    <Compile Include="ABMReserva\EditarReserva.cs">
+    <Compile Include="AbmReserva\EditarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\EditarReserva.Designer.cs">
+    <Compile Include="AbmReserva\EditarReserva.Designer.cs">
       <DependentUpon>EditarReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMReserva\ModificarReserva.cs">
+    <Compile Include="AbmReserva\ModificarReserva.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\ModificarReserva.Designer.cs">
+    <Compile Include="AbmReserva\ModificarReserva.Designer.cs">
       <DependentUpon>ModificarReserva.cs</DependentUpon>
     </Compile>
-    <Compile Include="ABMReserva\VincularCliente.cs">
+    <Compile Include="AbmReserva\VincularCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ABMReserva\VincularCliente.Designer.cs">
+    <Compile Include="AbmReserva\VincularCliente.Designer.cs">
       <DependentUpon>VincularCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\ABMRoles.cs">
@@ -342,31 +342,31 @@
       <DependentUpon>SearchHotel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\CancelarReserva.resx">
+    <EmbeddedResource Include="AbmReserva\CancelarReserva.resx">
       <DependentUpon>CancelarReserva.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\ConfirmarModificacionWindow.resx">
+    <EmbeddedResource Include="AbmReserva\ConfirmarModificacionWindow.resx">
       <DependentUpon>ConfirmarModificacionWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\ConfirmarReservaWindow.resx">
+    <EmbeddedResource Include="AbmReserva\ConfirmarReservaWindow.resx">
       <DependentUpon>ConfirmarReservaWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\GenerarReserva.resx">
+    <EmbeddedResource Include="AbmReserva\GenerarReserva.resx">
       <DependentUpon>GenerarReserva.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\EditarReserva.resx">
+    <EmbeddedResource Include="AbmReserva\EditarReserva.resx">
       <DependentUpon>EditarReserva.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\ModificarReserva.resx">
+    <EmbeddedResource Include="AbmReserva\ModificarReserva.resx">
       <DependentUpon>ModificarReserva.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ABMReserva\VincularCliente.resx">
+    <EmbeddedResource Include="AbmReserva\VincularCliente.resx">
       <DependentUpon>VincularCliente.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
