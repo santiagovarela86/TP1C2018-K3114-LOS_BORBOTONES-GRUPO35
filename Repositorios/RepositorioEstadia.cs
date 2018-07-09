@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,8 @@ namespace FrbaHotel.Repositorios
             decimal cantidadNoches = 0;
             Usuario usuarioCheckIn = null;
             Usuario usuarioCheckOut = null;
-            DateTime fechaEntrada = new DateTime();
-            DateTime fechaSalida = new DateTime();
+            DateTime fechaEntrada = Utils.getSystemDatetimeNow();
+            DateTime fechaSalida = Utils.getSystemDatetimeNow();
             Boolean facturada = false;
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
             

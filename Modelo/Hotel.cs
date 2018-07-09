@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Repositorios;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace FrbaHotel.Modelo
         private String nombre = "";
         private String mail = "";
         private String telefono = "";
-        private DateTime fechaInicioActividades = new DateTime();
+        private DateTime fechaInicioActividades = Utils.getSystemDatetimeNow();
         private List<Reserva> reservas = null;
         private List<Regimen> regimenes = null;
         private List<Habitacion> habitaciones = null;

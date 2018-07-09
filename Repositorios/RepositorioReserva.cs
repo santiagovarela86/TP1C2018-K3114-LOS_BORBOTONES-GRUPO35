@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using System;
 using System.Collections.Generic;
@@ -176,7 +177,7 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@fecha", DateTime.Now);
+            sqlCommand.Parameters.AddWithValue("@fecha", Utils.getSystemDatetimeNow());
             sqlCommand.Parameters.AddWithValue("@descripcion", motivo);
             sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
             sqlCommand.Parameters.AddWithValue("@idReserva", reserva.getIdReserva());
@@ -331,9 +332,9 @@ namespace FrbaHotel.Repositorios
             Cliente cliente = null;
             decimal codigoReserva = 0;
             decimal diasAlojados = 0;
-            DateTime fechaCreacion = new DateTime();
-            DateTime fechaDesde = new DateTime();
-            DateTime fechaHasta = new DateTime();
+            DateTime fechaCreacion =  Utils.getSystemDatetimeNow();
+            DateTime fechaDesde =  Utils.getSystemDatetimeNow();
+            DateTime fechaHasta =  Utils.getSystemDatetimeNow();
             List<EstadoReserva> estados = new List<EstadoReserva>();
             
             //Configuraciones de la consulta
@@ -668,7 +669,7 @@ namespace FrbaHotel.Repositorios
             int idReserva = 0;
             int hotelFound = 0;
             decimal cantidadNoches = 0;
-            DateTime fechaOut= new DateTime();
+            DateTime fechaOut= Utils.getSystemDatetimeNow();
             RepositorioUsuario repouser = new RepositorioUsuario();
             Usuario userIn = user;
             if (userIn == null)

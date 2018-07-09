@@ -1,6 +1,8 @@
 ﻿using FrbaHotel.Excepciones;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,5 +65,13 @@ namespace FrbaHotel.Commons
             }
             return true;
         }
+
+        public static DateTime getSystemDatetimeNow() {
+
+            //2018-06-01 00:00:00.000
+            String fechaSistema = ConfigurationManager.AppSettings["FechaSistema"];
+            return DateTime.ParseExact(fechaSistema, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+        }
+
     }
 }

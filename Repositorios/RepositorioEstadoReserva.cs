@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Excepciones;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Excepciones;
 using FrbaHotel.Modelo;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace FrbaHotel.Repositorios
             Usuario usuario = null;
             Reserva reserva = null;
             String tipoEstado = "";
-            DateTime fecha = new DateTime();
+            DateTime fecha = Utils.getSystemDatetimeNow();
             String descripcion = "";
             
             
