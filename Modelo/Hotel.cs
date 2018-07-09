@@ -102,33 +102,47 @@ namespace FrbaHotel.Modelo
 
         public List<Reserva> getReservas()
         {
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            this.reservas = repoReserva.getByIdHotel(this.IdHotel);
+            return this.reservas;
+            /*
             if (this.reservas == null) {
                 RepositorioReserva repoReserva = new RepositorioReserva();
                 this.reservas = repoReserva.getByIdHotel(this.IdHotel);
             }
-            return this.reservas;
+            */            
         }
 
         public List<Regimen> getRegimenes()
         {
+            RepositorioRegimen repoRegimen = new RepositorioRegimen();
+            this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
+            return this.regimenes;
 
+            /*
             if (this.regimenes == null)
             {
                 RepositorioRegimen repoRegimen = new RepositorioRegimen();
                 this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
             }
             return this.regimenes;
+            */
         }
 
         public List<Habitacion> getHabitaciones()
         {
+            RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
+            this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
+            return this.habitaciones;
 
+            /*
             if (this.habitaciones == null)
             {
                 RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
                 this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
             }
             return this.habitaciones;
+            */
         }
 
         public List<CierreTemporal> getCierresTemporales()
