@@ -49,7 +49,7 @@
             // 
             this.txtPassword.AcceptsTab = true;
             this.txtPassword.Location = new System.Drawing.Point(73, 31);
-            this.txtPassword.MaxLength = 250;
+            this.txtPassword.MaxLength = 255;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(148, 20);
@@ -59,7 +59,7 @@
             // 
             this.txtUsername.AcceptsTab = true;
             this.txtUsername.Location = new System.Drawing.Point(73, 6);
-            this.txtUsername.MaxLength = 250;
+            this.txtUsername.MaxLength = 255;
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(148, 20);
             this.txtUsername.TabIndex = 1;
