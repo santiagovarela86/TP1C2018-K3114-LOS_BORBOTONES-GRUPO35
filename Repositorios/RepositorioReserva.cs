@@ -745,7 +745,7 @@ namespace FrbaHotel.Repositorios
                 EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, userIn, reserva, tipoEstado, date, desc);
                 repoEstadoReserva.update(estadoReserva);
 
-                return 1;
+                return idEstadia;
             }
             return 0;
         }
@@ -868,7 +868,7 @@ namespace FrbaHotel.Repositorios
 
             sqlConnection.Close();
         
-        }
+        }    
     }
 }
 
