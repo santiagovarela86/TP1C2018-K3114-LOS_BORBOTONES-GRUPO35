@@ -171,7 +171,8 @@ namespace FrbaHotel.AbmUsuario
                     this.usuario = repoUser.getById(usuario.getIdUsuario());
                     this.resetearDatos();
                 }
-                catch (NoExisteIDException exc)
+                //catch (NoExisteIDException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

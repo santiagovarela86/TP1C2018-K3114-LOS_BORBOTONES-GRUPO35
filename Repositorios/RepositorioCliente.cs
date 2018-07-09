@@ -182,48 +182,67 @@ namespace FrbaHotel.Repositorios
         override public int create(Cliente cliente)
         {
             int idCliente = 0;
-            if (this.exists(cliente))
+            
+            if (!this.exists(cliente))
             {
-                //aca podria validar por el tipo y numero de documento.
-                throw new ElementoYaExisteException("Ya existe el cliente que intenta crear");
-            }
-            else
-            {
-                //llamo a crear la identidad y traigo el IdIdentidad
-                RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
-                int idIdentidad = repoIdentidad.create(cliente.getIdentidad());
-
-                //llamo a crear la direccion y traigo el IdDireccion, le seteo el idIdentidad que lo necesita
-                cliente.getIdentidad().getDireccion().setIdIdentidad(idIdentidad);
-                RepositorioDireccion repoDireccion = new RepositorioDireccion();
-                int idDireccion = repoDireccion.create(cliente.getIdentidad().getDireccion());
-
-                //ahora ya tengo todo para crear el cliente
-
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
                 SqlCommand sqlCommand = new SqlCommand();
                 SqlDataReader reader;
-
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Connection = sqlConnection;
+
+                //PARAMETERS DE LA DIRECCION
+                sqlCommand.Parameters.AddWithValue("@Pais", cliente.getIdentidad().getDireccion().getPais());
+                sqlCommand.Parameters.AddWithValue("@Ciudad", cliente.getIdentidad().getDireccion().getCiudad());
+                sqlCommand.Parameters.AddWithValue("@Calle", cliente.getIdentidad().getDireccion().getCalle());
+                sqlCommand.Parameters.AddWithValue("@NumeroCalle", cliente.getIdentidad().getDireccion().getNumeroCalle());
+                sqlCommand.Parameters.AddWithValue("@Piso", cliente.getIdentidad().getDireccion().getPiso());
+                sqlCommand.Parameters.AddWithValue("@Departamento", cliente.getIdentidad().getDireccion().getDepartamento());
+                //sqlCommand.Parameters.AddWithValue("@idDireccion", cliente.getIdentidad().getDireccion().getIdDireccion());
+
+                //PARAMETERS DE LA IDENTIDAD
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", cliente.getIdentidad().getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", cliente.getIdentidad().getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", cliente.getIdentidad().getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", cliente.getIdentidad().getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", cliente.getIdentidad().getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", cliente.getIdentidad().getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", cliente.getIdentidad().getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", cliente.getIdentidad().getTelefono());
+                //sqlCommand.Parameters.AddWithValue("@idIdentidad", cliente.getIdentidad().getIdIdentidad());
+
+                //PARAMETERS DEL CLIENTE
+                /////////////////////////
+                //POR EL MOMENTO NO CONSIDERAMOS LAS RESERVAS EN EL CLIENTE EN EL CREATE
+                /////////////////////////
                 sqlCommand.Parameters.AddWithValue("@Activo", cliente.getActivo());
-                sqlCommand.Parameters.AddWithValue("@idIdentidad", idIdentidad);
+                //sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
 
                 StringBuilder sqlBuilder = new StringBuilder();
                 sqlBuilder.Append(@"
                     BEGIN TRY
                     BEGIN TRANSACTION
 
-                    INSERT INTO LOS_BORBOTONES.Cliente(Activo,idIdentidad)
+                    INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad, Telefono)
+                    OUTPUT INSERTED.idIdentidad
+                    VALUES(@TipoIdent, @Nombre, @Apellido, @TipoDoc, @NroDoc, @Mail, @FecNac, @Nacion, @Tel);
+
+                    DECLARE @idIdentidad int;
+                    SET @idIdentidad = SCOPE_IDENTITY();
+
+                    INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
+                    OUTPUT INSERTED.idDireccion
+                    VALUES(@Pais, @Ciudad, @Calle, @NumeroCalle, @Piso, @Departamento, @idIdentidad);
+
+                    INSERT INTO LOS_BORBOTONES.Cliente(Activo, idIdentidad)
                     OUTPUT INSERTED.idCliente
-                    VALUES(@Activo,@idIdentidad);
+                    VALUES(@Activo, @idIdentidad);
 
                     DECLARE @idCliente int;
                     SET @idCliente = SCOPE_IDENTITY();
-                ");
 
-                sqlBuilder.Append(@"
                     COMMIT
                     END TRY
 
@@ -242,10 +261,13 @@ namespace FrbaHotel.Repositorios
                 }
 
                 sqlConnection.Close();
+
+                return idCliente;
             }
-
-            return idCliente;
-
+            else
+            {
+                throw new ElementoYaExisteException("Ya existe el cliente que intenta crear.");
+            }
         }
 
         override public void update(Cliente cliente)

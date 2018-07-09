@@ -513,13 +513,15 @@ namespace FrbaHotel.AbmHotel
                 MessageBox.Show("Hotel modificado correctamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hotel = hotelToUpdateSave;
             }
+            /*
             catch (NoExisteIDException exceptionUpdateHotel)
             {
                 MessageBox.Show(exceptionUpdateHotel.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (RequestInvalidoException reqInvalido )
+            */
+            catch (Exception exc)
             {
-                MessageBox.Show(reqInvalido.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(exc.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

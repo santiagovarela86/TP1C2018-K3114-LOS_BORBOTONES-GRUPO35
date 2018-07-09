@@ -85,7 +85,8 @@ namespace FrbaHotel.AbmRol
                     MessageBox.Show("Rol creado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.limpiarPantalla();
                 }
-                catch (ElementoYaExisteException exc)
+                //catch (ElementoYaExisteException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

@@ -109,7 +109,8 @@ namespace FrbaHotel.AbmReserva
                     MessageBox.Show("No se ha encontrado la reserva que intenta modificar.", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (RequestInvalidoException exception)
+            //catch (RequestInvalidoException exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

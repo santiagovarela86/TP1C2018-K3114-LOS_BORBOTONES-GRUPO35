@@ -112,7 +112,8 @@ namespace FrbaHotel.AbmCliente
                     this.cliente = repoCliente.getById(cliente.getIdCliente());
                     this.resetearDatos();
                 }
-                catch (NoExisteIDException exc)
+                //catch (NoExisteIDException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

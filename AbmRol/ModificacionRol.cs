@@ -108,7 +108,8 @@ namespace FrbaHotel.AbmRol
                     this.rol = repositorioRol.getById(rol.getIdRol());
                     this.inicializarResetear();
                 }
-                catch (NoExisteIDException exc)
+                //catch (NoExisteIDException exc)
+                catch (Exception exc)
                 {
                     MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

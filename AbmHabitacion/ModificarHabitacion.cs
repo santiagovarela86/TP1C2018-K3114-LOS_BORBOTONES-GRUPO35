@@ -75,7 +75,8 @@ namespace FrbaHotel.AbmHabitacion
 
                     this.initFields();
                 }
-                catch (RequestInvalidoException exception1)
+                //catch (RequestInvalidoException exception1)
+                catch (Exception exception1)
                 {
                     MessageBox.Show(exception1.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

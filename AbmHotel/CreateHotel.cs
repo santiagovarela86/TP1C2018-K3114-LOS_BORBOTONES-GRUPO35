@@ -397,7 +397,8 @@ namespace FrbaHotel.AbmHotel
                 MessageBox.Show("Hotel creado exitosamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.initModificacionHotel();
             }
-            catch (RequestInvalidoException exception)
+            //catch (RequestInvalidoException exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

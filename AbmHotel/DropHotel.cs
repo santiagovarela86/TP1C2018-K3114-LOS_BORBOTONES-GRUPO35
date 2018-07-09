@@ -218,7 +218,8 @@ namespace FrbaHotel.AbmHotel
                         this.buttonLimpiarDatos_Click(sender, e);
 
                     }
-                    catch (RequestInvalidoException exception)
+                    //catch (RequestInvalidoException exception)
+                    catch (Exception exception)
                     {
                         MessageBox.Show(exception.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
 

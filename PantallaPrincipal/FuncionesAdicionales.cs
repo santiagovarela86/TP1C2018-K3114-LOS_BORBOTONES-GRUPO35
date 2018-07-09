@@ -61,15 +61,6 @@ namespace FrbaHotel
             labelRol.Text = "Rol: " + this.getSesion().getRol().getNombre();
 
             this.HabilitarFuncionalidades(this.getSesion().getUsuario());
-            
-            /*
-            try
-            {
-                
-            } catch (Exception exc){
-                MessageBox.Show(exc.Message, "Error al obtener los roles del usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            */
         }
 
         private void HabilitarFuncionalidades(Usuario usuarioLogueado)
