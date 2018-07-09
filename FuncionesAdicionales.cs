@@ -47,6 +47,9 @@ namespace FrbaHotel
             ABMCliente.Enabled = false;
             ABMHotel.Enabled = false;
             ABMHabitacion.Enabled = false;
+            buttonGenerarReserva.Enabled = false;
+            buttonModificarReserva.Enabled = false;
+
             RegistrarEstadia.Enabled = false;
             RegistrarConsumible.Enabled = false;
             FacturarEstadia.Enabled = false;
@@ -73,6 +76,8 @@ namespace FrbaHotel
             ABMCliente.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMCliente.Name));
             ABMHotel.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMHotel.Name));
             ABMHabitacion.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(ABMHabitacion.Name));
+            buttonGenerarReserva.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(buttonGenerarReserva.Name));
+            buttonModificarReserva.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(buttonModificarReserva.Name));
             RegistrarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarEstadia.Name));
             RegistrarConsumible.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(RegistrarConsumible.Name));
             FacturarEstadia.Enabled = funcionalidades.Exists(f => f.getDescripcion().Equals(FacturarEstadia.Name));

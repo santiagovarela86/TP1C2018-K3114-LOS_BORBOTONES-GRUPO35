@@ -195,10 +195,11 @@ namespace FrbaHotel.Modelo
         }
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public decimal CodigoReserva { get { return this.getCodigoReserva(); } }
+        public String Regimen { get { return this.getRegimen().getDescripcion(); } }
         public String FechaCreacion { get { return this.getFechaCreacion().ToString(); } }
         public String FechaDesde { get { return this.getFechaDesde().ToString(); } }
         public String FechaHasta { get { return this.getFechaHasta().ToString(); } }
-        //public String Cliente { get { return this.getCliente().getIdentidad().getNombreCompleto(); } }       
+        public String Cliente { get { return this.getCliente().getIdentidad().getNombreCompleto(); } }       
 
     }
 }
