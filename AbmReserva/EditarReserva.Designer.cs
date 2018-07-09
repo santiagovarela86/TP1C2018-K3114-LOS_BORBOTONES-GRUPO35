@@ -58,6 +58,7 @@
             this.textCodigoReserva.Size = new System.Drawing.Size(107, 20);
             this.textCodigoReserva.TabIndex = 1;
             this.textCodigoReserva.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+            this.textCodigoReserva.MaxLength = 9;
             // 
             // groupBox3
             // 
