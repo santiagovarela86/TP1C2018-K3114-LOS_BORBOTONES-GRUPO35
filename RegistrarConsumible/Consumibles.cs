@@ -1,4 +1,5 @@
-﻿using FrbaHotel.Modelo;
+﻿using FrbaHotel.Commons;
+using FrbaHotel.Modelo;
 using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ namespace FrbaHotel.RegistrarConsumible
             //pongo el estado en RCC (reserva con consumible) ya queda sin chance de modificar.
             RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
             RepositorioReserva repoReserva = new RepositorioReserva();
-            DateTime date = DateTime.Today;
+            DateTime date = Utils.getSystemDatetimeNow();
 
             int idEstadoReserva = 0;
             Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
