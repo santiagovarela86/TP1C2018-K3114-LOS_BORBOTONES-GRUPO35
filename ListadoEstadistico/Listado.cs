@@ -35,36 +35,21 @@ namespace FrbaHotel.ListadoEstadistico
 
         }
 
-        private void tipoListado_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void anio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void trimestre_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button_buscar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(anio.Text))
             {
-                MessageBox.Show("Debe seleccionar un anio");
+                MessageBox.Show("Debe seleccionar un año", "Listado estadistico");
                 return;
             }
             if (string.IsNullOrEmpty(trimestre.Text))
             {
-                MessageBox.Show("Debe seleccionar un anio");
+                MessageBox.Show("Debe seleccionar un trimestre", "Listado estadistico");
                 return;
             }
             if (string.IsNullOrEmpty(tipoListado.Text))
             {
-                MessageBox.Show("Debe seleccionar un anio");
+                MessageBox.Show("Debe seleccionar el tipo de listado","Listado estadistico");
                 return;
             }
             String tipoSeleccionado = "";
@@ -102,33 +87,15 @@ namespace FrbaHotel.ListadoEstadistico
             this.Close();
         }
 
-        private void ListadoEstadistico_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void ListadoEstadistico_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            System.Text.StringBuilder messageBoxCS = new System.Text.StringBuilder();
-            messageBoxCS.AppendFormat("{0} = {1}", "CloseReason", e.CloseReason);
-            messageBoxCS.AppendLine();
-            messageBoxCS.AppendFormat("{0} = {1}", "Cancel", e.Cancel);
-            messageBoxCS.AppendLine();
-            MessageBox.Show(messageBoxCS.ToString(), "FormClosing Event");
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
-            dTable.Clear();
-
-        }
-
-        private void button_cerrar_Click_1(object sender, EventArgs e)
-        {
-
-            this.Close();
-
+            dataGridView1.DataSource = null;
+            this.trimestre.SelectedValue = "";
+            this.trimestre.SelectedIndex = -1;
+            this.anio.SelectedValue = "";
+            this.anio.SelectedIndex = -1;
+            this.tipoListado.SelectedValue = "";
+            this.tipoListado.SelectedIndex = -1;
         }
     }
 }

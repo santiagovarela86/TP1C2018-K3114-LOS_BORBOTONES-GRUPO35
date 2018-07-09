@@ -49,7 +49,6 @@
             this.anio.Name = "anio";
             this.anio.Size = new System.Drawing.Size(121, 21);
             this.anio.TabIndex = 1;
-            this.anio.SelectedIndexChanged += new System.EventHandler(this.anio_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -67,7 +66,6 @@
             this.trimestre.Name = "trimestre";
             this.trimestre.Size = new System.Drawing.Size(121, 21);
             this.trimestre.TabIndex = 3;
-            this.trimestre.SelectedIndexChanged += new System.EventHandler(this.trimestre_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -85,7 +83,6 @@
             this.tipoListado.Name = "tipoListado";
             this.tipoListado.Size = new System.Drawing.Size(206, 21);
             this.tipoListado.TabIndex = 5;
-            this.tipoListado.SelectedIndexChanged += new System.EventHandler(this.tipoListado_SelectedIndexChanged);
             // 
             // dataGridView1
             // 
@@ -94,6 +91,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(581, 202);
             this.dataGridView1.TabIndex = 6;
+            this.dataGridView1.ReadOnly = true;
             // 
             // button_cerrar
             // 
@@ -103,7 +101,7 @@
             this.button_cerrar.TabIndex = 7;
             this.button_cerrar.Text = "Cerrar";
             this.button_cerrar.UseVisualStyleBackColor = true;
-            this.button_cerrar.Click += new System.EventHandler(this.button_cerrar_Click_1);
+            this.button_cerrar.Click += new System.EventHandler(this.button_cerrar_Click);
             // 
             // button_buscar
             // 
@@ -142,8 +140,6 @@
             this.Controls.Add(this.label1);
             this.Name = "ListadoEstadistico";
             this.Text = "ListadoEstadistico";
-            this.Load += new System.EventHandler(this.ListadoEstadistico_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ListadoEstadistico_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
