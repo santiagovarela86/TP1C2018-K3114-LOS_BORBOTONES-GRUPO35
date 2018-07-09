@@ -85,9 +85,7 @@ namespace FrbaHotel.AbmUsuario
                 hotel = (Hotel)comboBoxHoteles.SelectedItem;
             }
 
-            List<Usuario> usuarios = repositorioUsuario.getByQuery(username, estado, hotel,rol);
-
-            dataGridView1.DataSource = usuarios;
+            dataGridView1.DataSource = repositorioUsuario.getByQuery(username, estado, hotel,rol).OrderBy(u => u.getIdUsuario()).ToList();
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();

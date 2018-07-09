@@ -5,6 +5,7 @@ using FrbaHotel.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace FrbaHotel.AbmHotel
 {
@@ -53,11 +54,11 @@ namespace FrbaHotel.AbmHotel
         private void initModificacionHotel()
         {
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
-            this.estrellasComboBox.DataSource = repoCategoria.getAll();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll().OrderBy(c => c.getEstrellas()).ToList();
             this.estrellasComboBox.ValueMember = "Estrellas";
 
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
-            this.regimenesGrid.DataSource = repoRegimen.getAll();
+            this.regimenesGrid.DataSource = repoRegimen.getAll().OrderBy(r => r.getDescripcion()).ToList();
             regimenesGrid.CurrentCell = null;
             regimenesGrid.ClearSelection();
             this.regimenesGrid.Rows[0].Cells[0].Selected = false;
@@ -85,29 +86,20 @@ namespace FrbaHotel.AbmHotel
                 }
             }
 
-            this.dataGridCierres.DataSource = this.hotel.getCierresTemporales();
+            this.dataGridCierres.DataSource = this.hotel.getCierresTemporales().OrderBy(c => c.getFechaInicio()).ToList();
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridCierres.CurrentCell = null;
             dataGridCierres.ClearSelection();
-            /*
-            this.dataGridCierres.Rows[0].Cells[0].Selected = false;
-            this.dataGridCierres.Rows[0].Selected = false;
-            */
 
             //MEJORA DE PERFORMANCE DEL DGV
             this.dataGridReservas.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
             this.dataGridReservas.RowHeadersVisible = false;
-            this.dataGridReservas.DataSource = this.hotel.getReservas();
+            this.dataGridReservas.DataSource = this.hotel.getReservas().OrderBy(r => r.getFechaDesde()).ToList();
             this.dataGridReservas.RowHeadersVisible = true;
 
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridReservas.CurrentCell = null;
             dataGridReservas.ClearSelection();
-
-            /*
-            this.dataGridReservas.Rows[0].Cells[0].Selected = false;
-            this.dataGridReservas.Rows[0].Selected = false;
-            */
 
         }
         /// <summary>

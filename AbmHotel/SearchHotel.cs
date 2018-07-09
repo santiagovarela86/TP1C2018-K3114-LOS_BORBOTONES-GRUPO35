@@ -1,10 +1,10 @@
 ﻿using System;
-
 using System.Windows.Forms;
 using System.Drawing;
 using FrbaHotel.Repositorios;
 using System.Collections.Generic;
 using FrbaHotel.Modelo;
+using System.Linq;
 
 namespace FrbaHotel.AbmHotel
 {
@@ -39,8 +39,7 @@ namespace FrbaHotel.AbmHotel
 
             this.modificarButton.Enabled = false;
 
-            List<Hotel> hoteles = repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais);
-            registroHoteles.DataSource = hoteles;
+            registroHoteles.DataSource = repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais).OrderBy(h => h.getIdHotel()).ToList();
 
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             registroHoteles.CurrentCell = null;

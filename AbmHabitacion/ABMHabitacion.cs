@@ -151,8 +151,7 @@ namespace FrbaHotel.AbmHabitacion
             comboBoxEstados.SelectedValue = "";
             this.buttonModificarHabitacion.Enabled = false;
             this.buttonBajaHabitacion.Enabled = false;
-        }
-        
+        }        
     }
 
 }

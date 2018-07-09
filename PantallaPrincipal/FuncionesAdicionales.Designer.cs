@@ -46,7 +46,7 @@
             // 
             // ABMUsuario
             // 
-            this.ABMUsuario.Location = new System.Drawing.Point(115, 12);
+            this.ABMUsuario.Location = new System.Drawing.Point(117, 12);
             this.ABMUsuario.Name = "ABMUsuario";
             this.ABMUsuario.Size = new System.Drawing.Size(97, 41);
             this.ABMUsuario.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // ABMCliente
             // 
-            this.ABMCliente.Location = new System.Drawing.Point(218, 12);
+            this.ABMCliente.Location = new System.Drawing.Point(220, 12);
             this.ABMCliente.Name = "ABMCliente";
             this.ABMCliente.Size = new System.Drawing.Size(95, 41);
             this.ABMCliente.TabIndex = 2;
@@ -66,7 +66,7 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(264, 106);
+            this.Salir.Location = new System.Drawing.Point(265, 106);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(120, 41);
             this.Salir.TabIndex = 11;
@@ -76,7 +76,7 @@
             // 
             // ABMRol
             // 
-            this.ABMRol.Location = new System.Drawing.Point(1, 12);
+            this.ABMRol.Location = new System.Drawing.Point(3, 12);
             this.ABMRol.Name = "ABMRol";
             this.ABMRol.Size = new System.Drawing.Size(108, 41);
             this.ABMRol.TabIndex = 0;
@@ -86,7 +86,7 @@
             // 
             // ABMHotel
             // 
-            this.ABMHotel.Location = new System.Drawing.Point(319, 12);
+            this.ABMHotel.Location = new System.Drawing.Point(321, 12);
             this.ABMHotel.Name = "ABMHotel";
             this.ABMHotel.Size = new System.Drawing.Size(101, 41);
             this.ABMHotel.TabIndex = 3;
@@ -96,7 +96,7 @@
             // 
             // ABMHabitacion
             // 
-            this.ABMHabitacion.Location = new System.Drawing.Point(426, 12);
+            this.ABMHabitacion.Location = new System.Drawing.Point(428, 12);
             this.ABMHabitacion.Name = "ABMHabitacion";
             this.ABMHabitacion.Size = new System.Drawing.Size(100, 41);
             this.ABMHabitacion.TabIndex = 4;
@@ -106,7 +106,7 @@
             // 
             // RegistrarEstadia
             // 
-            this.RegistrarEstadia.Location = new System.Drawing.Point(138, 59);
+            this.RegistrarEstadia.Location = new System.Drawing.Point(139, 59);
             this.RegistrarEstadia.Name = "RegistrarEstadia";
             this.RegistrarEstadia.Size = new System.Drawing.Size(120, 41);
             this.RegistrarEstadia.TabIndex = 7;
@@ -116,7 +116,7 @@
             // 
             // RegistrarConsumible
             // 
-            this.RegistrarConsumible.Location = new System.Drawing.Point(264, 59);
+            this.RegistrarConsumible.Location = new System.Drawing.Point(265, 59);
             this.RegistrarConsumible.Name = "RegistrarConsumible";
             this.RegistrarConsumible.Size = new System.Drawing.Size(120, 41);
             this.RegistrarConsumible.TabIndex = 8;
@@ -126,7 +126,7 @@
             // 
             // FacturarEstadia
             // 
-            this.FacturarEstadia.Location = new System.Drawing.Point(390, 59);
+            this.FacturarEstadia.Location = new System.Drawing.Point(391, 59);
             this.FacturarEstadia.Name = "FacturarEstadia";
             this.FacturarEstadia.Size = new System.Drawing.Size(120, 41);
             this.FacturarEstadia.TabIndex = 9;
@@ -136,7 +136,7 @@
             // 
             // GenerarListadoEstadistico
             // 
-            this.GenerarListadoEstadistico.Location = new System.Drawing.Point(513, 59);
+            this.GenerarListadoEstadistico.Location = new System.Drawing.Point(516, 59);
             this.GenerarListadoEstadistico.Name = "GenerarListadoEstadistico";
             this.GenerarListadoEstadistico.Size = new System.Drawing.Size(120, 41);
             this.GenerarListadoEstadistico.TabIndex = 10;
@@ -163,7 +163,7 @@
             // 
             // buttonGenerarReserva
             // 
-            this.buttonGenerarReserva.Location = new System.Drawing.Point(532, 12);
+            this.buttonGenerarReserva.Location = new System.Drawing.Point(534, 12);
             this.buttonGenerarReserva.Name = "buttonGenerarReserva";
             this.buttonGenerarReserva.Size = new System.Drawing.Size(108, 41);
             this.buttonGenerarReserva.TabIndex = 5;
@@ -173,7 +173,7 @@
             // 
             // buttonModificarReserva
             // 
-            this.buttonModificarReserva.Location = new System.Drawing.Point(12, 59);
+            this.buttonModificarReserva.Location = new System.Drawing.Point(13, 59);
             this.buttonModificarReserva.Name = "buttonModificarReserva";
             this.buttonModificarReserva.Size = new System.Drawing.Size(120, 41);
             this.buttonModificarReserva.TabIndex = 6;

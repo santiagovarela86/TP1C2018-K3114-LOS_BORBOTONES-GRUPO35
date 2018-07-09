@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using FrbaHotel.Excepciones;
+using System.Linq;
 
 namespace FrbaHotel.AbmHotel
 {
@@ -47,8 +48,8 @@ namespace FrbaHotel.AbmHotel
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
 
-            this.estrellasComboBox.DataSource = repoCategoria.getAll();
-            this.regimenesDataGrid.DataSource = repoRegimen.getAll();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll().OrderBy(c => c.getEstrellas()).ToList();
+            this.regimenesDataGrid.DataSource = repoRegimen.getAll().OrderBy(r => r.getDescripcion()).ToList();
             this.regimenesDataGrid.CurrentCell = null;
             this.regimenesDataGrid.ClearSelection();
             this.regimenesDataGrid.Rows[0].Cells[0].Selected = false;

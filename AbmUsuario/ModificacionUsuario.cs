@@ -65,15 +65,15 @@ namespace FrbaHotel.AbmUsuario
             comboBoxTipoDoc.SelectedIndex = comboBoxTipoDoc.FindStringExact(usuario.getIdentidad().getTipoDocumento());
             checkBoxActivo.Checked = usuario.getActivo();
 
-            //cargo todos los roles
+            //cargo roles
             RepositorioRol repositorioRol = new RepositorioRol();
-            dataGridRoles.DataSource = repositorioRol.getAll();
+            dataGridRoles.DataSource = repositorioRol.getAll().OrderBy(r => r.getIdRol()).ToList();
             dataGridRoles.CurrentCell = null;
             dataGridRoles.ClearSelection();
 
-            //cargo todos los hoteles
+            //cargo hoteles
             RepositorioHotel repositorioHotel = new RepositorioHotel();
-            dataGridHoteles.DataSource = repositorioHotel.getAll();
+            dataGridHoteles.DataSource = repositorioHotel.getAll().OrderBy(h => h.getIdHotel()).ToList();
             dataGridHoteles.CurrentCell = null;
             dataGridHoteles.ClearSelection();
 

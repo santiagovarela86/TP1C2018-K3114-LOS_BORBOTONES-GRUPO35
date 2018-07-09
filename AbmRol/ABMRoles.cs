@@ -69,9 +69,7 @@ namespace FrbaHotel.AbmRol
                 funcionalidad = (Funcionalidad)comboBoxFuncionalidades.SelectedItem;
             }
 
-            List<Rol> roles = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad);
-
-            dataGridView1.DataSource = roles;
+            dataGridView1.DataSource = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad).OrderBy(r => r.getIdRol()).ToList();
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();

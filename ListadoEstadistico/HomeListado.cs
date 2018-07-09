@@ -26,7 +26,7 @@ namespace FrbaHotel
 
         private void InitializeComponent()
         {
-            throw new NotImplementedException();
+//            throw new NotImplementedException();
         }
 
         private void label1_Click(object sender, EventArgs e)

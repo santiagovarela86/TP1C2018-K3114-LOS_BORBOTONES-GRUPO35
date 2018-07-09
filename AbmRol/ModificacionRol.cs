@@ -34,7 +34,7 @@ namespace FrbaHotel.AbmRol
         {
             //BUSCO TODAS LAS FUNCIONALIDADES
             RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
-            dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll();
+            dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll().OrderBy(f => f.getIdFuncionalidad()).ToList();
 
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridFuncionalidades.CurrentCell = null;

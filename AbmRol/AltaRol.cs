@@ -29,7 +29,7 @@ namespace FrbaHotel.AbmRol
         private void limpiarPantalla()
         {
             RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
-            dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll();
+            dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll().OrderBy(f => f.getIdFuncionalidad()).ToList();
             dataGridFuncionalidades.ClearSelection();
             textBoxNombreRol.Text = "";
             checkBoxActivo.Checked = false;
