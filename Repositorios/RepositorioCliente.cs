@@ -182,6 +182,76 @@ namespace FrbaHotel.Repositorios
         override public int create(Cliente cliente)
         {
             int idCliente = 0;
+            if (this.exists(cliente))
+            {
+                //aca podria validar por el tipo y numero de documento.
+                throw new ElementoYaExisteException("Ya existe el cliente que intenta crear");
+            }
+            else
+            {
+                //llamo a crear la identidad y traigo el IdIdentidad
+                RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+                int idIdentidad = repoIdentidad.create(cliente.getIdentidad());
+
+                //llamo a crear la direccion y traigo el IdDireccion, le seteo el idIdentidad que lo necesita
+                cliente.getIdentidad().getDireccion().setIdIdentidad(idIdentidad);
+                RepositorioDireccion repoDireccion = new RepositorioDireccion();
+                int idDireccion = repoDireccion.create(cliente.getIdentidad().getDireccion());
+
+                //ahora ya tengo todo para crear el cliente
+
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.Parameters.AddWithValue("@Activo", cliente.getActivo());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", idIdentidad);
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    INSERT INTO LOS_BORBOTONES.Cliente(Activo,idIdentidad)
+                    OUTPUT INSERTED.idCliente
+                    VALUES(@Activo,@idIdentidad);
+
+                    DECLARE @idCliente int;
+                    SET @idCliente = SCOPE_IDENTITY();
+                ");
+
+                sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    idCliente = reader.GetInt32(reader.GetOrdinal("idCliente"));
+                }
+
+                sqlConnection.Close();
+            }
+
+            return idCliente;
+
+        }
+
+        /*
+        override public int create(Cliente cliente)
+        {
+            int idCliente = 0;
             
             if (!this.exists(cliente))
             {
@@ -269,6 +339,7 @@ namespace FrbaHotel.Repositorios
                 throw new ElementoYaExisteException("Ya existe el cliente que intenta crear.");
             }
         }
+         * */
 
         override public void update(Cliente cliente)
         {
