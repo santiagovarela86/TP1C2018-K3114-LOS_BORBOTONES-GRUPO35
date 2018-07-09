@@ -45,6 +45,15 @@ namespace FrbaHotel.AbmReserva
 
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
+            buscarReservas();
+
+        }
+
+
+
+        private void buscarReservas() {
+
+            dataGridReserva.DataSource = null;
             try
             {
                 int codigoReserva = Utils.validateIntField(textCodigoReserva.Text, "Codigo de Reserva");
@@ -94,13 +103,16 @@ namespace FrbaHotel.AbmReserva
 
                     this.AcceptButton = this.buttonModificar;
 
-                }else{
+                }
+                else
+                {
                     MessageBox.Show("No se ha encontrado la reserva que intenta modificar.", "Error al editar reserva");
                 }
-            }catch(RequestInvalidoException exception){
+            }
+            catch (RequestInvalidoException exception)
+            {
                 MessageBox.Show(exception.Message, "Verifique los datos ingresados");
-                }
-
+            }
 
         }
 
@@ -116,6 +128,8 @@ namespace FrbaHotel.AbmReserva
                 var result = form.ShowDialog();
                 //this.Close();
             }
+            buscarReservas();
+
         }
 
         private void buttonModificar_Click(object sender, EventArgs e)
@@ -131,6 +145,8 @@ namespace FrbaHotel.AbmReserva
                 var result = form.ShowDialog();
                 //this.Close();
             }
+            buscarReservas();
+
         }
 
         //CIERRO LA VENTANA CON ESCAPE
