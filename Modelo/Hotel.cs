@@ -133,12 +133,18 @@ namespace FrbaHotel.Modelo
 
         public List<CierreTemporal> getCierresTemporales()
         {
+            RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
+            this.cierresTemporales = repoCierres.getByIdHotel(this);
+            return this.cierresTemporales;
+
+            /* ESTO ASI CACHEA LAS QUERIES...
             if (this.cierresTemporales == null)
             {
                 RepositorioCierreTemporal repoCierres = new RepositorioCierreTemporal();
                 this.cierresTemporales = repoCierres.getByIdHotel(this);
             }
             return this.cierresTemporales;
+            */
         }
 
         public Boolean esNuevo()
