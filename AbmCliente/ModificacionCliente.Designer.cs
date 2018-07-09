@@ -59,10 +59,10 @@
             this.label11 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxActivo = new System.Windows.Forms.CheckBox();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
             this.buttonSalir = new System.Windows.Forms.Button();
-            this.checkBoxActivo = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -80,6 +80,7 @@
             // textBoxNacionalidad
             // 
             this.textBoxNacionalidad.Location = new System.Drawing.Point(84, 163);
+            this.textBoxNacionalidad.MaxLength = 255;
             this.textBoxNacionalidad.Name = "textBoxNacionalidad";
             this.textBoxNacionalidad.Size = new System.Drawing.Size(171, 20);
             this.textBoxNacionalidad.TabIndex = 13;
@@ -131,6 +132,7 @@
             // textBoxNombre
             // 
             this.textBoxNombre.Location = new System.Drawing.Point(59, 27);
+            this.textBoxNombre.MaxLength = 255;
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(156, 20);
             this.textBoxNombre.TabIndex = 1;
@@ -147,6 +149,7 @@
             // textBoxApellido
             // 
             this.textBoxApellido.Location = new System.Drawing.Point(283, 27);
+            this.textBoxApellido.MaxLength = 255;
             this.textBoxApellido.Name = "textBoxApellido";
             this.textBoxApellido.Size = new System.Drawing.Size(156, 20);
             this.textBoxApellido.TabIndex = 2;
@@ -163,6 +166,7 @@
             // textBoxNroDoc
             // 
             this.textBoxNroDoc.Location = new System.Drawing.Point(283, 53);
+            this.textBoxNroDoc.MaxLength = 45;
             this.textBoxNroDoc.Name = "textBoxNroDoc";
             this.textBoxNroDoc.Size = new System.Drawing.Size(156, 20);
             this.textBoxNroDoc.TabIndex = 4;
@@ -180,6 +184,7 @@
             // textBoxMail
             // 
             this.textBoxMail.Location = new System.Drawing.Point(59, 79);
+            this.textBoxMail.MaxLength = 255;
             this.textBoxMail.Name = "textBoxMail";
             this.textBoxMail.Size = new System.Drawing.Size(156, 20);
             this.textBoxMail.TabIndex = 5;
@@ -196,6 +201,7 @@
             // textBoxTelefono
             // 
             this.textBoxTelefono.Location = new System.Drawing.Point(283, 82);
+            this.textBoxTelefono.MaxLength = 45;
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.Size = new System.Drawing.Size(156, 20);
             this.textBoxTelefono.TabIndex = 6;
@@ -213,6 +219,7 @@
             // textBoxCalle
             // 
             this.textBoxCalle.Location = new System.Drawing.Point(45, 107);
+            this.textBoxCalle.MaxLength = 255;
             this.textBoxCalle.Name = "textBoxCalle";
             this.textBoxCalle.Size = new System.Drawing.Size(170, 20);
             this.textBoxCalle.TabIndex = 7;
@@ -229,6 +236,7 @@
             // textBoxLocalidad
             // 
             this.textBoxLocalidad.Location = new System.Drawing.Point(59, 137);
+            this.textBoxLocalidad.MaxLength = 255;
             this.textBoxLocalidad.Name = "textBoxLocalidad";
             this.textBoxLocalidad.Size = new System.Drawing.Size(196, 20);
             this.textBoxLocalidad.TabIndex = 11;
@@ -245,6 +253,7 @@
             // textBoxPaisOrigen
             // 
             this.textBoxPaisOrigen.Location = new System.Drawing.Point(344, 137);
+            this.textBoxPaisOrigen.MaxLength = 45;
             this.textBoxPaisOrigen.Name = "textBoxPaisOrigen";
             this.textBoxPaisOrigen.Size = new System.Drawing.Size(95, 20);
             this.textBoxPaisOrigen.TabIndex = 12;
@@ -261,6 +270,7 @@
             // textBoxNroCalle
             // 
             this.textBoxNroCalle.Location = new System.Drawing.Point(251, 107);
+            this.textBoxNroCalle.MaxLength = 9;
             this.textBoxNroCalle.Name = "textBoxNroCalle";
             this.textBoxNroCalle.Size = new System.Drawing.Size(50, 20);
             this.textBoxNroCalle.TabIndex = 8;
@@ -278,6 +288,7 @@
             // textBoxPiso
             // 
             this.textBoxPiso.Location = new System.Drawing.Point(338, 107);
+            this.textBoxPiso.MaxLength = 9;
             this.textBoxPiso.Name = "textBoxPiso";
             this.textBoxPiso.Size = new System.Drawing.Size(27, 20);
             this.textBoxPiso.TabIndex = 9;
@@ -295,6 +306,7 @@
             // textBoxDepto
             // 
             this.textBoxDepto.Location = new System.Drawing.Point(412, 107);
+            this.textBoxDepto.MaxLength = 50;
             this.textBoxDepto.Name = "textBoxDepto";
             this.textBoxDepto.Size = new System.Drawing.Size(27, 20);
             this.textBoxDepto.TabIndex = 10;
@@ -373,6 +385,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "General";
             // 
+            // checkBoxActivo
+            // 
+            this.checkBoxActivo.AutoSize = true;
+            this.checkBoxActivo.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxActivo.Location = new System.Drawing.Point(383, 193);
+            this.checkBoxActivo.Name = "checkBoxActivo";
+            this.checkBoxActivo.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxActivo.TabIndex = 15;
+            this.checkBoxActivo.Text = "Activo";
+            this.checkBoxActivo.UseVisualStyleBackColor = true;
+            // 
             // buttonLimpiar
             // 
             this.buttonLimpiar.Location = new System.Drawing.Point(65, 244);
@@ -402,17 +425,6 @@
             this.buttonSalir.Text = "Salir";
             this.buttonSalir.UseVisualStyleBackColor = true;
             this.buttonSalir.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // checkBoxActivo
-            // 
-            this.checkBoxActivo.AutoSize = true;
-            this.checkBoxActivo.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBoxActivo.Location = new System.Drawing.Point(383, 193);
-            this.checkBoxActivo.Name = "checkBoxActivo";
-            this.checkBoxActivo.Size = new System.Drawing.Size(56, 17);
-            this.checkBoxActivo.TabIndex = 15;
-            this.checkBoxActivo.Text = "Activo";
-            this.checkBoxActivo.UseVisualStyleBackColor = true;
             // 
             // ModificacionCliente
             // 
