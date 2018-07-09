@@ -140,11 +140,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ListadoEstadistico\ConectorSQL.cs" />
-    <Compile Include="ListadoEstadistico\ListadoEstadistico.cs">
+    <Compile Include="ListadoEstadistico\Listado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\ListadoEstadistico.Designer.cs">
-      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
+    <Compile Include="ListadoEstadistico\Listado.Designer.cs">
+      <DependentUpon>Listado.cs</DependentUpon>
     </Compile>
     <Compile Include="Modelo\HabitacionDisponible.cs" />
     <Compile Include="AbmReserva\EditarReserva.cs">

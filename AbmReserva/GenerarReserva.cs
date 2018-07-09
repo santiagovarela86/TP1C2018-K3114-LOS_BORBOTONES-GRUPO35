@@ -137,6 +137,13 @@ namespace FrbaHotel.AbmReserva
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
             List<HabitacionDisponible> habitacionesDisponibles = repoHabitacion.getHabitacionesDisponibles(fechaInicio, fechaFin, hotelSeleccionado, tipoHabitacionSeleccionada, regimenSeleccionado,null).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
 
+                if(habitacionesDisponibles.Count ==0){
+                    limpiarRegimenesDataGrid();
+                    this.regimenesDisponiblesGrid.DataSource = null;
+                    this.habitacionesDisponiblesGrid.DataSource = null;
+                    MessageBox.Show("No se encontraron habitaciones disponibles" ,"Generar Reserva");
+                    return;
+                }
 
 
             this.habitacionesDisponiblesGrid.DataSource = habitacionesDisponibles;
