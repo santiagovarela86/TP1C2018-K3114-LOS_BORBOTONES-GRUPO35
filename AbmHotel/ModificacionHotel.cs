@@ -142,6 +142,8 @@ namespace FrbaHotel.AbmHotel
             this.nombreText = new System.Windows.Forms.TextBox();
             this.nombreLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelReservas = new System.Windows.Forms.Label();
+            this.dataGridReservas = new System.Windows.Forms.DataGridView();
             this.buttonSalir = new System.Windows.Forms.Button();
             this.buttonNuevoCierre = new System.Windows.Forms.Button();
             this.dataGridCierres = new System.Windows.Forms.DataGridView();
@@ -166,17 +168,16 @@ namespace FrbaHotel.AbmHotel
             this.creacionLabel = new System.Windows.Forms.Label();
             this.creacionTime = new System.Windows.Forms.DateTimePicker();
             this.modificarHotel = new System.Windows.Forms.Button();
-            this.dataGridReservas = new System.Windows.Forms.DataGridView();
-            this.labelReservas = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridReservas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridCierres)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridReservas)).BeginInit();
             this.SuspendLayout();
             // 
             // nombreText
             // 
             this.nombreText.Location = new System.Drawing.Point(86, 38);
+            this.nombreText.MaxLength = 255;
             this.nombreText.Name = "nombreText";
             this.nombreText.Size = new System.Drawing.Size(117, 20);
             this.nombreText.TabIndex = 1;
@@ -226,6 +227,29 @@ namespace FrbaHotel.AbmHotel
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Modificar Hotel";
+            // 
+            // labelReservas
+            // 
+            this.labelReservas.AutoSize = true;
+            this.labelReservas.Location = new System.Drawing.Point(23, 369);
+            this.labelReservas.Name = "labelReservas";
+            this.labelReservas.Size = new System.Drawing.Size(55, 13);
+            this.labelReservas.TabIndex = 23;
+            this.labelReservas.Text = "Reservas:";
+            // 
+            // dataGridReservas
+            // 
+            this.dataGridReservas.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridReservas.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
+            this.dataGridReservas.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridReservas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridReservas.Location = new System.Drawing.Point(137, 369);
+            this.dataGridReservas.MultiSelect = false;
+            this.dataGridReservas.Name = "dataGridReservas";
+            this.dataGridReservas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridReservas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridReservas.Size = new System.Drawing.Size(528, 104);
+            this.dataGridReservas.TabIndex = 22;
             // 
             // buttonSalir
             // 
@@ -311,6 +335,7 @@ namespace FrbaHotel.AbmHotel
             // emailText
             // 
             this.emailText.Location = new System.Drawing.Point(548, 64);
+            this.emailText.MaxLength = 255;
             this.emailText.Name = "emailText";
             this.emailText.Size = new System.Drawing.Size(117, 20);
             this.emailText.TabIndex = 6;
@@ -327,6 +352,7 @@ namespace FrbaHotel.AbmHotel
             // telefonoText
             // 
             this.telefonoText.Location = new System.Drawing.Point(548, 90);
+            this.telefonoText.MaxLength = 45;
             this.telefonoText.Name = "telefonoText";
             this.telefonoText.Size = new System.Drawing.Size(117, 20);
             this.telefonoText.TabIndex = 9;
@@ -344,6 +370,7 @@ namespace FrbaHotel.AbmHotel
             // calleText
             // 
             this.calleText.Location = new System.Drawing.Point(86, 90);
+            this.calleText.MaxLength = 255;
             this.calleText.Name = "calleText";
             this.calleText.Size = new System.Drawing.Size(117, 20);
             this.calleText.TabIndex = 7;
@@ -360,6 +387,7 @@ namespace FrbaHotel.AbmHotel
             // estrellasComboBox
             // 
             this.estrellasComboBox.DisplayMember = "Estrellas";
+            this.estrellasComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.estrellasComboBox.Location = new System.Drawing.Point(548, 38);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
@@ -377,6 +405,7 @@ namespace FrbaHotel.AbmHotel
             // ciudadText
             // 
             this.ciudadText.Location = new System.Drawing.Point(307, 64);
+            this.ciudadText.MaxLength = 255;
             this.ciudadText.Name = "ciudadText";
             this.ciudadText.Size = new System.Drawing.Size(117, 20);
             this.ciudadText.TabIndex = 5;
@@ -393,6 +422,7 @@ namespace FrbaHotel.AbmHotel
             // numeroCalleText
             // 
             this.numeroCalleText.Location = new System.Drawing.Point(307, 90);
+            this.numeroCalleText.MaxLength = 9;
             this.numeroCalleText.Name = "numeroCalleText";
             this.numeroCalleText.Size = new System.Drawing.Size(117, 20);
             this.numeroCalleText.TabIndex = 8;
@@ -410,6 +440,7 @@ namespace FrbaHotel.AbmHotel
             // paisText
             // 
             this.paisText.Location = new System.Drawing.Point(86, 64);
+            this.paisText.MaxLength = 45;
             this.paisText.Name = "paisText";
             this.paisText.Size = new System.Drawing.Size(117, 20);
             this.paisText.TabIndex = 4;
@@ -439,29 +470,6 @@ namespace FrbaHotel.AbmHotel
             this.modificarHotel.Text = "Modificar";
             this.modificarHotel.Click += new System.EventHandler(this.modificarHotel_Click);
             // 
-            // dataGridReservas
-            // 
-            this.dataGridReservas.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridReservas.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            this.dataGridReservas.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.dataGridReservas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridReservas.Location = new System.Drawing.Point(137, 369);
-            this.dataGridReservas.MultiSelect = false;
-            this.dataGridReservas.Name = "dataGridReservas";
-            this.dataGridReservas.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.dataGridReservas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridReservas.Size = new System.Drawing.Size(528, 104);
-            this.dataGridReservas.TabIndex = 22;
-            // 
-            // labelReservas
-            // 
-            this.labelReservas.AutoSize = true;
-            this.labelReservas.Location = new System.Drawing.Point(23, 369);
-            this.labelReservas.Name = "labelReservas";
-            this.labelReservas.Size = new System.Drawing.Size(55, 13);
-            this.labelReservas.TabIndex = 23;
-            this.labelReservas.Text = "Reservas:";
-            // 
             // ModificacionHotel
             // 
             this.AcceptButton = this.modificarHotel;
@@ -474,9 +482,9 @@ namespace FrbaHotel.AbmHotel
             this.Load += new System.EventHandler(this.load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridReservas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridCierres)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.regimenesGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridReservas)).EndInit();
             this.ResumeLayout(false);
 
         }

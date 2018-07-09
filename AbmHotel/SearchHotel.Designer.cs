@@ -72,6 +72,7 @@ namespace FrbaHotel.AbmHotel
             // nombreText
             // 
             this.nombreText.Location = new System.Drawing.Point(86, 38);
+            this.nombreText.MaxLength = 255;
             this.nombreText.Name = "nombreText";
             this.nombreText.Size = new System.Drawing.Size(117, 20);
             this.nombreText.TabIndex = 1;
@@ -157,6 +158,7 @@ namespace FrbaHotel.AbmHotel
             // estrellasComboBox
             // 
             this.estrellasComboBox.DisplayMember = "Estrellas";
+            this.estrellasComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.estrellasComboBox.Location = new System.Drawing.Point(421, 37);
             this.estrellasComboBox.Name = "estrellasComboBox";
             this.estrellasComboBox.Size = new System.Drawing.Size(117, 21);
@@ -174,6 +176,7 @@ namespace FrbaHotel.AbmHotel
             // ciudadText
             // 
             this.ciudadText.Location = new System.Drawing.Point(421, 108);
+            this.ciudadText.MaxLength = 255;
             this.ciudadText.Name = "ciudadText";
             this.ciudadText.Size = new System.Drawing.Size(117, 20);
             this.ciudadText.TabIndex = 4;
@@ -190,6 +193,7 @@ namespace FrbaHotel.AbmHotel
             // paisText
             // 
             this.paisText.Location = new System.Drawing.Point(86, 105);
+            this.paisText.MaxLength = 45;
             this.paisText.Name = "paisText";
             this.paisText.Size = new System.Drawing.Size(117, 20);
             this.paisText.TabIndex = 3;

@@ -19,7 +19,7 @@ namespace FrbaHotel.AbmHotel
 
             this.sesion = sesion;
             RepositorioCategoria repoCategoria = new RepositorioCategoria();
-            this.estrellasComboBox.DataSource = repoCategoria.getAll();
+            this.estrellasComboBox.DataSource = repoCategoria.getAll().OrderBy(c => c.getEstrellas()).ToList();
             this.estrellasComboBox.ValueMember = "Estrellas";
             limpiarBusquedaYResultados();
         }

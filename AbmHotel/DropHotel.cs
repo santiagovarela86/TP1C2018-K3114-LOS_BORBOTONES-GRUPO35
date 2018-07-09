@@ -162,6 +162,7 @@ namespace FrbaHotel.AbmHotel
             // descripcionBajaText
             // 
             this.descripcionBajaText.Location = new System.Drawing.Point(95, 36);
+            this.descripcionBajaText.MaxLength = 45;
             this.descripcionBajaText.Name = "descripcionBajaText";
             this.descripcionBajaText.Size = new System.Drawing.Size(435, 20);
             this.descripcionBajaText.TabIndex = 14;
