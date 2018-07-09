@@ -253,129 +253,58 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
+        public void baja(Consumible consumible,int idEstadia)
+        {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
 
 
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@IdConsumible", consumible.getIdConsumible());
+            sqlCommand.Parameters.AddWithValue("@IdEstadia", idEstadia);
 
-        public List<Consumible> getByQuery(int idEstadia, String nombre, String apellido, String tipoDoc, String dni, String mail)
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    DELETE FROM LOS_BORBOTONES.Estadia_X_Consumible
+                    WHERE idConsumible=@IdConsumible and idEstadia=@IdEstadia;
+
+                ");
+            sqlBuilder.Append(@"
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+               
+        }
+
+
+        public List<Consumible> getByQuery(int idEstadia)
         {
             List<Consumible> consumibles = new List<Consumible>();
             //hago join con identidad ya que de ahi vendran los filtros como nombre apellido y dni
-            String query = "SELECT con.Descripcion,con.idConsumible,con.Codigo,con.Precio FROM LOS_BORBOTONES.Consumible con INNER JOIN LOS_BORBOTONES.Estadia_X_Consumible exc ON con.idConsumible = exc.idConsumible";
-            /*
-  SELECT con.Descripcion,con.idConsumible,con.Codigo,con.Precio FROM LOS_BORBOTONES.Consumible con 
-  INNER JOIN LOS_BORBOTONES.Estadia_X_Consumible exc ON con.idConsumible = exc.idConsumible
-  INNER JOIN LOS_BORBOTONES.Reserva r ON r.idEstadia = exc.idEstadia
-  INNER JOIN LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rhc ON rhc.idReserva = r.idReserva
-  INNER JOIN LOS_BORBOTONES.Cliente c ON c.idCliente = rhc.idCliente
-  INNER JOIN LOS_BORBOTONES.Identidad i ON i.idIdentidad = c.idIdentidad
-  where exc.idEstadia=66*/
-  
-            //Consulta SIN FILTRO
-            if (nombre.Equals("") && apellido.Equals("") && tipoDoc.Equals("") && dni.Equals("") && idEstadia == 0 && mail.Equals(""))
-            {
-                consumibles = this.getAll();
-            }
-            else
-            {
-                //Consulta CON FILTROS
-                //PREPARO TODO PARA HACER LA CONSULTA
-                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-                SqlConnection sqlConnection = new SqlConnection(connectionString);
-                SqlCommand sqlCommand = new SqlCommand();
-                SqlDataReader reader;
-                sqlCommand.CommandType = CommandType.Text;
-                sqlCommand.Connection = sqlConnection;
-
-                //Booleano que uso para armar bien la consulta
-                Boolean primerCriterioWhere = true;
-
-                //AGREGO FILTRO NOMBRE
-                if (!nombre.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.Nombre LIKE @Nombre";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        //aca va WHERE tambien ya que no lo puse en el inner join porque valide en el ON
-                        query = query + " WHERE i.Nombre LIKE @Nombre";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Nombre", "%" + nombre + "%");
-                }
-                //AGREGO FILTRO Apellido
-                if (!apellido.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.Apellido LIKE @Apellido";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.Apellido LIKE @Apellido";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Apellido", "%" + apellido + "%");
-                }
-                //AGREGO FILTRO tipoDoc
-                if (!tipoDoc.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.Apellido LIKE @TipoDoc";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.Apellido LIKE @TipoDoc";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@TipoDoc", "%" + tipoDoc + "%");
-                }
-                //AGREGO FILTRO DNI
-                if (!dni.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.NumeroDocumento LIKE @Dni";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.NumeroDocumento LIKE @Dni";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Dni", "%" + dni + "%");
-                }
-
-                //AGREGO FILTRO MAIL
-                if (!mail.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.NumeroDocumento LIKE @Mail";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.NumeroDocumento LIKE @Mail";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Mail", "%" + mail + "%");
-                }
-
-                //AGREGO FILTRO idEstadia
-                if (idEstadia!=0)
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE exc.idEstadia = @idEstadia";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND exc.idEstadia = @idEstadia";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@idEstadia",idEstadia);
-                }
+            String query = "SELECT con.Descripcion,con.idConsumible,con.Codigo,con.Precio FROM LOS_BORBOTONES.Consumible con INNER JOIN LOS_BORBOTONES.Estadia_X_Consumible exc ON con.idConsumible = exc.idConsumible WHERE exc.idEstadia = @idEstadia";
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@idEstadia",idEstadia);
 
                 //HAGO LA CONSULTA
                 sqlCommand.CommandText = query;
@@ -389,8 +318,7 @@ namespace FrbaHotel.Repositorios
                 }
 
                 sqlConnection.Close();
-            }
-
+      
             return consumibles;
         }
     }
