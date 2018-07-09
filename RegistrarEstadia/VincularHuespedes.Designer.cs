@@ -187,6 +187,7 @@
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(76, 41);
+            this.textBox3.MaxLength = 255;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(113, 20);
             this.textBox3.TabIndex = 3;
@@ -194,9 +195,11 @@
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(448, 42);
+            this.textBox4.MaxLength = 45;
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(107, 20);
             this.textBox4.TabIndex = 5;
+            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // groupBox3
             // 
