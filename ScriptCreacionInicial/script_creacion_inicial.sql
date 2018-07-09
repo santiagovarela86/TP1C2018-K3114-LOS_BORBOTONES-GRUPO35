@@ -956,6 +956,7 @@ CREATE TABLE LOS_BORBOTONES.Habitacion (
 )
 GO
 
+
 -- Tabla Estadia
 CREATE TABLE LOS_BORBOTONES.Estadia (
 
@@ -985,6 +986,10 @@ CREATE TABLE LOS_BORBOTONES.Reserva (
 	idCliente		INT				NOT NULL,
 )
 GO
+
+
+CREATE INDEX IDX_Reserva_CodigoReserva ON LOS_BORBOTONES.Reserva(CodigoReserva);
+CREATE INDEX IDX_Reserva_Fecha ON LOS_BORBOTONES.Reserva(FechaDesde,FechaHasta);
 
 -- Tabla Asociacion Reserva - Habitacion - Cliente
 CREATE TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente (
