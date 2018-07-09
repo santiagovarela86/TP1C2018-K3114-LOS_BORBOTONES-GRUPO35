@@ -426,12 +426,13 @@ GO
 Se paso como parametros (viendo las fechas de Facturacion) trimestre = 2, año = 2018
 Funciona ok
 */
+
 CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
 				@trimestre numeric(18,0), @Anio numeric(18,0) 
 	AS				
 	  BEGIN	
-		DECLARE @inicio datetime,
-				@fin datetime,
+		DECLARE @inicio VARCHAR(10),
+				@fin VARCHAR(10),
 				@AnioAux char(4)
 		SET @AnioAux = CAST(@Anio AS CHAR(4))
 		
@@ -470,7 +471,7 @@ FROM
 			  LOS_BORBOTONES.Reserva res
 	WHERE res.idEstadia = es.idEstadia AND
 		  res.idRegimen = re.idRegimen AND
-		  es.FechaEntrada BETWEEN @inicio AND @fin
+		  es.FechaEntrada BETWEEN  CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 	GROUP BY es.idEstadia, re.Precio, es.CantidadNoches
 	) AS punEs, 
 
@@ -480,7 +481,7 @@ FROM
 			 LOS_BORBOTONES.Reserva res
 	WHERE exc.idConsumible = con.idConsumible AND
 			res.idEstadia = exc.idEstadia AND
-			res.FechaDesde BETWEEN @inicio AND @fin
+			res.FechaDesde BETWEEN  CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 	GROUP BY exc.idEstadia, con.Precio
 	) AS punCon,
 
@@ -502,12 +503,13 @@ GO
 Se paso como parametros (viendo las fechas de Estadias disponibles) trimestre = 4, año = 2017
 Funciona ok
 */
+
 CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
 				@trimestre numeric(18,0), @Anio numeric(18,0) 
 	AS				
 	 BEGIN		
-		DECLARE @inicio datetime,
-				@fin datetime,
+		DECLARE @inicio VARCHAR(10),
+				@fin VARCHAR(10),
 				@AnioAux char(4)
 		SET @AnioAux = CAST(@Anio as CHAR(4))
 		
@@ -580,7 +582,7 @@ FROM				(
 WHERE consulCantXHab.idHotel = ho.idHotel AND
 		hab.idHabitacion = consulCantXHab.idHabitacion AND
 		consulCantXHab.idHabitacion = consultaCantDias.idHabitacion	AND
-		es.FechaEntrada BETWEEN @inicio AND @fin
+		es.FechaEntrada BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 ORDER BY cantEst DESC
 END
 GO
@@ -591,12 +593,13 @@ GO
 Se paso como parametros (viendo las fechas de Estado Reserva) trimestre = 1, año = 2018
 Funciona ok
 */
+
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
 				@trimestre numeric(18,0), @Anio numeric(18,0) 
 	AS	
 	  BEGIN	
-		DECLARE @inicio datetime,
-				@fin datetime,
+		DECLARE @inicio VARCHAR(10),
+				@fin VARCHAR(10),
 				@AnioAux char(4)
 		SET @AnioAux = CAST(@Anio AS CHAR(4))
 		
@@ -641,7 +644,7 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
 		  hab.idHabitacion = rxhxc.idHabitacion AND
 		  hab.idHotel = hot.idHotel AND
 		  rxhxc.idReserva = res.idReserva AND
-		  er.Fecha BETWEEN @inicio AND @fin
+		  er.Fecha BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 		GROUP BY hot.Nombre
 		ORDER BY cancelaciones DESC					
 		END
@@ -653,13 +656,13 @@ GO
 Se paso como parametros (viendo las fechas de cierre temporal) trimestre = 1, año = 2021
 Funciona ok
 */
-CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
+ALTER PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
 				@trimestre numeric(18,0), @Anio numeric(18,0) 
 	AS		
 	  BEGIN
 		
-		DECLARE @inicio datetime,
-				@fin datetime,
+		DECLARE @inicio VARCHAR(10),
+				@fin VARCHAR(10),
 				@AnioAux char(4)
 		SET @AnioAux = CAST(@Anio as CHAR(4))
 		
@@ -697,20 +700,20 @@ SELECT TOP 5 consTotal.hot, hot.nombre ,SUM(consTotal.Dias) Dias_Baja FROM
 			FROM LOS_BORBOTONES.CierreTemporal ct,
 					LOS_BORBOTONES.Hotel ho
 			WHERE ct.idHotel = ho.idHotel 
-					AND ct.FechaInicio BETWEEN @inicio AND @fin
-					AND ct.FechaFin < @fin
+					AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
+					AND ct.FechaFin < CONVERT(DATETIME,@fin,103)
 			GROUP BY ho.idHotel ) AS consPre
 		
 		UNION ALL
 
 	SELECT * FROM
 
-			(SELECT ho.idHotel hot, SUM(DATEDIFF(day,ct.FechaInicio,@fin)) Dias
+			(SELECT ho.idHotel hot, SUM(DATEDIFF(day,ct.FechaInicio, CONVERT(DATETIME,@fin,103))) Dias
 			FROM LOS_BORBOTONES.CierreTemporal ct,
 					LOS_BORBOTONES.Hotel ho
 			WHERE ct.idHotel = ho.idHotel 
-					AND ct.FechaInicio BETWEEN @inicio AND @fin
-					AND ct.FechaFin > @fin
+					AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
+					AND ct.FechaFin >  CONVERT(DATETIME,@fin,103)
 			GROUP BY ho.idHotel) as consPost 
 		) as consTotal,
 		LOS_BORBOTONES.Hotel hot
@@ -726,13 +729,14 @@ SELECT TOP 5 consTotal.hot, hot.nombre ,SUM(consTotal.Dias) Dias_Baja FROM
 Se paso como parametros (viendo las fechas de facturacion) trimestre = 1, año = 2017
 Funciona ok
 */
+
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
 				@trimestre numeric(18,0), @Anio numeric(18,0) 
 	AS				
 		BEGIN
 		
-		DECLARE @inicio datetime,
-				@fin datetime,
+		DECLARE @inicio varchar(10),
+				@fin varchar(10),
 				@AnioAux char(4)
 		SET @AnioAux = CAST(@Anio as CHAR(4))
 		
@@ -781,7 +785,7 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
 					res.idReserva = rxhxc.idReserva AND
 					rxhxc.idHabitacion = hab.idHabitacion AND
 					hab.idHotel = ho.idHotel
-					AND fc.FechaFacturacion BETWEEN @inicio AND @fin
+					AND fc.FechaFacturacion BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 				GROUP BY ho.Nombre
 				ORDER BY  Cons_Facturados DESC
 				END
