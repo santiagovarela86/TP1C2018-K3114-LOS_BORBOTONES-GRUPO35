@@ -189,23 +189,26 @@ namespace FrbaHotel.Repositorios
             float montoTotal = 0;
             if (!allInclusive)
             {
-                foreach (Consumible item in consumiblesXEstadia)
+                foreach (Consumible item in consumiblesXEstadia.ToList())
                 {
-                    /*cant = 0;
-                    foreach (Consumible item2 in consumiblesXEstadia)
+                    cant = 0;
+                    foreach (Consumible item2 in consumiblesXEstadia.ToList())
                     {
                         if (item.getCodigo()==item2.getCodigo())
                         {
                             cant = cant + 1;
-                            if (cant != 0)
-                                consumiblesXEstadia.Remove(item2);
+                            consumiblesXEstadia.Remove(item2);
+                            
                         }   
-                    }   */
-                    idConsumible = item.getIdConsumible();
-                    monto = item.getPrecio();
-                    itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
-                    itemsFactura.Add(itemFactura);
-                    montoTotal = monto + montoTotal;
+                    }
+                    if(cant!=0)
+                    {
+                        idConsumible = item.getIdConsumible();
+                        monto = item.getPrecio();
+                        itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
+                        itemsFactura.Add(itemFactura);
+                        montoTotal = monto + montoTotal;
+                    }
                 }   
 
             }else

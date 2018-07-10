@@ -20,7 +20,8 @@ namespace FrbaHotel.Repositorios
 
             if (this.exists(itemFactura))
             {
-                throw new ElementoYaExisteException("Ya existe el itemFactura que intenta crear");
+                //si existe no hago nada ya que ya fue facturado para ese mismo consumible con la cantidad adecuada
+                //throw new ElementoYaExisteException("Ya existe el itemFactura que intenta crear");
             }
             else
             {
@@ -108,6 +109,7 @@ namespace FrbaHotel.Repositorios
         {
             throw new NotImplementedException();
         }
+        /*
         override public Boolean exists(ItemFactura itemFactura)
         {
             int idItemFactura = 0;
@@ -135,6 +137,42 @@ namespace FrbaHotel.Repositorios
 
             //Devuelve verdadero si el ID coincide
             return idItemFactura != 0;
+        }*/
+        override public Boolean exists(ItemFactura itemFactura)
+        {
+            int idItemFactura = 0;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@FechaCreacion", itemFactura.getFechaCreacion());
+            sqlCommand.Parameters.AddWithValue("@Cantidad", itemFactura.getCantidad());
+            sqlCommand.Parameters.AddWithValue("@Monto", itemFactura.getMonto());
+            sqlCommand.Parameters.AddWithValue("@IdFactura", itemFactura.getIdFactura());
+            sqlCommand.Parameters.AddWithValue("@IdConsumible", itemFactura.getIdConsumible());
+            sqlCommand.CommandType = CommandType.Text;
+            
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idItemFactura FROM LOS_BORBOTONES.ItemFactura WHERE FechaCreacion = @FechaCreacion and Cantidad = @Cantidad and Monto = @Monto and idFactura = @IdFactura and idConsumible = @IdConsumible";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+
+            while (reader.Read())
+            {
+                idItemFactura = reader.GetInt32(reader.GetOrdinal("idItemFactura"));
+            }
+
+            sqlConnection.Close();
+
+            //Devuelve verdadero si el ID coincide
+
+            return idItemFactura != 0;
+
         }
         public void createTodos(List<ItemFactura> itemsFactura)
         {
@@ -159,7 +197,7 @@ namespace FrbaHotel.Repositorios
             {    
                 if (this.exists(item))
                 {
-                    throw new ElementoYaExisteException("Ya existe el itemFactura que intenta crear");
+                    //throw new ElementoYaExisteException("Ya existe el itemFactura que intenta crear");
                 }
                 else
                 {
