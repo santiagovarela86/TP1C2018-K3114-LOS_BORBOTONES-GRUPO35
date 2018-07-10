@@ -173,6 +173,14 @@ namespace FrbaHotel.FacturarEstadia
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        private void onlyNumeric(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
 
     }
 }
