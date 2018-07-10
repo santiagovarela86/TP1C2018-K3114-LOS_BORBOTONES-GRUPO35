@@ -48,24 +48,37 @@ namespace FrbaHotel.ListadoEstadistico
                 return;
             }
 
+            if (string.IsNullOrEmpty(tipoListado.Text))
+            {
+                MessageBox.Show("Debe seleccionar el tipo de listado.", "Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (Int32.Parse(textBoxAnio.Text) < 1900)
+            {
+                MessageBox.Show("Debe elegir una fecha válida.", "Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             RepositorioListadoEstadistico repoListado = new RepositorioListadoEstadistico();
+            string anioString = textBoxAnio.Text.PadLeft(4, '0');
 
             switch (tipoListado.SelectedIndex)
             {
                 case 0:
-                    dataGridView1.DataSource = repoListado.getHotelesMayorCantidadReservasCanceladas(trimestre.Text, textBoxAnio.Text);
+                    dataGridView1.DataSource = repoListado.getHotelesMayorCantidadReservasCanceladas(trimestre.Text, anioString);
                     break;
                 case 1:
-                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadConsumiblesFacturados(trimestre.Text, textBoxAnio.Text);
+                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadConsumiblesFacturados(trimestre.Text, anioString);
                     break;
                 case 2:
-                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadDiasFueraServicio(trimestre.Text, textBoxAnio.Text);
+                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadDiasFueraServicio(trimestre.Text, anioString);
                     break;
                 case 3:
-                    dataGridView1.DataSource = repoListado.clientesConMasPuntos(trimestre.Text, textBoxAnio.Text);
+                    dataGridView1.DataSource = repoListado.clientesConMasPuntos(trimestre.Text, anioString);
                     break;
                 case 4:
-                    dataGridView1.DataSource = repoListado.habitacionesMasOcupadas(trimestre.Text, textBoxAnio.Text);
+                    dataGridView1.DataSource = repoListado.habitacionesMasOcupadas(trimestre.Text, anioString);
                     break;
             }
         }
