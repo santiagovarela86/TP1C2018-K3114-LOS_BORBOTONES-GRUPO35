@@ -43,6 +43,14 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Cliente', 'F') IS NOT NULL
 	DROP CONSTRAINT FK_Identidad_Cliente 
 GO
 
+/*
+-- Tabla ClienteInconsistente
+IF OBJECT_ID('LOS_BORBOTONES.FK_Identidad_Cliente', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.ClienteInconsistente
+	DROP CONSTRAINT FK_Identidad_ClienteInconsistente 
+GO
+*/
+
 -- Tabla Hotel
 IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Categoria', 'F') IS NOT NULL
 	ALTER TABLE LOS_BORBOTONES.Hotel
@@ -118,6 +126,13 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Cliente_Reserva', 'F') IS NOT NULL
 	ALTER TABLE LOS_BORBOTONES.Reserva
 	DROP CONSTRAINT FK_Cliente_Reserva
 GO
+
+/*
+IF OBJECT_ID('LOS_BORBOTONES.FK_ClienteInconsistente_ReservaInconsistente', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.ReservaInconsistente
+	DROP CONSTRAINT FK_ClienteInconsistente_ReservaInconsistente
+GO
+*/
 	
 -- Tabla  Reserva_X_Habitacion_X_Cliente 
 IF OBJECT_ID('LOS_BORBOTONES.FK_Reserva_Habitacion_Cliente', 'F') IS NOT NULL
@@ -261,6 +276,12 @@ IF OBJECT_ID('LOS_BORBOTONES.Cliente','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Cliente;
 GO
 
+/*
+IF OBJECT_ID('LOS_BORBOTONES.ClienteInconsistente','U') IS NOT NULL
+    DROP TABLE LOS_BORBOTONES.ClienteInconsistente;
+GO
+*/
+
 IF OBJECT_ID('LOS_BORBOTONES.Usuario','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Usuario;
 GO
@@ -273,9 +294,21 @@ IF OBJECT_ID('LOS_BORBOTONES.Identidad','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Identidad;
 GO
 
+/*
+IF OBJECT_ID('LOS_BORBOTONES.IdentidadInconsistente','U') IS NOT NULL
+    DROP TABLE LOS_BORBOTONES.IdentidadInconsistente;
+GO
+*/
+
 IF OBJECT_ID('LOS_BORBOTONES.Reserva','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.Reserva;
 GO
+
+/*
+IF OBJECT_ID('LOS_BORBOTONES.ReservaInconsistente','U') IS NOT NULL
+    DROP TABLE LOS_BORBOTONES.ReservaInconsistente;
+GO
+*/
 
 ----Tablas Temporales
 
@@ -292,6 +325,12 @@ GO
 IF OBJECT_ID('LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva', 'U') IS NOT NULL
 	DROP TABLE LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva;
 GO
+
+/*
+IF OBJECT_ID('LOS_BORBOTONES.temporalInconsistencias', 'U') IS NOT NULL
+	DROP TABLE LOS_BORBOTONES.temporalInconsistencias;
+GO
+*/
 
 ---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
 --Funcion getDate()
@@ -349,7 +388,6 @@ CREATE SCHEMA LOS_BORBOTONES AUTHORIZATION gdHotel2018;
 GO
 
 --------------------------------------FUNCIONES---------------------------------------------------------------------------------------------------------------------------------------
-
 ----------------------------------------------- Uso una funcion para obtener la fecha del sistema ya que no hay que usar GETDATE() -------------
 ----------------------------------------------- La fecha es la misma que en el archivo de configuración de la aplicación -----------------------
 
@@ -836,6 +874,24 @@ CREATE TABLE LOS_BORBOTONES.Identidad (
 )
 GO
 
+/*
+--Tabla IdentidadInconsistente
+CREATE TABLE LOS_BORBOTONES.IdentidadInconsistente (
+
+	idIdentidad				INT				IDENTITY(1,1)		NOT NULL,
+	TipoIdentidad			VARCHAR(45)		NOT NULL,		
+	Nombre					NVARCHAR(255)	NOT NULL,
+	Apellido				NVARCHAR(255)	NOT NULL,
+	TipoDocumento			VARCHAR(45)		NOT NULL,
+	NumeroDocumento			VARCHAR(45)		NOT NULL,
+	Mail					NVARCHAR(255)	NOT NULL, --el mail debe ser unico
+	FechaNacimiento			DATETIME		NOT NULL,
+	Nacionalidad			NVARCHAR(255),
+	Telefono				VARCHAR(45)		DEFAULT 0			NOT NULL,
+)
+GO
+*/
+
 --Tabla Direccion
 CREATE TABLE LOS_BORBOTONES.Direccion (
 
@@ -878,6 +934,17 @@ CREATE TABLE LOS_BORBOTONES.Cliente (
 	idIdentidad		INT				NOT NULL,
 )
 GO
+
+/*
+--Tabla ClienteInconsistente
+CREATE TABLE LOS_BORBOTONES.ClienteInconsistente (
+
+	idCliente		INT				IDENTITY(1,1)	NOT NULL, --debido a que se cargaron 3 usuarios en identidad y para establecer una correspondencia entre id identidad y idcliente
+	Activo			BIT,
+	idIdentidad		INT				NOT NULL,
+)
+GO
+*/
 
 --Tabla Categoria
 CREATE TABLE LOS_BORBOTONES.Categoria (
@@ -995,6 +1062,23 @@ CREATE TABLE LOS_BORBOTONES.Reserva (
 )
 GO
 
+/*
+-- Tabla ReservaInconsistente
+CREATE TABLE LOS_BORBOTONES.ReservaInconsistente (
+	idReserva		INT				IDENTITY(1,1)	NOT NULL	UNIQUE,
+	CodigoReserva	NUMERIC(18,0)	NOT NULL,
+	FechaCreacion	DATETIME,
+	FechaDesde		DATETIME		NOT NULL,
+	FechaHasta		DATETIME		NOT NULL,
+	DiasAlojados	NUMERIC(18,0),
+	idHotel			INT				NOT NULL,
+	idEstadia		INT,
+	idRegimen		INT				NOT NULL,
+	idCliente		INT				NOT NULL,
+)
+GO
+*/
+
 -- Tabla Asociacion Reserva - Habitacion - Cliente
 CREATE TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente (
 
@@ -1063,6 +1147,7 @@ CREATE TABLE LOS_BORBOTONES.EstadoReserva (
 	idReserva		INT				NOT NULL,
 )
 GO
+
 --------------------------------------------- Creacion de constraint PK para la base de datos ----------------------------------------------------------------------------------------
 -- Tabla Rol
 ALTER TABLE LOS_BORBOTONES.Rol
@@ -1076,6 +1161,12 @@ ADD CONSTRAINT PK_Funcionalidad_idFuncionalidad PRIMARY KEY (idFuncionalidad)
 ALTER TABLE LOS_BORBOTONES.Identidad
 ADD CONSTRAINT PK_Identidad_idIdentidad PRIMARY KEY (idIdentidad)
 
+/*
+-- Tabla IdentidadInconsistente
+ALTER TABLE LOS_BORBOTONES.IdentidadInconsistente
+ADD CONSTRAINT PK_Identidad_idIdentidadInconsistente PRIMARY KEY (idIdentidad)
+*/
+
 -- Tabla Direccion
 ALTER TABLE LOS_BORBOTONES.Direccion
 ADD CONSTRAINT PK_Direccion_idDireccion PRIMARY KEY (idDireccion)
@@ -1087,6 +1178,12 @@ ADD CONSTRAINT PK_Usuario_idUsuario PRIMARY KEY (idUsuario)
 -- Tabla Cliente
 ALTER TABLE LOS_BORBOTONES.Cliente
 ADD CONSTRAINT PK_Cliente_idCliente PRIMARY KEY (idCliente)
+
+/*
+-- Tabla ClienteInconsistente
+ALTER TABLE LOS_BORBOTONES.ClienteInconsistente
+ADD CONSTRAINT PK_Cliente_idClienteInconsistente PRIMARY KEY (idCliente)
+*/
 
 -- Tabla Categoria
 ALTER TABLE LOS_BORBOTONES.Categoria
@@ -1119,6 +1216,12 @@ ADD CONSTRAINT PK_Estadia_idEstadia PRIMARY KEY (idEstadia)
 -- Tabla Reserva
 ALTER TABLE LOS_BORBOTONES.Reserva
 ADD CONSTRAINT PK_Reserva_idReserva PRIMARY KEY (idReserva)
+
+/*
+-- Tabla Reserva
+ALTER TABLE LOS_BORBOTONES.ReservaInconsistente
+ADD CONSTRAINT PK_Reserva_idReservaInconsistente PRIMARY KEY (idReserva)
+*/
 
 -- Tabla Reserva
 ALTER TABLE LOS_BORBOTONES.Factura
@@ -1163,6 +1266,12 @@ ADD CONSTRAINT FK_Usuario_Rol FOREIGN KEY(idUsuario) REFERENCES LOS_BORBOTONES.U
 -- Tabla Cliente
 ALTER TABLE LOS_BORBOTONES.Cliente
 ADD CONSTRAINT FK_Identidad_Cliente FOREIGN KEY(idIdentidad) REFERENCES LOS_BORBOTONES.Identidad(idIdentidad) ON DELETE CASCADE ON UPDATE CASCADE
+
+/*
+-- Tabla ClienteInconsistente
+ALTER TABLE LOS_BORBOTONES.ClienteInconsistente
+ADD CONSTRAINT FK_Identidad_ClienteInconsistente FOREIGN KEY(idIdentidad) REFERENCES LOS_BORBOTONES.IdentidadInconsistente(idIdentidad) ON DELETE CASCADE ON UPDATE CASCADE
+*/
 
 -- Tabla Hotel
 ALTER TABLE LOS_BORBOTONES.Hotel
@@ -1268,9 +1377,6 @@ CREATE INDEX IDX_IDENTIDAD01 ON LOS_BORBOTONES.Identidad (Mail); -- se crea un i
 
 CREATE INDEX IDX_Reserva_CodigoReserva ON LOS_BORBOTONES.Reserva(CodigoReserva);
 CREATE INDEX IDX_Reserva_Fecha ON LOS_BORBOTONES.Reserva(FechaDesde,FechaHasta);
-
---CREATE INDEX IDX_IDENTIDAD02 ON LOS_BORBOTONES.Identidad (NumeroDocumento); --Para hacer mas rapida la migracin de estadias y reservas?
---CREATE INDEX IDX_IDENTIDAD03 ON LOS_BORBOTONES.Identidad (TipoDocumento); --Para hacer mas rapida la migracin de estadias y reservas?
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga de  Roles Iniciales
@@ -1495,6 +1601,92 @@ INSERT INTO LOS_BORBOTONES.Cliente(idIdentidad, Activo)
 		FROM LOS_BORBOTONES.Identidad
 		WHERE TipoIdentidad = 'Cliente'
 GO
+
+--------------------------------------------------------------------------------------------------------------------------------
+/*  SE DA DE BAJA LA MIGRACION DE INCONSISTENCIAS DE IDENTIDA PORQUE HAY RESERVAS VALIDAS Y CON ESTADIA	
+	PARA LOS CLIENTES CON MISMO DOCUMENTO Y TENDRIA QUE DAR DE BAJA TAMBIEN LAS RESERVAS VALIDAS ASOCIADAS, LO CUAL NO ES VALIDO
+--------------------------------------------------------------------------------------------------------------------------------
+
+--SI HAY IDENTIDADES DUPLICADAS, MUEVO LA MAS NUEVA A LA TABLA DE INCONSISTENCIAS
+--EL CRITERO ES QUE EL VALOR MAS ANTIGUO ES EL VALIDO, Y EL NUEVO NUNCA DEBERIA HABERSE PODIDO CREAR
+--TAMBIEN MUEVO EL CLIENTE CON ESA IDENTIDAD A LA TABLA DE INCONSISTENCIAS
+--CURSOR DE LA Migración Reserva y Estadía
+
+--ESTO HAY QUE HACERLO DE OTRA MANERA PORQUE ES MUY POCO PERFORMANTE
+
+--Tabla Temporal de las Inconsistencias
+SELECT cliente2.idCliente as idClienteInconsistente
+	  ,cliente2.idIdentidad as idIdentidadInconsistente
+	  ,id2.Nombre as Nombre
+	  ,id2.Apellido as Apellido
+	  ,id2.TipoDocumento as TipoDocumento
+	  ,id2.NumeroDocumento as NumeroDocumento
+	  ,id2.Mail as Mail
+	  ,id2.FechaNacimiento as FechaNacimiento
+	  ,id2.Nacionalidad as Nacionalidad
+	  ,id2.Telefono as Telefono
+INTO LOS_BORBOTONES.temporalInconsistencias
+FROM LOS_BORBOTONES.Cliente cliente1
+	,LOS_BORBOTONES.Cliente cliente2
+	,LOS_BORBOTONES.Identidad id1
+	,LOS_BORBOTONES.Identidad id2
+WHERE cliente1.idIdentidad = id1.idIdentidad
+  AND cliente2.idIdentidad = id2.idIdentidad
+  AND id2.NumeroDocumento = id1.NumeroDocumento
+  AND id2.TipoDocumento = id1.TipoDocumento
+  AND id1.idIdentidad < id2.idIdentidad
+
+DECLARE migroInconsistencias CURSOR FOR 
+SELECT *
+FROM LOS_BORBOTONES.temporalInconsistencias
+
+DECLARE @idClienteInconsistente INT,
+		@idIdentidadInconsistente INT,
+		@Nombre NVARCHAR(255),
+		@Apellido NVARCHAR(255),
+		@TipoDocumento VARCHAR(45),
+		@NumeroDocumento VARCHAR(45),
+		@Mail NVARCHAR(255),
+		@FechaNacimiento DATETIME,
+		@Nacionalidad NVARCHAR(255),
+		@Telefono VARCHAR(45)
+
+OPEN migroInconsistencias
+
+-- Perform the first fetch.
+FETCH NEXT FROM migroInconsistencias
+INTO @idClienteInconsistente, @idIdentidadInconsistente, @Nombre, @Apellido, @TipoDocumento, @NumeroDocumento, @Mail, @FechaNacimiento, @Nacionalidad, @Telefono;
+
+-- Check @@FETCH_STATUS to see if there are any more rows to fetch.
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	--MIGRO LA IDENTIDAD INCONSISTENTE
+    INSERT INTO LOS_BORBOTONES.IdentidadInconsistente(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad, Telefono)
+	VALUES('Cliente', @Nombre, @Apellido, @TipoDocumento, @NumeroDocumento, @Mail, @FechaNacimiento, @Nacionalidad, @Telefono)
+	
+	DECLARE @idNuevaIdentidadInconsistente INT
+	SET @idNuevaIdentidadInconsistente = SCOPE_IDENTITY();
+	
+	DELETE FROM LOS_BORBOTONES.Identidad
+	WHERE idIdentidad = @idIdentidadInconsistente
+	
+	--MIGRO EL CLIENTE INCONSISTENTE Y LO PONGO COMO NO ACTIVO
+	INSERT INTO LOS_BORBOTONES.ClienteInconsistente(Activo, idIdentidad)
+	VALUES (0, @idNuevaIdentidadInconsistente)
+	
+	DELETE FROM LOS_BORBOTONES.Cliente
+	WHERE idCliente = @idClienteInconsistente
+	
+    -- This is executed as long as the previous fetch succeeds.
+    FETCH NEXT FROM migroInconsistencias
+    INTO @idClienteInconsistente, @idIdentidadInconsistente, @Nombre, @Apellido, @TipoDocumento, @NumeroDocumento, @Mail, @FechaNacimiento, @Nacionalidad, @Telefono;
+END
+
+CLOSE migroInconsistencias
+DEALLOCATE migroInconsistencias
+*/
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Regimen
 
@@ -1548,25 +1740,6 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Migración Reserva y Estadía
 --------------------------------------------------------------------------------
-
---PARA PROBAR SI SE MIGRAN LAS 86300 OK BORRO LAS IDENTIDADES DUPLICADAS PERO HAY QUE CORREGIR ESTO
---corregir identidades duplicadas-- (mismo documento)
-
-USE GD1C2018
-DELETE FROM LOS_BORBOTONES.Identidad
-WHERE idIdentidad IN 
-(
-SELECT cliente2.idIdentidad
-FROM LOS_BORBOTONES.Cliente cliente1
-	,LOS_BORBOTONES.Cliente cliente2
-	,LOS_BORBOTONES.Identidad id1
-	,LOS_BORBOTONES.Identidad id2
-WHERE cliente1.idIdentidad = id1.idIdentidad
-  AND cliente2.idIdentidad = id2.idIdentidad
-  AND id2.NumeroDocumento = id1.NumeroDocumento
-  AND id2.TipoDocumento = id1.TipoDocumento
-  AND id1.idIdentidad > id2.idIdentidad
-)
 
 --Primer Tabla Temporal de la Migración
 SELECT DISTINCT
