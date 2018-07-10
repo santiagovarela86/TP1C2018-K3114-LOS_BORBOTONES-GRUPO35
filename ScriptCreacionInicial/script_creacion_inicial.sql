@@ -279,14 +279,18 @@ GO
 
 ----Tablas Temporales
 
--- temporalReserva,  
-IF OBJECT_ID('LOS_BORBOTONES.temporalReserva', 'U') IS NOT NULL
-	DROP TABLE LOS_BORBOTONES.temporalReserva;
-GO
-
 -- temporalMontoFactura
 IF OBJECT_ID('LOS_BORBOTONES.temporalMontoFactura', 'U') IS NOT NULL
 	DROP TABLE LOS_BORBOTONES.temporalMontoFactura;
+GO
+
+-- temporalMigracionEstadiasYReserva
+IF OBJECT_ID('LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva', 'U') IS NOT NULL
+	DROP TABLE LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva;
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva', 'U') IS NOT NULL
+	DROP TABLE LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva;
 GO
 
 ---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
@@ -314,7 +318,6 @@ GO
 IF OBJECT_ID('LOS_BORBOTONES.fn_puntoTotalConsumible', 'FN') IS NOT NULL
     DROP FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible
 GO
-
 
 ---------------------------------------------------------------DROPEO PROCEDURE---------------------------------------------------------------
 IF OBJECT_ID('LOS_BORBOTONES.listaMaximosPuntajes', 'P') IS NOT NULL
@@ -992,10 +995,6 @@ CREATE TABLE LOS_BORBOTONES.Reserva (
 )
 GO
 
-
-CREATE INDEX IDX_Reserva_CodigoReserva ON LOS_BORBOTONES.Reserva(CodigoReserva);
-CREATE INDEX IDX_Reserva_Fecha ON LOS_BORBOTONES.Reserva(FechaDesde,FechaHasta);
-
 -- Tabla Asociacion Reserva - Habitacion - Cliente
 CREATE TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente (
 
@@ -1266,6 +1265,13 @@ ADD CONSTRAINT FK_Reserva_EstadoReserva FOREIGN KEY(idReserva) REFERENCES LOS_BO
 
 CREATE INDEX IDX_DIRECCION01 ON LOS_BORBOTONES.Direccion (Calle); --se crea indice a la tabla Direccion, el campo Calle
 CREATE INDEX IDX_IDENTIDAD01 ON LOS_BORBOTONES.Identidad (Mail); -- se crea un indice a la tabla Identidad el campo Mail
+
+CREATE INDEX IDX_Reserva_CodigoReserva ON LOS_BORBOTONES.Reserva(CodigoReserva);
+CREATE INDEX IDX_Reserva_Fecha ON LOS_BORBOTONES.Reserva(FechaDesde,FechaHasta);
+
+--CREATE INDEX IDX_IDENTIDAD02 ON LOS_BORBOTONES.Identidad (NumeroDocumento); --Para hacer mas rapida la migracin de estadias y reservas?
+--CREATE INDEX IDX_IDENTIDAD03 ON LOS_BORBOTONES.Identidad (TipoDocumento); --Para hacer mas rapida la migracin de estadias y reservas?
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga de  Roles Iniciales
 
@@ -1540,31 +1546,105 @@ INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, id
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Migracion Estadia (*)
- --El campo Facturada por defecto, inicia en 1
--- para una misma estadia, habia dos una con fecha entrada y salida NULL, se descartaron los NULL
--- En la tabla maestra esta el campo Estadia_Cant_Noches, que no esta en el DER, se agrega en la creacion de la tabla Estadia. habria que agregarlo al DER
+--Migración Reserva y Estadía
+--------------------------------------------------------------------------------
 
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
-		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 1, 1
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
-		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio < LOS_BORBOTONES.fn_getDate()
-		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
+--PARA PROBAR SI SE MIGRAN LAS 86300 OK BORRO LAS IDENTIDADES DUPLICADAS PERO HAY QUE CORREGIR ESTO
+--corregir identidades duplicadas-- (mismo documento)
+
+USE GD1C2018
+DELETE FROM LOS_BORBOTONES.Identidad
+WHERE idIdentidad IN 
+(
+SELECT cliente2.idIdentidad
+FROM LOS_BORBOTONES.Cliente cliente1
+	,LOS_BORBOTONES.Cliente cliente2
+	,LOS_BORBOTONES.Identidad id1
+	,LOS_BORBOTONES.Identidad id2
+WHERE cliente1.idIdentidad = id1.idIdentidad
+  AND cliente2.idIdentidad = id2.idIdentidad
+  AND id2.NumeroDocumento = id1.NumeroDocumento
+  AND id2.TipoDocumento = id1.TipoDocumento
+  AND id1.idIdentidad > id2.idIdentidad
+)
+
+--Primer Tabla Temporal de la Migración
+SELECT DISTINCT
+	  (SELECT hotel.idHotel
+	  FROM LOS_BORBOTONES.Hotel hotel
+	  WHERE hotel.Nombre = LOS_BORBOTONES.concatenarNombreHotel(Hotel_Calle, Hotel_Nro_Calle)) as idHotel
+      ,(SELECT regimen.idRegimen
+	  FROM LOS_BORBOTONES.Regimen regimen
+	  WHERE regimen.Descripcion = Regimen_Descripcion) as idRegimen
+      ,[Habitacion_Numero]
+      ,[Habitacion_Piso]
+      ,[Reserva_Fecha_Inicio]
+      ,[Reserva_Codigo]
+      ,[Reserva_Cant_Noches]
+      ,[Cliente_Pasaporte_Nro]
+INTO LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva
+FROM [GD1C2018].[gd_esquema].[Maestra]
+WHERE Estadia_Fecha_Inicio IS NOT NULL
+ORDER BY Reserva_Codigo
 GO
 
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut) 
-		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 2, 2
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
-		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio > LOS_BORBOTONES.fn_getDate()
-		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
+--Segunda Tabla Temporal de la Migración
+SELECT identidad.NumeroDocumento, cliente.idCliente
+INTO LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva
+FROM LOS_BORBOTONES.Identidad identidad
+    ,LOS_BORBOTONES.Cliente cliente
+WHERE identidad.TipoIdentidad = 'Cliente'
+  AND cliente.idIdentidad = identidad.idIdentidad
+  AND identidad.TipoDocumento = 'Pasaporte'
 GO
 
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut) 
-		SELECT m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches, 3, 3
-		FROM gd_esquema.maestra m, LOS_BORBOTONES.Usuario u
-		WHERE m.Estadia_Fecha_Inicio IS NOT NULL AND m.Estadia_Fecha_Inicio = LOS_BORBOTONES.fn_getDate()
-		GROUP BY  m.Estadia_Fecha_Inicio, DATEADD(DAY, m.Estadia_Cant_Noches, m.Estadia_Fecha_Inicio), m.Estadia_Cant_Noches
-GO
+--CURSOR DE LA Migración Reserva y Estadía
+DECLARE migracionReservasYEstadias CURSOR FOR 
+SELECT ptemp.idHotel
+	  ,ptemp.idRegimen
+	  ,stemp.idCliente
+      ,ptemp.Reserva_Fecha_Inicio
+      ,ptemp.Reserva_Codigo
+      ,ptemp.Reserva_Cant_Noches
+FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva ptemp
+	,LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva stemp
+WHERE ptemp.Cliente_Pasaporte_Nro = stemp.NumeroDocumento
+ORDER BY Reserva_Codigo
+
+DECLARE @idHotel INT,
+		@idRegimen INT,
+		@idCliente INT,
+		@Reserva_Fecha_Inicio DATETIME,
+		@Reserva_Codigo NUMERIC(18,0),		
+		@Reserva_Cant_Noches NUMERIC(18,0)
+
+OPEN migracionReservasYEstadias
+
+-- Perform the first fetch.
+FETCH NEXT FROM migracionReservasYEstadias
+INTO @idHotel, @idRegimen, @idCliente, @Reserva_Fecha_Inicio, @Reserva_Codigo, @Reserva_Cant_Noches;
+
+-- Check @@FETCH_STATUS to see if there are any more rows to fetch.
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+    INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
+	VALUES (@Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, 2, 2) --Uso el Valor del Usuario 2 para todos (recepcionista)
+	
+	DECLARE @idEstadia INT
+	SET @idEstadia = SCOPE_IDENTITY();
+	
+	INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
+	VALUES (@Reserva_Codigo, LOS_BORBOTONES.fn_getDate(), @Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, @idHotel, @idEstadia, @idRegimen, @idCliente)
+
+    -- This is executed as long as the previous fetch succeeds.
+    FETCH NEXT FROM migracionReservasYEstadias
+    INTO @idHotel, @idRegimen, @idCliente, @Reserva_Fecha_Inicio, @Reserva_Codigo, @Reserva_Cant_Noches;
+END
+
+CLOSE migracionReservasYEstadias
+DEALLOCATE migracionReservasYEstadias
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Migracion Consumible
 
@@ -1594,37 +1674,6 @@ INSERT INTO LOS_BORBOTONES.Habitacion(Numero, Piso, Ubicacion, idHotel, idTipoHa
 		WHERE t.Codigo IS NOT NULL
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Migracion Reserva
---PARA LA MIGRACION DE LA RESERVA, GENERE UNA TABLA TEMPORAL, PARA TRABAJAR LOS JOIN SOLO CON LOS DATOS ESPECIFICOS DE LA MAESTRA,  
-
--- Crear tabla temporal con los valores actuales de la tabla maestra que necesito para reserva y campos para que vincular las fk : hotel, regimen, estadia y cliente
-
-SELECT DISTINCT p.Reserva_Codigo, p.Reserva_Fecha_Inicio, p.Reserva_Cant_Noches, p.Hotel_Calle, p.Hotel_Nro_Calle, p.Estadia_Fecha_Inicio, p.Estadia_Cant_Noches, p.Regimen_Descripcion, p.Cliente_Pasaporte_Nro
-INTO LOS_BORBOTONES.temporalReserva
-FROM gd_esquema.Maestra p
-WHERE p.Estadia_Fecha_Inicio IS NOT NULL
-ORDER BY p.Reserva_Codigo;
-GO
-
---Migracion Reserva
-INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
-SELECT m.Reserva_Codigo, LOS_BORBOTONES.fn_getDate(), m.Reserva_Fecha_Inicio, DATEADD(DAY, m.Reserva_Cant_Noches, m.Reserva_Fecha_Inicio), m.Reserva_Cant_Noches, h.idHotel, e.idEstadia, r.idRegimen, c.idCliente
-FROM  LOS_BORBOTONES.Hotel h 
-	INNER JOIN LOS_BORBOTONES.temporalReserva m
-		ON LOS_BORBOTONES.concatenarNombreHotel(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre  
-	INNER JOIN LOS_BORBOTONES.Estadia e
-		ON m.Estadia_Fecha_Inicio = e.FechaEntrada AND m.Estadia_Cant_Noches = DATEDIFF(DAY, e.FechaEntrada, e.FechaSalida)
-	INNER JOIN LOS_BORBOTONES.Regimen r
-		ON m.Regimen_Descripcion = r.Descripcion
-		INNER JOIN LOS_BORBOTONES.Regimen_X_Hotel rxh
-		ON rxh.idHotel = h.idHotel AND rxh.idRegimen= r.idRegimen
-	INNER JOIN LOS_BORBOTONES.Identidad i
-		ON m.Cliente_Pasaporte_Nro = i.NumeroDocumento
-	INNER JOIN LOS_BORBOTONES.Cliente c 
-		ON c.idIdentidad  = i.idIdentidad AND c.Activo = 1
-ORDER BY m.Reserva_Codigo, c.idCliente
-GO								
-	
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga Hotel_X_Usuario
 
