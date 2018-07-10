@@ -544,11 +544,11 @@ CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
 							SET @fin = '31-12-'+@anioAux
 							END
 
-SELECT DISTINCT TOP 5 ho.Nombre Hotel_Nombre,
-		hab.Numero NumeroHab,
-		hab.Piso PisoHab,
-		consulCantXHab.cantEst VecesOcupada,
-		consultaCantDias.Dias cantDias
+SELECT DISTINCT TOP 5 ho.Nombre Hotel,
+		hab.Numero Habitacion,
+		hab.Piso Piso,
+		consulCantXHab.cantEst 'Veces ocupada',
+		consultaCantDias.Dias 'Dias ocupados'
 FROM				(
 
 					SELECT  hab.idHabitacion,
@@ -588,7 +588,7 @@ WHERE consulCantXHab.idHotel = ho.idHotel AND
 		hab.idHabitacion = consulCantXHab.idHabitacion AND
 		consulCantXHab.idHabitacion = consultaCantDias.idHabitacion	AND
 		es.FechaEntrada BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-ORDER BY cantEst DESC
+ORDER BY cantEst DESC, Dias DESC
 END
 GO
 --------------------------------------------------------------
