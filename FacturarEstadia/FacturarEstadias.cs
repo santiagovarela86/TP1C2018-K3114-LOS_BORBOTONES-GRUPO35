@@ -71,12 +71,14 @@ namespace FrbaHotel.FacturarEstadia
              {
                  if(estadoReserva.getTipoEstado().Equals("RCI"))
                      MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 if (estadoReserva.getTipoEstado().Equals("RF"))
+                 else if (estadoReserva.getTipoEstado().Equals("RF"))
                      MessageBox.Show("La estadia ya fue facturada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 if (estadia.getFacturada() == true)
+                 else if (estadia.getFacturada() == true)
                      MessageBox.Show("La estadia ingresada ya fue facturada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 if (estadia.getCantidadNoches() == 0)
+                 else if (estadia.getCantidadNoches() == 0)
                     MessageBox.Show("La estadia ingresada no es correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 else
+                     MessageBox.Show("La estadia ingresada no esta en estado para facturarse", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  
              }else
              {
@@ -124,7 +126,7 @@ namespace FrbaHotel.FacturarEstadia
                     MessageBox.Show("Error cargando la factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (idFactura == 1)
                     MessageBox.Show("Estadia facturada correctamente.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        
+                this.ListadoFacturarEstadia_Load(sender, e);    
                 
             }else
             {
@@ -156,6 +158,7 @@ namespace FrbaHotel.FacturarEstadia
                         MessageBox.Show("Error cargando la factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     if (idFactura == 1)
                          MessageBox.Show("Estadia facturada correctamente.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.ListadoFacturarEstadia_Load(sender, e);    
                 }
             }    
         }

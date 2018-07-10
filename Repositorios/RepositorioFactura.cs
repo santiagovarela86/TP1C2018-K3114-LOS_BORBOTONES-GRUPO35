@@ -191,16 +191,14 @@ namespace FrbaHotel.Repositorios
             {
                 foreach (Consumible item in consumiblesXEstadia)
                 {
-                    /*cant = 0;
+                    cant = 0;
                     foreach (Consumible item2 in consumiblesXEstadia)
                     {
                         if (item.getCodigo()==item2.getCodigo())
                         {
                             cant = cant + 1;
-                            if (cant != 0)
-                                consumiblesXEstadia.Remove(item2);
                         }   
-                    }   */
+                    }   
                     idConsumible = item.getIdConsumible();
                     monto = item.getPrecio();
                     itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
