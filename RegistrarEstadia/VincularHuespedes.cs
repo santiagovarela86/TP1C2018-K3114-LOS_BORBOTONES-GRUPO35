@@ -124,7 +124,13 @@ namespace FrbaHotel.RegistrarEstadia
                 //la agrego al datagrid 2
                 foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
                 {
-                    clientesElegidos.Add(item.DataBoundItem as Cliente);
+                    Cliente clientSeleccionado = item.DataBoundItem as Cliente;
+
+                    //PARA NO AGREGAR DUPLICADOS
+                    if (!clientesElegidos.Exists(clienteYaAgregado => clienteYaAgregado.getIdCliente().Equals(clientSeleccionado.getIdCliente())))
+                    {
+                        clientesElegidos.Add(item.DataBoundItem as Cliente);
+                    }
                 }
                 //MEJORA DE PERFORMANCE DEL DGV
                 dataGridView2.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;

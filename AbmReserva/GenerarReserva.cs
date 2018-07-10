@@ -17,7 +17,7 @@ namespace FrbaHotel.AbmReserva
     {
         private Usuario usuario;
         private Sesion sesion;
-      
+              
         public GenerarReserva(Usuario usuario)
         {
             this.usuario = usuario;
@@ -194,7 +194,7 @@ namespace FrbaHotel.AbmReserva
             }
         }
         private void buscarHabitaciones_Click(object sender, EventArgs e)
-        {
+        {          
             this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
 
         }

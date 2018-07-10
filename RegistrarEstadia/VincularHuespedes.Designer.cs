@@ -243,7 +243,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "VincularHuespedes";
-            this.Text = "VincularCliente";
+            this.Text = "Vincular Clientes";
             this.Load += new System.EventHandler(this.ListadoClientes_Load);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
