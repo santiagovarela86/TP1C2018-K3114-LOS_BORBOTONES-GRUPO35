@@ -29,6 +29,7 @@ namespace FrbaHotel
             myCmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(myCmd);
             da.Fill(dt);
+            sqlConnection.Close();
             return dt;
         }
 
@@ -43,6 +44,7 @@ namespace FrbaHotel
             myCmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(myCmd);
             da.Fill(dt);
+            sqlConnection.Close();
             return dt;
         }
 
@@ -57,6 +59,7 @@ namespace FrbaHotel
             myCmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(myCmd);
             da.Fill(dt);
+            sqlConnection.Close();
             return dt;
         }
 
@@ -71,6 +74,7 @@ namespace FrbaHotel
             myCmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(myCmd);
             da.Fill(dt);
+            sqlConnection.Close();
             return dt;
         }
 
@@ -85,6 +89,7 @@ namespace FrbaHotel
             myCmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(myCmd);
             da.Fill(dt);
+            sqlConnection.Close();
             return dt;
         }
 
