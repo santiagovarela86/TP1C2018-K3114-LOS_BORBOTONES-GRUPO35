@@ -705,8 +705,9 @@ SELECT TOP 5 consTotal.hot as Hotel, hot.nombre as Nombre,SUM(consTotal.Dias) as
 			FROM LOS_BORBOTONES.CierreTemporal ct,
 					LOS_BORBOTONES.Hotel ho
 			WHERE ct.idHotel = ho.idHotel 
-					AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-					AND ct.FechaFin < CONVERT(DATETIME,@fin,103)
+					--AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
+					AND ct.FechaInicio <= CONVERT(DATETIME,@inicio,103)
+					AND ct.FechaFin >= CONVERT(DATETIME,@fin,103)
 			GROUP BY ho.idHotel ) AS consPre
 		
 		UNION ALL
@@ -717,8 +718,9 @@ SELECT TOP 5 consTotal.hot as Hotel, hot.nombre as Nombre,SUM(consTotal.Dias) as
 			FROM LOS_BORBOTONES.CierreTemporal ct,
 					LOS_BORBOTONES.Hotel ho
 			WHERE ct.idHotel = ho.idHotel 
-					AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-					AND ct.FechaFin >  CONVERT(DATETIME,@fin,103)
+					--AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
+					AND ct.FechaInicio <= CONVERT(DATETIME,@inicio,103)
+					AND ct.FechaFin >= CONVERT(DATETIME,@fin,103)
 			GROUP BY ho.idHotel) as consPost 
 		) as consTotal,
 		LOS_BORBOTONES.Hotel hot
