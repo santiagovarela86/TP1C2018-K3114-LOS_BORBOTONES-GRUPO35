@@ -108,7 +108,7 @@ namespace FrbaHotel.RegistrarEstadia
                     //veo que este con RCI
                     String estado = "";
                     estado = repoEstadia.getEstado(codReserva);
-                    if (estado.Equals("RCI") | estado.Equals("RCC"))
+                    if (estado.Equals("RCI") | estado.Equals("RCCR"))
                     {
                         Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
                         repoEstadia.update(estadia);
@@ -122,7 +122,7 @@ namespace FrbaHotel.RegistrarEstadia
                         repoEstadoReserva.update(estadoReserva);
                         MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    else MessageBox.Show("La estadia ingresada no esta actualmente en estado 'Reserva con Ingreso' o 'Reserva con Consumibles'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else MessageBox.Show("La estadia ingresada no esta actualmente en estado 'Reserva con Ingreso' o 'Reserva con Consumibles Registrados'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                     MessageBox.Show("La estadia ingresada no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

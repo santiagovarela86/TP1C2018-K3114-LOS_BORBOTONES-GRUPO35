@@ -67,7 +67,7 @@ namespace FrbaHotel.FacturarEstadia
                 estadia = repositorioEstadia.getById(idEstadia);
                 //buscar por estado reserva que este con check out ya realizado
                 estadoReserva = repoEstadoReserva.getByIdEstadia(idEstadia);
-                if (estadia.getCantidadNoches() == 0 | (!estadoReserva.getTipoEstado().Equals("RCE") && !estadoReserva.getTipoEstado().Equals("RCC")) | estadia.getFacturada() == true)
+                if (estadia.getCantidadNoches() == 0 | (!estadoReserva.getTipoEstado().Equals("RCE") && !estadoReserva.getTipoEstado().Equals("RCCR")) | estadia.getFacturada() == true)
              {
                  if(estadoReserva.getTipoEstado().Equals("RCI"))
                      MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

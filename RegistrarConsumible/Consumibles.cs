@@ -82,15 +82,15 @@ namespace FrbaHotel.RegistrarConsumible
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            //pongo el estado en RCC (reserva con consumible) ya queda sin chance de modificar.
+            //pongo el estado en RCCR (reserva con consumibles registrados) ya queda sin chance de modificar.
             RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
             RepositorioReserva repoReserva = new RepositorioReserva();
             DateTime date = Utils.getSystemDatetimeNow();
 
             int idEstadoReserva = 0;
             Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
-            String desc = "Reserva Con Consumible";
-            String tipoEstado = "RCC";
+            String desc = "Reserva Con Consumibles Registrados";
+            String tipoEstado = "RCCR";
             EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
             repoEstadoReserva.update(estadoReserva);
             MessageBox.Show("Consumibles registrados.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
