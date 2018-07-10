@@ -428,42 +428,42 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
-				@trimestre numeric(18,0), @Anio numeric(18,0) 
+				@trimestre numeric(18,0), @anio numeric(18,0) 
 	AS				
 	  BEGIN	
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@AnioAux char(4)
-		SET @AnioAux = CAST(@Anio AS CHAR(4))
+				@anioAux char(4)
+		SET @anioAux = CAST(@anio AS CHAR(4))
 		
 		IF (@trimestre = 1)
 			BEGIN
-			SET @inicio = '01-01-'+@AnioAux
-			SET @fin = '31-03-'+@AnioAux
+			SET @inicio = '01-01-'+@anioAux
+			SET @fin = '31-03-'+@anioAux
 			END
 			ELSE IF (@trimestre = 2)
 				BEGIN
-				SET @inicio = '01-04-'+@AnioAux
-				SET @fin = '30-06-'+@AnioAux
+				SET @inicio = '01-04-'+@anioAux
+				SET @fin = '30-06-'+@anioAux
 				END
 				ELSE IF (@trimestre = 3)
 					BEGIN 
-					SET @inicio = '01-07-'+@AnioAux
-					SET @fin = '30-09-'+@AnioAux
+					SET @inicio = '01-07-'+@anioAux
+					SET @fin = '30-09-'+@anioAux
 					END
 					ELSE IF (@trimestre = 4)
 						BEGIN
-						SET @inicio = '01-10-'+@AnioAux
-						SET @fin = '31-12-'+@AnioAux
+						SET @inicio = '01-10-'+@anioAux
+						SET @fin = '31-12-'+@anioAux
 						END
 						ELSE 
 							BEGIN
-							SET @inicio = '01-01-'+@AnioAux
-							SET @fin = '31-12-'+@AnioAux
+							SET @inicio = '01-01-'+@anioAux
+							SET @fin = '31-12-'+@anioAux
 							END
 
-SELECT TOP 5 cli.idCliente, --ide.Nombre Nombre, ide.Apellido Apellido, 
-		punEs.Puntos+punCon.Puntos Puntaje
+SELECT TOP 5 cli.idCliente as Cliente, --ide.Nombre Nombre, ide.Apellido Apellido, 
+		punEs.Puntos+punCon.Puntos as Puntaje
 FROM
 (	SELECT es.idEstadia, (re.Precio * es.CantidadNoches) Gasto, (re.Precio * es.CantidadNoches)/20 Puntos
 		FROM  LOS_BORBOTONES.Regimen re,
@@ -505,38 +505,38 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
-				@trimestre numeric(18,0), @Anio numeric(18,0) 
+				@trimestre numeric(18,0), @anio numeric(18,0) 
 	AS				
 	 BEGIN		
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@AnioAux char(4)
-		SET @AnioAux = CAST(@Anio as CHAR(4))
+				@anioAux char(4)
+		SET @anioAux = CAST(@anio as CHAR(4))
 		
 		IF (@trimestre = 1)
 			BEGIN
-			SET @inicio = '01-01-'+@AnioAux
-			SET @fin = '31-03-'+@AnioAux
+			SET @inicio = '01-01-'+@anioAux
+			SET @fin = '31-03-'+@anioAux
 			END
 			ELSE IF (@trimestre = 2)
 				BEGIN
-				SET @inicio = '01-04-'+@AnioAux
-				SET @fin = '30-06-'+@AnioAux
+				SET @inicio = '01-04-'+@anioAux
+				SET @fin = '30-06-'+@anioAux
 				END
 				ELSE IF (@trimestre = 3)
 					BEGIN 
-					SET @inicio = '01-07-'+@AnioAux
-					SET @fin = '30-09-'+@AnioAux
+					SET @inicio = '01-07-'+@anioAux
+					SET @fin = '30-09-'+@anioAux
 					END
 					ELSE IF (@trimestre = 4)
 						BEGIN
-						SET @inicio = '01-10-'+@AnioAux
-						SET @fin = '31-12-'+@AnioAux
+						SET @inicio = '01-10-'+@anioAux
+						SET @fin = '31-12-'+@anioAux
 						END
 						ELSE 
 							BEGIN
-							SET @inicio = '01-01-'+@AnioAux
-							SET @fin = '31-12-'+@AnioAux
+							SET @inicio = '01-01-'+@anioAux
+							SET @fin = '31-12-'+@anioAux
 							END
 
 SELECT DISTINCT TOP 5 ho.Nombre Hotel_Nombre,
@@ -595,41 +595,41 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
-				@trimestre numeric(18,0), @Anio numeric(18,0) 
+				@trimestre numeric(18,0), @anio numeric(18,0) 
 	AS	
 	  BEGIN	
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@AnioAux char(4)
-		SET @AnioAux = CAST(@Anio AS CHAR(4))
+				@anioAux char(4)
+		SET @anioAux = CAST(@anio AS CHAR(4))
 		
 		IF (@trimestre = 1)
 			BEGIN
-			SET @inicio = '01-01-'+@AnioAux
-			SET @fin = '31-03-'+@AnioAux
+			SET @inicio = '01-01-'+@anioAux
+			SET @fin = '31-03-'+@anioAux
 			END
 			ELSE IF (@trimestre = 2)
 				BEGIN
-				SET @inicio = '01-04-'+@AnioAux
-				SET @fin = '30-06-'+@AnioAux
+				SET @inicio = '01-04-'+@anioAux
+				SET @fin = '30-06-'+@anioAux
 				END
 				ELSE IF (@trimestre = 3)
 					BEGIN 
-					SET @inicio = '01-07-'+@AnioAux
-					SET @fin = '30-09-'+@AnioAux
+					SET @inicio = '01-07-'+@anioAux
+					SET @fin = '30-09-'+@anioAux
 					END
 					ELSE IF (@trimestre = 4)
 						BEGIN
-						SET @inicio = '01-10-'+@AnioAux
-						SET @fin = '31-12-'+@AnioAux
+						SET @inicio = '01-10-'+@anioAux
+						SET @fin = '31-12-'+@anioAux
 						END
 						ELSE 
 							BEGIN
-							SET @inicio = '01-01-'+@AnioAux
-							SET @fin = '31-12-'+@AnioAux
+							SET @inicio = '01-01-'+@anioAux
+							SET @fin = '31-12-'+@anioAux
 							END
 							
-		SELECT TOP 5 hot.Nombre, COUNT(er.TipoEstado) cancelaciones
+		SELECT TOP 5 hot.Nombre as Nombre, COUNT(er.TipoEstado) as Cancelaciones
 			FROM LOS_BORBOTONES.Reserva res,
 				 LOS_BORBOTONES.Hotel hot,
 				 LOS_BORBOTONES.Habitacion hab,
@@ -646,7 +646,7 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
 		  rxhxc.idReserva = res.idReserva AND
 		  er.Fecha BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 		GROUP BY hot.Nombre
-		ORDER BY cancelaciones DESC					
+		ORDER BY Cancelaciones DESC					
 		END
 GO
 --------------------------------------------------------------
@@ -657,42 +657,42 @@ Se paso como parametros (viendo las fechas de cierre temporal) trimestre = 1, a√
 Funciona ok
 */
 CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
-				@trimestre numeric(18,0), @Anio numeric(18,0) 
+				@trimestre numeric(18,0), @anio numeric(18,0) 
 	AS		
 	  BEGIN
 		
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@AnioAux char(4)
-		SET @AnioAux = CAST(@Anio as CHAR(4))
+				@anioAux char(4)
+		SET @anioAux = CAST(@anio as CHAR(4))
 		
 		IF (@trimestre = 1)
 			BEGIN
-			SET @inicio = '01-01-'+@AnioAux
-			SET @fin = '31-03-'+@AnioAux
+			SET @inicio = '01-01-'+@anioAux
+			SET @fin = '31-03-'+@anioAux
 			END
 			ELSE IF (@trimestre = 2)
 				BEGIN
-				SET @inicio = '01-04-'+@AnioAux
-				SET @fin = '30-06-'+@AnioAux
+				SET @inicio = '01-04-'+@anioAux
+				SET @fin = '30-06-'+@anioAux
 				END
 				ELSE IF (@trimestre = 3)
 					BEGIN 
-					SET @inicio = '01-07-'+@AnioAux
-					SET @fin = '30-09-'+@AnioAux
+					SET @inicio = '01-07-'+@anioAux
+					SET @fin = '30-09-'+@anioAux
 					END
 					ELSE IF (@trimestre = 4)
 						BEGIN
-						SET @inicio = '01-10-'+@AnioAux
-						SET @fin = '31-12-'+@AnioAux
+						SET @inicio = '01-10-'+@anioAux
+						SET @fin = '31-12-'+@anioAux
 						END
 						ELSE 
 							BEGIN
-							SET @inicio = '01-01-'+@AnioAux
-							SET @fin = '31-12-'+@AnioAux
+							SET @inicio = '01-01-'+@anioAux
+							SET @fin = '31-12-'+@anioAux
 							end
 
-SELECT TOP 5 consTotal.hot, hot.nombre ,SUM(consTotal.Dias) Dias_Baja FROM 
+SELECT TOP 5 consTotal.hot as Hotel, hot.nombre as Nombre,SUM(consTotal.Dias) as 'Dias Baja' FROM 
 
 	( SELECT * FROM
 
@@ -719,7 +719,7 @@ SELECT TOP 5 consTotal.hot, hot.nombre ,SUM(consTotal.Dias) Dias_Baja FROM
 		LOS_BORBOTONES.Hotel hot
 		WHERE hot.idHotel = consTotal.hot
 		GROUP BY consTotal.hot, hot.nombre
-		ORDER BY Dias_Baja desc
+		ORDER BY 'Dias Baja' desc
 	END
 	GO
 --------------------------------------------------------------
@@ -731,44 +731,44 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
-				@trimestre numeric(18,0), @Anio numeric(18,0) 
+				@trimestre numeric(18,0), @anio numeric(18,0) 
 	AS				
 		BEGIN
 		
 		DECLARE @inicio varchar(10),
 				@fin varchar(10),
-				@AnioAux char(4)
-		SET @AnioAux = CAST(@Anio as CHAR(4))
+				@anioAux char(4)
+		SET @anioAux = CAST(@anio as CHAR(4))
 		
 		IF (@trimestre = 1)
 			BEGIN
-			SET @inicio = '01-01-'+@AnioAux
-			SET @fin = '31-03-'+@AnioAux
+			SET @inicio = '01-01-'+@anioAux
+			SET @fin = '31-03-'+@anioAux
 			END
 			ELSE IF (@trimestre = 2)
 				BEGIN
-				SET @inicio = '01-04-'+@AnioAux
-				SET @fin = '30-06-'+@AnioAux
+				SET @inicio = '01-04-'+@anioAux
+				SET @fin = '30-06-'+@anioAux
 				END
 				ELSE IF (@trimestre = 3)
 					BEGIN 
-					SET @inicio = '01-07-'+@AnioAux
-					SET @fin = '30-09-'+@AnioAux
+					SET @inicio = '01-07-'+@anioAux
+					SET @fin = '30-09-'+@anioAux
 					END
 					ELSE IF (@trimestre = 4)
 						BEGIN
-						SET @inicio = '01-10-'+@AnioAux
-						SET @fin = '31-12-'+@AnioAux
+						SET @inicio = '01-10-'+@anioAux
+						SET @fin = '31-12-'+@anioAux
 						END
 						ELSE 
 							BEGIN
-							SET @inicio = '01-01-'+@AnioAux
-							SET @fin = '31-12-'+@AnioAux
+							SET @inicio = '01-01-'+@anioAux
+							SET @fin = '31-12-'+@anioAux
 							END
 
 				SELECT TOP 5
-					ho.Nombre Nombre_Hotel,
-					COUNT(con.idConsumible) Cons_Facturados
+					ho.Nombre as Hotel,
+					COUNT(con.idConsumible) as 'Consumibles Facturados'
 				FROM LOS_BORBOTONES.Consumible con,
 					 LOS_BORBOTONES.Estadia_X_Consumible exc,
 					 LOS_BORBOTONES.Estadia es,
@@ -787,7 +787,7 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
 					hab.idHotel = ho.idHotel
 					AND fc.FechaFacturacion BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 				GROUP BY ho.Nombre
-				ORDER BY  Cons_Facturados DESC
+				ORDER BY 'Consumibles Facturados' DESC
 				END
 GO
 -----------------------------------------------------------------------Creacion Tablas---------------------------------------------------------------------------------------------------------

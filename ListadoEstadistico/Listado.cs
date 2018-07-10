@@ -8,13 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using FrbaHotel.Repositorios;
 
 namespace FrbaHotel.ListadoEstadistico
 {
     public partial class Listado : Form
     {
-        SqlDataAdapter sAdapter;
-        DataTable dTable;
         public Listado()
         {
             InitializeComponent();
@@ -22,10 +21,6 @@ namespace FrbaHotel.ListadoEstadistico
             trimestre.Items.Add("2");
             trimestre.Items.Add("3");
             trimestre.Items.Add("4");
-
-            int i = 0;
-            for (i = 2009; i <= 2018; i++)
-                anio.Items.Add(i);
 
             tipoListado.Items.Insert(0, "Hotel con mas reservas canceladas");
             tipoListado.Items.Insert(1, "Hotel con mas consumibles  facturados");
@@ -37,9 +32,9 @@ namespace FrbaHotel.ListadoEstadistico
 
         private void button_buscar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(anio.Text))
+            if (string.IsNullOrEmpty(textBoxAnio.Text))
             {
-                MessageBox.Show("Debe seleccionar un año.", "Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Debe ingresar un año.", "Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (string.IsNullOrEmpty(trimestre.Text))
@@ -52,34 +47,27 @@ namespace FrbaHotel.ListadoEstadistico
                 MessageBox.Show("Debe seleccionar el tipo de listado.","Listado estadistico", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            String tipoSeleccionado = "";
+
+            RepositorioListadoEstadistico repoListado = new RepositorioListadoEstadistico();
+
             switch (tipoListado.SelectedIndex)
             {
                 case 0:
-                    tipoSeleccionado = "EXEC LOS_BORBOTONES.lista_hoteles_maxResCancel " + trimestre.Text + ", " + anio.Text;
+                    dataGridView1.DataSource = repoListado.getHotelesMayorCantidadReservasCanceladas(trimestre.Text, textBoxAnio.Text);
                     break;
                 case 1:
-                    tipoSeleccionado = "EXEC LOS_BORBOTONES.lista_hoteles_maxConFacturados " + trimestre.Text + ", " + anio.Text;
+                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadConsumiblesFacturados(trimestre.Text, textBoxAnio.Text);
                     break;
                 case 2:
-                    tipoSeleccionado = "EXEC LOS_BORBOTONES.lista_Hotel_DiasFueraServ " + trimestre.Text + ", " + anio.Text;
+                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadDiasFueraServicio(trimestre.Text, textBoxAnio.Text);
                     break;
                 case 3:
-                    tipoSeleccionado = "EXEC LOS_BORBOTONES.listaMaximosPuntajes " + (trimestre.Text) + ", " + anio.Text;
+                    dataGridView1.DataSource = repoListado.clientesConMasPuntos(trimestre.Text, textBoxAnio.Text);
                     break;
                 case 4:
-                    tipoSeleccionado = "EXEC LOS_BORBOTONES.listaHabitacionesVecesOcupada " + (trimestre.Text) + "," + anio.Text;
+                    dataGridView1.DataSource = repoListado.habitacionesMasOcupadas(trimestre.Text, textBoxAnio.Text);
                     break;
             }
-
-            sAdapter = FrbaHotel.HomeListado.Base.dameDataAdapter(tipoSeleccionado);
-            dTable = FrbaHotel.HomeListado.Base.dameDataTable(sAdapter);
-           
-            BindingSource bSource = new BindingSource();
-          
-            bSource.DataSource = dTable;
-          
-            dataGridView1.DataSource = bSource;
         }
 
         private void button_cerrar_Click(object sender, EventArgs e)
@@ -92,10 +80,20 @@ namespace FrbaHotel.ListadoEstadistico
             dataGridView1.DataSource = null;
             this.trimestre.SelectedValue = "";
             this.trimestre.SelectedIndex = -1;
-            this.anio.SelectedValue = "";
-            this.anio.SelectedIndex = -1;
+            this.textBoxAnio.Text = "";
             this.tipoListado.SelectedValue = "";
             this.tipoListado.SelectedIndex = -1;
+        }
+
+        //CIERRO LA VENTANA CON ESCAPE
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
