@@ -840,8 +840,8 @@ CREATE TABLE LOS_BORBOTONES.Direccion (
 	Ciudad			NVARCHAR(255),
 	Calle			NVARCHAR(255)	NOT NULL,
 	NumeroCalle		INT				NOT NULL,
-	Piso			INT,
-	Depto			NVARCHAR(50),
+	Piso			INT				DEFAULT 0,
+	Depto			NVARCHAR(50)	DEFAULT '',
 	idIdentidad		INT,	
 )
 GO

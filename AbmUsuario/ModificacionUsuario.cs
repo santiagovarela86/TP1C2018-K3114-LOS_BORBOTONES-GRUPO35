@@ -194,8 +194,8 @@ namespace FrbaHotel.AbmUsuario
                    !form.textBoxTelefono.Text.Equals("") &&
                    !form.textBoxCalle.Text.Equals("") &&
                    !form.textBoxNroCalle.Text.Equals("") &&
-                   !form.textBoxPiso.Text.Equals("") &&
-                   //!form.textBox14.Text.Equals("") && //DEPTO PUEDE ESTAR VACIO (?)
+                 //!form.textBoxPiso.Text.Equals("") && //PISO PUEDE ESTAR VACIO DEFAULT 0
+                 //!form.textBox14.Text.Equals("") && //DEPTO PUEDE ESTAR VACIO DEFAULT ''
                    !form.textBoxLocalidad.Text.Equals("") &&
                    !form.textBoxPais.Text.Equals("") &&
                    !form.textBoxNacionalidad.Text.Equals("") &&

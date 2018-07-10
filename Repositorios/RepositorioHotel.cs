@@ -310,9 +310,7 @@ namespace FrbaHotel.Repositorios {
                 sqlCommand.Parameters.AddWithValue("@hotmail", hotel.Mail);
                 sqlCommand.Parameters.AddWithValue("@hottelefono", hotel.Telefono);
                 sqlCommand.Parameters.AddWithValue("@hotfechaInicioActividades", hotel.FechaInicioActividades);
-
-
-
+                
                 //DIRECCION
                 sqlCommand.Parameters.AddWithValue("@dirpais", direccion.Pais);
                 sqlCommand.Parameters.AddWithValue("@dirciudad", direccion.Ciudad);
@@ -320,6 +318,7 @@ namespace FrbaHotel.Repositorios {
                 sqlCommand.Parameters.AddWithValue("@dirnumeroCalle", direccion.NumeroCalle);
                 sqlCommand.Parameters.AddWithValue("@dirpiso", direccion.Piso);
                 sqlCommand.Parameters.AddWithValue("@dirdepartamento", direccion.Departamento);
+                sqlCommand.Parameters.AddWithValue("@idDireccion", direccion.getIdDireccion());
 
                 //CATEGORIA
                 sqlCommand.Parameters.AddWithValue("@catId", categoria.getIdCategoria());
@@ -332,7 +331,7 @@ namespace FrbaHotel.Repositorios {
                     insertsRegimenes(hotel,sqlCommand) +
                     "UPDATE LOS_BORBOTONES.Direccion " +
                     "SET Pais= @dirpais,Ciudad= @dirciudad, Calle=@dircalle, NumeroCalle= @dirnumeroCalle, " +
-                    "Piso=@dirpiso, Depto=@dirdepartamento WHERE idDireccion=@hotidHotel; " +
+                    "Piso=@dirpiso, Depto=@dirdepartamento WHERE idDireccion=@idDireccion; " +
                    
                     "UPDATE LOS_BORBOTONES.Hotel " +
                     "SET Nombre= @hotnombre, Mail= @hotmail, Telefono= @hottelefono, FechaInicioActividades= @hotfechaInicioActividades, " +
