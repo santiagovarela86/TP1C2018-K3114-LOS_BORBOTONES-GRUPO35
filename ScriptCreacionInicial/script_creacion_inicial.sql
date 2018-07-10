@@ -428,30 +428,30 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
-				@trimestre numeric(18,0), @anio numeric(18,0) 
+				@trimestre CHAR(1), @anio CHAR(4) 
 	AS				
 	  BEGIN	
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@anioAux char(4)
-		SET @anioAux = CAST(@anio AS CHAR(4))
+				@anioAux CHAR(4)
+		SET @anioAux = @anio
 		
-		IF (@trimestre = 1)
+		IF (@trimestre = '1')
 			BEGIN
 			SET @inicio = '01-01-'+@anioAux
 			SET @fin = '31-03-'+@anioAux
 			END
-			ELSE IF (@trimestre = 2)
+			ELSE IF (@trimestre = '2')
 				BEGIN
 				SET @inicio = '01-04-'+@anioAux
 				SET @fin = '30-06-'+@anioAux
 				END
-				ELSE IF (@trimestre = 3)
+				ELSE IF (@trimestre = '3')
 					BEGIN 
 					SET @inicio = '01-07-'+@anioAux
 					SET @fin = '30-09-'+@anioAux
 					END
-					ELSE IF (@trimestre = 4)
+					ELSE IF (@trimestre = '4')
 						BEGIN
 						SET @inicio = '01-10-'+@anioAux
 						SET @fin = '31-12-'+@anioAux
@@ -462,8 +462,11 @@ CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
 							SET @fin = '31-12-'+@anioAux
 							END
 
-SELECT TOP 5 cli.idCliente as Cliente, --ide.Nombre Nombre, ide.Apellido Apellido, 
-		punEs.Puntos+punCon.Puntos as Puntaje
+SELECT TOP 5 id.Nombre as Nombre
+		,id.Apellido as Apellido
+		,id.TipoDocumento as 'Tipo de Documento'
+		,id.NumeroDocumento as Documento
+		,punEs.Puntos+punCon.Puntos as Puntaje
 FROM
 (	SELECT es.idEstadia, (re.Precio * es.CantidadNoches) Gasto, (re.Precio * es.CantidadNoches)/20 Puntos
 		FROM  LOS_BORBOTONES.Regimen re,
@@ -487,11 +490,13 @@ FROM
 
 LOS_BORBOTONES.Cliente cli,
 LOS_BORBOTONES.Estadia es,
-LOS_BORBOTONES.Reserva res
+LOS_BORBOTONES.Reserva res,
+LOS_BORBOTONES.Identidad id
 WHERE  cli.idCliente = res.idCliente AND 
 		es.idEstadia = res.idEstadia AND 
 		punCon.idEstadia = es.idEstadia AND 
-		punEs.idEstadia = es.idEstadia
+		punEs.idEstadia = es.idEstadia AND
+		id.idIdentidad = cli.idIdentidad
 ORDER BY Puntaje DESC
 END
 
@@ -505,30 +510,30 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
-				@trimestre numeric(18,0), @anio numeric(18,0) 
+				@trimestre CHAR(1), @anio CHAR(4)
 	AS				
 	 BEGIN		
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@anioAux char(4)
-		SET @anioAux = CAST(@anio as CHAR(4))
+				@anioAux CHAR(4)
+		SET @anioAux = @anio
 		
-		IF (@trimestre = 1)
+		IF (@trimestre = '1')
 			BEGIN
 			SET @inicio = '01-01-'+@anioAux
 			SET @fin = '31-03-'+@anioAux
 			END
-			ELSE IF (@trimestre = 2)
+			ELSE IF (@trimestre = '2')
 				BEGIN
 				SET @inicio = '01-04-'+@anioAux
 				SET @fin = '30-06-'+@anioAux
 				END
-				ELSE IF (@trimestre = 3)
+				ELSE IF (@trimestre = '3')
 					BEGIN 
 					SET @inicio = '01-07-'+@anioAux
 					SET @fin = '30-09-'+@anioAux
 					END
-					ELSE IF (@trimestre = 4)
+					ELSE IF (@trimestre = '4')
 						BEGIN
 						SET @inicio = '01-10-'+@anioAux
 						SET @fin = '31-12-'+@anioAux
@@ -595,30 +600,30 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
-				@trimestre numeric(18,0), @anio numeric(18,0) 
+				@trimestre CHAR(1), @anio CHAR(4)
 	AS	
 	  BEGIN	
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@anioAux char(4)
-		SET @anioAux = CAST(@anio AS CHAR(4))
+				@anioAux CHAR(4)
+		SET @anioAux = @anio
 		
-		IF (@trimestre = 1)
+		IF (@trimestre = '1')
 			BEGIN
 			SET @inicio = '01-01-'+@anioAux
 			SET @fin = '31-03-'+@anioAux
 			END
-			ELSE IF (@trimestre = 2)
+			ELSE IF (@trimestre = '2')
 				BEGIN
 				SET @inicio = '01-04-'+@anioAux
 				SET @fin = '30-06-'+@anioAux
 				END
-				ELSE IF (@trimestre = 3)
+				ELSE IF (@trimestre = '3')
 					BEGIN 
 					SET @inicio = '01-07-'+@anioAux
 					SET @fin = '30-09-'+@anioAux
 					END
-					ELSE IF (@trimestre = 4)
+					ELSE IF (@trimestre = '4')
 						BEGIN
 						SET @inicio = '01-10-'+@anioAux
 						SET @fin = '31-12-'+@anioAux
@@ -657,31 +662,31 @@ Se paso como parametros (viendo las fechas de cierre temporal) trimestre = 1, a√
 Funciona ok
 */
 CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
-				@trimestre numeric(18,0), @anio numeric(18,0) 
+				@trimestre CHAR(1), @anio CHAR(4)
 	AS		
 	  BEGIN
 		
 		DECLARE @inicio VARCHAR(10),
 				@fin VARCHAR(10),
-				@anioAux char(4)
-		SET @anioAux = CAST(@anio as CHAR(4))
+				@anioAux CHAR(4)
+		SET @anioAux = @anio
 		
-		IF (@trimestre = 1)
+		IF (@trimestre = '1')
 			BEGIN
 			SET @inicio = '01-01-'+@anioAux
 			SET @fin = '31-03-'+@anioAux
 			END
-			ELSE IF (@trimestre = 2)
+			ELSE IF (@trimestre = '2')
 				BEGIN
 				SET @inicio = '01-04-'+@anioAux
 				SET @fin = '30-06-'+@anioAux
 				END
-				ELSE IF (@trimestre = 3)
+				ELSE IF (@trimestre = '3')
 					BEGIN 
 					SET @inicio = '01-07-'+@anioAux
 					SET @fin = '30-09-'+@anioAux
 					END
-					ELSE IF (@trimestre = 4)
+					ELSE IF (@trimestre = '4')
 						BEGIN
 						SET @inicio = '01-10-'+@anioAux
 						SET @fin = '31-12-'+@anioAux
@@ -731,31 +736,31 @@ Funciona ok
 */
 
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
-				@trimestre numeric(18,0), @anio numeric(18,0) 
+				@trimestre CHAR(1), @anio CHAR(4)
 	AS				
 		BEGIN
 		
 		DECLARE @inicio varchar(10),
 				@fin varchar(10),
-				@anioAux char(4)
-		SET @anioAux = CAST(@anio as CHAR(4))
+				@anioAux CHAR(4)
+		SET @anioAux = @anio
 		
-		IF (@trimestre = 1)
+		IF (@trimestre = '1')
 			BEGIN
 			SET @inicio = '01-01-'+@anioAux
 			SET @fin = '31-03-'+@anioAux
 			END
-			ELSE IF (@trimestre = 2)
+			ELSE IF (@trimestre = '2')
 				BEGIN
 				SET @inicio = '01-04-'+@anioAux
 				SET @fin = '30-06-'+@anioAux
 				END
-				ELSE IF (@trimestre = 3)
+				ELSE IF (@trimestre = '3')
 					BEGIN 
 					SET @inicio = '01-07-'+@anioAux
 					SET @fin = '30-09-'+@anioAux
 					END
-					ELSE IF (@trimestre = 4)
+					ELSE IF (@trimestre = '4')
 						BEGIN
 						SET @inicio = '01-10-'+@anioAux
 						SET @fin = '31-12-'+@anioAux
