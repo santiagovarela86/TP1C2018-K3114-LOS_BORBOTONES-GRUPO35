@@ -163,14 +163,13 @@ namespace FrbaHotel.Repositorios
         public void cancelarReserva(Reserva reserva, Usuario usuario, String motivo) { 
 
             decimal codigoReserva= reserva.getCodigoReserva();
-            bool isRecepcionista = usuario.getRoles().Any(rol=>rol.getNombre().Equals("Recepcionista"));
-            bool isGuest = usuario.getRoles().Any(rol => rol.getNombre().Equals("Guest"));
+            //bool isRecepcionista = usuario.getRoles().Any(rol=>rol.getNombre().Equals("Recepcionista"));
+            bool isGuest = usuario.getUsername().ToUpper().Equals("GUEST");
 
-            String tipoEstado="Desconocido";
-            if(isRecepcionista){
-            tipoEstado="RCR";
-            }else if(isGuest){
-            tipoEstado="RCC";
+            String tipoEstado = "RCR";
+            //todo lo que no sea generado por el guest, es generado por recepcion
+            if(isGuest){
+                tipoEstado="RCC";
             }
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
