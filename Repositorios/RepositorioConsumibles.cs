@@ -271,7 +271,7 @@ namespace FrbaHotel.Repositorios
                     BEGIN TRY
                     BEGIN TRANSACTION
 
-                    DELETE FROM LOS_BORBOTONES.Estadia_X_Consumible
+                    DELETE TOP (1) FROM LOS_BORBOTONES.Estadia_X_Consumible
                     WHERE idConsumible=@IdConsumible and idEstadia=@IdEstadia;
 
                 ");
