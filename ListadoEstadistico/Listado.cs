@@ -78,8 +78,7 @@ namespace FrbaHotel.ListadoEstadistico
         private void button1_Click(object sender, EventArgs e)
         {
             dataGridView1.DataSource = null;
-            this.trimestre.SelectedValue = "";
-            this.trimestre.SelectedIndex = -1;
+            this.trimestre.Text = "";
             this.textBoxAnio.Text = "";
             this.tipoListado.SelectedValue = "";
             this.tipoListado.SelectedIndex = -1;
