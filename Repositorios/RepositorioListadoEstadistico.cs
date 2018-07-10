@@ -37,7 +37,7 @@ namespace FrbaHotel
             DataTable dt = new DataTable();
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
-            SqlCommand myCmd = new SqlCommand("LOS_BORBOTONES.lista_hoteles_maxConFacturado", sqlConnection);
+            SqlCommand myCmd = new SqlCommand("LOS_BORBOTONES.lista_hoteles_maxConFacturados", sqlConnection);
             myCmd.Parameters.AddWithValue("@trimestre", trimestre);
             myCmd.Parameters.AddWithValue("@anio", anio);
             myCmd.CommandType = CommandType.StoredProcedure;
