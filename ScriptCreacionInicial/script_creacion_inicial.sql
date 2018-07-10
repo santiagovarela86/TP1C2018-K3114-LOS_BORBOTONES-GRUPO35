@@ -640,18 +640,14 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
 				 LOS_BORBOTONES.Habitacion hab,
 				 LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
 				 LOS_BORBOTONES.EstadoReserva er
-		where res.idReserva = er.idReserva AND (
-		  er.Descripcion = 'Reserva Cancelada Por Recepcion' OR
-		  er.Descripcion = 'Reserva Cancelada Por Cliente' OR
-		  er.Descripcion = 'Reserva Cancelada Por NO-SHOW' OR
-		  er.Descripcion = 'Reserva Cancelada Desde Tabla Maestra'
-		  ) AND
-		  hab.idHabitacion = rxhxc.idHabitacion AND
-		  hab.idHotel = hot.idHotel AND
-		  rxhxc.idReserva = res.idReserva AND
-		  er.Fecha BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
+		where res.idReserva = er.idReserva 
+		  AND er.TipoEstado IN ('RCR', 'RCC', 'RCNS')
+		  AND hab.idHabitacion = rxhxc.idHabitacion
+		  AND hab.idHotel = hot.idHotel
+		  AND rxhxc.idReserva = res.idReserva
+		  AND er.Fecha BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
 		GROUP BY hot.Nombre
-		ORDER BY Cancelaciones DESC					
+		ORDER BY Cancelaciones DESC, Nombre ASC
 		END
 GO
 --------------------------------------------------------------
