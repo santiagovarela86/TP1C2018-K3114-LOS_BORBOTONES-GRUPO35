@@ -736,16 +736,22 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
 
 		SELECT TOP 5
 			Nombre
-			,(SELECT SUM(
+			,ISNULL((SELECT SUM(
 				CASE WHEN (FechaInicio >= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, FechaInicio, FechaFin)
 					 WHEN (FechaInicio >= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, FechaInicio, CONVERT(DATETIME, @fin, 103))
 					 WHEN (FechaInicio <= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, @inicio, 103), FechaFin)
 					 WHEN (FechaInicio <= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, @inicio, 103), CONVERT(DATETIME, @fin, 103))
-				END)) as CantDias
+				END)), 0) as CantDias
 		FROM LOS_BORBOTONES.CierreTemporal cierreTemp
 			,LOS_BORBOTONES.Hotel hotel
 		WHERE cierreTemp.idHotel = hotel.idHotel
 		GROUP BY Nombre
+		HAVING (ISNULL((SELECT SUM(
+				CASE WHEN (FechaInicio >= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, FechaInicio, FechaFin)
+					 WHEN (FechaInicio >= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, FechaInicio, CONVERT(DATETIME, @fin, 103))
+					 WHEN (FechaInicio <= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, @inicio, 103), FechaFin)
+					 WHEN (FechaInicio <= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, @inicio, 103), CONVERT(DATETIME, @fin, 103))
+				END)), 0)) > 0
 		ORDER BY 2 DESC
 END
 GO
