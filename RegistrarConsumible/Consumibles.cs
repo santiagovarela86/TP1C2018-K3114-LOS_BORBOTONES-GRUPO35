@@ -26,6 +26,7 @@ namespace FrbaHotel.RegistrarConsumible
         {
             textBox1.Text = "";
             dataGridView1.DataSource = new List<Consumible>();
+            idEstadia = 0;
             
         }
 
@@ -45,17 +46,24 @@ namespace FrbaHotel.RegistrarConsumible
                 idEstadia = int.Parse(textBox1.Text);
                 //hago el get estado para ver si no termino de ponerle el Reserva Con Consumibles (RCC)
                 Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
-                estado = repoEstadia.getEstado((int)reserva.getCodigoReserva());
-                if (estado.Equals("RCI") | estado.Equals("RCE"))
-                {
-                    RepositorioConsumibles repositorioConsumibles = new RepositorioConsumibles();
-                    List<Consumible> consumibles = repositorioConsumibles.getByQuery(idEstadia);
-                    dataGridView1.DataSource = consumibles;
-                    dataGridView1.AutoResizeColumns();
-                    dataGridView1.ClearSelection();
-                }
+                if(reserva==null)
+                    {
+                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 else
-                    MessageBox.Show("La estadia debe estar con ingreso o con egreso para registrar consumibles.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                {
+                    estado = repoEstadia.getEstado((int)reserva.getCodigoReserva());
+                    if (estado.Equals("RCI") | estado.Equals("RCE"))
+                    {
+                        RepositorioConsumibles repositorioConsumibles = new RepositorioConsumibles();
+                        List<Consumible> consumibles = repositorioConsumibles.getByQuery(idEstadia);
+                        dataGridView1.DataSource = consumibles;
+                        dataGridView1.AutoResizeColumns();
+                        dataGridView1.ClearSelection();
+                    }
+                    else
+                        MessageBox.Show("La estadia debe estar con ingreso o con egreso para registrar consumibles.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }else
                 MessageBox.Show("Ingresar ID estadia por favor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -64,18 +72,27 @@ namespace FrbaHotel.RegistrarConsumible
         private void button3_Click(object sender, EventArgs e)
         {
             //aca va el alta del consumible.
+            RepositorioReserva repoReserva = new RepositorioReserva();
             if (textBox1.Text != "")
             {
-                using (AltaConsumible form = new AltaConsumible(idEstadia))
-                {
-                    var result = form.ShowDialog();
-
-                    if (result == DialogResult.OK)
+                Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
+                if(reserva==null)
                     {
-                            
+                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                else
+                {
+                    using (AltaConsumible form = new AltaConsumible(idEstadia))
+                    {
+                        var result = form.ShowDialog();
+
+                        if (result == DialogResult.OK)
+                        {
+                            
+                        }
+                    }
+                    this.button2_Click(sender, e);
                 }
-                this.button2_Click(sender, e);
             }
             else
                 MessageBox.Show("Ingresar ID estadia por favor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -83,33 +100,48 @@ namespace FrbaHotel.RegistrarConsumible
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            //pongo el estado en RCCR (reserva con consumibles registrados) ya queda sin chance de modificar.
-            RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
-            RepositorioReserva repoReserva = new RepositorioReserva();
-            DateTime date = Utils.getSystemDatetimeNow();
+                    //pongo el estado en RCCR (reserva con consumibles registrados) ya queda sin chance de modificar.
+                    RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+                    RepositorioReserva repoReserva = new RepositorioReserva();
+                    DateTime date = Utils.getSystemDatetimeNow();
 
-            int idEstadoReserva = 0;
-            Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
-            String desc = "Reserva Con Consumibles Registrados";
-            String tipoEstado = "RCCR";
-            EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
-            repoEstadoReserva.update(estadoReserva);
-            MessageBox.Show("Consumibles registrados.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
+                    int idEstadoReserva = 0;
+                    Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
+                    if (reserva == null)
+                    {
+                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {        
+                        String desc = "Reserva Con Consumibles Registrados";
+                        String tipoEstado = "RCCR";
+                        EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
+                        repoEstadoReserva.update(estadoReserva);
+                        MessageBox.Show("Consumibles registrados.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("¿Está seguro que desea quitar este consumible?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            if (result == System.Windows.Forms.DialogResult.Yes)
-            {
-                RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
-                Consumible consumible = (Consumible)dataGridView1.CurrentRow.DataBoundItem;
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
+                if(reserva==null)
+                    {
+                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                else
+                {
+                    DialogResult result = MessageBox.Show("¿Está seguro que desea quitar este consumible?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if (result == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
+                        Consumible consumible = (Consumible)dataGridView1.CurrentRow.DataBoundItem;
 
-                repoConsumible.baja(consumible,idEstadia);
+                        repoConsumible.baja(consumible,idEstadia);
 
-                //CUANDO DOY DE BAJA EL CONSUMIBLE VUELVO A CARGAR LA LISTA
-                this.button2_Click(sender, e);
-            }
+                        //CUANDO DOY DE BAJA EL CONSUMIBLE VUELVO A CARGAR LA LISTA
+                        this.button2_Click(sender, e);
+                    }
+                }
         }
 
         //CIERRO LA VENTANA CON ESCAPE
