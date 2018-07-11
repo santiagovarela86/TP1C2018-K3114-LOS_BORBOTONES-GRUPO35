@@ -16,8 +16,8 @@ namespace TestingFrbaHotel
             RepositorioEstadia repositorioEstadia = new RepositorioEstadia();
             Estadia estadia = repositorioEstadia.getById(1);
 
-            Assert.AreEqual(1, estadia.getUsuarioCheckIn().getIdUsuario());
-            Assert.AreEqual(1, estadia.getUsuarioCheckOut().getIdUsuario());
+            Assert.AreEqual(2, estadia.getUsuarioCheckIn().getIdUsuario());
+            Assert.AreEqual(2, estadia.getUsuarioCheckOut().getIdUsuario());
         }
     }
 }
