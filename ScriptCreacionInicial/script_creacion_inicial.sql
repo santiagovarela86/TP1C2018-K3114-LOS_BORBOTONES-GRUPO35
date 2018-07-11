@@ -503,7 +503,35 @@ CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
 							SET @fin = '31-12-'+@anioAux
 							END
 
-SELECT TOP 5 id.Nombre as Nombre
+SELECT TOP 5
+	 cliente.idCliente as idCliente
+	 ,identidad.Nombre as 'Nombre'
+	  ,identidad.Apellido 'Apellido'
+	  ,SUM(fact.Puntos) as 'Puntos Totales'
+FROM LOS_BORBOTONES.Factura fact
+	,LOS_BORBOTONES.Cliente cliente
+	,LOS_BORBOTONES.Reserva reserva
+	,LOS_BORBOTONES.Consumible cons
+	,LOS_BORBOTONES.Estadia_X_Consumible estXcons
+	,LOS_BORBOTONES.Estadia estadia
+	,LOS_BORBOTONES.Identidad identidad
+WHERE fact.idReserva = reserva.idReserva
+  AND reserva.idCliente = cliente.idCliente
+  AND cons.idConsumible = estXcons.idConsumible
+  AND estXcons.idEstadia = estadia.idEstadia
+  AND estadia.idEstadia = reserva.idEstadia
+  AND YEAR(fact.FechaFacturacion) = YEAR(CONVERT(DATETIME,@inicio,103))
+  AND (MONTH(fact.FechaFacturacion) = MONTH(CONVERT(DATETIME,@inicio,103)) 
+	OR MONTH(fact.FechaFacturacion) = MONTH(CONVERT(DATETIME,@inicio,103)) + 1
+	OR MONTH(fact.FechaFacturacion) = MONTH(CONVERT(DATETIME,@inicio,103)) + 2)
+  AND identidad.idIdentidad = cliente.idIdentidad
+GROUP BY cliente.idCliente, identidad.Nombre, identidad.Apellido
+ORDER BY 4 DESC
+
+END
+GO
+
+/*SELECT TOP 5 id.Nombre as Nombre
 		,id.Apellido as Apellido
 		,id.TipoDocumento as 'Tipo de Documento'
 		,id.NumeroDocumento as Documento
@@ -542,6 +570,7 @@ ORDER BY Puntaje DESC
 END
 
 GO
+*/
 --------------------------------------------------------------
 --Habitaciones  con mayor cantidad de dias y veces ocupada
 --------------------------------------------------------------
