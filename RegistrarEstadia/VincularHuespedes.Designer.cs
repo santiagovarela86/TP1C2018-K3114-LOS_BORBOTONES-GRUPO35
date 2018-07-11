@@ -41,6 +41,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.botonReservar = new System.Windows.Forms.Button();
             this.botonAlta = new System.Windows.Forms.Button();
@@ -201,10 +202,21 @@
             this.textBox4.TabIndex = 5;
             this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(396, 20);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(106, 23);
+            this.button5.TabIndex = 0;
+            this.button5.Text = "Borrar cliente";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.botonReservar);
             this.groupBox3.Controls.Add(this.botonAlta);
+            this.groupBox3.Controls.Add(this.button5);
             this.groupBox3.Location = new System.Drawing.Point(44, 491);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(561, 63);
@@ -215,7 +227,7 @@
             // botonReservar
             // 
             this.botonReservar.Enabled = false;
-            this.botonReservar.Location = new System.Drawing.Point(239, 20);
+            this.botonReservar.Location = new System.Drawing.Point(204, 20);
             this.botonReservar.Name = "botonReservar";
             this.botonReservar.Size = new System.Drawing.Size(75, 23);
             this.botonReservar.TabIndex = 10;
@@ -274,6 +286,7 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button botonAlta;
         private System.Windows.Forms.Button botonReservar;
+        private System.Windows.Forms.Button button5;
 
 
     }

@@ -38,14 +38,14 @@ namespace FrbaHotel.RegistrarEstadia
             int codReserva = 0;
             DateTime date = Utils.getSystemDatetimeNow();
             int estadoValidez = 0;
-            //DateTime dateTest = new DateTime(2017, 1, 1);
+            DateTime dateTest = new DateTime(2017, 1, 1);
             RepositorioReserva repositorioReserva = new RepositorioReserva();
             if (textBox1.Text != "" )
             {
                 codReserva = int.Parse(textBox1.Text);
                 
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, date, this.sesion.getUsuario());
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
                 if (estadoValidez!=2 && estadoValidez!=3 && estadoValidez!=4 && estadoValidez!=0)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)

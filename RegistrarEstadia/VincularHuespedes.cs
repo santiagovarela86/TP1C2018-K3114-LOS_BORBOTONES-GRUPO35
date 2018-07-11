@@ -167,6 +167,43 @@ namespace FrbaHotel.RegistrarEstadia
 
             }
         }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Cliente cliente = null;
+            try{
+            cliente = (Cliente)dataGridView2.CurrentRow.DataBoundItem;
+            }
+            catch (Exception exc)
+            {
+            }
+            if (cliente==null)
+            {
+                MessageBox.Show("No se selecciono ningun cliente para eliminar. ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            else
+            {    DialogResult result = MessageBox.Show("¿Está seguro que desea quitar este cliente?", "Baja", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                    
+                    
+                    foreach (Cliente item in clientesElegidos.ToList())
+                    {
+                        if (item.getIdCliente() == cliente.getIdCliente())
+                        {
+                            clientesElegidos.Remove(item);
+
+                        }
+                    }
+                    
+                    //CUANDO DOY DE BAJA EL Cliente VUELVO A CARGAR LA LISTA
+                    dataGridView2.DataSource = new List<Cliente>();    
+                    dataGridView2.DataSource = clientesElegidos;
+                    dataGridView2.ClearSelection();
+                }
+            }
+        }
 
         private void onlyNumeric(object sender, KeyPressEventArgs e)
         {
