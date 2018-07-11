@@ -436,10 +436,10 @@ CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalEstadia(@CostoTotalEstadia money)
 	RETURNS money
 		AS
 			BEGIN
-				DECLARE @totalPuntoEstadia numeric(18,0)
+				DECLARE @totalPuntoEstadia numeric(18,2)
 				DECLARE @pesoPorPunto numeric(18,2)
-					SET @pesoPorPunto = 20
-					SET @totalPuntoEstadia = @CostoTotalEstadia * 1.0 / @pesoPorPunto
+					SET @pesoPorPunto = 20.0
+					SET @totalPuntoEstadia = @CostoTotalEstadia / @pesoPorPunto
 				RETURN @totalPuntoEstadia
 			END
 GO
@@ -450,10 +450,10 @@ CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible(@CostoTotalConsumible num
 	RETURNS numeric(18,2)
 		AS
 			BEGIN
-				DECLARE @totalPuntoConsumible numeric(18,0)
+				DECLARE @totalPuntoConsumible numeric(18,2)
 				DECLARE @pesoPorPunto numeric(18,2)
-					SET @pesoPorPunto = 10
-					SET @totalPuntoConsumible = @CostoTotalConsumible * 1.0 / @pesoPorPunto
+					SET @pesoPorPunto = 10.0
+					SET @totalPuntoConsumible = @CostoTotalConsumible / @pesoPorPunto
 				RETURN @totalPuntoConsumible
 			END
 GO
