@@ -125,6 +125,7 @@
             this.textBoxAnio.Name = "textBoxAnio";
             this.textBoxAnio.Size = new System.Drawing.Size(126, 20);
             this.textBoxAnio.TabIndex = 1;
+            this.textBoxAnio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // Listado
             // 

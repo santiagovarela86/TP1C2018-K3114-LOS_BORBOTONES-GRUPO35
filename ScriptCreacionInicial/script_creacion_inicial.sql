@@ -439,7 +439,7 @@ CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalEstadia(@CostoTotalEstadia money)
 				DECLARE @totalPuntoEstadia numeric(18,0)
 				DECLARE @pesoPorPunto numeric(18,2)
 					SET @pesoPorPunto = 20
-					SET @totalPuntoEstadia = @CostoTotalEstadia / @pesoPorPunto
+					SET @totalPuntoEstadia = @CostoTotalEstadia * 1.0 / @pesoPorPunto
 				RETURN @totalPuntoEstadia
 			END
 GO
@@ -453,7 +453,7 @@ CREATE FUNCTION LOS_BORBOTONES.fn_puntoTotalConsumible(@CostoTotalConsumible num
 				DECLARE @totalPuntoConsumible numeric(18,0)
 				DECLARE @pesoPorPunto numeric(18,2)
 					SET @pesoPorPunto = 10
-					SET @totalPuntoConsumible = @CostoTotalConsumible / @pesoPorPunto
+					SET @totalPuntoConsumible = @CostoTotalConsumible * 1.0 / @pesoPorPunto
 				RETURN @totalPuntoConsumible
 			END
 GO
@@ -1152,7 +1152,7 @@ CREATE TABLE LOS_BORBOTONES.Factura (
 	NumeroFactura		NUMERIC(18,0)		NOT NULL,
 	FechaFacturacion	DATETIME			NOT NULL,
 	Total				NUMERIC(18,2)		NOT NULL,
-	Puntos				INT,
+	Puntos				NUMERIC(18,2),
 	TipoPago			VARCHAR(45),
 	Titular 			NVARCHAR(255),
 	CodigoSeguridad 	INT,
