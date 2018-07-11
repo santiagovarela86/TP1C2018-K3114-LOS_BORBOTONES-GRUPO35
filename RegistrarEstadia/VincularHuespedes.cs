@@ -62,6 +62,7 @@ namespace FrbaHotel.RegistrarEstadia
             String mail = textBox3.Text;
             String nroDoc = textBox4.Text;
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
+            estado = new KeyValuePair<String, Boolean>("Habilitado", true);
             String tipoDoc = "";
             RepositorioCliente repositorioClientes = new RepositorioCliente();
 
