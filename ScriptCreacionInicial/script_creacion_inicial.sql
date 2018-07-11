@@ -734,6 +734,23 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
 							SET @fin = '31-12-'+@anioAux
 							end
 
+		SELECT TOP 5
+			Nombre
+			,(SELECT SUM(
+				CASE WHEN (FechaInicio >= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, FechaInicio, FechaFin)
+					 WHEN (FechaInicio >= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, FechaInicio, CONVERT(DATETIME, @fin, 103))
+					 WHEN (FechaInicio <= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, @inicio, 103), FechaFin)
+					 WHEN (FechaInicio <= CONVERT(DATETIME, @inicio, 103) AND FechaInicio <= CONVERT(DATETIME, @fin, 103) AND FechaFin >= CONVERT(DATETIME, @inicio, 103) AND FechaFin >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, @inicio, 103), CONVERT(DATETIME, @fin, 103))
+				END)) as CantDias
+		FROM LOS_BORBOTONES.CierreTemporal cierreTemp
+			,LOS_BORBOTONES.Hotel hotel
+		WHERE cierreTemp.idHotel = hotel.idHotel
+		GROUP BY Nombre
+		ORDER BY 2 DESC
+END
+GO
+		
+/*
 SELECT TOP 5 consTotal.hot as Hotel, hot.nombre as Nombre,SUM(consTotal.Dias) as 'Dias Baja' FROM 
 
 	( SELECT * FROM
@@ -764,6 +781,7 @@ SELECT TOP 5 consTotal.hot as Hotel, hot.nombre as Nombre,SUM(consTotal.Dias) as
 		ORDER BY 'Dias Baja' desc
 	END
 	GO
+*/
 --------------------------------------------------------------
 --Hoteles con mayor cantidad de consumibles facturados
 --------------------------------------------------------------
