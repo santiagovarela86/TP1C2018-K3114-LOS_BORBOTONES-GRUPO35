@@ -585,6 +585,41 @@ CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
 							SET @fin = '31-12-'+@anioAux
 							END
 
+		SELECT TOP 5
+			   hotel.Nombre as 'Nombre Hotel'
+			  ,habitacion.Numero as 'Numero Habitacion'
+			  ,habitacion.Piso as Piso
+			  ,SUM(estadia.CantidadNoches) as 'Cantidad Dias'
+			  ,COUNT(*) as 'Cantidad Veces' 
+			  /*,ISNULL((SELECT SUM(
+						CASE WHEN (estadia.FechaEntrada >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, estadia.FechaEntrada, estadia.FechaSalida)
+							 WHEN (estadia.FechaEntrada >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, estadia.FechaEntrada, CONVERT(DATETIME, CONVERT(DATETIME, @fin, 103), 103))
+							 WHEN (estadia.FechaEntrada <= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida <= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, CONVERT(DATETIME, @inicio, 103), 103), estadia.FechaSalida)
+							 WHEN (estadia.FechaEntrada <= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @fin, 103)) THEN DATEDIFF(day, CONVERT(DATETIME, CONVERT(DATETIME, @inicio, 103), 103), CONVERT(DATETIME, CONVERT(DATETIME, @fin, 103), 103))
+						END)), 0) as 'Cantidad Dias'
+						*/
+		FROM LOS_BORBOTONES.Estadia estadia
+			,LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rhc
+			,LOS_BORBOTONES.hotel hotel
+			,LOS_BORBOTONES.Habitacion habitacion
+			,LOS_BORBOTONES.Reserva reserva
+		WHERE (
+			(estadia.FechaEntrada >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida <= CONVERT(DATETIME, @fin, 103))
+			OR (estadia.FechaEntrada >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @fin, 103))
+			OR (estadia.FechaEntrada <= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida <= CONVERT(DATETIME, @fin, 103))
+			OR (estadia.FechaEntrada <= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaEntrada <= CONVERT(DATETIME, @fin, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @inicio, 103) AND estadia.FechaSalida >= CONVERT(DATETIME, @fin, 103))
+			)
+			AND rhc.idHabitacion = habitacion.idHabitacion
+			AND rhc.idReserva = reserva.idReserva
+			AND reserva.idEstadia = estadia.idEstadia
+			AND hotel.idHotel = habitacion.idHotel
+		GROUP BY hotel.Nombre, habitacion.Numero, habitacion.Piso
+		ORDER BY 4 DESC, 5 DESC
+
+END
+GO
+
+/*
 SELECT DISTINCT TOP 5 ho.Nombre Hotel,
 		hab.Numero Habitacion,
 		hab.Piso Piso,
@@ -632,6 +667,8 @@ WHERE consulCantXHab.idHotel = ho.idHotel AND
 ORDER BY cantEst DESC, Dias DESC
 END
 GO
+*/
+
 --------------------------------------------------------------
 --hoteles con mayor cantidad de reservas canceladas
 --------------------------------------------------------------
