@@ -808,28 +808,24 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
 							SET @fin = '31-12-'+@anioAux
 							END
 
-				SELECT TOP 5
-					ho.Nombre as Hotel,
-					COUNT(con.idConsumible) as 'Consumibles Facturados'
-				FROM LOS_BORBOTONES.Consumible con,
-					 LOS_BORBOTONES.Estadia_X_Consumible exc,
-					 LOS_BORBOTONES.Estadia es,
-					 LOS_BORBOTONES.Factura fc,
-					 LOS_BORBOTONES.Hotel ho,
-					 LOS_BORBOTONES.Reserva res,
-					 LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
-					 LOS_BORBOTONES.Habitacion hab
-				WHERE 
-					fc.idEstadia = es.idEstadia AND
-					exc.idEstadia = es.idEstadia AND
-					exc.idConsumible = con.idConsumible AND
-					fc.idReserva = res.idReserva AND
-					res.idReserva = rxhxc.idReserva AND
-					rxhxc.idHabitacion = hab.idHabitacion AND
-					hab.idHotel = ho.idHotel
-					AND fc.FechaFacturacion BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-				GROUP BY ho.Nombre
-				ORDER BY 'Consumibles Facturados' DESC
+				SELECT TOP 5 
+				     Nombre as Hotel
+					,COUNT(*) as 'Consumibles Facturados'
+				FROM LOS_BORBOTONES.Consumible consu
+					,LOS_BORBOTONES.Estadia estad
+					,LOS_BORBOTONES.Estadia_X_Consumible estXcons
+					,LOS_BORBOTONES.Reserva reserva
+					,LOS_BORBOTONES.Hotel hotel
+					,LOS_BORBOTONES.Factura factura
+				WHERE consu.idConsumible = estXcons.idConsumible
+				  AND estXcons.idEstadia = estad.idEstadia
+				  AND reserva.idEstadia = estad.idEstadia
+				  AND hotel.idHotel = reserva.idHotel
+				  AND factura.idEstadia = estad.idEstadia
+				  AND factura.FechaFacturacion BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
+				GROUP BY Nombre
+				ORDER by 2 DESC
+							
 				END
 GO
 -----------------------------------------------------------------------Creacion Tablas---------------------------------------------------------------------------------------------------------
@@ -1724,7 +1720,6 @@ ORDER BY idHotel ,idRegimen;
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga CierreTemporal
---las fechas estan en el DER como tipo VARCHAR, se quedan asi? o como DATETIME
 -- Se define por el momento Descripcion = 'Mantenimiento' y Ampliacion
 
 INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
