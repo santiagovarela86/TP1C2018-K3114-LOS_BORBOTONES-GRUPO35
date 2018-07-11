@@ -84,6 +84,7 @@ namespace FrbaHotel.AbmHabitacion
             registroHabitaciones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
             registroHabitaciones.RowHeadersVisible = false;
             registroHabitaciones.DataSource = repositorioHabitacion.getByQuery(numero, piso, this.sesion.getHotel(), tipoHabitacion, estado).OrderBy(hab => hab.getNumero()).ToList();
+            registroHabitaciones.AutoResizeColumns();
             registroHabitaciones.RowHeadersVisible = true;
 
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM

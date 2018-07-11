@@ -59,6 +59,7 @@ namespace FrbaHotel.AbmHotel
 
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
             this.regimenesGrid.DataSource = repoRegimen.getAll().OrderBy(r => r.getDescripcion()).ToList();
+            regimenesGrid.AutoResizeColumns();
             regimenesGrid.CurrentCell = null;
             regimenesGrid.ClearSelection();
             this.regimenesGrid.Rows[0].Cells[0].Selected = false;

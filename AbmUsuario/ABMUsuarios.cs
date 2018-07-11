@@ -86,6 +86,7 @@ namespace FrbaHotel.AbmUsuario
             }
 
             dataGridView1.DataSource = repositorioUsuario.getByQuery(username, estado, hotel,rol).OrderBy(u => u.getIdUsuario()).ToList();
+            dataGridView1.AutoResizeColumns();
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();

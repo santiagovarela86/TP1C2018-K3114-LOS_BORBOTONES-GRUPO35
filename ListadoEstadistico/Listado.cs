@@ -81,6 +81,8 @@ namespace FrbaHotel.ListadoEstadistico
                     dataGridView1.DataSource = repoListado.habitacionesMasOcupadas(trimestre.Text, anioString);
                     break;
             }
+
+            dataGridView1.AutoResizeColumns();
         }
 
         private void button_cerrar_Click(object sender, EventArgs e)

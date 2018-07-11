@@ -38,6 +38,7 @@ namespace FrbaHotel.AbmReserva
             this.buttonModificarReserva.Enabled = false;
 
             this.dataGridView1.DataSource=buildHabitacionesReservadas(habitaciones,regimen).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
+            this.dataGridView1.AutoResizeColumns();
             init();
         }
 
@@ -163,6 +164,7 @@ namespace FrbaHotel.AbmReserva
 
 
                 this.habitacionesDisponiblesGrid.DataSource = habitacionesDisponibles;
+                this.habitacionesDisponiblesGrid.AutoResizeColumns();
                 this.habitacionesDisponiblesGrid.CurrentCell = null;
                 this.habitacionesDisponiblesGrid.ClearSelection();
                 if (this.habitacionesDisponiblesGrid.Rows.Count > 0)
@@ -174,6 +176,7 @@ namespace FrbaHotel.AbmReserva
                 RepositorioRegimen repoRegimen = new RepositorioRegimen();
 
                 this.regimenesDisponiblesGrid.DataSource = repoRegimen.getByIdHotel(hotelSeleccionado.getIdHotel());
+                this.regimenesDisponiblesGrid.AutoResizeColumns();
 
 
 

@@ -32,11 +32,13 @@ namespace FrbaHotel.Login
             //cargo únicamente los roles del usuario que están habilitados 
             List<Rol> rolesHabilitados = usuario.getRoles().FindAll(rol => rol.getActivo()).OrderBy(r => r.getIdRol()).ToList();
             dataGridRoles.DataSource = rolesHabilitados;
+            dataGridRoles.AutoResizeColumns();
             dataGridRoles.CurrentCell = null;
             dataGridRoles.ClearSelection();
 
             //cargo los hoteles del usuario
             dataGridHoteles.DataSource = usuario.getHoteles().OrderBy(h => h.getIdHotel()).ToList();
+            dataGridHoteles.AutoResizeColumns();
             dataGridHoteles.CurrentCell = null;
             dataGridHoteles.ClearSelection();
 

@@ -70,6 +70,7 @@ namespace FrbaHotel.AbmRol
             }
 
             dataGridView1.DataSource = repositorioRoles.getByQuery(nombreRol, estado, funcionalidad).OrderBy(r => r.getIdRol()).ToList();
+            dataGridView1.AutoResizeColumns();
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();

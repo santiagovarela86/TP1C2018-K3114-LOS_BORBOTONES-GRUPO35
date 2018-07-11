@@ -51,6 +51,7 @@ namespace FrbaHotel.RegistrarConsumible
                     RepositorioConsumibles repositorioConsumibles = new RepositorioConsumibles();
                     List<Consumible> consumibles = repositorioConsumibles.getByQuery(idEstadia);
                     dataGridView1.DataSource = consumibles;
+                    dataGridView1.AutoResizeColumns();
                     dataGridView1.ClearSelection();
                 }
                 else

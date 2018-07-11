@@ -100,6 +100,7 @@ namespace FrbaHotel.AbmReserva
                     List<Reserva> reservas = new List<Reserva>();
                     reservas.Add(reserva);
                     dataGridReserva.DataSource = reservas;
+                    dataGridReserva.AutoResizeColumns();
 
                     this.AcceptButton = this.buttonModificar;
 

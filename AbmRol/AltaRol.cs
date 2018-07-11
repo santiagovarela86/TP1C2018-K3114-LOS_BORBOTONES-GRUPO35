@@ -30,6 +30,7 @@ namespace FrbaHotel.AbmRol
         {
             RepositorioFuncionalidad repositorioFuncionalidad = new RepositorioFuncionalidad();
             dataGridFuncionalidades.DataSource = repositorioFuncionalidad.getAll().OrderBy(f => f.getIdFuncionalidad()).ToList();
+            dataGridFuncionalidades.AutoResizeColumns();
             dataGridFuncionalidades.ClearSelection();
             textBoxNombreRol.Text = "";
             checkBoxActivo.Checked = false;

@@ -50,6 +50,7 @@ namespace FrbaHotel.AbmHotel
 
             this.estrellasComboBox.DataSource = repoCategoria.getAll().OrderBy(c => c.getEstrellas()).ToList();
             this.regimenesDataGrid.DataSource = repoRegimen.getAll().OrderBy(r => r.getDescripcion()).ToList();
+            regimenesDataGrid.AutoResizeColumns();
             this.regimenesDataGrid.CurrentCell = null;
             this.regimenesDataGrid.ClearSelection();
             this.regimenesDataGrid.Rows[0].Cells[0].Selected = false;

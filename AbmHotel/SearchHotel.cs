@@ -40,7 +40,7 @@ namespace FrbaHotel.AbmHotel
             this.modificarButton.Enabled = false;
 
             registroHoteles.DataSource = repositorioHotel.getByQuery(nombre, estrellas, ciudad, pais).OrderBy(h => h.getIdHotel()).ToList();
-
+            registroHoteles.AutoResizeColumns();
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             registroHoteles.CurrentCell = null;
             registroHoteles.ClearSelection();

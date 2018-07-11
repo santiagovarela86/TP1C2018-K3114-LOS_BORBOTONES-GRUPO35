@@ -81,7 +81,6 @@ namespace FrbaHotel.RegistrarEstadia
             //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
             dataGridView1.CurrentCell = null;
             dataGridView1.ClearSelection();
-
             
             //ESTO ES PARA QUE ME ACTUALICE LA LISTA DE DOCUMENTOS POSIBLES
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();

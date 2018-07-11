@@ -86,11 +86,13 @@ namespace FrbaHotel.FacturarEstadia
                  //List<Estadia> estadias = new List<Estadia>();
                 estadias.Add(estadia);
                 dataGridView1.DataSource = estadias;
+                dataGridView1.AutoResizeColumns();
                 dataGridView1.ClearSelection();
                 //lleno los consumibles por estadia en el datagrid2
                 //List<Consumible> consumiblesXEstadia = new List<Consumible>();
                 consumiblesXEstadia = repositorioEstadia.getConsumiblesXIdEstadia(estadia.getIdEstadia());
                 dataGridView2.DataSource = consumiblesXEstadia;
+                dataGridView2.AutoResizeColumns();
                 dataGridView2.ClearSelection();                
              }
             }else
