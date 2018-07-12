@@ -293,6 +293,10 @@ IF OBJECT_ID('LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva', 'U') IS 
 	DROP TABLE LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva;
 GO
 
+IF OBJECT_ID('LOS_BORBOTONES.TemporalInconsistencias','U') IS NOT NULL
+    DROP TABLE LOS_BORBOTONES.TemporalInconsistencias;
+GO
+
 ---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
 --Funcion getDate()
 IF OBJECT_ID('LOS_BORBOTONES.fn_getDate', 'FN') IS NOT NULL

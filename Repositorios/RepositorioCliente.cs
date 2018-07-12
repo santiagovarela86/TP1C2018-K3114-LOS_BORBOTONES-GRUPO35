@@ -407,11 +407,11 @@ namespace FrbaHotel.Repositorios
                     ROLLBACK
                     END CATCH
                 ");
+
                 //LA LOGICA EN PONER 'INCONSISTENTE = 0' EN TODOS LOS UPDATE
-                //ES QUE POR GUI YO AVISO QUE EL USUARIO ESTA INCONSISTENTE Y QUE SI SE MODIFICA DEBE SER VALIDADO
-                //PORQUE SERÄ 
-                //ES QUE SI ACTUALIZO EL USUARIO POR GUI, 
-                //DADO QUE LOS EDITO CUANDO ME MUESTRAN SU DOCUMENTO
+                //ES QUE POR GUI YO AVISO QUE EL CLIENTE ESTA INCONSISTENTE
+                //SI EL USUARIO DEL SISTEMA DECIDE CONTINUAR EDITANDOLO DEBE GARANTIZAR QUE 
+                //VERIFICA LA IDENTIDAD DEL CLIENTE MEDIANTE DOCUMENTO Y VALIDA SU MAIL
 
                 sqlCommand.CommandText = sqlBuilder.ToString();
                 sqlConnection.Open();
