@@ -42,6 +42,7 @@
             this.labelRol = new System.Windows.Forms.Label();
             this.buttonGenerarReserva = new System.Windows.Forms.Button();
             this.buttonModificarReserva = new System.Windows.Forms.Button();
+            this.buttonCambiarContraseña = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ABMUsuario
@@ -66,7 +67,7 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(265, 106);
+            this.Salir.Location = new System.Drawing.Point(339, 106);
             this.Salir.Name = "Salir";
             this.Salir.Size = new System.Drawing.Size(120, 41);
             this.Salir.TabIndex = 11;
@@ -182,11 +183,22 @@
             this.buttonModificarReserva.UseVisualStyleBackColor = true;
             this.buttonModificarReserva.Click += new System.EventHandler(this.buttonModificarReserva_Click);
             // 
+            // button1
+            // 
+            this.buttonCambiarContraseña.Location = new System.Drawing.Point(195, 106);
+            this.buttonCambiarContraseña.Name = "buttonCambiarContraseña";
+            this.buttonCambiarContraseña.Size = new System.Drawing.Size(120, 41);
+            this.buttonCambiarContraseña.TabIndex = 12;
+            this.buttonCambiarContraseña.Text = "Cambiar Contraseña";
+            this.buttonCambiarContraseña.UseVisualStyleBackColor = true;
+            this.buttonCambiarContraseña.Click += new System.EventHandler(this.cambiarPasswordButton_click);
+            // 
             // FuncionesAdicionales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(645, 154);
+            this.Controls.Add(this.buttonCambiarContraseña);
             this.Controls.Add(this.buttonModificarReserva);
             this.Controls.Add(this.buttonGenerarReserva);
             this.Controls.Add(this.labelRol);
@@ -225,5 +237,6 @@
         private System.Windows.Forms.Label labelRol;
         private System.Windows.Forms.Button buttonGenerarReserva;
         private System.Windows.Forms.Button buttonModificarReserva;
+        private System.Windows.Forms.Button buttonCambiarContraseña;
     }
 }

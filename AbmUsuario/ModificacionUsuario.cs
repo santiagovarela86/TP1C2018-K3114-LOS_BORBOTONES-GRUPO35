@@ -134,7 +134,7 @@ namespace FrbaHotel.AbmUsuario
 
             //SI SE CAMBIA LA PASSWORD SE VUELVE A GENERAR
             //SINO SE MANTIENE LA MISMA
-            if (passwordChanged) { password = repoUser.EncriptarSHA256(this.password); } else { password = usuario.getPassword(); }
+            if (this.password != null && this.password !="" && passwordChanged) { password = repoUser.EncriptarSHA256(this.password); } else { password = usuario.getPassword(); }
 
             //VALORES QUE NO CAMBIAN
             String tipoIdentidad = "Usuario";

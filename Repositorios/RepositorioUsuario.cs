@@ -599,5 +599,35 @@ namespace FrbaHotel.Repositorios
 
             return usuario;
         }
+
+        public void changePassword(Usuario usuario){
+
+            if (this.exists(usuario))
+            {
+                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+                string passwordEncriptada = this.EncriptarSHA256(usuario.getPassword());
+
+                sqlCommand.Parameters.AddWithValue("@Password", passwordEncriptada);
+                sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+
+                sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.Usuario SET Password = @Password WHERE idUsuario = @idUsuario;  ";
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
+            }
+            else
+            {
+                throw new NoExisteIDException("No existe el usuario que intenta actualizar");
+            }
+        }
     }
+
+
+
 }

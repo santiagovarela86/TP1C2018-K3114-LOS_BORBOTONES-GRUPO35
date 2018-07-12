@@ -135,6 +135,12 @@ namespace FrbaHotel.AbmReserva
 
             DateTime fechaInicio = (DateTime)Utils.validateFields(calendarioDesde.Value, "Fecha Desde");
             DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.Value, "Fecah Hasta");
+
+            if (fechaInicio < Utils.getSystemDatetimeNow())
+            {
+                MessageBox.Show("No puede realizar reservas en el pasado", "Error");
+                return;
+            }
             if (Utils.validateTimeRanges(fechaInicio, fechaFin))
             {
 

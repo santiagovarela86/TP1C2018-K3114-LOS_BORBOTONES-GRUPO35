@@ -22,10 +22,10 @@ namespace FrbaHotel.FacturarEstadia
         }
         private void ListadoFacturarEstadia_Load(object sender, EventArgs e)
         {
-            textBox1.Text = "";
-            textBox2.Text = "";
-            textBox3.Text = "";
-            textBox4.Text = "";
+            textIdEstadia.Text = "";
+            textTitularTarjeta.Text = "";
+            textNumeroTarjeta.Text = "";
+            textCodigoSeguridad.Text = "";
             textBox5.Text = "";
             dataGridView1.DataSource = null;
             dataGridView2.DataSource = null;
@@ -60,9 +60,9 @@ namespace FrbaHotel.FacturarEstadia
             Estadia estadia = null;
             EstadoReserva estadoReserva=null;
 
-            if (textBox1.Text != "")
+            if (textIdEstadia.Text != "")
             {
-                idEstadia = int.Parse(textBox1.Text);
+                idEstadia = int.Parse(textIdEstadia.Text);
 
                 estadia = repositorioEstadia.getById(idEstadia);
                 //buscar por estado reserva que este con check out ya realizado
@@ -133,14 +133,14 @@ namespace FrbaHotel.FacturarEstadia
             }else
             {
                 //traigo los datos de la tarjeta
-                nombreTarjeta = textBox2.Text;
-                if (textBox3.Text != "" )
+                nombreTarjeta = textTitularTarjeta.Text;
+                if (textNumeroTarjeta.Text != "" )
                 {
-                    nroTarjeta = Decimal.Parse(textBox3.Text);
+                    nroTarjeta = Decimal.Parse(textNumeroTarjeta.Text);
                 }
-                if (textBox4.Text != "")
+                if (textCodigoSeguridad.Text != "")
                 {
-                    codSegTarjeta = int.Parse(textBox4.Text);
+                    codSegTarjeta = int.Parse(textCodigoSeguridad.Text);
                 }
                 if (textBox5.Text != "")
                 {
@@ -183,6 +183,11 @@ namespace FrbaHotel.FacturarEstadia
                 e.Handled = true;
             }
         }
+
+
+
+
+
 
     }
 }
