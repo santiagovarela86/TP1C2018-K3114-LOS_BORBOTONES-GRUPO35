@@ -60,6 +60,13 @@ namespace FrbaHotel.AbmHabitacion
                 Habitacion habitacion = new Habitacion(0, activa, numero, piso, ubicacion,descripcion);
                 habitacion.setHotel(hotel);
                 habitacion.setTipoHabitacion(tipoHabitacion);
+
+                if (repositorioHabitacion.yaExisteHabitacionMismoPisoYNumero(habitacion))
+                {
+                    MessageBox.Show("Ya existe una habitacion en ese piso con ese numero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 repositorioHabitacion.create(habitacion);
                 MessageBox.Show("Habitacion creada", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

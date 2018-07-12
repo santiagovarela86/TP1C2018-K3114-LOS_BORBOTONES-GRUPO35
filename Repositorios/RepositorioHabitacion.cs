@@ -12,7 +12,43 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioHabitacion : Repositorio<Habitacion>
     {
+        public Boolean yaExisteHabitacionMismoPisoYNumero(Habitacion habitacion)
+        {
+            int idHabitacionExistente = 0;
 
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@idHotel", habitacion.getHotel().getIdHotel());
+            sqlCommand.Parameters.AddWithValue("@idHabitacion", habitacion.getIdHabitacion());
+            sqlCommand.Parameters.AddWithValue("@numeroHab", habitacion.getNumero());
+            sqlCommand.Parameters.AddWithValue("@pisoHab", habitacion.getPiso());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT idHabitacion
+                FROM LOS_BORBOTONES.Habitacion
+                WHERE Numero = @numeroHab
+                  AND Piso = @pisoHab
+                  AND idHotel = @idHotel
+                  AND idHabitacion <> @idHabitacion
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idHabitacionExistente = reader.GetInt32(reader.GetOrdinal("idHabitacion"));
+            }
+
+            sqlConnection.Close();
+
+            return idHabitacionExistente != 0;
+        }
 
         public override int create(Habitacion habitacion)
         {
@@ -23,7 +59,7 @@ namespace FrbaHotel.Repositorios
             int idHabitacion = 0;
 
             if(this.exists(habitacion)){
-                throw new RequestInvalidoException("Ya existe una habitacion con el mismo numero en el hotel");
+                throw new RequestInvalidoException("Ya existe una habitacion con el mismo numero en el hotel.");
             }
 
             sqlCommand.Parameters.AddWithValue("@habActiva", habitacion.getActiva());

@@ -49,37 +49,33 @@ namespace FrbaHotel.AbmHabitacion
 
             TipoHabitacion tipoHabitacion = (TipoHabitacion)Utils.validateFields(comboBoxTipoHabitacion.SelectedItem, "Tipo");
             bool activa = this.checkBoxActiva.Checked;
-            int numero = Utils.validateIntField(textNumero.Text, "Numero");
-            int piso = Utils.validateIntField(textPiso.Text, "Piso");
+            int numero = Utils.validateIntField(textNumero.Text.Trim(), "Numero");
+            int piso = Utils.validateIntField(textPiso.Text.Trim(), "Piso");
             String ubicacion = Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem, "Ubicacion");
             String descripcion = textDescripcion.Text.Trim();
             Habitacion habitacionAModificar = new Habitacion(this.habitacion.getIdHabitacion(), activa, numero, piso, ubicacion, descripcion);
             habitacionAModificar.setHotel(this.habitacion.getHotel());
             habitacionAModificar.setTipoHabitacion(tipoHabitacion);
 
-            //ACA VALIDO SI EL NUMERO DE LA HABITACION MODIFICADA EXISTE
-            //Y SI CAMBIE EL NUMERO A LA HABITACION EN EL FORMULARIO
-            if (repoHabitacion.existeNumeroHabitacion(habitacionAModificar) 
-             && !numero.Equals(this.habitacion.getNumero()))
+            try
             {
-                MessageBox.Show("Ya existe una habitación con ese número, elija otro.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (repoHabitacion.yaExisteHabitacionMismoPisoYNumero(habitacionAModificar))
+                {
+                    MessageBox.Show("Ya existe una habitacion en ese piso con ese numero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                repoHabitacion.update(habitacionAModificar);
+
+                MessageBox.Show("Habitacion modificada.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                habitacion = habitacionAModificar;
+
+                this.initFields();
             }
-            else
+            //catch (RequestInvalidoException exception1)
+            catch (Exception exception1)
             {
-                try
-                {
-                    repoHabitacion.update(habitacionAModificar);
-
-                    MessageBox.Show("Habitacion modificada.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    habitacion = habitacionAModificar;
-
-                    this.initFields();
-                }
-                //catch (RequestInvalidoException exception1)
-                catch (Exception exception1)
-                {
-                    MessageBox.Show(exception1.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show(exception1.Message, "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
