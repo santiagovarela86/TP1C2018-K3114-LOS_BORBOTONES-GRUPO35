@@ -21,7 +21,7 @@ namespace FrbaHotel.AbmRol
 
         private void ListadoRoles_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = new List<Rol>();
+            dataGridView1.DataSource = null;
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
             estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
             estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
@@ -44,7 +44,7 @@ namespace FrbaHotel.AbmRol
 
         private void limpiarBusquedaYResultados()
         {
-            dataGridView1.DataSource = new List<Rol>();
+            dataGridView1.DataSource = null;
             textBox1.Text = "";
             comboBoxEstados.SelectedValue = "";
             comboBoxFuncionalidades.SelectedValue = "";

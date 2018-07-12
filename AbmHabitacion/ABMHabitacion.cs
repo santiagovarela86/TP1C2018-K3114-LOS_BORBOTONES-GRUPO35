@@ -144,7 +144,7 @@ namespace FrbaHotel.AbmHabitacion
         }
         private void limpiarBusquedaYResultados()
         {
-            registroHabitaciones.DataSource = new List<Habitacion>();
+            registroHabitaciones.DataSource = null;
             textNumero.Text = "";
             textPiso.Text = "";
             comboBoxTipoHabitacion.SelectedValue = "";

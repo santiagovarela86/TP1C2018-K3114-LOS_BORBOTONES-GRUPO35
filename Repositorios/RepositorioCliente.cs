@@ -22,6 +22,7 @@ namespace FrbaHotel.Repositorios
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
             Boolean activo = false;
             List<Reserva> reservas = new List<Reserva>();
+            Boolean inconsistente = false;
 
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -44,6 +45,7 @@ namespace FrbaHotel.Repositorios
                 idIdentidad = reader.GetInt32(reader.GetOrdinal("IdIdentidad"));
                 identidad = repoIdentidad.getById(idIdentidad);
                 activo = reader.GetBoolean(reader.GetOrdinal("Activo"));
+                inconsistente = reader.GetBoolean(reader.GetOrdinal("Inconsistente"));
             }
 
             //Cierro Primera Consulta
@@ -79,7 +81,7 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             //Armo el cliente completo
-            cliente = new Cliente(idCliente, identidad, activo, reservas);
+            cliente = new Cliente(idCliente, identidad, activo, reservas, inconsistente);
 
             return cliente;
         }
@@ -142,7 +144,8 @@ namespace FrbaHotel.Repositorios
                 clientes.Add(new Cliente(reader.GetInt32(reader.GetOrdinal("idCliente")),
                                         identidad,
                                         reader.GetBoolean(reader.GetOrdinal("Activo")),
-                                        new List<Reserva>()));
+                                        new List<Reserva>(),
+                                        reader.GetBoolean(reader.GetOrdinal("Inconsistente"))));
             }
 
             sqlConnection.Close();
@@ -394,7 +397,7 @@ namespace FrbaHotel.Repositorios
                     WHERE idIdentidad = @idIdentidad;
 
                     UPDATE LOS_BORBOTONES.Cliente
-                    SET Activo = @Activo, idIdentidad = @idIdentidad
+                    SET Activo = @Activo, idIdentidad = @idIdentidad, Inconsistente = 0
                     WHERE idCliente = @idCliente;
 
                     COMMIT
@@ -404,6 +407,11 @@ namespace FrbaHotel.Repositorios
                     ROLLBACK
                     END CATCH
                 ");
+                //LA LOGICA EN PONER 'INCONSISTENTE = 0' EN TODOS LOS UPDATE
+                //ES QUE POR GUI YO AVISO QUE EL USUARIO ESTA INCONSISTENTE Y QUE SI SE MODIFICA DEBE SER VALIDADO
+                //PORQUE SERÄ 
+                //ES QUE SI ACTUALIZO EL USUARIO POR GUI, 
+                //DADO QUE LOS EDITO CUANDO ME MUESTRAN SU DOCUMENTO
 
                 sqlCommand.CommandText = sqlBuilder.ToString();
                 sqlConnection.Open();

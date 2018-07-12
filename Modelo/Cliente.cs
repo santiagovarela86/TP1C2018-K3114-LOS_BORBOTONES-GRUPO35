@@ -12,13 +12,15 @@ namespace FrbaHotel.Modelo
         private Identidad identidad = null;
         private Boolean activo = false;
         private List<Reserva> reservas = new List<Reserva>();
+        private Boolean inconsistente = false;
 
-        public Cliente(int idCliente, Identidad identidad, Boolean activo, List<Reserva> reservas)
+        public Cliente(int idCliente, Identidad identidad, Boolean activo, List<Reserva> reservas, Boolean inconsistente)
         {
             this.idCliente = idCliente;
             this.identidad = identidad;
             this.activo = activo;
             this.reservas = reservas;
+            this.inconsistente = inconsistente;
         }
 
         public int getIdCliente()
@@ -49,6 +51,11 @@ namespace FrbaHotel.Modelo
         public void setActivo(Boolean activo)
         {
             this.activo = activo;
+        }
+
+        public Boolean getInconsistente()
+        {
+            return this.inconsistente;
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view

@@ -176,7 +176,6 @@ namespace FrbaHotel.Modelo
         public String Ciudad { get { return this.getDireccion().getCiudad(); } }
         public String Pais { get { return this.getDireccion().getPais(); } }
         public int Estrellas { get { return this.getCategoria().Estrellas; } }
-        //ACA HAY QUE HACER UN METODO QUE CONCATENE LA LISTA DE REGIMENES Y LOS MUESTRE SEPARADOS POR COMA... EJ: ("Media pensión, All inclusive, ...)
         public String Regimenes { get { return String.Join(",",this.getRegimenes().Select(regimen => regimen.Descripcion)); } }
         public DateTime FechaInicioActividades { get { return this.getFechaInicioActividades(); } }
 

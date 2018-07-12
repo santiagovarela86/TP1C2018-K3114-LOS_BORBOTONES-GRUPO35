@@ -21,7 +21,7 @@ namespace FrbaHotel.AbmCliente
 
         private void ListadoClientes_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = new List<Cliente>();
+            dataGridView1.DataSource = null;
             List<KeyValuePair<String, Boolean>> estados = new List<KeyValuePair<String, Boolean>>();
             estados.Add(new KeyValuePair<String, Boolean>("Habilitado", true));
             estados.Add(new KeyValuePair<String, Boolean>("Inhabilitado", false));
@@ -45,7 +45,7 @@ namespace FrbaHotel.AbmCliente
             textBox4.Text = "";
             comboBoxEstados.SelectedValue = "";
             comboBoxTipoDoc.SelectedValue = "";
-            dataGridView1.DataSource = new List<Cliente>();
+            dataGridView1.DataSource = null;
             this.button4.Enabled = false;
             this.button5.Enabled = false;
 

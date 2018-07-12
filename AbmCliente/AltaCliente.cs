@@ -102,7 +102,7 @@ namespace FrbaHotel.AbmCliente
             Identidad identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDoc, nroDoc,
             mail, fechaNacimiento, nacionalidad, telefono, adress);
             // armo el cliente con la identidad (id en 0)
-            Cliente cliente = new Cliente(idCliente,identidad, activo,reservas);
+            Cliente cliente = new Cliente(idCliente,identidad, activo,reservas, false);
             //ahora si ya lo puedo crear
             RepositorioCliente repoCliente = new RepositorioCliente();
 

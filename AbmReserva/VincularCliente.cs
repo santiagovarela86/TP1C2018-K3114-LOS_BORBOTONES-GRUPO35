@@ -15,7 +15,7 @@ namespace FrbaHotel.AbmReserva
 {
     public partial class VincularCliente : Form
     {
-        private List<HabitacionDisponible> habitaciones;
+        private List<HabitacionDisponible> habitaciones = new List<HabitacionDisponible>();
         private DateTime fechaInicio;
         private DateTime fechaFin;
         private int diasDeEstadia;
@@ -32,7 +32,7 @@ namespace FrbaHotel.AbmReserva
 
         private void ListadoClientes_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = new List<Cliente>();
+            dataGridView1.DataSource = null;
 
 
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
@@ -47,7 +47,7 @@ namespace FrbaHotel.AbmReserva
             textBox3.Text = "";
             textBox4.Text = "";
             comboBoxTipoDoc.SelectedValue = "";
-            dataGridView1.DataSource = new List<Cliente>();
+            dataGridView1.DataSource = null;
             this.botonReservar.Enabled = false;
 
 

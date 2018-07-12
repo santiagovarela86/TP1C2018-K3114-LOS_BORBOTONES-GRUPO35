@@ -96,10 +96,11 @@ namespace FrbaHotel.AbmCliente
             int idIdentidad = this.cliente.getIdentidad().getIdIdentidad();
             int idCliente = this.cliente.getIdCliente();
             List<Reserva> reservas = this.cliente.getReservas();
+            Boolean inconsistente = this.cliente.getInconsistente();
 
             Direccion adress = new Direccion(idDir, pais, localidad, calle, nroCalle, nroPiso, depto);
             Identidad identidad = new Identidad(idIdentidad, tipoIdentidad, nombre, apellido, tipoDoc, nroDoc, mail, fechaNacimiento, nacionalidad, telefono, adress);
-            Cliente updatedClient = new Cliente(idCliente, identidad, activo, reservas);            
+            Cliente updatedClient = new Cliente(idCliente, identidad, activo, reservas, inconsistente);            
 
             if (this.validoInput(this))
             {
@@ -144,6 +145,11 @@ namespace FrbaHotel.AbmCliente
         private void ModificacionCliente_Load(object sender, EventArgs e)
         {
             this.resetearDatos();
+
+            if (this.cliente.getInconsistente())
+            {
+                MessageBox.Show("El cliente aparece como inconsistente en la base, por favor verifique el numero de documento y mail del cliente y actualice la informacion. El usuario dejará de estar marcado como inconsistente si lo actualiza.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)

@@ -58,7 +58,7 @@ namespace FrbaHotel.AbmHotel
 
         private void limpiarBusquedaYResultados()
         {
-            registroHoteles.DataSource = new List<Hotel>();
+            registroHoteles.DataSource = null;
             nombreText.Text = "";
             paisText.Text = "";
             ciudadText.Text = "";

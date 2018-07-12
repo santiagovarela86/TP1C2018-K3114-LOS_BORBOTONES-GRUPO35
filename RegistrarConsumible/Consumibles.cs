@@ -25,7 +25,7 @@ namespace FrbaHotel.RegistrarConsumible
         private void ListadoConsumibles_Load(object sender, EventArgs e)
         {
             textBox1.Text = "";
-            dataGridView1.DataSource = new List<Consumible>();
+            dataGridView1.DataSource = null;
             idEstadia = 0;
             
         }

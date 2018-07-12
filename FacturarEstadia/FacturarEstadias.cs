@@ -27,8 +27,8 @@ namespace FrbaHotel.FacturarEstadia
             textBox3.Text = "";
             textBox4.Text = "";
             textBox5.Text = "";
-            dataGridView1.DataSource = new List<Estadia>();
-            dataGridView2.DataSource = new List<Consumible>();
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
 
             comboBoxTipoPago.SelectedValue = "";
 

@@ -26,8 +26,8 @@ namespace FrbaHotel.RegistrarEstadia
 
         private void ListadoClientes_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = new List<Cliente>();
-            dataGridView2.DataSource = new List<Cliente>();
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
 
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
             comboBoxTipoDoc.ValueMember = "Value";
@@ -41,7 +41,7 @@ namespace FrbaHotel.RegistrarEstadia
             textBox3.Text = "";
             textBox4.Text = "";
             comboBoxTipoDoc.SelectedValue = "";
-            dataGridView1.DataSource = new List<Cliente>();
+            dataGridView1.DataSource = null;
             //this.botonReservar.Enabled = false;
 
 
@@ -120,7 +120,7 @@ namespace FrbaHotel.RegistrarEstadia
             if (dgv.CurrentRow.Selected)
             {
                 this.botonReservar.Enabled = true;
-                dataGridView2.DataSource = new List<Cliente>();    
+                dataGridView2.DataSource = null;
                 //la agrego al datagrid 2
                 foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
                 {
@@ -176,6 +176,7 @@ namespace FrbaHotel.RegistrarEstadia
             }
             catch (Exception exc)
             {
+                MessageBox.Show(exc.Message, "Error al obtener el cliente de la base", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             if (cliente==null)
             {
@@ -199,7 +200,7 @@ namespace FrbaHotel.RegistrarEstadia
                     }
                     
                     //CUANDO DOY DE BAJA EL Cliente VUELVO A CARGAR LA LISTA
-                    dataGridView2.DataSource = new List<Cliente>();    
+                    dataGridView2.DataSource = null;
                     dataGridView2.DataSource = clientesElegidos;
                     dataGridView2.ClearSelection();
                 }

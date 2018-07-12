@@ -198,7 +198,6 @@ namespace FrbaHotel.AbmReserva
         private void buscarHabitaciones_Click(object sender, EventArgs e)
         {          
             this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
-
         }
 
         private void habitaciones_cellClick(object sender, EventArgs e)
@@ -211,6 +210,7 @@ namespace FrbaHotel.AbmReserva
             if (regimen != null)
             {
                 this.reservarHabitacionButton.Enabled = true;
+                this.AcceptButton = this.reservarHabitacionButton;
             }
         }
 
