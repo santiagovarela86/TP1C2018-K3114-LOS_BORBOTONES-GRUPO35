@@ -1644,6 +1644,8 @@ SELECT DISTINCT
       ,[Reserva_Codigo]
       ,[Reserva_Cant_Noches]
       ,[Cliente_Pasaporte_Nro]
+	  ,[Cliente_Nombre]
+	  ,[Cliente_Apellido]
 INTO LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva
 FROM [GD1C2018].[gd_esquema].[Maestra]
 WHERE Estadia_Fecha_Inicio IS NOT NULL
@@ -1651,7 +1653,7 @@ ORDER BY Reserva_Codigo
 GO
 
 --Segunda Tabla Temporal de la Migración
-SELECT identidad.NumeroDocumento, cliente.idCliente
+SELECT cliente.idCliente, identidad.NumeroDocumento, identidad.Nombre, identidad.Apellido
 INTO LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva
 FROM LOS_BORBOTONES.Identidad identidad
     ,LOS_BORBOTONES.Cliente cliente
@@ -1671,6 +1673,8 @@ SELECT ptemp.idHotel
 FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva ptemp
 	,LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva stemp
 WHERE ptemp.Cliente_Pasaporte_Nro = stemp.NumeroDocumento
+  AND ptemp.Cliente_Nombre = stemp.Nombre
+  AND Cliente_Apellido = stemp.Apellido
 ORDER BY Reserva_Codigo
 
 DECLARE @idHotel INT,
