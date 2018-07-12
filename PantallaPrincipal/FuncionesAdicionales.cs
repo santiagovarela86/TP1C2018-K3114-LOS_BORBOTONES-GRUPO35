@@ -18,6 +18,7 @@ using FrbaHotel.FacturarEstadia;
 using FrbaHotel.RegistrarConsumible;
 using FrbaHotel.AbmReserva;
 using FrbaHotel.ListadoEstadistico;
+using FrbaHotel.CambiarPassword;
 
 namespace FrbaHotel
 {
@@ -217,6 +218,16 @@ namespace FrbaHotel
             using (Listado listado= new Listado())
             {
                 var resultFormLogin = listado.ShowDialog();
+
+
+            }
+        }
+
+        private void cambiarPasswordButton_click(object sender, EventArgs e)
+        {
+            using (CambiarPasswordForm form= new CambiarPasswordForm(sesion.getUsuario()))
+            {
+                var resultFormLogin = form.ShowDialog();
 
 
             }

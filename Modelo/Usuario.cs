@@ -89,6 +89,9 @@ namespace FrbaHotel.Modelo
             this.intentosFallidosLogin = 0;
         }
 
+        public void setPassword(String password){
+            this.password = password;
+        }
         //Estos metodos extra los necesito para popular los combo box y data grid view
         public int IdUsuario { get { return this.getIdUsuario(); } }
         public String Username { get { return this.getUsername(); } }
