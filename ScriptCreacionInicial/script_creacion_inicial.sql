@@ -428,10 +428,6 @@ GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---Clientes con mayor cantidad de puntos
 --------------------------------------------------------------
-/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.listaHabitacionesVecesOcupada > Ejecutar ...
-Se paso como parametros (viendo las fechas de Facturacion) trimestre = 2, año = 2018
-Funciona ok
-*/
 
 CREATE PROCEDURE LOS_BORBOTONES.listaMaximosPuntajes
 				@trimestre CHAR(1), @anio CHAR(4) 
@@ -496,53 +492,9 @@ ORDER BY 4 DESC
 END
 GO
 
-/*SELECT TOP 5 id.Nombre as Nombre
-		,id.Apellido as Apellido
-		,id.TipoDocumento as 'Tipo de Documento'
-		,id.NumeroDocumento as Documento
-		,punEs.Puntos+punCon.Puntos as Puntaje
-FROM
-(	SELECT es.idEstadia, (re.Precio * es.CantidadNoches) Gasto, (re.Precio * es.CantidadNoches)/20 Puntos
-		FROM  LOS_BORBOTONES.Regimen re,
-			  LOS_BORBOTONES.Estadia es,
-			  LOS_BORBOTONES.Reserva res
-	WHERE res.idEstadia = es.idEstadia AND
-		  res.idRegimen = re.idRegimen AND
-		  es.FechaEntrada BETWEEN  CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-	GROUP BY es.idEstadia, re.Precio, es.CantidadNoches
-	) AS punEs, 
-
-(	SELECT exc.idEstadia, (con.Precio) Gasto, (con.Precio)/10 Puntos
-		FROM LOS_BORBOTONES.Estadia_X_Consumible exc,
-			 LOS_BORBOTONES.Consumible con,
-			 LOS_BORBOTONES.Reserva res
-	WHERE exc.idConsumible = con.idConsumible AND
-			res.idEstadia = exc.idEstadia AND
-			res.FechaDesde BETWEEN  CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-	GROUP BY exc.idEstadia, con.Precio
-	) AS punCon,
-
-LOS_BORBOTONES.Cliente cli,
-LOS_BORBOTONES.Estadia es,
-LOS_BORBOTONES.Reserva res,
-LOS_BORBOTONES.Identidad id
-WHERE  cli.idCliente = res.idCliente AND 
-		es.idEstadia = res.idEstadia AND 
-		punCon.idEstadia = es.idEstadia AND 
-		punEs.idEstadia = es.idEstadia AND
-		id.idIdentidad = cli.idIdentidad
-ORDER BY Puntaje DESC
-END
-
-GO
-*/
 --------------------------------------------------------------
 --Habitaciones  con mayor cantidad de dias y veces ocupada
 --------------------------------------------------------------
-/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.listaHabitacionesVecesOcupada > Ejecutar ...
-Se paso como parametros (viendo las fechas de Estadias disponibles) trimestre = 4, año = 2017
-Funciona ok
-*/
 
 CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
 				@trimestre CHAR(1), @anio CHAR(4)
@@ -606,63 +558,9 @@ CREATE PROCEDURE LOS_BORBOTONES.listaHabitacionesVecesOcupada
 END
 GO
 
-/*
-SELECT DISTINCT TOP 5 ho.Nombre Hotel,
-		hab.Numero Habitacion,
-		hab.Piso Piso,
-		consulCantXHab.cantEst 'Veces ocupada',
-		consultaCantDias.Dias 'Dias ocupados'
-FROM				(
-
-					SELECT  hab.idHabitacion,
-							hab.idHotel,
-							COUNT(hab.idHabitacion) cantEst
-					FROM 
-							LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
-							LOS_BORBOTONES.Habitacion hab,
-							LOS_BORBOTONES.Reserva res,
-							LOS_BORBOTONES.Hotel ho,
-							LOS_BORBOTONES.Estadia es
-					WHERE rxhxc.idHabitacion = hab.idHabitacion AND
-						  rxhxc.idReserva = res.idReserva AND
-						  ho.idHotel = hab.idHotel AND
-						  es.idEstadia = res.idEstadia
-					GROUP BY hab.idHabitacion, hab.idHotel) AS consulCantXHab,
-					
-					(
-						SELECT  hab.idHabitacion, hab.idHotel,
-								SUM(CAST(es.FechaSalida-es.FechaEntrada AS numeric(18,0))) Dias
-						FROM 
-								LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente rxhxc,
-								LOS_BORBOTONES.Habitacion hab,
-								LOS_BORBOTONES.Reserva res,
-								LOS_BORBOTONES.Hotel ho,
-								LOS_BORBOTONES.Estadia es
-						WHERE rxhxc.idHabitacion = hab.idHabitacion AND
-							  rxhxc.idReserva = res.idReserva AND
-							  ho.idHotel = hab.idHotel AND
-							  es.idEstadia = res.idEstadia
-						GROUP BY hab.idHabitacion,hab.idHotel) AS consultaCantDias,
-
-				LOS_BORBOTONES.Hotel ho,
-				LOS_BORBOTONES.Habitacion hab,
-				LOS_BORBOTONES.Estadia es
-WHERE consulCantXHab.idHotel = ho.idHotel AND
-		hab.idHabitacion = consulCantXHab.idHabitacion AND
-		consulCantXHab.idHabitacion = consultaCantDias.idHabitacion	AND
-		es.FechaEntrada BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-ORDER BY cantEst DESC, Dias DESC
-END
-GO
-*/
-
 --------------------------------------------------------------
 --hoteles con mayor cantidad de reservas canceladas
 --------------------------------------------------------------
-/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.lista_hoteles_maxResCancel > Ejecutar ...
-Se paso como parametros (viendo las fechas de Estado Reserva) trimestre = 1, año = 2018
-Funciona ok
-*/
 
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxResCancel
 				@trimestre CHAR(1), @anio CHAR(4)
@@ -718,10 +616,7 @@ GO
 --------------------------------------------------------------
 --Hoteles con mayor cantidad de dias fuera de servicio (CierreTemporal)
 --------------------------------------------------------------
-/* Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.lista_Hotel_DiasFueraServ > Ejecutar ...
-Se paso como parametros (viendo las fechas de cierre temporal) trimestre = 1, año = 2021
-Funciona ok
-*/
+
 CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
 				@trimestre CHAR(1), @anio CHAR(4)
 	AS		
@@ -779,46 +674,10 @@ CREATE PROCEDURE LOS_BORBOTONES.lista_Hotel_DiasFueraServ
 		ORDER BY 2 DESC
 END
 GO
-		
-/*
-SELECT TOP 5 consTotal.hot as Hotel, hot.nombre as Nombre,SUM(consTotal.Dias) as 'Dias Baja' FROM 
 
-	( SELECT * FROM
-
-			(SELECT ho.idHotel hot, SUM(DATEDIFF(day,ct.FechaInicio, ct.FechaFin)) Dias
-			FROM LOS_BORBOTONES.CierreTemporal ct,
-					LOS_BORBOTONES.Hotel ho
-			WHERE ct.idHotel = ho.idHotel 
-					AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-					AND ct.FechaFin < CONVERT(DATETIME,@fin,103)
-			GROUP BY ho.idHotel ) AS consPre
-		
-		UNION ALL
-
-	SELECT * FROM
-
-			(SELECT ho.idHotel hot, SUM(DATEDIFF(day,ct.FechaInicio, CONVERT(DATETIME,@fin,103))) Dias
-			FROM LOS_BORBOTONES.CierreTemporal ct,
-					LOS_BORBOTONES.Hotel ho
-			WHERE ct.idHotel = ho.idHotel 
-					AND ct.FechaInicio BETWEEN CONVERT(DATETIME,@inicio,103) AND CONVERT(DATETIME,@fin,103)
-					AND ct.FechaFin >  CONVERT(DATETIME,@fin,103)
-			GROUP BY ho.idHotel) as consPost 
-		) as consTotal,
-		LOS_BORBOTONES.Hotel hot
-		WHERE hot.idHotel = consTotal.hot
-		GROUP BY consTotal.hot, hot.nombre
-		ORDER BY 'Dias Baja' desc
-	END
-	GO
-*/
 --------------------------------------------------------------
 --Hoteles con mayor cantidad de consumibles facturados
 --------------------------------------------------------------
-/*Se probo desde sql server, GD1C2018 > Procedimients Almacenados >  boton derecho sobre LOS_BORBOTONES.lista_hoteles_maxConFacturados > Ejecutar ...
-Se paso como parametros (viendo las fechas de facturacion) trimestre = 1, año = 2017
-Funciona ok
-*/
 
 CREATE PROCEDURE LOS_BORBOTONES.lista_hoteles_maxConFacturados
 				@trimestre CHAR(1), @anio CHAR(4)
@@ -911,12 +770,20 @@ CREATE TABLE LOS_BORBOTONES.Identidad (
 	Apellido				NVARCHAR(255)	NOT NULL,
 	TipoDocumento			VARCHAR(45)		NOT NULL,
 	NumeroDocumento			VARCHAR(45)		NOT NULL,
-	Mail					NVARCHAR(255)	NOT NULL, --el mail debe ser unico
+	Mail					NVARCHAR(255)	NOT NULL, 
 	FechaNacimiento			DATETIME		NOT NULL,
 	Nacionalidad			NVARCHAR(255),
-	Telefono				VARCHAR(45)		DEFAULT 0			NOT NULL,
+	Telefono				VARCHAR(45)		DEFAULT 0			NOT NULL
 )
 GO
+
+--el mail debe ser unico.
+--como hay inconsistencias en la migracion (mails o tipo y numero de documento repetido)
+--y los clientes son validos (tienen reservas y estadias validas)
+--se marca al cliente como inconsistente para que por GUI se edite la información
+--por GUI no se puede crear o modificar un cliente para que tenga un mail o tipo y numero de documento que ya este registrado
+--por lo que mostrar por pantalla que el cliente tiene información inconsistente y luego actualizarlo
+--garantiza que a partir de la migración no hayan nuevos clientes inconsistentes
 
 --Tabla Direccion
 CREATE TABLE LOS_BORBOTONES.Direccion (
@@ -955,7 +822,7 @@ GO
 --Tabla Cliente
 CREATE TABLE LOS_BORBOTONES.Cliente (
 
-	idCliente		INT				IDENTITY(1,1)	NOT NULL, --debido a que se cargaron 3 usuarios en identidad y para establecer una correspondencia entre id identidad y idcliente
+	idCliente		INT				IDENTITY(1,1)	NOT NULL,
 	Activo			BIT,
 	idIdentidad		INT				NOT NULL,
 	Inconsistente 	BIT				NOT NULL DEFAULT 0
@@ -1565,6 +1432,7 @@ GO
 	  JOIN LOS_BORBOTONES.Direccion d ON m.Hotel_Ciudad = d.Ciudad AND m.Hotel_Calle = d.Calle AND m.Hotel_Nro_Calle = d.NumeroCalle
 	  WHERE d.Ciudad IS NOT NULL
 	  GROUP BY c.idCategoria, d.idDireccion, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) 
+	  
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
 
 --Carga CLIENTE
@@ -1574,8 +1442,6 @@ INSERT INTO LOS_BORBOTONES.Cliente(idIdentidad, Activo)
 		FROM LOS_BORBOTONES.Identidad
 		WHERE TipoIdentidad = 'Cliente'
 GO
-
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- MIGRACION Regimen
