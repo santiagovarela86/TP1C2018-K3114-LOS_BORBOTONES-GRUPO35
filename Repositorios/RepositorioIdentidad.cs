@@ -234,8 +234,31 @@ namespace FrbaHotel.Repositorios
 
             sqlConnection.Close();
 
+            sqlCommand.Parameters.AddWithValue("@nroDoc", identidad.getNumeroDocumento());
+            sqlCommand.Parameters.AddWithValue("@tipoDoc", identidad.getTipoDocumento());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT idIdentidad
+                FROM LOS_BORBOTONES.Identidad
+                WHERE TipoDocumento = @tipoDoc AND NumeroDocumento = @nroDoc
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            int idIdentidadNumeroDoc = 0;
+
+            while (reader.Read())
+            {
+                idIdentidadNumeroDoc = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            sqlConnection.Close();
+
             //Devuelve verdadero si el ID coincide o si el username coincide
-            return idIdentidad != 0 || identidad.getMail().ToUpper().Equals(mail.ToUpper());
+            return idIdentidad != 0 || identidad.getMail().ToUpper().Equals(mail.ToUpper()) || idIdentidadNumeroDoc != 0;
         }
 
         override public List<Identidad> getAll()

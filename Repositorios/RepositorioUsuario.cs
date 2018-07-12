@@ -141,15 +141,15 @@ namespace FrbaHotel.Repositorios
         override public int create(Usuario usuario)
         {
             int idUsuario = 0;
-            if (this.exists(usuario))
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+            if (this.exists(usuario) || repoIdentidad.exists(usuario.getIdentidad()))
             {
-                //aca valido que el username sea unico
-                throw new ElementoYaExisteException("Ya existe el usuario que intenta crear");
+                throw new ElementoYaExisteException("Ya existe un usuario con el mismo nombre, o su Mail/Tipo y Numero de documento está repetido.");
             }
             else
             {
                 //llamo a crear la identidad y traigo el IdIdentidad
-                RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+                //RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
                 int idIdentidad = repoIdentidad.create(usuario.getIdentidad());
 
                 //llamo a crear la direccion y traigo el IdDireccion, le seteo el idIdentidad que lo necesita
@@ -231,8 +231,143 @@ namespace FrbaHotel.Repositorios
             return idUsuario;
         }
 
+        private Boolean yaExisteMismoMailDistintoUsuario(Usuario usuario)
+        {
+            int idOtraIdentidad = -1;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@Mail", usuario.getIdentidad().getMail());
+            sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT identidad.idIdentidad
+                FROM LOS_BORBOTONES.Identidad identidad
+                    ,LOS_BORBOTONES.Usuario usuario
+                WHERE usuario.idUsuario <> @idUsuario
+                  AND identidad.idIdentidad = usuario.idIdentidad
+                  AND identidad.Mail = @Mail
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idOtraIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return !idOtraIdentidad.Equals(-1);
+        }
+
+        private Boolean yaExisteMismoTipoYDocDistintoUsuario(Usuario usuario)
+        {
+            int idOtraIdentidad = -1;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@Tipo", usuario.getIdentidad().getTipoDocumento());
+            sqlCommand.Parameters.AddWithValue("@Num", usuario.getIdentidad().getNumeroDocumento());
+            sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT TOP 1 * 
+                FROM LOS_BORBOTONES.Identidad identidad
+                    ,LOS_BORBOTONES.Usuario usuario
+                WHERE usuario.idUsuario <> @idUsuario
+                  AND identidad.idIdentidad = usuario.idIdentidad
+                  AND identidad.TipoDocumento = @Tipo
+                  AND identidad.NumeroDocumento = @Num
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idOtraIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return !idOtraIdentidad.Equals(-1);
+        }
+
+        private Boolean yaExisteMismoUsername(Usuario usuario)
+        {
+            int idOtroUsuario = -1;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+            sqlCommand.Parameters.AddWithValue("@userName", usuario.getUsername());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT usuario.idUsuario
+                FROM LOS_BORBOTONES.Usuario usuario
+                WHERE usuario.idUsuario <> @idUsuario
+                  AND usuario.Username = @userName
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idOtroUsuario = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return !idOtroUsuario.Equals(-1);
+        }
+
         override public void update(Usuario usuario)
         {
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+
+            //AGREGO VALIDACIONES AL UPDATE
+            if (this.yaExisteMismoMailDistintoUsuario(usuario))
+            {
+                throw new ElementoYaExisteException("Ya existe un usuario o cliente con el mismo mail.");
+            }
+
+            if (this.yaExisteMismoTipoYDocDistintoUsuario(usuario))
+            {
+                throw new ElementoYaExisteException("Ya existe un usuario o cliente con el mismo documento.");
+            }
+
+            if (this.yaExisteMismoUsername(usuario))
+            {
+                throw new ElementoYaExisteException("Ya existe un usuario con el mismo nombre de usuario.");
+            }
+
             if (this.exists(usuario))
             {
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -390,7 +525,11 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@Username", usuario.getUsername());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT username FROM LOS_BORBOTONES.Usuario WHERE username = @Username";
+            sqlCommand.CommandText = @"
+                SELECT usuario.username
+                FROM LOS_BORBOTONES.Usuario usuario
+                WHERE usuario.username = @Username
+            ";
 
             sqlConnection.Open();
 

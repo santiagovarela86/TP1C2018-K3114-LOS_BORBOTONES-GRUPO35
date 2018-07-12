@@ -185,16 +185,14 @@ namespace FrbaHotel.Repositorios
         override public int create(Cliente cliente)
         {
             int idCliente = 0;
-
-            if (this.exists(cliente))
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+            if (this.exists(cliente) || repoIdentidad.exists(cliente.getIdentidad()))
             {
-                //aca podria validar por el tipo y numero de documento.
-                throw new ElementoYaExisteException("Ya existe un cliente con el mismo documento o el mismo mail.");
+                throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo documento o el mismo mail.");
             }
             else
             {
                 //llamo a crear la identidad y traigo el IdIdentidad
-                RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
                 int idIdentidad = repoIdentidad.create(cliente.getIdentidad());
 
                 //llamo a crear la direccion y traigo el IdDireccion, le seteo el idIdentidad que lo necesita
@@ -557,14 +555,15 @@ namespace FrbaHotel.Repositorios
             //valido por el mail y por el dni
             sqlCommand.Parameters.AddWithValue("@tipoDoc", cliente.getIdentidad().getTipoDocumento());
             sqlCommand.Parameters.AddWithValue("@nroDoc", cliente.getIdentidad().getNumeroDocumento());
-            sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
+            //sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = @"
                 SELECT idIdentidad
                 FROM LOS_BORBOTONES.Identidad
                 WHERE (TipoDocumento = @tipoDoc AND NumeroDocumento = @nroDoc AND TipoIdentidad='Cliente')
-                   OR (Mail = @Mail)
+                --WHERE (TipoDocumento = @tipoDoc AND NumeroDocumento = @nroDoc) 
+                --   OR (Mail = @Mail)
             ";
 
             sqlConnection.Open();
