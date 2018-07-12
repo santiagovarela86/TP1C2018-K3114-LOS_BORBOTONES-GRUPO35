@@ -1423,10 +1423,10 @@ GO
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Migracion y Carga de Hotel
---Se define como FechaInicioActividades, la fecha actual y como Nombre del Hotel Calle+NroCalle
+--Se define como FechaInicioActividades, la fecha mas antigua de las reservas y como Nombre del Hotel Calle+NroCalle
  
  INSERT INTO LOS_BORBOTONES.Hotel (idCategoria, Nombre, Mail, Telefono, FechaInicioActividades, idDireccion)
-	  SELECT c.idCategoria, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) AS Nombre, 'No Posee', 'No Posee', LOS_BORBOTONES.fn_getDate(), d.idDireccion 
+	  SELECT c.idCategoria, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) AS Nombre, 'No Posee', 'No Posee', (SELECT DISTINCT TOP 1 Reserva_Fecha_Inicio FROM gd_esquema.Maestra ORDER BY Reserva_Fecha_Inicio), d.idDireccion 
 	  FROM LOS_BORBOTONES.Categoria c
 	  JOIN  gd_esquema.Maestra m ON m.Hotel_CantEstrella = c.Estrellas AND m.Hotel_Recarga_Estrella = c.RecargaEstrellas
 	  JOIN LOS_BORBOTONES.Direccion d ON m.Hotel_Ciudad = d.Ciudad AND m.Hotel_Calle = d.Calle AND m.Hotel_Nro_Calle = d.NumeroCalle
@@ -1668,7 +1668,26 @@ GO
 	
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 --ItemFactura
+--Estan intercambiados en la tabla maestra la cantidad y el monto de los item factura, por lo cual se invierten en la query.
+--En la tabla maestra todas las estadias tienen 3 consumibles asociados.
+--Se corrige la migracion de los Item Factura.
 
+INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura, idConsumible)
+SELECT 
+	COUNT(c.idConsumible) AS CantidadReal
+	,m.Item_Factura_Cantidad AS Monto
+	,f.FechaFacturacion AS FechaCreacion
+	,f.idFactura AS idFactura
+	,c.idConsumible AS idConsumible
+FROM LOS_BORBOTONES.Factura f
+	,LOS_BORBOTONES.Consumible c
+    ,gd_esquema.maestra m
+WHERE m.Factura_Nro = f.NumeroFactura
+  AND m.Consumible_Codigo = c.Codigo
+GROUP BY f.idFactura, f.FechaFacturacion, c.idConsumible, m.Item_Factura_Cantidad
+ORDER BY f.idFactura
+
+/*
 INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura, idConsumible)
 		SELECT DISTINCT  m.Item_Factura_Monto, m.Item_Factura_Cantidad, f.FechaFacturacion, f.idFactura, c.idConsumible
 		FROM LOS_BORBOTONES.Factura f 
@@ -1677,6 +1696,7 @@ INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura
 		JOIN LOS_BORBOTONES.Consumible c
 			ON m.Consumible_Codigo = c.Codigo
 	ORDER BY f.idFactura, f.FechaFacturacion;
+*/
 	
 --Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
 -- El regimen All inclusive no carga consumibles en el monto total.
