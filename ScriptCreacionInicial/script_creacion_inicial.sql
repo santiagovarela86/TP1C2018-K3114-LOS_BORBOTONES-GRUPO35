@@ -1687,17 +1687,6 @@ WHERE m.Factura_Nro = f.NumeroFactura
 GROUP BY f.idFactura, f.FechaFacturacion, c.idConsumible, m.Item_Factura_Cantidad
 ORDER BY f.idFactura
 
-/*
-INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura, idConsumible)
-		SELECT DISTINCT  m.Item_Factura_Monto, m.Item_Factura_Cantidad, f.FechaFacturacion, f.idFactura, c.idConsumible
-		FROM LOS_BORBOTONES.Factura f 
-		JOIN gd_esquema.maestra m
-			ON m.Factura_Nro = f.NumeroFactura
-		JOIN LOS_BORBOTONES.Consumible c
-			ON m.Consumible_Codigo = c.Codigo
-	ORDER BY f.idFactura, f.FechaFacturacion;
-*/
-	
 --Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
 -- El regimen All inclusive no carga consumibles en el monto total.
 
