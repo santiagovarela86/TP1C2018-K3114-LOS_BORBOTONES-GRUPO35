@@ -33,14 +33,14 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textIdEstadia = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textTitularTarjeta = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textNumeroTarjeta = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textCodigoSeguridad = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -65,7 +65,7 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.textIdEstadia);
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(561, 68);
@@ -102,13 +102,14 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "ID Estadia:";
             // 
-            // textBox1
+            // textIdEstadia
             // 
-            this.textBox1.Location = new System.Drawing.Point(92, 26);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(113, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+            this.textIdEstadia.Location = new System.Drawing.Point(92, 26);
+            this.textIdEstadia.MaxLength = 9;
+            this.textIdEstadia.Name = "textIdEstadia";
+            this.textIdEstadia.Size = new System.Drawing.Size(113, 20);
+            this.textIdEstadia.TabIndex = 0;
+            this.textIdEstadia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // label6
             // 
@@ -128,12 +129,13 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Nombre Titular tarjeta:";
             // 
-            // textBox2
+            // textTitularTarjeta
             // 
-            this.textBox2.Location = new System.Drawing.Point(328, 18);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(189, 20);
-            this.textBox2.TabIndex = 0;
+            this.textTitularTarjeta.Location = new System.Drawing.Point(328, 18);
+            this.textTitularTarjeta.MaxLength = 255;
+            this.textTitularTarjeta.Name = "textTitularTarjeta";
+            this.textTitularTarjeta.Size = new System.Drawing.Size(189, 20);
+            this.textTitularTarjeta.TabIndex = 0;
             // 
             // label3
             // 
@@ -144,13 +146,14 @@
             this.label3.TabIndex = 1;
             this.label3.Text = "Nro tarjeta:";
             // 
-            // textBox3
+            // textNumeroTarjeta
             // 
-            this.textBox3.Location = new System.Drawing.Point(71, 50);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(134, 20);
-            this.textBox3.TabIndex = 0;
-            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+            this.textNumeroTarjeta.Location = new System.Drawing.Point(71, 50);
+            this.textNumeroTarjeta.MaxLength = 16;
+            this.textNumeroTarjeta.Name = "textNumeroTarjeta";
+            this.textNumeroTarjeta.Size = new System.Drawing.Size(134, 20);
+            this.textNumeroTarjeta.TabIndex = 0;
+            this.textNumeroTarjeta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // label4
             // 
@@ -161,13 +164,14 @@
             this.label4.TabIndex = 1;
             this.label4.Text = "Codigo seguridad:";
             // 
-            // textBox4
+            // textCodigoSeguridad
             // 
-            this.textBox4.Location = new System.Drawing.Point(309, 50);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(39, 20);
-            this.textBox4.TabIndex = 0;
-            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
+            this.textCodigoSeguridad.Location = new System.Drawing.Point(309, 50);
+            this.textCodigoSeguridad.MaxLength = 9;
+            this.textCodigoSeguridad.Name = "textCodigoSeguridad";
+            this.textCodigoSeguridad.Size = new System.Drawing.Size(39, 20);
+            this.textCodigoSeguridad.TabIndex = 0;
+            this.textCodigoSeguridad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // label5
             // 
@@ -184,6 +188,7 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(48, 20);
             this.textBox5.TabIndex = 0;
+            this.textBox5.MaxLength = 9;
             this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // groupBox3
@@ -209,11 +214,11 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.comboBoxTipoPago);
-            this.groupBox5.Controls.Add(this.textBox2);
+            this.groupBox5.Controls.Add(this.textTitularTarjeta);
             this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Controls.Add(this.textBox3);
+            this.groupBox5.Controls.Add(this.textNumeroTarjeta);
             this.groupBox5.Controls.Add(this.label3);
-            this.groupBox5.Controls.Add(this.textBox4);
+            this.groupBox5.Controls.Add(this.textCodigoSeguridad);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.textBox5);
             this.groupBox5.Controls.Add(this.label5);
@@ -322,13 +327,13 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textIdEstadia;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textTitularTarjeta;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textNumeroTarjeta;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textCodigoSeguridad;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label5;

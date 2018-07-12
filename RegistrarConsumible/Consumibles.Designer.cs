@@ -95,6 +95,7 @@
             this.textBox1.Size = new System.Drawing.Size(113, 20);
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBox1.MaxLength = 9;
             // 
             // groupBox2
             // 
