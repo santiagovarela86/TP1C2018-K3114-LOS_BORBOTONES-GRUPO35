@@ -185,10 +185,11 @@ namespace FrbaHotel.Repositorios
         override public int create(Cliente cliente)
         {
             int idCliente = 0;
+
             if (this.exists(cliente))
             {
                 //aca podria validar por el tipo y numero de documento.
-                throw new ElementoYaExisteException("Ya existe el cliente que intenta crear");
+                throw new ElementoYaExisteException("Ya existe un cliente con el mismo documento o el mismo mail.");
             }
             else
             {
@@ -344,8 +345,99 @@ namespace FrbaHotel.Repositorios
         }
          * */
 
+        private Boolean yaExisteMismoMailDistintoCliente(Cliente cliente)
+        {
+            int idOtraIdentidad = -1;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
+            sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT identidad.idIdentidad
+                FROM LOS_BORBOTONES.Identidad identidad
+                    ,LOS_BORBOTONES.Cliente cliente
+                WHERE cliente.idCliente <> @idCliente
+                  AND identidad.idIdentidad = cliente.idIdentidad
+                  AND identidad.Mail = @Mail
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idOtraIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return !idOtraIdentidad.Equals(-1);
+        }
+
+        private Boolean yaExisteMismoTipoYDocDistintoCliente(Cliente cliente)
+        {
+            int idOtraIdentidad = -1;
+
+            //Configuraciones de la consulta
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@Tipo", cliente.getIdentidad().getTipoDocumento());
+            sqlCommand.Parameters.AddWithValue("@Num", cliente.getIdentidad().getNumeroDocumento());
+            sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT TOP 1 * 
+                FROM LOS_BORBOTONES.Identidad identidad
+                    ,LOS_BORBOTONES.Cliente cliente
+                WHERE cliente.idCliente <> @idCliente
+                  AND identidad.idIdentidad = cliente.idIdentidad
+                  AND identidad.TipoDocumento = @Tipo
+                  AND identidad.NumeroDocumento = @Num
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idOtraIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            //Cierro Primera Consulta
+            sqlConnection.Close();
+
+            return !idOtraIdentidad.Equals(-1);
+        }
+
         override public void update(Cliente cliente)
         {
+            //AGREGO VALIDACIONES AL UPDATE
+            if (this.yaExisteMismoMailDistintoCliente(cliente))
+            {
+                throw new ElementoYaExisteException("Ya existe un cliente con el mismo mail.");
+            }
+
+            if (this.yaExisteMismoTipoYDocDistintoCliente(cliente))
+            {
+                throw new ElementoYaExisteException("Ya existe un cliente con el mismo documento.");
+            }
+
             if (this.exists(cliente))
             {
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -461,17 +553,19 @@ namespace FrbaHotel.Repositorios
             }
 
             sqlConnection.Close();
-            Identidad ident=null;
-            ident=cliente.getIdentidad();
-            String tipoDoc = ident.getTipoDocumento();
-            String nroDoc = ident.getNumeroDocumento(); 
 
             //valido por el mail y por el dni
-            sqlCommand.Parameters.AddWithValue("@tipoDoc",tipoDoc);
-            sqlCommand.Parameters.AddWithValue("@nroDoc", nroDoc);
+            sqlCommand.Parameters.AddWithValue("@tipoDoc", cliente.getIdentidad().getTipoDocumento());
+            sqlCommand.Parameters.AddWithValue("@nroDoc", cliente.getIdentidad().getNumeroDocumento());
+            sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idIdentidad FROM LOS_BORBOTONES.Identidad WHERE TipoDocumento = @tipoDoc and NumeroDocumento= @nroDoc and TipoIdentidad='Cliente'";
+            sqlCommand.CommandText = @"
+                SELECT idIdentidad
+                FROM LOS_BORBOTONES.Identidad
+                WHERE (TipoDocumento = @tipoDoc AND NumeroDocumento = @nroDoc AND TipoIdentidad='Cliente')
+                   OR (Mail = @Mail)
+            ";
 
             sqlConnection.Open();
 
