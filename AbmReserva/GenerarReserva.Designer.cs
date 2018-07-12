@@ -55,7 +55,7 @@ namespace FrbaHotel.AbmReserva
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(256, 42);
+            this.label2.Location = new System.Drawing.Point(302, 42);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 22;
@@ -64,7 +64,7 @@ namespace FrbaHotel.AbmReserva
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(253, 11);
+            this.label1.Location = new System.Drawing.Point(300, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 21;
@@ -72,7 +72,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // buscarHabitacionesButton
             // 
-            this.buscarHabitacionesButton.Location = new System.Drawing.Point(259, 71);
+            this.buscarHabitacionesButton.Location = new System.Drawing.Point(303, 71);
             this.buscarHabitacionesButton.Name = "buscarHabitacionesButton";
             this.buscarHabitacionesButton.Size = new System.Drawing.Size(193, 23);
             this.buscarHabitacionesButton.TabIndex = 6;
@@ -93,7 +93,7 @@ namespace FrbaHotel.AbmReserva
             this.comboBoxTipoHabitacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoHabitacion.Location = new System.Drawing.Point(109, 72);
             this.comboBoxTipoHabitacion.Name = "comboBoxTipoHabitacion";
-            this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(135, 21);
+            this.comboBoxTipoHabitacion.Size = new System.Drawing.Size(185, 21);
             this.comboBoxTipoHabitacion.TabIndex = 5;
             // 
             // labelHotel
@@ -110,7 +110,7 @@ namespace FrbaHotel.AbmReserva
             this.comboBoxHotel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxHotel.Location = new System.Drawing.Point(70, 8);
             this.comboBoxHotel.Name = "comboBoxHotel";
-            this.comboBoxHotel.Size = new System.Drawing.Size(174, 21);
+            this.comboBoxHotel.Size = new System.Drawing.Size(224, 21);
             this.comboBoxHotel.TabIndex = 1;
             this.comboBoxHotel.SelectedValueChanged += new System.EventHandler(this.eventHandlerHotelComboBox);
             // 
@@ -128,7 +128,7 @@ namespace FrbaHotel.AbmReserva
             this.comboBoxRegimen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRegimen.Location = new System.Drawing.Point(70, 39);
             this.comboBoxRegimen.Name = "comboBoxRegimen";
-            this.comboBoxRegimen.Size = new System.Drawing.Size(174, 21);
+            this.comboBoxRegimen.Size = new System.Drawing.Size(224, 21);
             this.comboBoxRegimen.TabIndex = 3;
             // 
             // habitacionesDisponiblesGrid
@@ -181,7 +181,7 @@ namespace FrbaHotel.AbmReserva
             // 
             // limpiarButton
             // 
-            this.limpiarButton.Location = new System.Drawing.Point(458, 71);
+            this.limpiarButton.Location = new System.Drawing.Point(505, 71);
             this.limpiarButton.Name = "limpiarButton";
             this.limpiarButton.Size = new System.Drawing.Size(76, 23);
             this.limpiarButton.TabIndex = 7;
@@ -190,14 +190,14 @@ namespace FrbaHotel.AbmReserva
             // 
             // calendarioDesde
             // 
-            this.calendarioDesde.Location = new System.Drawing.Point(333, 8);
+            this.calendarioDesde.Location = new System.Drawing.Point(380, 8);
             this.calendarioDesde.Name = "calendarioDesde";
             this.calendarioDesde.Size = new System.Drawing.Size(200, 20);
             this.calendarioDesde.TabIndex = 2;
             // 
             // calendarioHasta
             // 
-            this.calendarioHasta.Location = new System.Drawing.Point(333, 39);
+            this.calendarioHasta.Location = new System.Drawing.Point(380, 39);
             this.calendarioHasta.Name = "calendarioHasta";
             this.calendarioHasta.Size = new System.Drawing.Size(200, 20);
             this.calendarioHasta.TabIndex = 4;

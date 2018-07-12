@@ -67,7 +67,7 @@ namespace FrbaHotel.AbmReserva
 
             comboBoxHotel.DisplayMember = "Nombre";
             comboBoxHotel.ValueMember = "Nombre";
-            comboBoxHotel.DataSource = repoHotel.getAll();
+            comboBoxHotel.DataSource = repoHotel.getAll().OrderBy(h => h.getNombre()).ToList();
 
             comboBoxTipoHabitacion.SelectedValue = "";
             comboBoxTipoHabitacion.SelectedIndex = -1;

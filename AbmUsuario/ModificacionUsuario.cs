@@ -67,13 +67,13 @@ namespace FrbaHotel.AbmUsuario
 
             //cargo roles
             RepositorioRol repositorioRol = new RepositorioRol();
-            dataGridRoles.DataSource = repositorioRol.getAll().OrderBy(r => r.getIdRol()).ToList();
+            dataGridRoles.DataSource = repositorioRol.getAll().OrderBy(r => r.getNombre()).ToList();
             dataGridRoles.CurrentCell = null;
             dataGridRoles.ClearSelection();
 
             //cargo hoteles
             RepositorioHotel repositorioHotel = new RepositorioHotel();
-            dataGridHoteles.DataSource = repositorioHotel.getAll().OrderBy(h => h.getIdHotel()).ToList();
+            dataGridHoteles.DataSource = repositorioHotel.getAll().OrderBy(h => h.getNombre()).ToList();
             dataGridHoteles.CurrentCell = null;
             dataGridHoteles.ClearSelection();
 

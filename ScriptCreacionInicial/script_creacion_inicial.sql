@@ -1951,6 +1951,7 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND cliente2.idIdentidad = id2.idIdentidad
   AND id2.Mail = id1.Mail
   AND id1.idIdentidad < id2.idIdentidad
+  AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
 
 DECLARE migroInconsistencias CURSOR FOR
 SELECT * FROM LOS_BORBOTONES.TemporalInconsistencias
