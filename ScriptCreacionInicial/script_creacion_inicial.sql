@@ -1528,6 +1528,7 @@ WHERE identidad.TipoIdentidad = 'Cliente'
   AND identidad.TipoDocumento = 'Pasaporte'
 GO
 
+--VER DE REEMPLAZAR ESTO POR ALGO QUE NO SEA UN CURSOR
 --CURSOR DE LA Migración Reserva y Estadía
 DECLARE migracionReservasYEstadias CURSOR FOR 
 SELECT ptemp.idHotel
@@ -1566,8 +1567,9 @@ BEGIN
 	DECLARE @idEstadia INT
 	SET @idEstadia = SCOPE_IDENTITY();
 	
+	--PONGO QUE LA FECHA DE CREACION DE LAS RESERVAS MIGRADAS ES LA FECHA MAS VIEJA DE LAS RESERVAS
 	INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
-	VALUES (@Reserva_Codigo, LOS_BORBOTONES.fn_getDate(), @Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, @idHotel, @idEstadia, @idRegimen, @idCliente)
+	VALUES (@Reserva_Codigo, (SELECT DISTINCT TOP 1 Reserva_Fecha_Inicio FROM gd_esquema.Maestra ORDER BY Reserva_Fecha_Inicio), @Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, @idHotel, @idEstadia, @idRegimen, @idCliente)
 
     -- This is executed as long as the previous fetch succeeds.
     FETCH NEXT FROM migracionReservasYEstadias
@@ -1752,59 +1754,25 @@ INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacio
 	ORDER BY a.idHabitacion, r.idReserva,  c.idCliente
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Carga EstadoReserva
+--Carga EstadoReserva, todas las cargo como Correctas
+--SE DEFINE FECHA DE CREACION DE LAS RESERVAS, COMO LA FECHA MAS VIEJA DE LAS RESERVAS
+--¿COMO SE CREA UNA RESERVA PARA EL PASADO?
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 1, r.idReserva
+		SELECT DISTINCT 'RC', (SELECT DISTINCT TOP 1 Reserva_Fecha_Inicio FROM gd_esquema.Maestra ORDER BY Reserva_Fecha_Inicio), 'Reserva Correcta', 4, r.idReserva
 		FROM LOS_BORBOTONES.Reserva r
 		JOIN LOS_BORBOTONES.Identidad i
 			ON i.TipoIdentidad = 'Usuario'
 		JOIN LOS_BORBOTONES.Usuario u
 			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
-		WHERE r.FechaDesde < LOS_BORBOTONES.fn_getDate()
 ORDER BY r.idReserva, r.FechaCreacion
 GO
-
-INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RM', r.FechaCreacion, 'Reserva Modificada', 3, r.idReserva
-		FROM LOS_BORBOTONES.Reserva r
-		JOIN LOS_BORBOTONES.Identidad i
-			ON i.TipoIdentidad = 'Usuario'
-		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario  AND u.Username = 'recepcionista'
-	WHERE r.FechaDesde BETWEEN r.fechaCreacion AND r.fechaDesde
-ORDER BY r.idReserva, r.FechaCreacion
-GO
-
-INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RCR', r.FechaCreacion, 'Reserva Cancelada por Recepcion', 3 , r.idReserva
-		FROM LOS_BORBOTONES.Reserva r
-		JOIN LOS_BORBOTONES.Identidad i
-			ON i.TipoIdentidad = 'Usuario'
-		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario  AND u.Username = 'recepcionista'
-		WHERE r.FechaDesde LIKE convert(datetime, '2017-01-01 00:00:00.000', 121)
-ORDER BY r.idReserva, r.FechaCreacion
-GO
-
-INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RCC', r.FechaCreacion, 'Reserva Cancelada por Cliente', 2 , r.idReserva
-		FROM LOS_BORBOTONES.Reserva r
-		JOIN LOS_BORBOTONES.Identidad i
-			ON i.TipoIdentidad = 'Usuario'
-		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario AND u.Username = 'guest'
-		WHERE CodigoReserva = 77460
-ORDER BY r.idReserva, r.FechaCreacion
-GO
-
----------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------------
 --  LAS INCONSISTENCIAS SE MANEJAN DE LA SIGUIENTE MANERA:
 --	SE MARCA EL CLIENTE COMO INCONSISTENTE, Y LA PROXIMA VEZ QUE SE INTENTA RESERVAR CON ESE CLIENTE,
---	SE MUESTRA UN CARTEL QUE DEBE ACTUALIZAR LOS DATOS PRIMERO.
---  INCONSISTENCIA: MAIL DUPLICADO O TIPO Y NUMERO DE DOCUMENTO DUPLICADO
+--	SE MUESTRA POR GUI UN CARTEL QUE DEBE ACTUALIZAR LOS DATOS PRIMERO.
+--  INCONSISTENCIA: MAIL DUPLICADO O TIPO Y NUMERO DE DOCUMENTO DUPLICADO.
 --------------------------------------------------------------------------------------------------------------------------------
 
 --TemporalInconsistencias para mejorar performance cursor
