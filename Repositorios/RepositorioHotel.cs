@@ -107,7 +107,7 @@ namespace FrbaHotel.Repositorios {
             return "";
         }
 
-        public Boolean yaExisteHotelMismoNombre(String nombre)
+        public Boolean yaExisteHotelMismoNombre(Hotel hotel)
         {
             int idHotelExistente = 0;
 
@@ -116,10 +116,16 @@ namespace FrbaHotel.Repositorios {
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@nombre", nombre);
+            sqlCommand.Parameters.AddWithValue("@nombre", hotel.getNombre());
+            sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT idHotel FROM LOS_BORBOTONES.Hotel WHERE Nombre = @nombre";
+            sqlCommand.CommandText = @"
+                SELECT idHotel
+                FROM LOS_BORBOTONES.Hotel
+                WHERE Nombre = @nombre
+                  AND idHotel <> @idHotel
+            ";
 
             sqlConnection.Open();
 

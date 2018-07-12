@@ -381,25 +381,17 @@ namespace FrbaHotel.AbmHotel
 
         private void altaHotel_Click(object sender, EventArgs e)
         {
-            RepositorioHotel repoHotel = new RepositorioHotel();
-
-            //VALIDAMOS QUE NO EXISTA UN HOTEL CON EL MISMO NOMBRE
-            String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
-
-            if (repoHotel.yaExisteHotelMismoNombre(nombre))
-            {
-                MessageBox.Show("Ya existe un hotel registrado con el mismo nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             try
             {
-                Utils.validateListField(this.regimenesDataGrid.SelectedRows, "Regimen");
+                RepositorioHotel repoHotel = new RepositorioHotel();
+
                 List<Regimen> regimenes = new List<Regimen>();
                 foreach (DataGridViewRow item in this.regimenesDataGrid.SelectedRows)
                 {
                     regimenes.Add(item.DataBoundItem as Regimen);
                 }
+
+                Utils.validateListField(this.regimenesDataGrid.SelectedRows, "Regimen");
 
                 String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
                 String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
@@ -411,7 +403,16 @@ namespace FrbaHotel.AbmHotel
                 String email = Utils.validateStringFields(emailText.Text, "Email");
                 String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
-                Hotel hotelToUpdateSave = new Hotel(0, categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
+                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
+                Hotel hotelToUpdateSave = new Hotel(0, categoria, direccion, nombre, email, telefono, fechaInicioActividades, regimenes);
+
+                //VALIDAMOS QUE NO EXISTA UN HOTEL CON EL MISMO NOMBRE
+                if (repoHotel.yaExisteHotelMismoNombre(hotelToUpdateSave))
+                {
+                    MessageBox.Show("Ya existe un hotel registrado con el mismo nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 repoHotel.create(hotelToUpdateSave);
                 MessageBox.Show("Hotel creado exitosamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.initModificacionHotel();

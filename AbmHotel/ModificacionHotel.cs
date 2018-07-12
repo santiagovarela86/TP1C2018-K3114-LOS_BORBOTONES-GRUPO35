@@ -494,8 +494,8 @@ namespace FrbaHotel.AbmHotel
 
         private void modificarHotel_Click(object sender, EventArgs e)
         {
-            RepositorioHotel repoHotel = new RepositorioHotel();
             try{
+                RepositorioHotel repoHotel = new RepositorioHotel();
 
                 List<Regimen> regimenes = new List<Regimen>();
                 foreach (DataGridViewRow item in this.regimenesGrid.SelectedRows)
@@ -505,19 +505,24 @@ namespace FrbaHotel.AbmHotel
 
                 validarQuitaRegimen(hotel.getRegimenes(), regimenes);
 
+                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
                 String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
                 String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
                 String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
                 int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text, "NumeroCalle");
-
                 Categoria categoria = (Categoria)Utils.validateFields(estrellasComboBox.SelectedItem, "Categoria");
-                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
                 String email = Utils.validateStringFields(emailText.Text, "Email");
                 String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
+                Direccion direccion = new Direccion(hotel.getDireccion().getIdDireccion(), pais, ciudad, calle, numeroCalle, 0, "");
+                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades, regimenes);
 
-                Direccion direccion= new Direccion(hotel.getDireccion().getIdDireccion(),pais,ciudad,calle,numeroCalle,0,"");
-                Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades,regimenes);
+                if (repoHotel.yaExisteHotelMismoNombre(hotelToUpdateSave))
+                {
+                    MessageBox.Show("Ya existe un hotel registrado con el mismo nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 repoHotel.update(hotelToUpdateSave);
                 MessageBox.Show("Hotel modificado correctamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hotel = hotelToUpdateSave;
