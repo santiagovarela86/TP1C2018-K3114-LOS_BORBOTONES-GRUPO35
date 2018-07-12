@@ -231,6 +231,7 @@ namespace FrbaHotel.Repositorios
             return idUsuario;
         }
 
+        /*
         private Boolean yaExisteMismoMailDistintoUsuario(Usuario usuario)
         {
             int idOtraIdentidad = -1;
@@ -310,6 +311,7 @@ namespace FrbaHotel.Repositorios
 
             return !idOtraIdentidad.Equals(-1);
         }
+        */
 
         private Boolean yaExisteMismoUsername(Usuario usuario)
         {
@@ -339,7 +341,7 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                idOtroUsuario = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+                idOtroUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
             }
 
             //Cierro Primera Consulta
@@ -353,6 +355,12 @@ namespace FrbaHotel.Repositorios
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
 
             //AGREGO VALIDACIONES AL UPDATE
+            if (repoIdentidad.yaExisteOtraIdentidadMismoMailOTipoYNumDoc(usuario.getIdentidad()))
+            {
+                throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo mail o tipo y numero de documento.");
+            }
+
+            /*
             if (this.yaExisteMismoMailDistintoUsuario(usuario))
             {
                 throw new ElementoYaExisteException("Ya existe un usuario o cliente con el mismo mail.");
@@ -362,6 +370,7 @@ namespace FrbaHotel.Repositorios
             {
                 throw new ElementoYaExisteException("Ya existe un usuario o cliente con el mismo documento.");
             }
+            */
 
             if (this.yaExisteMismoUsername(usuario))
             {

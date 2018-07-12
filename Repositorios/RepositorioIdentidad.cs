@@ -71,6 +71,65 @@ namespace FrbaHotel.Repositorios
             return identidad;
         }
 
+        public Boolean yaExisteOtraIdentidadMismoMailOTipoYNumDoc(Identidad identidad)
+        {
+            String mail = "";
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@Mail", identidad.getMail());
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", identidad.getIdIdentidad());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT Mail
+                FROM LOS_BORBOTONES.Identidad
+                WHERE Mail = @Mail
+                  AND idIdentidad <> @idIdentidad
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                mail = reader.GetString(reader.GetOrdinal("Mail"));
+            }
+
+            sqlConnection.Close();
+
+            sqlCommand.Parameters.AddWithValue("@nroDoc", identidad.getNumeroDocumento());
+            sqlCommand.Parameters.AddWithValue("@tipoDoc", identidad.getTipoDocumento());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = @"
+                SELECT idIdentidad
+                FROM LOS_BORBOTONES.Identidad
+                WHERE TipoDocumento = @tipoDoc AND NumeroDocumento = @nroDoc
+                  AND idIdentidad <> @idIdentidad
+            ";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            int idIdentidadNumeroDoc = 0;
+
+            while (reader.Read())
+            {
+                idIdentidadNumeroDoc = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+            }
+
+            sqlConnection.Close();
+
+            //Devuelve verdadero si el ID coincide o si el username coincide
+            return identidad.getMail().ToUpper().Equals(mail.ToUpper()) || idIdentidadNumeroDoc != 0;
+        }
+
         override public int create(Identidad identidad)
         {
             int idIdentidad = 0;

@@ -343,6 +343,7 @@ namespace FrbaHotel.Repositorios
         }
          * */
 
+        /*
         private Boolean yaExisteMismoMailDistintoCliente(Cliente cliente)
         {
             int idOtraIdentidad = -1;
@@ -422,10 +423,19 @@ namespace FrbaHotel.Repositorios
 
             return !idOtraIdentidad.Equals(-1);
         }
+        */
 
         override public void update(Cliente cliente)
         {
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+
             //AGREGO VALIDACIONES AL UPDATE
+            if (repoIdentidad.yaExisteOtraIdentidadMismoMailOTipoYNumDoc(cliente.getIdentidad()))
+            {
+                throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo mail o tipo y numero de documento.");
+            }
+
+            /*
             if (this.yaExisteMismoMailDistintoCliente(cliente))
             {
                 throw new ElementoYaExisteException("Ya existe un cliente con el mismo mail.");
@@ -435,6 +445,7 @@ namespace FrbaHotel.Repositorios
             {
                 throw new ElementoYaExisteException("Ya existe un cliente con el mismo documento.");
             }
+            */
 
             if (this.exists(cliente))
             {

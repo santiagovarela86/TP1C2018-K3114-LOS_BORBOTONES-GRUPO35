@@ -62,6 +62,7 @@ namespace FrbaHotel.AbmCliente
 
         private void button2_Click(object sender, EventArgs e)
         {
+            botonBuscar.Enabled = false;
             String nombre = textBox1.Text;
             String apellido = textBox2.Text;
             String mail = textBox3.Text;
@@ -101,6 +102,8 @@ namespace FrbaHotel.AbmCliente
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
             comboBoxTipoDoc.DataSource = repoIdentidad.getAllTiposDocsClientes();
             comboBoxTipoDoc.SelectedValue = "";
+
+            botonBuscar.Enabled = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
