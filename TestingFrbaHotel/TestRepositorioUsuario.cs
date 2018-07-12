@@ -23,7 +23,7 @@ namespace TestingFrbaHotel
             Assert.AreEqual(0, admin.getIntentosFallidosLogin());
             Assert.AreEqual(0, guest.getIntentosFallidosLogin());
 
-            Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("AdminDelEnunciado")));
+            Assert.IsTrue(admin.getRoles().Exists(rol => rol.getNombre().Equals("Administrador General")));
             Assert.IsTrue(guest.getRoles().Exists(rol => rol.getNombre().Equals("Guest")));
 
             Assert.IsTrue(admin.getIdentidad().getMail().Equals("admin@frba_utn.com"));

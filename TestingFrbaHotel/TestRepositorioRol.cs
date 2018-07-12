@@ -14,8 +14,7 @@ namespace TestingFrbaHotel
         public void Test_Repo_Rol_CreacionInstancia_Rol()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
-            Rol rol = repositorioRol.getByNombre("AdminOriginal");
-            Assert.AreEqual(5 , rol.getFuncionalidades().Count);
+            Rol rol = null;
 
             rol = repositorioRol.getByNombre("Recepcionista");
             Assert.AreEqual(6, rol.getFuncionalidades().Count);
@@ -50,11 +49,8 @@ namespace TestingFrbaHotel
         public void Test_Repo_Rol_exists()
         {
             RepositorioRol repositorioRol = new RepositorioRol();
-            Rol rolAdministrador = repositorioRol.getByNombre("AdminOriginal");
 
             Assert.IsFalse(repositorioRol.exists(new Rol(50, "Dummy", false, null)));
-
-            Assert.IsTrue(repositorioRol.exists(rolAdministrador));
         }
 
         [TestMethod]
@@ -72,9 +68,6 @@ namespace TestingFrbaHotel
 
             //SIN FILTRO
             Assert.AreEqual(5, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>(), null).Count);
-
-            //FILTRO NOMBRE
-            Assert.AreEqual(1, repositorioRol.getByQuery("AdminOriginal", new KeyValuePair<String, Boolean>(), null).Count);
 
             //FILTRO ESTADO
             Assert.AreEqual(4, repositorioRol.getByQuery("", new KeyValuePair<String, Boolean>("", true), null).Count);
