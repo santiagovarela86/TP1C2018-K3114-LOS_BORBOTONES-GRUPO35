@@ -382,6 +382,16 @@ namespace FrbaHotel.AbmHotel
         private void altaHotel_Click(object sender, EventArgs e)
         {
             RepositorioHotel repoHotel = new RepositorioHotel();
+
+            //VALIDAMOS QUE NO EXISTA UN HOTEL CON EL MISMO NOMBRE
+            String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
+
+            if (repoHotel.yaExisteHotelMismoNombre(nombre))
+            {
+                MessageBox.Show("Ya existe un hotel registrado con el mismo nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             try
             {
                 Utils.validateListField(this.regimenesDataGrid.SelectedRows, "Regimen");
@@ -398,7 +408,6 @@ namespace FrbaHotel.AbmHotel
                 Direccion direccion = new Direccion(0, pais, ciudad, calle, numeroCalle, 0, "");
 
                 Categoria categoria = (Categoria)Utils.validateFields(estrellasComboBox.SelectedItem, "Categoria");
-                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
                 String email = Utils.validateStringFields(emailText.Text, "Email");
                 String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");

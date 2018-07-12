@@ -107,6 +107,33 @@ namespace FrbaHotel.Repositorios {
             return "";
         }
 
+        public Boolean yaExisteHotelMismoNombre(String nombre)
+        {
+            int idHotelExistente = 0;
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.Parameters.AddWithValue("@nombre", nombre);
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "SELECT idHotel FROM LOS_BORBOTONES.Hotel WHERE Nombre = @nombre";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                idHotelExistente = reader.GetInt32(reader.GetOrdinal("idHotel"));
+            }
+
+            sqlConnection.Close();
+
+            return idHotelExistente != 0;
+        }
 
         public override int create(Hotel hotel)
         {
