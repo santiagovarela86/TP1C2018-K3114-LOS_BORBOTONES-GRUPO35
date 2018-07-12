@@ -62,15 +62,15 @@ namespace FrbaHotel.AbmCliente
             //GENERAR ALTA (no pido el estado ya que va como activo al momento de crearlo)
 
             //traigo los valores
-            String nacionalidad = textBoxNacionalidad.Text;
-            String nombre = textBoxNombre.Text;
-            String apellido = textBoxApellido.Text;
-            String nroDoc = textBoxNroDoc.Text;
-            String mail = textBoxMail.Text;
-            String telefono = textBoxTelefono.Text;
-            String calle = textBoxCalle.Text;
-            String localidad = textBoxLocalidad.Text;
-            String paisOrigen = textBoxPaisOrigen.Text;
+            String nacionalidad = textBoxNacionalidad.Text.Trim();
+            String nombre = textBoxNombre.Text.Trim();
+            String apellido = textBoxApellido.Text.Trim();
+            String nroDoc = textBoxNroDoc.Text.Trim();
+            String mail = textBoxMail.Text.Trim();
+            String telefono = textBoxTelefono.Text.Trim();
+            String calle = textBoxCalle.Text.Trim();
+            String localidad = textBoxLocalidad.Text.Trim();
+            String paisOrigen = textBoxPaisOrigen.Text.Trim();
             DateTime fechaNacimiento = dateTime.Value;
             int nroCalle = 0;
             if (textBoxNroCalle.Text != "")
@@ -83,7 +83,7 @@ namespace FrbaHotel.AbmCliente
                 nroPiso = int.Parse(textBoxPiso.Text);
             }
 
-            String depto = textBoxDepto.Text;
+            String depto = textBoxDepto.Text.Trim();
             String tipoDoc = "";
             String tipoIdentidad = "Cliente";
             int idDir = 0;

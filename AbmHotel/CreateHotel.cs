@@ -393,17 +393,17 @@ namespace FrbaHotel.AbmHotel
 
                 Utils.validateListField(this.regimenesDataGrid.SelectedRows, "Regimen");
 
-                String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
-                String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
-                String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
-                int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text, "NumeroCalle");
+                String pais = Utils.validateStringFields((String)paisText.Text.Trim(), "Pais");
+                String ciudad = Utils.validateStringFields((String)ciudadText.Text.Trim(), "Ciudad");
+                String calle = Utils.validateStringFields((String)calleText.Text.Trim(), "Calle");
+                int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text.Trim(), "NumeroCalle");
                 Direccion direccion = new Direccion(0, pais, ciudad, calle, numeroCalle, 0, "");
 
                 Categoria categoria = (Categoria)Utils.validateFields(estrellasComboBox.SelectedItem, "Categoria");
-                String email = Utils.validateStringFields(emailText.Text, "Email");
-                String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
+                String email = Utils.validateStringFields(emailText.Text.Trim(), "Email");
+                String telefono = Utils.validateStringFields(telefonoText.Text.Trim(), "Telefono");
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
-                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
+                String nombre = Utils.validateStringFields(nombreText.Text.Trim(), "Nombre");
                 Hotel hotelToUpdateSave = new Hotel(0, categoria, direccion, nombre, email, telefono, fechaInicioActividades, regimenes);
 
                 //VALIDAMOS QUE NO EXISTA UN HOTEL CON EL MISMO NOMBRE

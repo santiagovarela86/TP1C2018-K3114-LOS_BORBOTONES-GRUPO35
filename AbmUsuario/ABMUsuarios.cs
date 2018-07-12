@@ -64,7 +64,7 @@ namespace FrbaHotel.AbmUsuario
 
         private void buscar_Click(object sender, EventArgs e)
         {
-            String username = textBox1.Text;
+            String username = textBox1.Text.Trim();
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
             Rol rol = null;
             Hotel hotel = null;

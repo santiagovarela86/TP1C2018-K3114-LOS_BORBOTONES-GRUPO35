@@ -133,7 +133,7 @@ namespace FrbaHotel.FacturarEstadia
             }else
             {
                 //traigo los datos de la tarjeta
-                nombreTarjeta = textTitularTarjeta.Text;
+                nombreTarjeta = textTitularTarjeta.Text.Trim();
                 if (textNumeroTarjeta.Text != "" )
                 {
                     nroTarjeta = Decimal.Parse(textNumeroTarjeta.Text);

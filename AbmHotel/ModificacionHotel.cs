@@ -505,14 +505,14 @@ namespace FrbaHotel.AbmHotel
 
                 validarQuitaRegimen(hotel.getRegimenes(), regimenes);
 
-                String nombre = Utils.validateStringFields(nombreText.Text, "Nombre");
-                String pais = Utils.validateStringFields((String)paisText.Text, "Pais");
-                String ciudad = Utils.validateStringFields((String)ciudadText.Text, "Ciudad");
-                String calle = Utils.validateStringFields((String)calleText.Text, "Calle");
-                int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text, "NumeroCalle");
+                String nombre = Utils.validateStringFields(nombreText.Text.Trim(), "Nombre");
+                String pais = Utils.validateStringFields((String)paisText.Text.Trim(), "Pais");
+                String ciudad = Utils.validateStringFields((String)ciudadText.Text.Trim(), "Ciudad");
+                String calle = Utils.validateStringFields((String)calleText.Text.Trim(), "Calle");
+                int numeroCalle = Utils.validateIntField((String)numeroCalleText.Text.Trim(), "NumeroCalle");
                 Categoria categoria = (Categoria)Utils.validateFields(estrellasComboBox.SelectedItem, "Categoria");
-                String email = Utils.validateStringFields(emailText.Text, "Email");
-                String telefono = Utils.validateStringFields(telefonoText.Text, "Telefono");
+                String email = Utils.validateStringFields(emailText.Text.Trim(), "Email");
+                String telefono = Utils.validateStringFields(telefonoText.Text.Trim(), "Telefono");
                 DateTime fechaInicioActividades = (DateTime)Utils.validateFields(creacionTime.Value, "Fecha Inicio de Actividades");
                 Direccion direccion = new Direccion(hotel.getDireccion().getIdDireccion(), pais, ciudad, calle, numeroCalle, 0, "");
                 Hotel hotelToUpdateSave = new Hotel(hotel.getIdHotel(), categoria, direccion, nombre, email, telefono, fechaInicioActividades, regimenes);
@@ -526,6 +526,8 @@ namespace FrbaHotel.AbmHotel
                 repoHotel.update(hotelToUpdateSave);
                 MessageBox.Show("Hotel modificado correctamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hotel = hotelToUpdateSave;
+
+                this.initModificacionHotel();
             }
             /*
             catch (NoExisteIDException exceptionUpdateHotel)

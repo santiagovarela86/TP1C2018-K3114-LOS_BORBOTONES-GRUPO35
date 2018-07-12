@@ -63,10 +63,10 @@ namespace FrbaHotel.AbmCliente
         private void button2_Click(object sender, EventArgs e)
         {
             botonBuscar.Enabled = false;
-            String nombre = textBox1.Text;
-            String apellido = textBox2.Text;
-            String mail = textBox3.Text;
-            String nroDoc = textBox4.Text;
+            String nombre = textBox1.Text.Trim();
+            String apellido = textBox2.Text.Trim();
+            String mail = textBox3.Text.Trim();
+            String nroDoc = textBox4.Text.Trim();
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
             String tipoDoc = "";
             RepositorioCliente repositorioClientes = new RepositorioCliente();

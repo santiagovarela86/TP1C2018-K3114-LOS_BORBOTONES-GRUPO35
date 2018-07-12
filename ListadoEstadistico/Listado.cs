@@ -66,19 +66,19 @@ namespace FrbaHotel.ListadoEstadistico
             switch (tipoListado.SelectedIndex)
             {
                 case 0:
-                    dataGridView1.DataSource = repoListado.getHotelesMayorCantidadReservasCanceladas(trimestre.Text, anioString);
+                    dataGridView1.DataSource = repoListado.getHotelesMayorCantidadReservasCanceladas(trimestre.Text.Trim(), anioString.Trim());
                     break;
                 case 1:
-                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadConsumiblesFacturados(trimestre.Text, anioString);
+                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadConsumiblesFacturados(trimestre.Text.Trim(), anioString.Trim());
                     break;
                 case 2:
-                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadDiasFueraServicio(trimestre.Text, anioString);
+                    dataGridView1.DataSource = repoListado.hotelesMayorCantidadDiasFueraServicio(trimestre.Text.Trim(), anioString.Trim());
                     break;
                 case 3:
-                    dataGridView1.DataSource = repoListado.clientesConMasPuntos(trimestre.Text, anioString);
+                    dataGridView1.DataSource = repoListado.clientesConMasPuntos(trimestre.Text.Trim(), anioString.Trim());
                     break;
                 case 4:
-                    dataGridView1.DataSource = repoListado.habitacionesMasOcupadas(trimestre.Text, anioString);
+                    dataGridView1.DataSource = repoListado.habitacionesMasOcupadas(trimestre.Text.Trim(), anioString.Trim());
                     break;
             }
 

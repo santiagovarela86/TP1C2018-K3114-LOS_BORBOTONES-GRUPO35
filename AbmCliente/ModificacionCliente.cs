@@ -67,16 +67,16 @@ namespace FrbaHotel.AbmCliente
 
             //ESTOS VALORES SON LOS QUE CAMBIAN
             //STRINGS
-            String nombre = textBoxNombre.Text;
-            String apellido = textBoxApellido.Text;
-            String nroDoc = textBoxNroDoc.Text;
-            String mail = textBoxMail.Text;
-            String telefono = textBoxTelefono.Text;
-            String calle = textBoxCalle.Text;
-            String localidad = textBoxLocalidad.Text;
-            String pais = textBoxPaisOrigen.Text;
-            String nacionalidad = textBoxNacionalidad.Text;
-            String depto = textBoxDepto.Text;
+            String nombre = textBoxNombre.Text.Trim();
+            String apellido = textBoxApellido.Text.Trim();
+            String nroDoc = textBoxNroDoc.Text.Trim();
+            String mail = textBoxMail.Text.Trim();
+            String telefono = textBoxTelefono.Text.Trim();
+            String calle = textBoxCalle.Text.Trim();
+            String localidad = textBoxLocalidad.Text.Trim();
+            String pais = textBoxPaisOrigen.Text.Trim();
+            String nacionalidad = textBoxNacionalidad.Text.Trim();
+            String depto = textBoxDepto.Text.Trim();
 
             //NUMEROS
             int nroCalle = 0;

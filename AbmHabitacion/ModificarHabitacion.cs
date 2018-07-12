@@ -52,7 +52,7 @@ namespace FrbaHotel.AbmHabitacion
             int numero = Utils.validateIntField(textNumero.Text, "Numero");
             int piso = Utils.validateIntField(textPiso.Text, "Piso");
             String ubicacion = Utils.validateStringFields((String)comboBoxUbicacion.SelectedItem, "Ubicacion");
-            String descripcion = textDescripcion.Text;
+            String descripcion = textDescripcion.Text.Trim();
             Habitacion habitacionAModificar = new Habitacion(this.habitacion.getIdHabitacion(), activa, numero, piso, ubicacion, descripcion);
             habitacionAModificar.setHotel(this.habitacion.getHotel());
             habitacionAModificar.setTipoHabitacion(tipoHabitacion);

@@ -68,8 +68,8 @@ namespace FrbaHotel.AbmHabitacion
 
         private void buttonBbuscarHoteles_Click(object sender, EventArgs e)
         {
-            String numero = validateStringFields(textNumero.Text);
-            String piso = validateStringFields(textPiso.Text);
+            String numero = validateStringFields(textNumero.Text.Trim());
+            String piso = validateStringFields(textPiso.Text.Trim());
             TipoHabitacion tipoHabitacion = (TipoHabitacion)comboBoxTipoHabitacion.SelectedItem;
             RepositorioHabitacion repositorioHabitacion = new RepositorioHabitacion();
             //bool activa = checkBoxActiva.Checked;

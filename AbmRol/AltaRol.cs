@@ -63,7 +63,7 @@ namespace FrbaHotel.AbmRol
 
         private void button2_Click(object sender, EventArgs e)
         {
-            String nombreRol = textBoxNombreRol.Text;
+            String nombreRol = textBoxNombreRol.Text.Trim();
             Boolean activo = checkBoxActivo.Checked;
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             RepositorioRol repositorioRol = new RepositorioRol();

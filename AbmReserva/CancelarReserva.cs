@@ -33,7 +33,7 @@ namespace FrbaHotel.AbmReserva
                 //no se valida el string que ingreso como motivo
                 //el repositorio reserva no tira excepciones si falla al actualizar la reserva
                 //y este codigo no las agarra esas excepciones
-                String motivo = textMotivo.Text;
+                String motivo = textMotivo.Text.Trim();
                 RepositorioReserva repoReserva = new RepositorioReserva();
                 repoReserva.cancelarReserva(reserva, usuario, motivo);
                 MessageBox.Show("Reserva cancelada exitosamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);

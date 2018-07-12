@@ -59,8 +59,8 @@ namespace FrbaHotel.RegistrarEstadia
         private void buttonBuscar_click(object sender, EventArgs e)
         {
 
-            String mail = textBox3.Text;
-            String nroDoc = textBox4.Text;
+            String mail = textBox3.Text.Trim();
+            String nroDoc = textBox4.Text.Trim();
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
             estado = new KeyValuePair<String, Boolean>("Habilitado", true);
             String tipoDoc = "";

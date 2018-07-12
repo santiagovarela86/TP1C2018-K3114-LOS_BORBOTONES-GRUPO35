@@ -110,17 +110,17 @@ namespace FrbaHotel.AbmUsuario
 
             //ESTOS VALORES SON LOS QUE CAMBIAN
             //STRINGS
-            String username = textBoxUsername.Text;          
-            String nombre = textBoxNombre.Text;
-            String apellido = textBoxApellido.Text;
-            String nroDoc = textBoxNroDoc.Text;
-            String mail = textBoxMail.Text;
-            String telefono = textBoxTelefono.Text;
-            String calle = textBoxCalle.Text;
-            String localidad = textBoxLocalidad.Text;
-            String pais = textBoxPais.Text;
-            String nacionalidad = textBoxNacionalidad.Text;
-            String depto = textBoxDepto.Text;            
+            String username = textBoxUsername.Text.Trim();          
+            String nombre = textBoxNombre.Text.Trim();
+            String apellido = textBoxApellido.Text.Trim();
+            String nroDoc = textBoxNroDoc.Text.Trim();
+            String mail = textBoxMail.Text.Trim();
+            String telefono = textBoxTelefono.Text.Trim();
+            String calle = textBoxCalle.Text.Trim();
+            String localidad = textBoxLocalidad.Text.Trim();
+            String pais = textBoxPais.Text.Trim();
+            String nacionalidad = textBoxNacionalidad.Text.Trim();
+            String depto = textBoxDepto.Text.Trim();            
             
             //NUMEROS
             int nroCalle = 0;
@@ -270,7 +270,7 @@ namespace FrbaHotel.AbmUsuario
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             passwordChanged = true;
-            this.password = textBoxPassword.Text;
+            this.password = textBoxPassword.Text.Trim();
         }
     }
 }

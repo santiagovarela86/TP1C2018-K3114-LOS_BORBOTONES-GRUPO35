@@ -30,11 +30,11 @@ namespace FrbaHotel.AbmHotel
         }
 
         private void buscarHoteles() {
-            String nombre = validateStringFields(nombreText.Text);
+            String nombre = validateStringFields(nombreText.Text.Trim());
             int? estrellas = null;
             if (estrellasComboBox.SelectedItem != null) { estrellas = ((Categoria)estrellasComboBox.SelectedItem).getEstrellas(); };
-            String pais = validateStringFields(paisText.Text);
-            String ciudad = validateStringFields(ciudadText.Text);
+            String pais = validateStringFields(paisText.Text.Trim());
+            String ciudad = validateStringFields(ciudadText.Text.Trim());
             RepositorioHotel repositorioHotel = new RepositorioHotel();
 
             this.modificarButton.Enabled = false;

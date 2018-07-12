@@ -54,7 +54,7 @@ namespace FrbaHotel.AbmRol
 
         private void buscar_Click(object sender, EventArgs e)
         {
-            String nombreRol = textBox1.Text;
+            String nombreRol = textBox1.Text.Trim();
             KeyValuePair<String, Boolean> estado = new KeyValuePair<String, Boolean>();
             Funcionalidad funcionalidad = null;
             RepositorioRol repositorioRoles = new RepositorioRol();
