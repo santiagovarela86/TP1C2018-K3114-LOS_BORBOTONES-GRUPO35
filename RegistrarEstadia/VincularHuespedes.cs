@@ -126,6 +126,18 @@ namespace FrbaHotel.RegistrarEstadia
                 {
                     Cliente clientSeleccionado = item.DataBoundItem as Cliente;
 
+                    if (clientSeleccionado.getInconsistente())
+                    {
+                        MessageBox.Show("El cliente aparece como inconsistente en la base, por favor verifique el numero de documento y mail del cliente y actualice la informacion. No podrá vincular un cliente inconsistente a una estadia. Por favor edite el cliente desde el ABM indicado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    if (!clientSeleccionado.getActivo())
+                    {
+                        MessageBox.Show("El cliente aparece como inhabilitado en la base. No podrá vincular un cliente inhabilitado a una estadia.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
                     //PARA NO AGREGAR DUPLICADOS
                     if (!clientesElegidos.Exists(clienteYaAgregado => clienteYaAgregado.getIdCliente().Equals(clientSeleccionado.getIdCliente())))
                     {

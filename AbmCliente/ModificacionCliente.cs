@@ -148,7 +148,7 @@ namespace FrbaHotel.AbmCliente
 
             if (this.cliente.getInconsistente())
             {
-                MessageBox.Show("El cliente aparece como inconsistente en la base, por favor verifique el numero de documento y mail del cliente y actualice la informacion. El usuario dejará de estar marcado como inconsistente si lo actualiza.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("El cliente aparece como inconsistente en la base, por favor verifique el numero de documento y mail del cliente y actualice la informacion. El usuario dejará de estar marcado como inconsistente si lo actualiza ya que la información que se introduce se considera como autoritativa.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

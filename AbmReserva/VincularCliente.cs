@@ -158,6 +158,13 @@ namespace FrbaHotel.AbmReserva
                 MessageBox.Show("El cliente no tiene permitido generar reservas ya que se encuentra dado de baja.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            if (cliente.getInconsistente())
+            {
+                MessageBox.Show("El cliente aparece como inconsistente en la base, por favor verifique el numero de documento y mail del cliente y actualice la informacion. No podrá vincular un cliente inconsistente a una reserva. Por favor edite el cliente desde el ABM indicado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             RepositorioReserva repoReserva = new RepositorioReserva();
             Reserva reserva = new Reserva(habitacionesParaReservar, regimen, cliente, fechaInicio, fechaFin, diasDeEstadia,usuario);
             try
