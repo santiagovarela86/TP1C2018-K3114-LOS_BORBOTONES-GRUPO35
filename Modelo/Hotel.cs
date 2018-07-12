@@ -104,7 +104,7 @@ namespace FrbaHotel.Modelo
         public List<Reserva> getReservas()
         {
             RepositorioReserva repoReserva = new RepositorioReserva();
-            this.reservas = repoReserva.getByIdHotel(this.IdHotel);
+            this.reservas = repoReserva.getByIdHotel(this.getIdHotel());
             return this.reservas;
             /*
             if (this.reservas == null) {
@@ -117,7 +117,7 @@ namespace FrbaHotel.Modelo
         public List<Regimen> getRegimenes()
         {
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
-            this.regimenes = repoRegimen.getByIdHotel(this.IdHotel);
+            this.regimenes = repoRegimen.getByIdHotel(this.getIdHotel());
             return this.regimenes;
 
             /*
@@ -133,7 +133,7 @@ namespace FrbaHotel.Modelo
         public List<Habitacion> getHabitaciones()
         {
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            this.habitaciones = repoHabitacion.getByHotelId(this.IdHotel);
+            this.habitaciones = repoHabitacion.getByHotelId(this.getIdHotel());
             return this.habitaciones;
 
             /*
@@ -168,7 +168,7 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdHotel { get { return this.getIdHotel(); } }
+        //public int IdHotel { get { return this.getIdHotel(); } }
         public String Nombre { get { return this.getNombre(); } }
         public String Mail { get { return this.getMail(); } }
         public String Telefono { get { return this.getTelefono(); } }

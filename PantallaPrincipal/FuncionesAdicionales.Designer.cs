@@ -67,9 +67,9 @@
             // 
             // Salir
             // 
-            this.Salir.Location = new System.Drawing.Point(339, 106);
+            this.Salir.Location = new System.Drawing.Point(534, 113);
             this.Salir.Name = "Salir";
-            this.Salir.Size = new System.Drawing.Size(120, 41);
+            this.Salir.Size = new System.Drawing.Size(102, 29);
             this.Salir.TabIndex = 11;
             this.Salir.Text = "Desloguear";
             this.Salir.UseVisualStyleBackColor = true;
@@ -183,11 +183,11 @@
             this.buttonModificarReserva.UseVisualStyleBackColor = true;
             this.buttonModificarReserva.Click += new System.EventHandler(this.buttonModificarReserva_Click);
             // 
-            // button1
+            // buttonCambiarContraseña
             // 
-            this.buttonCambiarContraseña.Location = new System.Drawing.Point(195, 106);
+            this.buttonCambiarContraseña.Location = new System.Drawing.Point(409, 113);
             this.buttonCambiarContraseña.Name = "buttonCambiarContraseña";
-            this.buttonCambiarContraseña.Size = new System.Drawing.Size(120, 41);
+            this.buttonCambiarContraseña.Size = new System.Drawing.Size(119, 29);
             this.buttonCambiarContraseña.TabIndex = 12;
             this.buttonCambiarContraseña.Text = "Cambiar Contraseña";
             this.buttonCambiarContraseña.UseVisualStyleBackColor = true;

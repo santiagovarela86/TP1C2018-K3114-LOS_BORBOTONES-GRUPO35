@@ -62,7 +62,7 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdEstadoReserva { get { return this.getIdEstadoReserva(); } }
+        //public int IdEstadoReserva { get { return this.getIdEstadoReserva(); } }
         public Usuario Usuario { get { return this.getUsuario(); } }
         public Reserva Reserva { get { return this.getReserva(); } }
         public String TipoEstado { get { return this.getTipoEstado(); } }

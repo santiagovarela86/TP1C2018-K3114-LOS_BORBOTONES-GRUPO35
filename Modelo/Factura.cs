@@ -108,7 +108,7 @@ namespace FrbaHotel.Modelo
         }
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdFactura { get { return this.getIdFactura(); } }
+        //public int IdFactura { get { return this.getIdFactura(); } }
         public Estadia Estadia { get { return this.getEstadia(); } }
         public Reserva Reserva { get { return this.getReserva(); } }
         public int NumeroFactura { get { return this.getNumeroFactura(); } }

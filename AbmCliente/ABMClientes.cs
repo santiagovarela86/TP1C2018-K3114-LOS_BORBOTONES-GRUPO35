@@ -111,7 +111,8 @@ namespace FrbaHotel.AbmCliente
                 var result = form.ShowDialog();
 
                 //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO ROL VUELVO A CARGAR LA LISTA
-                this.button2_Click(sender, e);
+                //this.button2_Click(sender, e);
+                //NO LO HAGO MAS PORQUE TRAE PROBLEMAS DE PERFORMANCE
             }
         }
 
@@ -124,7 +125,8 @@ namespace FrbaHotel.AbmCliente
                 var result = form.ShowDialog();
 
                 //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO CLIENTE VUELVO A CARGAR LA LISTA
-                this.button2_Click(sender, e);
+                //this.button2_Click(sender, e);
+                //NO LO HAGO MAS PORQUE TRAE PROBLEMAS DE PERFORMANCE
             }
         }
 
@@ -139,7 +141,8 @@ namespace FrbaHotel.AbmCliente
                 repoCliente.bajaLogica(cliente);
 
                 //CUANDO DOY DE BAJA EL CLIENTE VUELVO A CARGAR LA LISTA
-                this.button2_Click(sender, e);
+                //this.button2_Click(sender, e);
+                //NO LO HAGO MAS PORQUE TRAE PROBLEMAS DE PERFORMANCE
             }
         }
 

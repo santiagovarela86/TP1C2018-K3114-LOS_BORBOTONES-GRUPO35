@@ -93,7 +93,7 @@ namespace FrbaHotel.Modelo
             this.password = password;
         }
         //Estos metodos extra los necesito para popular los combo box y data grid view
-        public int IdUsuario { get { return this.getIdUsuario(); } }
+        //public int IdUsuario { get { return this.getIdUsuario(); } }
         public String Username { get { return this.getUsername(); } }
         //PARA SIMPLIFICAR SE MUESTRA UN SOLO ROL
         public String Rol { get { return this.getRoles().First().getNombre(); } }

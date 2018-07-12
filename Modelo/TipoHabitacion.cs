@@ -52,6 +52,6 @@ namespace FrbaHotel.Modelo
         public String Codigo { get { return this.getCodigo(); } }
         public decimal Porcentual { get { return this.getPorcentual(); } }
         public String Descripcion { get { return this.getDescripcion(); } }
-        public int IdTipoHabitacion { get { return this.getIdTipoHabitacion(); } }
+        //public int IdTipoHabitacion { get { return this.getIdTipoHabitacion(); } }
     }
 }

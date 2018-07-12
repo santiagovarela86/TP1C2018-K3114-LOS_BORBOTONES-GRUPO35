@@ -305,7 +305,7 @@ namespace FrbaHotel.Repositorios {
                 Categoria categoria = hotel.getCategoria();
 
                 //HOTEL
-                sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.IdHotel);
+                sqlCommand.Parameters.AddWithValue("@hotidHotel", hotel.getIdHotel());
                 sqlCommand.Parameters.AddWithValue("@hotnombre", hotel.Nombre);
                 sqlCommand.Parameters.AddWithValue("@hotmail", hotel.Mail);
                 sqlCommand.Parameters.AddWithValue("@hottelefono", hotel.Telefono);
