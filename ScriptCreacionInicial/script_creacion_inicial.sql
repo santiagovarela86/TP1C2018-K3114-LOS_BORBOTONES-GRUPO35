@@ -367,19 +367,12 @@ GO
 
 CREATE FUNCTION LOS_BORBOTONES.concatenarNombreHotel 
 	( @nombre nvarchar(255), @numero numeric(18,0))
-
 	RETURNS nvarchar(255)
-
 AS
-
 BEGIN
-
 	DECLARE @aux nvarchar(255)
-
 	set @aux = CONVERT(nvarchar(255),@numero) 
-
 	RETURN @nombre+' '+@aux
-
 END
 GO
 
@@ -779,7 +772,7 @@ GO
 
 --el mail debe ser unico.
 --como hay inconsistencias en la migracion (mails o tipo y numero de documento repetido)
---y los clientes son validos (tienen reservas y estadias validas)
+--y los clientes son validos (tienen reservas y estadias validas(?))
 --se marca al cliente como inconsistente para que por GUI se edite la información
 --por GUI no se puede crear o modificar un cliente para que tenga un mail o tipo y numero de documento que ya este registrado
 --por lo que mostrar por pantalla que el cliente tiene información inconsistente y luego actualizarlo
@@ -1675,79 +1668,7 @@ INSERT INTO LOS_BORBOTONES.Factura(NumeroFactura, FechaFacturacion, Total, TipoP
 			WHERE m.Factura_Nro IS NOT NULL
 		ORDER BY  m.Factura_Nro, m.Factura_Fecha, e.idEstadia, r.idReserva
 GO
-	
---------------------------------------------------------------------------------------------------------------------------------------------------------------
---ItemFactura
---Estan intercambiados en la tabla maestra la cantidad y el monto de los item factura, por lo cual se invierten en la query.
---En la tabla maestra todas las estadias tienen 3 consumibles asociados.
---Se corrige la migracion de los Item Factura.
 
-INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura, idConsumible)
-SELECT 
-	COUNT(c.idConsumible) AS CantidadReal
-	,m.Item_Factura_Cantidad AS Monto
-	,f.FechaFacturacion AS FechaCreacion
-	,f.idFactura AS idFactura
-	,c.idConsumible AS idConsumible
-FROM LOS_BORBOTONES.Factura f
-	,LOS_BORBOTONES.Consumible c
-    ,gd_esquema.maestra m
-WHERE m.Factura_Nro = f.NumeroFactura
-  AND m.Consumible_Codigo = c.Codigo
-GROUP BY f.idFactura, f.FechaFacturacion, c.idConsumible, m.Item_Factura_Cantidad
-ORDER BY f.idFactura
-GO
-
---Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
--- El regimen All inclusive no carga consumibles en el monto total.
-
-SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, sum(c.Precio * i.Cantidad) AS CostoConsumible, LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) AS CostoEstadia,
-		CASE g.Descripcion WHEN 'All Inclusive' THEN LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches)
-		ELSE sum(c.Precio * i.Cantidad) + LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) END "MontoTotal"
-  INTO LOS_BORBOTONES.temporalMontoFactura
-	FROM  LOS_BORBOTONES.Factura f
-		JOIN  LOS_BORBOTONES.Reserva r
-			ON  f.idReserva = r.idReserva
-		JOIN  LOS_BORBOTONES.Estadia e
-			ON   r.idEstadia = e.idEstadia
-		JOIN LOS_BORBOTONES.Regimen g
-			ON r.idRegimen = g.idRegimen
-		JOIN LOS_BORBOTONES.ItemFactura i
-			ON f.idFactura = i.idFactura
-		JOIN LOS_BORBOTONES.Consumible c
-			ON i.idConsumible = c.idConsumible
-		WHERE  f.idFactura = i.idFactura
-	GROUP BY f.NumeroFactura, r.idReserva, g.Descripcion, g.Precio, e.CantidadNoches
-GO
-	
---se corrige el montototal de cada factura, y los puntos obtenidos, de acuerdo al enunciado, teniendo en cuenta algunos campos de itemFactura
-	 
-UPDATE  t1
-SET t1.Total =   t2.MontoTotal,
-	t1.Puntos = LOS_BORBOTONES.fn_puntoTotalConsumible(t2.CostoConsumible) + LOS_BORBOTONES.fn_puntoTotalEstadia(t2.CostoEstadia)
-FROM  LOS_BORBOTONES.Factura t1
-		JOIN  LOS_BORBOTONES.temporalMontoFactura t2
-		ON  t1.NumeroFactura = t2.NumeroFactura
-GO
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Asociacion Reserva_X_Habitacion_X_Cliente
-
-INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacion, idCliente) 
-		SELECT DISTINCT r.idReserva, a.idHabitacion, c.idCliente
-		FROM LOS_BORBOTONES.Reserva r
-		JOIN gd_esquema.maestra m
-			ON r.CodigoReserva = m.Reserva_Codigo
-		JOIN LOS_BORBOTONES.Cliente c
-			ON r.idCliente = c.idCliente
-		JOIN LOS_BORBOTONES.Hotel h
-			ON r.idHotel = h.idHotel 
-		JOIN LOS_BORBOTONES.Habitacion a
-			ON h.idHotel = a.idHotel AND m.Habitacion_Numero = a.Numero AND m.Habitacion_Piso = a.Piso
-		JOIN LOS_BORBOTONES.TipoHabitacion t
-			ON a.idTipoHabitacion = t.idTipoHabitacion AND m.Habitacion_Tipo_Codigo = t.Codigo
-	ORDER BY a.idHabitacion, r.idReserva,  c.idCliente
-GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga EstadoReserva, todas las cargo como FACTURADAS PORQUE HASTA AHORA SOLO MIGRE LAS QUE YA HABIAN SIDO FACTURADAS
 
@@ -1762,7 +1683,7 @@ GO
 
 --------------------------------------------------------------------------------------------------------------------------------
 --  LAS INCONSISTENCIAS DE LOS CLIENTES SE MANEJAN DE LA SIGUIENTE MANERA:
---	SE MARCA EL CLIENTE COMO INCONSISTENTE, Y LA PROXIMA VEZ QUE SE INTENTA RESERVAR CON ESE CLIENTE,
+--	SE MARCA EL CLIENTE COMO INCONSISTENTE, Y LA PROXIMA VEZ QUE SE INTENTA RESERVAR CON UN CLIENTE O MODIFICARLO
 --	SE MUESTRA POR GUI UN CARTEL QUE DEBE ACTUALIZAR LOS DATOS PRIMERO.
 --  INCONSISTENCIA: MAIL DUPLICADO O TIPO Y NUMERO DE DOCUMENTO DUPLICADO.
 --------------------------------------------------------------------------------------------------------------------------------
@@ -1836,25 +1757,6 @@ GO
 
 INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio) 
 VALUES (2,'Descuento por regimen de estadia',0)		
-GO
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Asociacion Estadia_X_Consumible
-
-INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible, Cantidad)
-SELECT estadia.idEstadia as idEstadia
-      ,consumible.idConsumible as idConsumible
-	  ,COUNT(Consumible_Codigo) as Cantidad
-  FROM GD1C2018.gd_esquema.Maestra
-	 ,LOS_BORBOTONES.Estadia estadia
-	 ,LOS_BORBOTONES.Reserva reserva
-	 ,LOS_BORBOTONES.Consumible consumible
-WHERE Consumible_Codigo IS NOT NULL
-  AND estadia.idEstadia = reserva.idReserva
-  AND reserva.CodigoReserva = Reserva_Codigo
-  AND Consumible_Codigo = consumible.Codigo
-GROUP BY estadia.idEstadia, consumible.idConsumible
-ORDER BY estadia.idEstadia
 GO
 
 --------------------------------------------------------------------------------------
@@ -2055,63 +1957,6 @@ CLOSE migracionReservasEnCheckOut
 DEALLOCATE migracionReservasEnCheckOut
 GO
 
-/*
-INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	SELECT DISTINCT 'RCE', LOS_BORBOTONES.fn_getDate(), 'Reserva Con Egreso', u.idUsuario, r.idReserva
-	FROM LOS_BORBOTONES.Reserva r
-		,LOS_BORBOTONES.Usuario u
-	WHERE u.Username = 'admin'
-	  AND r.idEstadia IS NULL
-	  AND r.FechaCreacion < LOS_BORBOTONES.fn_getDate()
-	ORDER BY r.idReserva
-GO
-
-INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
-SELECT temp1.CodigoReserva as CodigoReserva
-	  ,temp1.FechaDesde as FechaCreacion
-	  ,temp1.FechaDesde as FechaDesde
-	  ,DATEADD(day, temp1.DiasAlojados, temp1.FechaDesde) as FechaHasta
-	  ,temp1.DiasAlojados as DiasAlojados
-	  ,(SELECT hotel.idHotel
-		FROM LOS_BORBOTONES.Hotel hotel
-		WHERE hotel.Nombre = LOS_BORBOTONES.concatenarNombreHotel(HotelCalle, HotelNroCalle)) as idHotel
-	  ,NULL as idEstadia
-	  ,(SELECT regimen.idRegimen
-		FROM LOS_BORBOTONES.Regimen regimen
-		WHERE regimen.Descripcion = temp1.Regimen
-		) as idRegimen
-	  ,temp2.idCliente as idCliente
-FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva temp1
-	,LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva temp2
-WHERE temp1.CodigoReserva = temp2.CodigoReserva
-GO
-
-INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-	SELECT DISTINCT 'RCE', LOS_BORBOTONES.fn_getDate(), 'Reserva Con Egreso', u.idUsuario, r.idReserva
-	FROM LOS_BORBOTONES.Reserva r
-		,LOS_BORBOTONES.Usuario u
-	WHERE u.Username = 'admin'
-	  AND r.idEstadia IS NULL
-	  AND r.FechaCreacion < LOS_BORBOTONES.fn_getDate()
-	ORDER BY r.idReserva
-GO
-
---DE ESTAS FALTAN MIGRAR SU ESTADIA Y CONSUMIBLES TODAVIA
-INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
-SELECT temp1.FechaDesde as FechaEntrada
-	  ,DATEADD(day, temp1.DiasAlojados, temp1.FechaDesde) as FechaSalida
-	  ,temp1.DiasAlojados as CantidadNoches
-	  ,u.idUsuario as idUsuarioIn
-	  ,u.idUsuario as idUsuarioOut
-FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva temp1
-	,LOS_BORBOTONES.Usuario u
-WHERE u.Username = 'admin'
-
-
-
-VALUES (@Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, 2, 2) --Uso el Valor del Usuario 2 para todos (recepcionista)
-*/
-
 ------------------------------------------------------------------------------------------
 --INSERT DE RESERVAS QUE YA COMENZARON SU ESTADIA PERO AUN NO TERMINA (ESTAN EN EL HOTEL)-
 -------------(TIENEN SU FECHA DE FACTURACION EN EL FUTURO)--------------------------------
@@ -2121,7 +1966,7 @@ VALUES (@Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha
 --PARA ESTAS RESERVAS SE MIGRAN SU ESTADIA (NO? QUIZAS SI) NI SUS CONSUMIBLES (NO? QUIZAS SI), NI SUS ITEM FACTURA NI SU FACTURA
 --ESTADO "RCI" RESERVA CON INGRESO, SE PODRIA HACER EL CHECKOUT ANTES DE TIEMPO Y VALIDAR EL COMPORTAMIENTO
 --ADECUADO DE LAS FUNCIONES SOLICITADAS
-
+/*
 -- REUSO LAS TABLAS TEMPORALES
 IF OBJECT_ID('LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva', 'U') IS NOT NULL
 	DROP TABLE LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva;
@@ -2198,3 +2043,101 @@ INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuar
 GO
 
 --DE ESTAS FALTA DEFINIR SI SE MIGRAN LAS ESTADIAS Y CONSUMIBLES
+*/
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--SE MUEVE AL FINAL A LA ASOCIACION DE HABITACIONES
+--Asociacion Reserva_X_Habitacion_X_Cliente
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacion, idCliente) 
+		SELECT DISTINCT r.idReserva, a.idHabitacion, c.idCliente
+		FROM LOS_BORBOTONES.Reserva r
+		JOIN gd_esquema.maestra m
+			ON r.CodigoReserva = m.Reserva_Codigo
+		JOIN LOS_BORBOTONES.Cliente c
+			ON r.idCliente = c.idCliente
+		JOIN LOS_BORBOTONES.Hotel h
+			ON r.idHotel = h.idHotel 
+		JOIN LOS_BORBOTONES.Habitacion a
+			ON h.idHotel = a.idHotel AND m.Habitacion_Numero = a.Numero AND m.Habitacion_Piso = a.Piso
+		JOIN LOS_BORBOTONES.TipoHabitacion t
+			ON a.idTipoHabitacion = t.idTipoHabitacion AND m.Habitacion_Tipo_Codigo = t.Codigo
+	ORDER BY a.idHabitacion, r.idReserva,  c.idCliente
+GO
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+--ItemFactura
+--Estan intercambiados en la tabla maestra la cantidad y el monto de los item factura, por lo cual se invierten en la query.
+--En la tabla maestra todas las estadias tienen 3 consumibles asociados.
+--Se corrige la migracion de los Item Factura.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.ItemFactura(Cantidad, Monto, FechaCreacion, idFactura, idConsumible)
+SELECT 
+	COUNT(c.idConsumible) AS CantidadReal
+	,m.Item_Factura_Cantidad AS Monto
+	,f.FechaFacturacion AS FechaCreacion
+	,f.idFactura AS idFactura
+	,c.idConsumible AS idConsumible
+FROM LOS_BORBOTONES.Factura f
+	,LOS_BORBOTONES.Consumible c
+    ,gd_esquema.maestra m
+WHERE m.Factura_Nro = f.NumeroFactura
+  AND m.Consumible_Codigo = c.Codigo
+GROUP BY f.idFactura, f.FechaFacturacion, c.idConsumible, m.Item_Factura_Cantidad
+ORDER BY f.idFactura
+GO
+
+--Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
+-- El regimen All inclusive no carga consumibles en el monto total.
+
+SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, sum(c.Precio * i.Cantidad) AS CostoConsumible, LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) AS CostoEstadia,
+		CASE g.Descripcion WHEN 'All Inclusive' THEN LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches)
+		ELSE sum(c.Precio * i.Cantidad) + LOS_BORBOTONES.fn_costoTotalEstadia(g.Precio, e.CantidadNoches) END "MontoTotal"
+  INTO LOS_BORBOTONES.temporalMontoFactura
+	FROM  LOS_BORBOTONES.Factura f
+		JOIN  LOS_BORBOTONES.Reserva r
+			ON  f.idReserva = r.idReserva
+		JOIN  LOS_BORBOTONES.Estadia e
+			ON   r.idEstadia = e.idEstadia
+		JOIN LOS_BORBOTONES.Regimen g
+			ON r.idRegimen = g.idRegimen
+		JOIN LOS_BORBOTONES.ItemFactura i
+			ON f.idFactura = i.idFactura
+		JOIN LOS_BORBOTONES.Consumible c
+			ON i.idConsumible = c.idConsumible
+		WHERE  f.idFactura = i.idFactura
+	GROUP BY f.NumeroFactura, r.idReserva, g.Descripcion, g.Precio, e.CantidadNoches
+GO
+	
+--se corrige el montototal de cada factura, y los puntos obtenidos, de acuerdo al enunciado, teniendo en cuenta algunos campos de itemFactura
+	 
+UPDATE  t1
+SET t1.Total =   t2.MontoTotal,
+	t1.Puntos = LOS_BORBOTONES.fn_puntoTotalConsumible(t2.CostoConsumible) + LOS_BORBOTONES.fn_puntoTotalEstadia(t2.CostoEstadia)
+FROM  LOS_BORBOTONES.Factura t1
+		JOIN  LOS_BORBOTONES.temporalMontoFactura t2
+		ON  t1.NumeroFactura = t2.NumeroFactura
+GO
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Asociacion Estadia_X_Consumible
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible, Cantidad)
+SELECT estadia.idEstadia as idEstadia
+      ,consumible.idConsumible as idConsumible
+	  ,COUNT(Consumible_Codigo) as Cantidad
+  FROM GD1C2018.gd_esquema.Maestra
+	 ,LOS_BORBOTONES.Estadia estadia
+	 ,LOS_BORBOTONES.Reserva reserva
+	 ,LOS_BORBOTONES.Consumible consumible
+WHERE Consumible_Codigo IS NOT NULL
+  AND estadia.idEstadia = reserva.idReserva
+  AND reserva.CodigoReserva = Reserva_Codigo
+  AND Consumible_Codigo = consumible.Codigo
+GROUP BY estadia.idEstadia, consumible.idConsumible
+ORDER BY estadia.idEstadia
+GO
+
