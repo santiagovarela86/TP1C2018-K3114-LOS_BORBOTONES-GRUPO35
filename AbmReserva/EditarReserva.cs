@@ -70,12 +70,12 @@ namespace FrbaHotel.AbmReserva
                     }
 
                     List<EstadoReserva> estadosDeLaReserva = reserva.getEstados();
-                    List<String> estadosNoModificables = new List<String>(new String[] { "RCC", "RCR", "RCNS", "RCE", "RCI", "RF" });
+                    List<String> estadosNoModificables = new List<String>(new String[] { "RCC", "RCR", "RCNS", "RCE", "RCI","RCCR", "RF" });
                     bool noPuedeModificar = estadosDeLaReserva.Exists(estado => estadosNoModificables.Exists(estadoNoModificable => estadoNoModificable.Equals(estado.getTipoEstado())));
 
                     if (noPuedeModificar)
                     {
-                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado final.", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No puede modificar la reserva por que la misma ha alcanzado un estado no modificable.", "Error al editar reserva", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 

@@ -385,6 +385,8 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
+            RepositorioReserva repoReserva = new RepositorioReserva();
+            repoReserva.cancelarReservasNoShow(hotel);
             sqlCommand.Parameters.AddWithValue("@fechaInicio",fechaInicio);
             sqlCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
 
@@ -556,7 +558,7 @@ namespace FrbaHotel.Repositorios
             return tipoHabitacion;
         }
 
-        public List<String> getAllUbicaciones(Hotel hotel)
+        public List<String> getAllUbicaciones()
         {
             List<String> result = new List<String>();
 
@@ -564,14 +566,12 @@ namespace FrbaHotel.Repositorios
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
-            sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = @"
                 SELECT DISTINCT Ubicacion
                 FROM LOS_BORBOTONES.Habitacion
-                WHERE idHotel = @idHotel
-            ";
+           ";
 
             sqlConnection.Open();
 

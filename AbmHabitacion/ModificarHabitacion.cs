@@ -24,7 +24,7 @@ namespace FrbaHotel.AbmHabitacion
             InitializeComponent();
 
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            comboBoxUbicacion.DataSource = repoHabitacion.getAllUbicaciones(habitacion.getHotel());
+            comboBoxUbicacion.DataSource = repoHabitacion.getAllUbicaciones();
             initFields();
         }
 

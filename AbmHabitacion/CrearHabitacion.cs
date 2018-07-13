@@ -36,7 +36,7 @@ namespace FrbaHotel.AbmHabitacion
             comboBoxTipoHabitacion.SelectedIndex = -1;
 
             RepositorioHabitacion repoHabitacion = new RepositorioHabitacion();
-            comboBoxUbicacion.DataSource = repoHabitacion.getAllUbicaciones(this.hotel);
+            comboBoxUbicacion.DataSource = repoHabitacion.getAllUbicaciones();
             comboBoxUbicacion.SelectedIndex = -1;
             checkBoxActiva.Checked = false;
 

@@ -525,8 +525,8 @@ namespace FrbaHotel.AbmHotel
 
                 repoHotel.update(hotelToUpdateSave);
                 MessageBox.Show("Hotel modificado correctamente.", "Gestion de Datos TP 2018 1C - LOS_BORBOTONES", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                hotel = hotelToUpdateSave;
 
+                hotel = repoHotel.getById(hotel.getIdHotel());
                 this.initModificacionHotel();
             }
             /*
@@ -587,6 +587,8 @@ namespace FrbaHotel.AbmHotel
                 //ME TRAIGO EL HOTEL MODIFICADO
                 this.hotel.getCierresTemporales();
 
+                RepositorioHotel repoHotel = new RepositorioHotel();
+                hotel = repoHotel.getById(hotel.getIdHotel());
                 //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO CIERRE TEMPORAL VUELVO A CARGAR LA LISTA
                 this.initModificacionHotel();
             }
