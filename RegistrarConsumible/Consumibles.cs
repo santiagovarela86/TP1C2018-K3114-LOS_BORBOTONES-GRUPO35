@@ -48,9 +48,11 @@ namespace FrbaHotel.RegistrarConsumible
                 idEstadia = int.Parse(textBox1.Text.Trim());
                 //hago el get estado para ver si no termino de ponerle el Reserva Con Consumibles (RCC)
                 Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
-                if(reserva==null)
+                if((reserva==null)|reserva.getHotel().getIdHotel()!=this.sesion.getHotel().getIdHotel())
                     {
+                    if(reserva==null)
                         MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else MessageBox.Show("La estadia ingresada no corresponde al hotel al cual el usuario esta logueado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 else
                 {
