@@ -561,30 +561,9 @@ namespace FrbaHotel.Repositorios
         public List<String> getAllUbicaciones()
         {
             List<String> result = new List<String>();
-
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = @"
-                SELECT DISTINCT Ubicacion
-                FROM LOS_BORBOTONES.Habitacion
-           ";
-
-            sqlConnection.Open();
-
-            reader = sqlCommand.ExecuteReader();
-
-            while (reader.Read())
-            {
-                String descUbicacion = reader.GetString(reader.GetOrdinal("Ubicacion"));
-                result.Add(descUbicacion);
-            }
-
-            //Cierro Primera Consulta
-            sqlConnection.Close();
+            result.Add("Vista al Mar");
+            result.Add("Interior");
+            result.Add("Vista Exterior");
 
             return result;
         }
