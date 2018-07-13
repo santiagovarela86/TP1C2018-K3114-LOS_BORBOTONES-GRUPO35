@@ -1727,25 +1727,6 @@ FROM  LOS_BORBOTONES.Factura t1
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Asociacion Estadia_X_Consumible
-
---TENGO QUE ACTUALIZAR ESTO PARA QUE TRAIGA EN EL NUEVO FORMATO ESTA INFORMACION
-
-/*
-INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible) 
-		SELECT DISTINCT f.idEstadia, i.idConsumible
-		FROM LOS_BORBOTONES.Factura f
-		JOIN LOS_BORBOTONES.Estadia e
-			ON f.idEstadia = e.idEstadia 
-		JOIN LOS_BORBOTONES.ItemFactura i 
-			ON f.idFactura = i.idFactura
-		JOIN LOS_BORBOTONES.Consumible c
-			ON i.idConsumible = c.idConsumible
-	ORDER BY f.idEstadia, i.idConsumible
-GO
-*/
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Asociacion Reserva_X_Habitacion_X_Cliente
 
 INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacion, idCliente) 
@@ -1839,6 +1820,7 @@ CLOSE migroInconsistencias
 DEALLOCATE migroInconsistencias
 
 GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Creaciòn Consumible Habitacion
 
@@ -1850,4 +1832,23 @@ GO
 
 INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio) 
 VALUES (2,'Descuento por regimen de estadia',0)		
+GO
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Asociacion Estadia_X_Consumible
+
+INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible, Cantidad)
+SELECT estadia.idEstadia as idEstadia
+      ,consumible.idConsumible as idConsumible
+	  ,COUNT(Consumible_Codigo) as Cantidad
+  FROM GD1C2018.gd_esquema.Maestra
+	 ,LOS_BORBOTONES.Estadia estadia
+	 ,LOS_BORBOTONES.Reserva reserva
+	 ,LOS_BORBOTONES.Consumible consumible
+WHERE Consumible_Codigo IS NOT NULL
+  AND estadia.idEstadia = reserva.idReserva
+  AND reserva.CodigoReserva = Reserva_Codigo
+  AND Consumible_Codigo = consumible.Codigo
+GROUP BY estadia.idEstadia, consumible.idConsumible
+ORDER BY estadia.idEstadia
 GO
