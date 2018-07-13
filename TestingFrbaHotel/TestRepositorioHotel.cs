@@ -23,7 +23,7 @@ namespace TestingFrbaHotel
             Assert.AreEqual("Balcarce 2520", hotel.getNombre());
             Assert.AreEqual("No Posee", hotel.getMail());
             Assert.AreEqual("No Posee", hotel.getTelefono());
-            Assert.AreEqual(2018, hotel.getFechaInicioActividades().Year);
+            Assert.AreEqual(2017, hotel.getFechaInicioActividades().Year);
             Assert.AreEqual(1, categoriaHotel.getEstrellas());
             Assert.AreEqual(10, categoriaHotel.getRecargaEstrellas());
 

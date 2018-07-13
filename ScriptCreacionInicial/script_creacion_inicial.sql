@@ -1989,6 +1989,83 @@ WHERE Factura_Nro IS NOT NULL
 ORDER BY Cliente_Pasaporte_Nro
 GO
 
+--MAS CURSORES...
+DECLARE migracionReservasEnCheckOut CURSOR FOR 
+SELECT temp1.CodigoReserva as CodigoReserva
+	  ,temp1.FechaDesde as FechaCreacion
+	  ,temp1.FechaDesde as FechaDesde
+	  ,DATEADD(day, temp1.DiasAlojados, temp1.FechaDesde) as FechaHasta
+	  ,temp1.DiasAlojados as DiasAlojados
+	  ,(SELECT hotel.idHotel
+		FROM LOS_BORBOTONES.Hotel hotel
+		WHERE hotel.Nombre = LOS_BORBOTONES.concatenarNombreHotel(HotelCalle, HotelNroCalle)) as idHotel
+	  ,(SELECT regimen.idRegimen
+		FROM LOS_BORBOTONES.Regimen regimen
+		WHERE regimen.Descripcion = temp1.Regimen
+		) as idRegimen
+	  ,temp2.idCliente as idCliente
+	  ,usuario.idUsuario as idUsuario
+FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva temp1
+	,LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva temp2
+	,LOS_BORBOTONES.Usuario usuario
+WHERE temp1.CodigoReserva = temp2.CodigoReserva
+  AND usuario.Username = 'admin'
+
+DECLARE @CodigoReserva INT,
+		@FechaCreacion DATETIME,
+		@FechaDesde DATETIME,
+		@FechaHasta DATETIME,
+		@DiasAlojados INT,		
+		@idHotel INT,
+		@idRegimen INT,
+		@idCliente INT,
+		@idUsuario INT
+
+OPEN migracionReservasEnCheckOut
+
+-- Perform the first fetch.
+FETCH NEXT FROM migracionReservasEnCheckOut
+INTO @CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @idHotel, @idRegimen, @idCliente, @idUsuario;
+
+-- Check @@FETCH_STATUS to see if there are any more rows to fetch.
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
+	VALUES (@FechaDesde, @FechaHasta, @DiasAlojados, @idUsuario, @idUsuario)
+	
+	DECLARE @idEstadia INT
+	SET @idEstadia = SCOPE_IDENTITY();
+
+	INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
+	VALUES (@CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @idHotel, @idEstadia, @idRegimen, @idCliente)
+	
+	DECLARE @idReserva INT
+	SET @idReserva = SCOPE_IDENTITY();
+	
+	INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+	VALUES ('RCE', LOS_BORBOTONES.fn_getDate(), 'Reserva Con Egreso', @idUsuario, @idReserva)
+
+    -- This is executed as long as the previous fetch succeeds.
+    FETCH NEXT FROM migracionReservasEnCheckOut
+    INTO @CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @idHotel, @idRegimen, @idCliente, @idUsuario;
+END
+
+CLOSE migracionReservasEnCheckOut
+DEALLOCATE migracionReservasEnCheckOut
+GO
+
+/*
+INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+	SELECT DISTINCT 'RCE', LOS_BORBOTONES.fn_getDate(), 'Reserva Con Egreso', u.idUsuario, r.idReserva
+	FROM LOS_BORBOTONES.Reserva r
+		,LOS_BORBOTONES.Usuario u
+	WHERE u.Username = 'admin'
+	  AND r.idEstadia IS NULL
+	  AND r.FechaCreacion < LOS_BORBOTONES.fn_getDate()
+	ORDER BY r.idReserva
+GO
+
 INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
 SELECT temp1.CodigoReserva as CodigoReserva
 	  ,temp1.FechaDesde as FechaCreacion
@@ -2020,6 +2097,20 @@ INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuar
 GO
 
 --DE ESTAS FALTAN MIGRAR SU ESTADIA Y CONSUMIBLES TODAVIA
+INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
+SELECT temp1.FechaDesde as FechaEntrada
+	  ,DATEADD(day, temp1.DiasAlojados, temp1.FechaDesde) as FechaSalida
+	  ,temp1.DiasAlojados as CantidadNoches
+	  ,u.idUsuario as idUsuarioIn
+	  ,u.idUsuario as idUsuarioOut
+FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva temp1
+	,LOS_BORBOTONES.Usuario u
+WHERE u.Username = 'admin'
+
+
+
+VALUES (@Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, 2, 2) --Uso el Valor del Usuario 2 para todos (recepcionista)
+*/
 
 ------------------------------------------------------------------------------------------
 --INSERT DE RESERVAS QUE YA COMENZARON SU ESTADIA PERO AUN NO TERMINA (ESTAN EN EL HOTEL)-
