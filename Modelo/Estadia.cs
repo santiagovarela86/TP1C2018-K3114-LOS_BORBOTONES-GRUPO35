@@ -14,7 +14,7 @@ namespace FrbaHotel.Modelo
         private Usuario usuarioCheckIn = null;
         private Usuario usuarioCheckOut = null;
         private DateTime fechaEntrada =  Utils.getSystemDatetimeNow();
-        private DateTime fechaSalida =  Utils.getSystemDatetimeNow();
+        private DateTime fechaSalida;
         private Boolean facturada = false;
 
         public Estadia(int idEstadia, Usuario usuarioCheckIn, Usuario usuarioCheckOut,
