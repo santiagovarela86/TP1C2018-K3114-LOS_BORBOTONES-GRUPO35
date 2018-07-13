@@ -130,9 +130,9 @@ namespace FrbaHotel.Repositorios
             else
             {
                 sqlCommand.CommandText = @"
-                    UPDATE LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible, Cantidad)
+                    UPDATE LOS_BORBOTONES.Estadia_X_Consumible
                     SET cantidad = @cantidad
-                    WHERE idEstadia = @idEstadia AND idConsumible = @idConsumible
+                    WHERE idEstadia = @idEstadia AND idConsumible = @idConsumible;
                 ";
             }
 
@@ -380,15 +380,9 @@ namespace FrbaHotel.Repositorios
         {
             List<ConsumibleConCantidad> consumibles = new List<ConsumibleConCantidad>();
             String query = @"
-                SELECT estadia.idEstadia
-	                ,estXcons.idConsumible
-	                ,COUNT(*) as Cantidad
-                FROM LOS_BORBOTONES.Estadia_X_Consumible estXcons
-	                ,LOS_BORBOTONES.Estadia estadia
-                WHERE estadia.idEstadia = estXcons.idEstadia
-                  AND estadia.idEstadia = @idEstadia
-                GROUP BY estadia.idEstadia, estXcons.idConsumible
-                ORDER BY estadia.idEstadia
+                SELECT *
+	            FROM LOS_BORBOTONES.Estadia_X_Consumible estXcons
+                WHERE estXcons.idEstadia = @idEstadia
             ";
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -408,8 +402,7 @@ namespace FrbaHotel.Repositorios
                 while (reader.Read())
                 {
                     Consumible consumible = this.getById(reader.GetInt32(reader.GetOrdinal("idConsumible")));
-                    ConsumibleConCantidad consCantidad = new ConsumibleConCantidad(consumible, reader.GetInt32(reader.GetOrdinal("idConsumible")));
-
+                    ConsumibleConCantidad consCantidad = new ConsumibleConCantidad(consumible, reader.GetInt32(reader.GetOrdinal("Cantidad")));
                     consumibles.Add(consCantidad);
                 }
 
