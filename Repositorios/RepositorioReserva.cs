@@ -704,10 +704,12 @@ namespace FrbaHotel.Repositorios
                 RepositorioEstadia repoEstadia = new RepositorioEstadia();
                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
                 String estado=repoEstadia.getEstado(codReserva);
-                if(estado.Equals("RCI"))
-                    return 5;
-                else    repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario(),date);
-                return 2;
+                if (estado.Equals("RC") | estado.Equals("RM"))
+                {
+                    repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario(),date);
+                    return 2;
+                }
+                return 5;
 
             }
             

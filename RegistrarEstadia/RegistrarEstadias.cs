@@ -38,7 +38,7 @@ namespace FrbaHotel.RegistrarEstadia
             int codReserva = 0;
             DateTime date = Utils.getSystemDatetimeNow();
             int estadoValidez = 0;
-            DateTime dateTest = new DateTime(2017, 1, 1);
+            //DateTime dateTest = new DateTime(2017, 1, 1);
             RepositorioReserva repositorioReserva = new RepositorioReserva();
             if (textBox1.Text != "" )
             {
@@ -46,7 +46,7 @@ namespace FrbaHotel.RegistrarEstadia
                 
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
                 //estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, Utils.getSystemDatetimeNow(), this.sesion.getUsuario());
                 if (estadoValidez != 2 && estadoValidez != 3 && estadoValidez != 4 && estadoValidez != 0 && estadoValidez != 5)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
@@ -69,7 +69,7 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 2)
                 {
-                    MessageBox.Show("No es posible realizar check in sobre la reserva indicada; no está en fecha de realizar check in o ya fue realizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No es posible realizar check in sobre la reserva indicada; no está en fecha de realizar check in.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
 
                 }
@@ -83,7 +83,7 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 5)
                 {
-                    MessageBox.Show("La estadia ya tiene check in realizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La estadia ya tiene un estado que no permite su ingreso.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
