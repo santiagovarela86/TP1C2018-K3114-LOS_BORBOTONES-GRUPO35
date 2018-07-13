@@ -14,7 +14,7 @@ namespace FrbaHotel.Modelo
         private Usuario usuarioCheckIn = null;
         private Usuario usuarioCheckOut = null;
         private DateTime fechaEntrada =  Utils.getSystemDatetimeNow();
-        private DateTime fechaSalida =  Utils.getSystemDatetimeNow();
+        private DateTime? fechaSalida = null;
         private Boolean facturada = false;
 
         public Estadia(int idEstadia, Usuario usuarioCheckIn, Usuario usuarioCheckOut,
@@ -60,7 +60,7 @@ namespace FrbaHotel.Modelo
             return this.fechaEntrada;
         }
 
-        public DateTime getFechaSalida()
+        public DateTime? getFechaSalida()
         {
             return this.fechaSalida;
         }
@@ -80,7 +80,7 @@ namespace FrbaHotel.Modelo
         public Usuario UsuarioCheckIn { get { return this.getUsuarioCheckIn(); } }
         public Usuario UsuarioCheckOut { get { return this.getUsuarioCheckOut(); } }
         public DateTime FechaEntrada { get { return this.getFechaEntrada(); } }
-        public DateTime FechaSalida { get { return this.getFechaSalida(); } }
+        public DateTime? FechaSalida { get { return this.getFechaSalida(); } }
         public Boolean Facturada { get { return this.getFacturada(); } }
     }
 }

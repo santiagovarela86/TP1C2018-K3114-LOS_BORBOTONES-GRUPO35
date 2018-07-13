@@ -913,7 +913,7 @@ CREATE TABLE LOS_BORBOTONES.Estadia (
 
 	idEstadia		INT			IDENTITY(1,1)	NOT NULL	UNIQUE,
 	FechaEntrada	DATETIME	NOT NULL,
-	FechaSalida		DATETIME	NOT NULL,
+	FechaSalida		DATETIME	,--NOT NULL,
 	CantidadNoches	NUMERIC(18,0),
 	Facturada		BIT			DEFAULT 1,
 	idUsuarioIn		INT			NOT NULL,
@@ -1963,10 +1963,10 @@ GO
 ---------(TIENEN SU FECHA DE FIN DE ESTADIA DESPUES QUE LA 'FECHA DE HOY')----------------
 ------------------------------------------------------------------------------------------
 
---PARA ESTAS RESERVAS SE MIGRAN SU ESTADIA (NO? QUIZAS SI) NI SUS CONSUMIBLES (NO? QUIZAS SI), NI SUS ITEM FACTURA NI SU FACTURA
+--PARA ESTAS RESERVAS SE MIGRAN SU ESTADIA (CON FECHA DE SALIDA NULL) Y SUS CONSUMIBLES, PERO NO SUS ITEM FACTURA NI SU FACTURA
 --ESTADO "RCI" RESERVA CON INGRESO, SE PODRIA HACER EL CHECKOUT ANTES DE TIEMPO Y VALIDAR EL COMPORTAMIENTO
 --ADECUADO DE LAS FUNCIONES SOLICITADAS
-/*
+
 -- REUSO LAS TABLAS TEMPORALES
 IF OBJECT_ID('LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva', 'U') IS NOT NULL
 	DROP TABLE LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva;
@@ -2010,6 +2010,73 @@ WHERE Reserva_Codigo NOT IN (SELECT CodigoReserva FROM LOS_BORBOTONES.Reserva)
 ORDER BY Cliente_Pasaporte_Nro
 GO
 
+--MAS CURSORES...
+DECLARE migracionReservasEnEstadia CURSOR FOR
+SELECT temp1.CodigoReserva as CodigoReserva
+	  ,temp1.FechaDesde as FechaCreacion
+	  ,temp1.FechaDesde as FechaDesde
+	  ,DATEADD(day, temp1.DiasAlojados, temp1.FechaDesde) as FechaHasta
+	  ,temp1.DiasAlojados as DiasAlojados
+	  ,(SELECT hotel.idHotel
+		FROM LOS_BORBOTONES.Hotel hotel
+		WHERE hotel.Nombre = LOS_BORBOTONES.concatenarNombreHotel(HotelCalle, HotelNroCalle)) as idHotel
+	  ,(SELECT regimen.idRegimen
+		FROM LOS_BORBOTONES.Regimen regimen
+		WHERE regimen.Descripcion = temp1.Regimen
+		) as idRegimen
+	  ,temp2.idCliente as idCliente
+	  ,usuario.idUsuario as idUsuario
+FROM LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva temp1
+	,LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva temp2
+	,LOS_BORBOTONES.Usuario usuario
+WHERE temp1.CodigoReserva = temp2.CodigoReserva
+  AND usuario.Username = 'admin'
+  
+DECLARE @CodigoReserva INT,
+		@FechaCreacion DATETIME,
+		@FechaDesde DATETIME,
+		@FechaHasta DATETIME,
+		@DiasAlojados INT,		
+		@idHotel INT,
+		@idRegimen INT,
+		@idCliente INT,
+		@idUsuario INT
+
+OPEN migracionReservasEnEstadia
+
+-- Perform the first fetch.
+FETCH NEXT FROM migracionReservasEnEstadia
+INTO @CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @idHotel, @idRegimen, @idCliente, @idUsuario;
+
+-- Check @@FETCH_STATUS to see if there are any more rows to fetch.
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+	INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
+	VALUES (@FechaDesde, NULL, NULL, @idUsuario, @idUsuario)
+	
+	DECLARE @idEstadia INT
+	SET @idEstadia = SCOPE_IDENTITY();
+
+	INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
+	VALUES (@CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @idHotel, @idEstadia, @idRegimen, @idCliente)
+	
+	DECLARE @idReserva INT
+	SET @idReserva = SCOPE_IDENTITY();
+	
+	INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+	VALUES ('RCI', @FechaCreacion, 'Reserva Con Ingreso', @idUsuario, @idReserva)
+
+    -- This is executed as long as the previous fetch succeeds.
+    FETCH NEXT FROM migracionReservasEnEstadia
+    INTO @CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @idHotel, @idRegimen, @idCliente, @idUsuario;
+END
+
+CLOSE migracionReservasEnEstadia
+DEALLOCATE migracionReservasEnEstadia
+GO
+
+/*
 INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
 SELECT temp1.CodigoReserva as CodigoReserva
 	  ,temp1.FechaDesde as FechaCreacion
