@@ -684,7 +684,8 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                idEstadia = reader.GetInt32(reader.GetOrdinal("idEstadia"));
+                //ESTADIA PUEDE TENER VALORES NULL PRIMERO PREGUNTO
+                idEstadia = reader.IsDBNull(reader.GetOrdinal("idEstadia")) ? 0 : reader.GetInt32(reader.GetOrdinal("idEstadia"));   
             }
 
             sqlConnection.Close();

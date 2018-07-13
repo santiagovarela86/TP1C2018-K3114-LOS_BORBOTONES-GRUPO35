@@ -42,7 +42,7 @@ namespace FrbaHotel.RegistrarEstadia
             RepositorioReserva repositorioReserva = new RepositorioReserva();
             if (textBox1.Text != "" )
             {
-                codReserva = int.Parse(textBox1.Text);
+                codReserva = int.Parse(textBox1.Text.Trim());
                 
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
                 //estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
@@ -83,7 +83,7 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 5)
                 {
-                    MessageBox.Show("La estadia ya tiene un estado que no permite su ingreso.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La estadia tiene un estado que no permite su ingreso o no es válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -105,7 +105,7 @@ namespace FrbaHotel.RegistrarEstadia
             RepositorioReserva repoReserva = new RepositorioReserva();
             if (textBox1.Text != "")
             {
-                codReserva = int.Parse(textBox1.Text);
+                codReserva = int.Parse(textBox1.Text.Trim());
                 //consigo del codigo de reserva el idEstadia
                 idEstadia = repoReserva.getIdEstadiaByCodReserva(codReserva);
                 if (idEstadia != 0)
