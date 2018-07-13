@@ -1528,7 +1528,7 @@ WHERE identidad.TipoIdentidad = 'Cliente'
   AND identidad.TipoDocumento = 'Pasaporte'
 GO
 
---VER DE REEMPLAZAR ESTO POR ALGO QUE NO SEA UN CURSOR
+--VER DE REEMPLAZAR ESTO POR ALGO QUE NO SEA UN CURSOR PORQUE PUEDE TARDAR MUCHO LA CONSULTA
 --CURSOR DE LA Migración Reserva y Estadía
 DECLARE migracionReservasYEstadias CURSOR FOR 
 SELECT ptemp.idHotel
@@ -1567,9 +1567,9 @@ BEGIN
 	DECLARE @idEstadia INT
 	SET @idEstadia = SCOPE_IDENTITY();
 	
-	--PONGO QUE LA FECHA DE CREACION DE LAS RESERVAS MIGRADAS ES LA FECHA MAS VIEJA DE LAS RESERVAS
+	--PONGO QUE LA FECHA DE CREACION DE LAS RESERVAS MIGRADAS ES LA FECHA-DESDE DE LA RESERVA
 	INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
-	VALUES (@Reserva_Codigo, (SELECT DISTINCT TOP 1 Reserva_Fecha_Inicio FROM gd_esquema.Maestra ORDER BY Reserva_Fecha_Inicio), @Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, @idHotel, @idEstadia, @idRegimen, @idCliente)
+	VALUES (@Reserva_Codigo, @Reserva_Fecha_Inicio, @Reserva_Fecha_Inicio, DATEADD(DAY, @Reserva_Cant_Noches, @Reserva_Fecha_Inicio), @Reserva_Cant_Noches, @idHotel, @idEstadia, @idRegimen, @idCliente)
 
     -- This is executed as long as the previous fetch succeeds.
     FETCH NEXT FROM migracionReservasYEstadias
@@ -1755,11 +1755,9 @@ INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacio
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga EstadoReserva, todas las cargo como Correctas
---SE DEFINE FECHA DE CREACION DE LAS RESERVAS, COMO LA FECHA MAS VIEJA DE LAS RESERVAS
---¿COMO SE CREA UNA RESERVA PARA EL PASADO?
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RC', (SELECT DISTINCT TOP 1 Reserva_Fecha_Inicio FROM gd_esquema.Maestra ORDER BY Reserva_Fecha_Inicio), 'Reserva Correcta', 4, r.idReserva
+		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 4, r.idReserva
 		FROM LOS_BORBOTONES.Reserva r
 		JOIN LOS_BORBOTONES.Identidad i
 			ON i.TipoIdentidad = 'Usuario'
