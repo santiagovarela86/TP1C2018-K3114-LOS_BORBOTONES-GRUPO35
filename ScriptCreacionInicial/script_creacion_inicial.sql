@@ -297,6 +297,15 @@ IF OBJECT_ID('LOS_BORBOTONES.TemporalInconsistencias','U') IS NOT NULL
     DROP TABLE LOS_BORBOTONES.TemporalInconsistencias;
 GO
 
+-- temporalMigracionEstadiasYReserva
+IF OBJECT_ID('LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva', 'U') IS NOT NULL
+	DROP TABLE LOS_BORBOTONES.temporalTerceraMigracionEstadiasYReserva;
+GO
+
+IF OBJECT_ID('LOS_BORBOTONES.temporalSegundaMigracionEstadiasYReserva', 'U') IS NOT NULL
+	DROP TABLE LOS_BORBOTONES.temporalCuartaMigracionEstadiasYReserva;
+GO
+
 ---------------------------------------------------------------Funciones---------------------------------------------------------------------------------------------------------------
 --Funcion getDate()
 IF OBJECT_ID('LOS_BORBOTONES.fn_getDate', 'FN') IS NOT NULL
@@ -1499,6 +1508,9 @@ GO
 --Migración Reserva y Estadía
 --------------------------------------------------------------------------------
 
+--EN ESTA ETAPA SOLO MIGRO LAS RESERVAS Y ESTADIAS 
+--QUE YA FUERON FACTURADAS (YA FINALIZARON)
+
 --Primer Tabla Temporal de la Migración
 SELECT DISTINCT
 	  (SELECT hotel.idHotel
@@ -1518,6 +1530,8 @@ SELECT DISTINCT
 INTO LOS_BORBOTONES.temporalPrimeraMigracionEstadiasYReserva
 FROM [GD1C2018].[gd_esquema].[Maestra]
 WHERE Estadia_Fecha_Inicio IS NOT NULL
+  AND DATEADD(day, Estadia_Cant_Noches, Estadia_Fecha_Inicio) < LOS_BORBOTONES.fn_getDate() --LINEA QUE FILTRA SOLO LAS ESTADIAS QUE YA FINALIZARON
+  AND Factura_Fecha <= LOS_BORBOTONES.fn_getDate() --LINEA QUE FILTRA LAS QUE YA FUERON FACTURADAS
 ORDER BY Reserva_Codigo
 GO
 
@@ -1531,7 +1545,6 @@ WHERE identidad.TipoIdentidad = 'Cliente'
   AND identidad.TipoDocumento = 'Pasaporte'
 GO
 
---VER DE REEMPLAZAR ESTO POR ALGO QUE NO SEA UN CURSOR PORQUE PUEDE TARDAR MUCHO LA CONSULTA
 --CURSOR DE LA Migración Reserva y Estadía
 DECLARE migracionReservasYEstadias CURSOR FOR 
 SELECT ptemp.idHotel
@@ -1745,20 +1758,19 @@ INSERT INTO LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva, idHabitacio
 	ORDER BY a.idHabitacion, r.idReserva,  c.idCliente
 GO
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Carga EstadoReserva, todas las cargo como Correctas
+--Carga EstadoReserva, todas las cargo como FACTURADAS PORQUE HASTA AHORA SOLO MIGRE LAS QUE YA HABIAN SIDO FACTURADAS
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RF', r.FechaCreacion, 'Reserva Facturada', 4, r.idReserva
-		FROM LOS_BORBOTONES.Reserva r
-		JOIN LOS_BORBOTONES.Identidad i
-			ON i.TipoIdentidad = 'Usuario'
-		JOIN LOS_BORBOTONES.Usuario u
-			ON i.idIdentidad = u.idUsuario  AND u.Username = 'admin'
-ORDER BY r.idReserva, r.FechaCreacion
+	SELECT DISTINCT 'RF', r.FechaCreacion, 'Reserva Facturada', u.idUsuario, r.idReserva
+	FROM LOS_BORBOTONES.Reserva r
+		,LOS_BORBOTONES.Usuario u
+	WHERE u.Username = 'admin'
+	  AND r.idEstadia IS NOT NULL --NO HARIA FALTA (A ESTA ALTURA TODAS ESTAN EN NULL) PERO POR LAS DUDAS
+	ORDER BY r.idReserva, r.FechaCreacion
 GO
 
 --------------------------------------------------------------------------------------------------------------------------------
---  LAS INCONSISTENCIAS SE MANEJAN DE LA SIGUIENTE MANERA:
+--  LAS INCONSISTENCIAS DE LOS CLIENTES SE MANEJAN DE LA SIGUIENTE MANERA:
 --	SE MARCA EL CLIENTE COMO INCONSISTENTE, Y LA PROXIMA VEZ QUE SE INTENTA RESERVAR CON ESE CLIENTE,
 --	SE MUESTRA POR GUI UN CARTEL QUE DEBE ACTUALIZAR LOS DATOS PRIMERO.
 --  INCONSISTENCIA: MAIL DUPLICADO O TIPO Y NUMERO DE DOCUMENTO DUPLICADO.
@@ -1827,6 +1839,7 @@ GO
 INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio) 
 VALUES (1,'Costo por habitacion',0)		
 GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Creaciòn Consumible All inclusive
 
@@ -1851,4 +1864,77 @@ WHERE Consumible_Codigo IS NOT NULL
   AND Consumible_Codigo = consumible.Codigo
 GROUP BY estadia.idEstadia, consumible.idConsumible
 ORDER BY estadia.idEstadia
+GO
+
+--------------------------------------------------------------------------------------
+-------INSERT DE RESERVAS FUTURAS-----------------------------------------------------
+--------------------------------------------------------------------------------------
+
+--ESTAS SON LAS RESERVAS QUE ESTAN CREADAS PARA LUEGO DE LA "FECHA DE HOY"
+--PARA ESTAS RESERVAS NO SE MIGRAN NI ESTADIAS, NI CONSUMIBLES, NI ITEM FACTURA, NI FACTURA
+--ESTADO "RC" RESERVA CORRECTA
+
+SELECT DISTINCT
+	  Reserva_Codigo as CodigoReserva
+	  ,Reserva_Fecha_Inicio as FechaDesde
+	  ,Reserva_Cant_Noches as DiasAlojados
+	  ,Hotel_Calle as HotelCalle
+	  ,Hotel_Nro_Calle as HotelNroCalle
+	  ,Regimen_Descripcion as Regimen
+INTO LOS_BORBOTONES.TemporalTerceraMigracionEstadiasYReserva
+FROM [GD1C2018].[gd_esquema].[Maestra]
+WHERE Factura_Nro IS NOT NULL
+  AND Reserva_Fecha_Inicio >= LOS_BORBOTONES.fn_getDate()
+ORDER BY [Reserva_Codigo]
+GO
+
+SELECT DISTINCT
+	  Reserva_Codigo as CodigoReserva
+	  ,Cliente_Mail as ClienteMail
+	  ,Cliente_Pasaporte_Nro as ClientePasaporte
+	  ,cliente.idCliente as idCliente
+INTO LOS_BORBOTONES.TemporalCuartaMigracionEstadiasYReserva
+FROM [GD1C2018].[gd_esquema].[Maestra]
+	,LOS_BORBOTONES.Identidad identidad
+	,LOS_BORBOTONES.Cliente cliente
+WHERE Factura_Nro IS NOT NULL
+  AND Reserva_Fecha_Inicio >= LOS_BORBOTONES.fn_getDate()
+  AND cliente.idIdentidad = identidad.idIdentidad
+  AND identidad.NumeroDocumento = Cliente_Pasaporte_Nro
+  AND identidad.TipoDocumento = 'Pasaporte'
+  AND identidad.Mail = Cliente_Mail
+ORDER BY Cliente_Pasaporte_Nro
+GO
+
+INSERT INTO LOS_BORBOTONES.Reserva(CodigoReserva, FechaCreacion, FechaDesde,  FechaHasta, DiasAlojados, idHotel, idEstadia, idRegimen, idCliente)
+SELECT temp1.CodigoReserva as CodigoReserva
+	  ,LOS_BORBOTONES.fn_getDate() as FechaCreacion
+	  ,temp1.FechaDesde as FechaDesde
+	  ,DATEADD(day, temp1.DiasAlojados, temp1.FechaDesde) as FechaHasta
+	  ,temp1.DiasAlojados as DiasAlojados
+	  ,(SELECT hotel.idHotel
+		FROM LOS_BORBOTONES.Hotel hotel
+		WHERE hotel.Nombre = LOS_BORBOTONES.concatenarNombreHotel(HotelCalle, HotelNroCalle)) as idHotel
+	  ,NULL as idEstadia
+	  ,(SELECT regimen.idRegimen
+		FROM LOS_BORBOTONES.Regimen regimen
+		WHERE regimen.Descripcion = temp1.Regimen
+		) as idRegimen
+	  ,temp2.idCliente as idCliente
+FROM LOS_BORBOTONES.TemporalTerceraMigracionEstadiasYReserva temp1
+	,LOS_BORBOTONES.TemporalCuartaMigracionEstadiasYReserva temp2
+WHERE temp1.CodigoReserva = temp2.CodigoReserva
+GO
+
+---------------------------------------------------------------------------------------------
+-- PONGO LAS RESERVAS QUE TODAVIA NO COMIENZAN EN ESTADO "RC"
+---------------------------------------------------------------------------------------------
+
+INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
+	SELECT DISTINCT 'RC', LOS_BORBOTONES.fn_getDate(), 'Reserva Correcta', u.idUsuario, r.idReserva
+	FROM LOS_BORBOTONES.Reserva r
+		,LOS_BORBOTONES.Usuario u
+	WHERE u.Username = 'admin'
+	  AND r.idEstadia IS NULL
+	ORDER BY r.idReserva
 GO
