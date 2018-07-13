@@ -12,7 +12,7 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioHabitacion : Repositorio<Habitacion>
     {
-        public Boolean yaExisteHabitacionMismoPisoYNumero(Habitacion habitacion)
+        public Boolean yaExisteHabitacionMismoNumero(Habitacion habitacion)
         {
             int idHabitacionExistente = 0;
 
@@ -24,14 +24,12 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idHotel", habitacion.getHotel().getIdHotel());
             sqlCommand.Parameters.AddWithValue("@idHabitacion", habitacion.getIdHabitacion());
             sqlCommand.Parameters.AddWithValue("@numeroHab", habitacion.getNumero());
-            sqlCommand.Parameters.AddWithValue("@pisoHab", habitacion.getPiso());
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = @"
                 SELECT idHabitacion
                 FROM LOS_BORBOTONES.Habitacion
                 WHERE Numero = @numeroHab
-                  AND Piso = @pisoHab
                   AND idHotel = @idHotel
                   AND idHabitacion <> @idHabitacion
             ";

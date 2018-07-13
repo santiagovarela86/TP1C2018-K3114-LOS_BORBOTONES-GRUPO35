@@ -61,9 +61,9 @@ namespace FrbaHotel.AbmHabitacion
                 habitacion.setHotel(hotel);
                 habitacion.setTipoHabitacion(tipoHabitacion);
 
-                if (repositorioHabitacion.yaExisteHabitacionMismoPisoYNumero(habitacion))
+                if (repositorioHabitacion.yaExisteHabitacionMismoNumero(habitacion))
                 {
-                    MessageBox.Show("Ya existe una habitacion en ese piso con ese numero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ya existe una habitacion con ese numero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
