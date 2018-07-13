@@ -692,7 +692,7 @@ namespace FrbaHotel.Repositorios
             
             return idEstadia;
         }
-        public int GetReservaValida(int codReserva,DateTime date,Usuario user)
+        public int GetReservaValida(int codReserva,DateTime date,Usuario user,int hotelIn)
         {
             int idHotel = 0;
             int idReserva = 0;
@@ -742,14 +742,16 @@ namespace FrbaHotel.Repositorios
                 return 5;
 
             }
-            
+            /* esto miraba que sea cualquier hotel del usuario, no en el que esta logueado
             foreach (Hotel h in userIn.getHoteles())
             {
                 //si encuentro el hotel en el que el usuario trabaja entonces valido bien
                 if (h.getIdHotel() == idHotel)
                     hotelFound = 1;
-            }
-        
+            }*/
+            if (hotelIn == idHotel)
+                hotelFound = 1;
+
             if (hotelFound == 0)
                 return 3;
 
