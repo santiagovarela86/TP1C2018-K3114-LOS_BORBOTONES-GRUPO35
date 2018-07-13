@@ -1839,3 +1839,15 @@ CLOSE migroInconsistencias
 DEALLOCATE migroInconsistencias
 
 GO
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Creaciòn Consumible Habitacion
+
+INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio) 
+VALUES (1,'Costo por habitacion',0)		
+GO
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Creaciòn Consumible All inclusive
+
+INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio) 
+VALUES (2,'Descuento por regimen de estadia',0)		
+GO
