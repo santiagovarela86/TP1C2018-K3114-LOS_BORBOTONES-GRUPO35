@@ -83,7 +83,7 @@ namespace FrbaHotel.RegistrarEstadia
                 }
                 else if (estadoValidez == 5)
                 {
-                    MessageBox.Show("La estadia tiene un estado que no permite su ingreso o no es válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La reserva tiene un estado que no permite su ingreso o no es válida.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -116,7 +116,7 @@ namespace FrbaHotel.RegistrarEstadia
                     Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
                     if(this.sesion.getHotel().getIdHotel()!=reserva.getHotel().getIdHotel())
                         {
-                            MessageBox.Show("La estadia ingresada no pertenece al hotel en el que el usuario esta logueado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("La reserva ingresada no pertenece al hotel en el que el usuario esta logueado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }else
                             if (estado.Equals("RCI") | estado.Equals("RCCR"))
                             {
@@ -132,10 +132,10 @@ namespace FrbaHotel.RegistrarEstadia
                                 repoEstadoReserva.update(estadoReserva);
                                 MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
-                            else MessageBox.Show("La estadia ingresada no esta actualmente en estado 'Reserva con Ingreso' o 'Reserva con Consumibles Registrados'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            else MessageBox.Show("La reserva ingresada no esta actualmente en estado 'Reserva con Ingreso' o 'Reserva con Consumibles Registrados'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
-                    MessageBox.Show("La estadia ingresada no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("La estadia asociada a la reserva ingresada no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             else
