@@ -27,7 +27,9 @@ namespace FrbaHotel.RegistrarConsumible
             textBox1.Text = "";
             dataGridView1.DataSource = null;
             idEstadia = 0;
-            
+            botonAgregar.Enabled = false;
+            botonRegistrar.Enabled = false;
+            botonBorrar.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -43,7 +45,7 @@ namespace FrbaHotel.RegistrarConsumible
                 RepositorioEstadia repoEstadia = new RepositorioEstadia();
                 String estado = "";
 
-                idEstadia = int.Parse(textBox1.Text);
+                idEstadia = int.Parse(textBox1.Text.Trim());
                 //hago el get estado para ver si no termino de ponerle el Reserva Con Consumibles (RCC)
                 Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
                 if(reserva==null)
@@ -56,10 +58,24 @@ namespace FrbaHotel.RegistrarConsumible
                     if (estado.Equals("RCI") | estado.Equals("RCE"))
                     {
                         RepositorioConsumibles repositorioConsumibles = new RepositorioConsumibles();
-                        List<Consumible> consumibles = repositorioConsumibles.getByQuery(idEstadia);
-                        dataGridView1.DataSource = consumibles;
-                        dataGridView1.AutoResizeColumns();
-                        dataGridView1.ClearSelection();
+                        List<ConsumibleConCantidad> consumibles = repositorioConsumibles.getByQuery(idEstadia);
+
+                        //PARA QUE NO PINCHE SI NO TRAE RESULTADOS
+                        if (consumibles.Count.Equals(0))
+                        {
+                            dataGridView1.DataSource = null;
+                            botonAgregar.Enabled = true;
+                            botonRegistrar.Enabled = true;
+                        }
+                        else
+                        {
+                            dataGridView1.DataSource = consumibles;
+                            dataGridView1.AutoResizeColumns();
+                            dataGridView1.ClearSelection();
+
+                            botonAgregar.Enabled = true;
+                            botonRegistrar.Enabled = true;
+                        }                        
                     }
                     else
                         MessageBox.Show("La estadia debe estar con ingreso o con egreso para registrar consumibles.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -82,7 +98,7 @@ namespace FrbaHotel.RegistrarConsumible
                     }
                 else
                 {
-                    using (AltaConsumible form = new AltaConsumible(idEstadia))
+                    using (AgregarConsumible form = new AgregarConsumible(idEstadia))
                     {
                         var result = form.ShowDialog();
 
@@ -134,9 +150,9 @@ namespace FrbaHotel.RegistrarConsumible
                     if (result == System.Windows.Forms.DialogResult.Yes)
                     {
                         RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
-                        Consumible consumible = (Consumible)dataGridView1.CurrentRow.DataBoundItem;
+                        ConsumibleConCantidad consumible = (ConsumibleConCantidad)dataGridView1.CurrentRow.DataBoundItem;
 
-                        repoConsumible.baja(consumible,idEstadia);
+                        //repoConsumible.baja(consumible,idEstadia);
 
                         //CUANDO DOY DE BAJA EL CONSUMIBLE VUELVO A CARGAR LA LISTA
                         this.button2_Click(sender, e);
@@ -154,6 +170,7 @@ namespace FrbaHotel.RegistrarConsumible
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
         //ESTO LO PONGO PARA QUE EL NUMERO DE CALLE SOLO PUEDA SER UN NUMERO
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -164,6 +181,20 @@ namespace FrbaHotel.RegistrarConsumible
             }
         }
 
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
 
+            if (dgv == null) return;
+            if (dgv.CurrentRow.Selected)
+            {
+                botonBorrar.Enabled = true;
+            }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
