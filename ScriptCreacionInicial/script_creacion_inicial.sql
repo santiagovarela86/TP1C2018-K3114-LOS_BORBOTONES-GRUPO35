@@ -1748,7 +1748,7 @@ GO
 --Carga EstadoReserva, todas las cargo como Correctas
 
 INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado, Fecha, Descripcion, idUsuario, idReserva)
-		SELECT DISTINCT 'RC', r.FechaCreacion, 'Reserva Correcta', 4, r.idReserva
+		SELECT DISTINCT 'RF', r.FechaCreacion, 'Reserva Facturada', 4, r.idReserva
 		FROM LOS_BORBOTONES.Reserva r
 		JOIN LOS_BORBOTONES.Identidad i
 			ON i.TipoIdentidad = 'Usuario'
