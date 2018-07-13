@@ -38,7 +38,6 @@ namespace FrbaHotel.RegistrarEstadia
             int codReserva = 0;
             DateTime date = Utils.getSystemDatetimeNow();
             int estadoValidez = 0;
-            //DateTime dateTest = new DateTime(2017, 1, 1);
             RepositorioReserva repositorioReserva = new RepositorioReserva();
             if (textBox1.Text != "" )
             {

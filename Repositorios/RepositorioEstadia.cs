@@ -142,7 +142,7 @@ namespace FrbaHotel.Repositorios
                 decimal cantNoches =0;
                 //hago la cuenta de los dias que estuvo con la fecha de salida
 
-                cantNoches = (decimal)(estadia.getFechaSalida() -estadiaOriginal.getFechaEntrada()).TotalDays;
+                cantNoches = (decimal)(estadia.getFechaSalida() - estadiaOriginal.getFechaEntrada()).TotalDays;
                 String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
                 SqlCommand sqlCommand = new SqlCommand();

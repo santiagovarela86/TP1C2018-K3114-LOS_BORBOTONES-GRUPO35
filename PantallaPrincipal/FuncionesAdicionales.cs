@@ -160,7 +160,7 @@ namespace FrbaHotel
         }
         private void FacturarEstadia_Click(object sender, EventArgs e)
         {
-            using (FacturarEstadias formularioFacturarEstadia = new FacturarEstadias())
+            using (FacturarEstadias formularioFacturarEstadia = new FacturarEstadias(sesion))
             {
                 var resultFormFacturarEstadia = formularioFacturarEstadia.ShowDialog();
 
