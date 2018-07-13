@@ -683,7 +683,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@date", date);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT r.idReserva,r.idHotel,r.FechaHasta,r.DiasAlojados FROM LOS_BORBOTONES.Reserva as r,LOS_BORBOTONES.EstadoReserva as er WHERE r.CodigoReserva = @CodReserva and r.FechaDesde = @date and er.idReserva=r.idReserva and er.TipoEstado='RC'";
+            sqlCommand.CommandText = "SELECT r.idReserva,r.idHotel,r.FechaHasta,r.DiasAlojados FROM LOS_BORBOTONES.Reserva as r,LOS_BORBOTONES.EstadoReserva as er WHERE r.CodigoReserva = @CodReserva and r.FechaDesde = @date and er.idReserva=r.idReserva and er.TipoEstado IN ('RC','RM')";
             
             sqlConnection.Open();
 
@@ -701,8 +701,12 @@ namespace FrbaHotel.Repositorios
             if (idReserva == 0)
             {
                 //llamo a cancelar la reserva en estado reserva
-                RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();                
-                repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario(),date);
+                RepositorioEstadia repoEstadia = new RepositorioEstadia();
+                RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
+                String estado=repoEstadia.getEstado(codReserva);
+                if(estado.Equals("RCI"))
+                    return 5;
+                else    repoEstadoReserva.rechazarReserva(codReserva,userIn.getIdUsuario(),date);
                 return 2;
 
             }

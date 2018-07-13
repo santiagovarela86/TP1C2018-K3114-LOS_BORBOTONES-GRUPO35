@@ -38,7 +38,7 @@ namespace FrbaHotel.RegistrarEstadia
             int codReserva = 0;
             DateTime date = Utils.getSystemDatetimeNow();
             int estadoValidez = 0;
-            //DateTime dateTest = new DateTime(2017, 1, 1);
+            DateTime dateTest = new DateTime(2017, 1, 1);
             RepositorioReserva repositorioReserva = new RepositorioReserva();
             if (textBox1.Text != "" )
             {
@@ -46,8 +46,8 @@ namespace FrbaHotel.RegistrarEstadia
                 
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
                 //estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
-                estadoValidez = repositorioReserva.GetReservaValida(codReserva, Utils.getSystemDatetimeNow(), this.sesion.getUsuario());
-                if (estadoValidez!=2 && estadoValidez!=3 && estadoValidez!=4 && estadoValidez!=0)
+                estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
+                if (estadoValidez != 2 && estadoValidez != 3 && estadoValidez != 4 && estadoValidez != 0 && estadoValidez != 5)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
                     //Traigo otra pantalla para los huespedes
@@ -81,10 +81,14 @@ namespace FrbaHotel.RegistrarEstadia
                 {
                     MessageBox.Show("No se pudo dar de alta la estadia.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                else if (estadoValidez == 5)
+                {
+                    MessageBox.Show("La estadia ya tiene check in realizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show("Por favor ingresar codigo de reserva y username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por favor ingresar codigo de reserva.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
 
