@@ -144,7 +144,7 @@ namespace FrbaHotel.AbmReserva
             this.habitacionesDisponiblesGrid.Location = new System.Drawing.Point(12, 19);
             this.habitacionesDisponiblesGrid.Name = "habitacionesDisponiblesGrid";
             this.habitacionesDisponiblesGrid.ReadOnly = true;
-            this.habitacionesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.habitacionesDisponiblesGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.EnableResizing;
             this.habitacionesDisponiblesGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.habitacionesDisponiblesGrid.Size = new System.Drawing.Size(677, 190);
             this.habitacionesDisponiblesGrid.TabIndex = 9;
