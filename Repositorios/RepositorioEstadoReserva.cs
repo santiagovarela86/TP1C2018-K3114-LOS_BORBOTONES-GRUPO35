@@ -188,9 +188,37 @@ namespace FrbaHotel.Repositorios
             reader = sqlCommand.ExecuteReader();
 
             sqlConnection.Close();
-        } 
+        }
 
 
+
+        public void cancelarReservasPorNoShow(int idReserva)
+        {
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            RepositorioUsuario repoUsuario = new RepositorioUsuario();
+            Usuario usuario = repoUsuario.getByUsername("guest");
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+
+            sqlCommand.Parameters.AddWithValue("@idReserva", idReserva);
+            sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
+
+
+            sqlCommand.CommandText = "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) VALUES('RCNS',LOS_BORBOTONES.fn_getDate(),'Reserva Cancelada No Show',@idUsuario,@idReserva);";
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            reader.Read();
+
+            sqlConnection.Close();
+            
+        }
         override public void delete(EstadoReserva estadoReserva)
         {
             if (this.exists(estadoReserva))

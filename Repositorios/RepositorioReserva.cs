@@ -53,12 +53,6 @@ namespace FrbaHotel.Repositorios
                 DateTime fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
                 DateTime fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
                 decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
-                //Hotel hotel = repoHotel.getById(reader.GetOrdinal("idHotel"));
-                //Estadia estadia = repoEstadia.getById(reader.GetOrdinal("idEstadia"));
-                //Regimen regimen = repoRegimen.getById(reader.GetOrdinal("idRegimen"));                
-                //Cliente cliente = repoCliente.getById(reader.GetOrdinal("idCliente"));
-                //List<EstadoReserva> estados = repoEstadoReserva.getByIdReserva(idReserva);
-                //Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
                 Reserva reserva = new Reserva(idReserva, null, null, null, null, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, null);
                 reservas.Add(reserva);
             }
@@ -98,6 +92,41 @@ namespace FrbaHotel.Repositorios
             return hotel;
         }
 
+
+        public void cancelarReservasNoShow(Hotel hotel) {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@idHotel", hotel.getIdHotel());
+
+
+            sqlCommand.CommandText = "SELECT RES.idReserva FROM LOS_BORBOTONES.Reserva AS RES " + 
+                "WHERE NOT EXISTS( " + 
+                "SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE " +
+                "WHERE RES.idReserva = ESRE.idReserva " +
+                "AND ESRE.TipoEstado  IN ('RCR','RCC','RCNS','RCI','RCE','RCCR','RF') " +
+				") " +
+                "AND RES.idHotel= @idHotel " +
+                "AND RES.FechaDesde < LOS_BORBOTONES.fn_getDate();";
+
+            sqlConnection.Open();
+
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int idReserva = reader.GetInt32(reader.GetOrdinal("idReserva"));
+                RepositorioEstadoReserva repoEstado = new RepositorioEstadoReserva();
+                repoEstado.cancelarReservasPorNoShow(idReserva);
+            }
+
+            sqlConnection.Close();
+
+        }
         
         public Regimen getRegimenByIdReserva(Reserva reserva)
         {
