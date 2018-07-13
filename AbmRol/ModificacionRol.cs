@@ -103,7 +103,7 @@ namespace FrbaHotel.AbmRol
                 try
                 {
                     repositorioRol.update(rol);
-                    MessageBox.Show("Rol actualizado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Rol actualizado con éxito.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     //ME TRAIGO EL ROL ACTUALIZADO
                     this.rol = repositorioRol.getById(rol.getIdRol());

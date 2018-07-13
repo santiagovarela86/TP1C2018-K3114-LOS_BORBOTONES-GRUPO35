@@ -47,7 +47,7 @@ namespace FrbaHotel.RegistrarEstadia
                 //traigo la fecha veo si es valido, si corresponde al hotel del usuario
                 //estadoValidez = repositorioReserva.GetReservaValida(codReserva, dateTest, this.sesion.getUsuario());
                 estadoValidez = repositorioReserva.GetReservaValida(codReserva, Utils.getSystemDatetimeNow(), this.sesion.getUsuario());
-                if (estadoValidez!=2 && estadoValidez!=3 && estadoValidez!=4 && estadoValidez!=0)
+                if (estadoValidez != 2 && estadoValidez != 3 && estadoValidez != 4 && estadoValidez != 0 && estadoValidez != 5)
                 { 
                     //es valida ya se dio de alta la reserva(con usuario y fecha)
                     //Traigo otra pantalla para los huespedes
@@ -62,14 +62,14 @@ namespace FrbaHotel.RegistrarEstadia
 
                           if (result == DialogResult.OK)
                           {
-
+                              this.Close();
                           }
                       }
                 }
                 }
                 else if (estadoValidez == 2)
                 {
-                    MessageBox.Show("No es posible realizar check in sobre la reserva indicada; no está en fecha de realizar check in o ya fue realizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No es posible realizar check in sobre la reserva indicada; no está en fecha de realizar check in.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
 
                 }
@@ -81,10 +81,14 @@ namespace FrbaHotel.RegistrarEstadia
                 {
                     MessageBox.Show("No se pudo dar de alta la estadia.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                else if (estadoValidez == 5)
+                {
+                    MessageBox.Show("La estadia ya tiene un estado que no permite su ingreso.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show("Por favor ingresar codigo de reserva y username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por favor ingresar codigo de reserva.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
 

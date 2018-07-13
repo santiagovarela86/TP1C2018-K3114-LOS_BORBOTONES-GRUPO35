@@ -999,6 +999,7 @@ CREATE TABLE LOS_BORBOTONES.Estadia_X_Consumible (
 
 	idEstadia		INT		NOT NULL,
 	idConsumible	INT		NOT NULL,
+	Cantidad		INT 	NOT NULL
 )
 GO
 
@@ -1432,6 +1433,7 @@ GO
 	  JOIN LOS_BORBOTONES.Direccion d ON m.Hotel_Ciudad = d.Ciudad AND m.Hotel_Calle = d.Calle AND m.Hotel_Nro_Calle = d.NumeroCalle
 	  WHERE d.Ciudad IS NOT NULL
 	  GROUP BY c.idCategoria, d.idDireccion, LOS_BORBOTONES.concatenarNombreHotel(d.Calle, d.NumeroCalle) 
+GO
 	  
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
 
@@ -1477,6 +1479,7 @@ JOIN LOS_BORBOTONES.Hotel AS H ON H.Nombre=LOS_BORBOTONES.concatenarNombreHotel(
 JOIN LOS_BORBOTONES.Regimen AS R ON R.Descripcion=M.Regimen_Descripcion
 GROUP BY idHotel ,idRegimen
 ORDER BY idHotel ,idRegimen;
+GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga CierreTemporal
@@ -1578,6 +1581,7 @@ END
 
 CLOSE migracionReservasYEstadias
 DEALLOCATE migracionReservasYEstadias
+GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Migracion Consumible
@@ -1688,6 +1692,7 @@ WHERE m.Factura_Nro = f.NumeroFactura
   AND m.Consumible_Codigo = c.Codigo
 GROUP BY f.idFactura, f.FechaFacturacion, c.idConsumible, m.Item_Factura_Cantidad
 ORDER BY f.idFactura
+GO
 
 --Creacion de Tabla Temporal para guardar los importes segun el precio del regimen, cantidad de dias y cantidad de consumibles incluidos en itemFactura.
 -- El regimen All inclusive no carga consumibles en el monto total.
@@ -1708,7 +1713,8 @@ SELECT  DISTINCT f.NumeroFactura, r.idReserva, g.Descripcion, sum(c.Precio * i.C
 		JOIN LOS_BORBOTONES.Consumible c
 			ON i.idConsumible = c.idConsumible
 		WHERE  f.idFactura = i.idFactura
-	GROUP BY f.NumeroFactura, r.idReserva, g.Descripcion, g.Precio, e.CantidadNoches	
+	GROUP BY f.NumeroFactura, r.idReserva, g.Descripcion, g.Precio, e.CantidadNoches
+GO
 	
 --se corrige el montototal de cada factura, y los puntos obtenidos, de acuerdo al enunciado, teniendo en cuenta algunos campos de itemFactura
 	 
@@ -1718,21 +1724,6 @@ SET t1.Total =   t2.MontoTotal,
 FROM  LOS_BORBOTONES.Factura t1
 		JOIN  LOS_BORBOTONES.temporalMontoFactura t2
 		ON  t1.NumeroFactura = t2.NumeroFactura
-GO
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--- Asociacion Estadia_X_Consumible
-
-INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible) 
-		SELECT DISTINCT f.idEstadia, i.idConsumible
-		FROM LOS_BORBOTONES.Factura f
-		JOIN LOS_BORBOTONES.Estadia e
-			ON f.idEstadia = e.idEstadia 
-		JOIN LOS_BORBOTONES.ItemFactura i 
-			ON f.idFactura = i.idFactura
-		JOIN LOS_BORBOTONES.Consumible c
-			ON i.idConsumible = c.idConsumible
-	ORDER BY f.idEstadia, i.idConsumible
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1785,6 +1776,7 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND id2.NumeroDocumento = id1.NumeroDocumento
   AND id2.TipoDocumento = id1.TipoDocumento
   AND id1.idIdentidad < id2.idIdentidad
+GO
   
 INSERT INTO LOS_BORBOTONES.TemporalInconsistencias
 SELECT cliente2.idCliente as idClienteInconsistente
@@ -1797,6 +1789,7 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND id2.Mail = id1.Mail
   AND id1.idIdentidad < id2.idIdentidad
   AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
+GO
 
 DECLARE migroInconsistencias CURSOR FOR
 SELECT * FROM LOS_BORBOTONES.TemporalInconsistencias
@@ -1827,6 +1820,7 @@ CLOSE migroInconsistencias
 DEALLOCATE migroInconsistencias
 
 GO
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Creaciòn Consumible Habitacion
 
@@ -1838,4 +1832,23 @@ GO
 
 INSERT INTO LOS_BORBOTONES.Consumible(Codigo,Descripcion,Precio) 
 VALUES (2,'Descuento por regimen de estadia',0)		
+GO
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Asociacion Estadia_X_Consumible
+
+INSERT INTO LOS_BORBOTONES.Estadia_X_Consumible(idEstadia, idConsumible, Cantidad)
+SELECT estadia.idEstadia as idEstadia
+      ,consumible.idConsumible as idConsumible
+	  ,COUNT(Consumible_Codigo) as Cantidad
+  FROM GD1C2018.gd_esquema.Maestra
+	 ,LOS_BORBOTONES.Estadia estadia
+	 ,LOS_BORBOTONES.Reserva reserva
+	 ,LOS_BORBOTONES.Consumible consumible
+WHERE Consumible_Codigo IS NOT NULL
+  AND estadia.idEstadia = reserva.idReserva
+  AND reserva.CodigoReserva = Reserva_Codigo
+  AND Consumible_Codigo = consumible.Codigo
+GROUP BY estadia.idEstadia, consumible.idConsumible
+ORDER BY estadia.idEstadia
 GO

@@ -112,7 +112,7 @@ namespace FrbaHotel.AbmReserva
             this.reservarHabitacionButton.Enabled = false;
 
             DateTime fechaInicio = (DateTime)Utils.validateFields(calendarioDesde.Value, "Fecha Desde");
-            DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.Value, "Fecah Hasta");
+            DateTime fechaFin = (DateTime)Utils.validateFields(calendarioHasta.Value, "Fecha Hasta");
 
             if (fechaInicio < Utils.getSystemDatetimeNow())
             {

@@ -37,9 +37,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.botonAgregar = new System.Windows.Forms.Button();
+            this.botonRegistrar = new System.Windows.Forms.Button();
+            this.botonBorrar = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -125,12 +126,14 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(386, 150);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button3);
-            this.groupBox3.Controls.Add(this.button4);
-            this.groupBox3.Controls.Add(this.button5);
+            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.botonAgregar);
+            this.groupBox3.Controls.Add(this.botonRegistrar);
+            this.groupBox3.Controls.Add(this.botonBorrar);
             this.groupBox3.Location = new System.Drawing.Point(13, 273);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(402, 57);
@@ -138,35 +141,45 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Acciones";
             // 
-            // button3
+            // botonAgregar
             // 
-            this.button3.Location = new System.Drawing.Point(9, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Alta";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.botonAgregar.Location = new System.Drawing.Point(9, 19);
+            this.botonAgregar.Name = "botonAgregar";
+            this.botonAgregar.Size = new System.Drawing.Size(75, 23);
+            this.botonAgregar.TabIndex = 0;
+            this.botonAgregar.Text = "Agregar...";
+            this.botonAgregar.UseVisualStyleBackColor = true;
+            this.botonAgregar.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // botonRegistrar
             // 
-            this.button4.Location = new System.Drawing.Point(130, 19);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "Registrar consumibles";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.botonRegistrar.Location = new System.Drawing.Point(196, 19);
+            this.botonRegistrar.Name = "botonRegistrar";
+            this.botonRegistrar.Size = new System.Drawing.Size(90, 23);
+            this.botonRegistrar.TabIndex = 0;
+            this.botonRegistrar.Text = "Cerrar Registro";
+            this.botonRegistrar.UseVisualStyleBackColor = true;
+            this.botonRegistrar.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button5
+            // botonBorrar
             // 
-            this.button5.Location = new System.Drawing.Point(254, 19);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 0;
-            this.button5.Text = "Borrar consumible";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.botonBorrar.Location = new System.Drawing.Point(103, 19);
+            this.botonBorrar.Name = "botonBorrar";
+            this.botonBorrar.Size = new System.Drawing.Size(75, 23);
+            this.botonBorrar.TabIndex = 0;
+            this.botonBorrar.Text = "Quitar...";
+            this.botonBorrar.UseVisualStyleBackColor = true;
+            this.botonBorrar.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(303, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(90, 23);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Salir";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // Consumibles
             // 
@@ -199,8 +212,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button botonAgregar;
+        private System.Windows.Forms.Button botonRegistrar;
+        private System.Windows.Forms.Button botonBorrar;
+        private System.Windows.Forms.Button button2;
     }
 }
