@@ -142,7 +142,7 @@
     <Compile Include="CambiarPassword\CambiarPasswordForm.Designer.cs">
       <DependentUpon>CambiarPasswordForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modelo\ConsumibleConCantidad.cs" />
+    <Compile Include="Modelo\ConsumibleParaMostrar.cs" />
     <Compile Include="Repositorios\RepositorioListadoEstadistico.cs" />
     <Compile Include="ListadoEstadistico\Listado.cs">
       <SubType>Form</SubType>

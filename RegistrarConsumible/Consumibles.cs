@@ -58,7 +58,7 @@ namespace FrbaHotel.RegistrarConsumible
                     if (estado.Equals("RCI") | estado.Equals("RCE"))
                     {
                         RepositorioConsumibles repositorioConsumibles = new RepositorioConsumibles();
-                        List<ConsumibleConCantidad> consumibles = repositorioConsumibles.getByQuery(idEstadia);
+                        List<ConsumibleParaMostrar> consumibles = repositorioConsumibles.getByQuery(idEstadia);
 
                         //PARA QUE NO PINCHE SI NO TRAE RESULTADOS
                         if (consumibles.Count.Equals(0))
@@ -140,24 +140,29 @@ namespace FrbaHotel.RegistrarConsumible
         {
             RepositorioReserva repoReserva = new RepositorioReserva();
             Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
-                if(reserva==null)
-                    {
-                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                else
+
+            DialogResult result = MessageBox.Show("¿Está seguro que desea quitar este consumible?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
+                ConsumibleParaMostrar consParaMostrar = (ConsumibleParaMostrar)dataGridView1.CurrentRow.DataBoundItem;
+
+                try
                 {
-                    DialogResult result = MessageBox.Show("¿Está seguro que desea quitar este consumible?", "Baja Logica", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                    if (result == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
-                        ConsumibleConCantidad consumible = (ConsumibleConCantidad)dataGridView1.CurrentRow.DataBoundItem;
-
-                        //repoConsumible.baja(consumible,idEstadia);
-
-                        //CUANDO DOY DE BAJA EL CONSUMIBLE VUELVO A CARGAR LA LISTA
-                        this.button2_Click(sender, e);
-                    }
+                    repoConsumible.baja(consParaMostrar.getConsumible(), idEstadia);
+                    MessageBox.Show("Consumible(s) eliminado(s) correctamente de la estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message, "Error al dar de baja el consumible de la estadia.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                //CUANDO DOY DE BAJA EL CONSUMIBLE VUELVO A CARGAR LA LISTA
+                this.button2_Click(sender, e);
+
+                this.botonBorrar.Enabled = false;
+            }
+
         }
 
         //CIERRO LA VENTANA CON ESCAPE

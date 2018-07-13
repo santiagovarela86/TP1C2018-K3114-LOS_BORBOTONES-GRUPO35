@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace FrbaHotel.Modelo
 {
-    public class ConsumibleConCantidad
+    public class ConsumibleParaMostrar
     {
         private Consumible consumible = null;
         private int cantidad = 0;
 
-        public ConsumibleConCantidad(Consumible consumible, int cantidad)
+        public ConsumibleParaMostrar(Consumible consumible, int cantidad)
         {
             this.consumible = consumible;
             this.cantidad = cantidad;

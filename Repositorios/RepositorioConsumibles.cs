@@ -335,50 +335,35 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();
         }
 
-        /*
-        public void baja(Consumible consumible,int idEstadia)
+        public void baja(Consumible consumible, int idEstadia)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.Parameters.AddWithValue("@IdConsumible", consumible.getIdConsumible());
-            sqlCommand.Parameters.AddWithValue("@IdEstadia", idEstadia);
+            sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
+            sqlCommand.Parameters.AddWithValue("@idConsumible", consumible.getIdConsumible());
 
-            StringBuilder sqlBuilder = new StringBuilder();
-            sqlBuilder.Append(@"
-                    BEGIN TRY
-                    BEGIN TRANSACTION
+            sqlCommand.CommandText = @"
+                DELETE FROM LOS_BORBOTONES.Estadia_X_Consumible
+                WHERE idEstadia = @idEstadia AND idConsumible = @idConsumible
+            ";
 
-                    DELETE TOP (1) FROM LOS_BORBOTONES.Estadia_X_Consumible
-                    WHERE idConsumible=@IdConsumible and idEstadia=@IdEstadia;
-
-                ");
-            sqlBuilder.Append(@"
-                    COMMIT
-                    END TRY
-
-                    BEGIN CATCH
-                    ROLLBACK
-                    END CATCH
-                ");
-
-            sqlCommand.CommandText = sqlBuilder.ToString();
             sqlConnection.Open();
+
             reader = sqlCommand.ExecuteReader();
 
-            sqlConnection.Close();
-               
-        }
-        */
+            reader.Read();
 
-        public List<ConsumibleConCantidad> getByQuery(int idEstadia)
+            sqlConnection.Close();
+        }
+
+        public List<ConsumibleParaMostrar> getByQuery(int idEstadia)
         {
-            List<ConsumibleConCantidad> consumibles = new List<ConsumibleConCantidad>();
+            List<ConsumibleParaMostrar> consumibles = new List<ConsumibleParaMostrar>();
             String query = @"
                 SELECT *
 	            FROM LOS_BORBOTONES.Estadia_X_Consumible estXcons
@@ -402,7 +387,7 @@ namespace FrbaHotel.Repositorios
                 while (reader.Read())
                 {
                     Consumible consumible = this.getById(reader.GetInt32(reader.GetOrdinal("idConsumible")));
-                    ConsumibleConCantidad consCantidad = new ConsumibleConCantidad(consumible, reader.GetInt32(reader.GetOrdinal("Cantidad")));
+                    ConsumibleParaMostrar consCantidad = new ConsumibleParaMostrar(consumible, reader.GetInt32(reader.GetOrdinal("Cantidad")));
                     consumibles.Add(consCantidad);
                 }
 
