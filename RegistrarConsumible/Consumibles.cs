@@ -75,6 +75,10 @@ namespace FrbaHotel.RegistrarConsumible
 
                             botonAgregar.Enabled = true;
                             botonRegistrar.Enabled = true;
+
+                            //ESTO LO TENGO QUE HACER PARA QUE NO APAREZCA SIEMPRE SELECCIONADO EL PRIMER ITEM
+                            dataGridView1.CurrentCell = null;
+                            dataGridView1.ClearSelection();
                         }                        
                     }
                     else
@@ -123,18 +127,25 @@ namespace FrbaHotel.RegistrarConsumible
 
                     int idEstadoReserva = 0;
                     Reserva reserva = repoReserva.getIdByIdEstadia(idEstadia);
-                    if (reserva == null)
+
+                    String desc = "Reserva Con Consumibles Registrados";
+                    String tipoEstado = "RCCR";
+                    EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
+
+                    try
                     {
-                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {        
-                        String desc = "Reserva Con Consumibles Registrados";
-                        String tipoEstado = "RCCR";
-                        EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
                         repoEstadoReserva.update(estadoReserva);
-                        MessageBox.Show("Consumibles registrados.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Consumibles registrados. Ya puede facturar la estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.botonAgregar.Enabled = false;
+                        this.botonBorrar.Enabled = false;
+                        this.botonRegistrar.Enabled = false;
+                        this.dataGridView1.DataSource = null;
                     }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.Message, "Error al cerrar el registro.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
         }
         private void button5_Click(object sender, EventArgs e)
         {

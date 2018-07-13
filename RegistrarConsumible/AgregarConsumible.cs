@@ -48,7 +48,16 @@ namespace FrbaHotel.RegistrarConsumible
                consumible = item.DataBoundItem as Consumible;
             }
 
-            int cantidad = int.Parse(textBox1.Text.Trim());
+            int cantidad;
+
+            if (textBox1.Text.Trim().Equals(""))
+            {
+                cantidad = 1;
+            }
+            else
+            {
+                cantidad = int.Parse(textBox1.Text.Trim());
+            }
 
             RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
 

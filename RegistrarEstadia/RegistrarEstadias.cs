@@ -62,7 +62,7 @@ namespace FrbaHotel.RegistrarEstadia
 
                           if (result == DialogResult.OK)
                           {
-
+                              this.Close();
                           }
                       }
                 }
