@@ -1488,20 +1488,6 @@ ORDER BY idHotel ,idRegimen;
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Carga CierreTemporal
--- Se define por el momento Descripcion = 'Mantenimiento' y Ampliacion
-
-INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
-		SELECT  DISTINCT convert(datetime, '2016-12-29 00:00:00.000', 121), convert(datetime, '2016-12-31 00:00:00.000', 121) , 'Mantenimiento', idHotel
-		FROM LOS_BORBOTONES.Hotel
-GO
-
-INSERT INTO LOS_BORBOTONES.CierreTemporal(FechaInicio, FechaFin, Descripcion, idHotel)
-		SELECT  DISTINCT convert(datetime, '2021-01-01 00:00:00.000', 121), convert(datetime, '2021-01-05 00:00:00.000', 121) , 'Ampliacion', idHotel
-		FROM LOS_BORBOTONES.Hotel
-GO
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Migración Reserva y Estadía
 --------------------------------------------------------------------------------
 
