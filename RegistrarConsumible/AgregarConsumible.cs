@@ -30,7 +30,8 @@ namespace FrbaHotel.RegistrarConsumible
         private void AltaConsumible_Load(object sender, EventArgs e)
         {
             RepositorioConsumibles repositorioConsumible = new RepositorioConsumibles();
-            dataGridView1.DataSource = repositorioConsumible.getAll().OrderBy(c => c.getDescripcion()).ToList();
+            //FILTRO LOS CONSUMIBLES QUE USO INTERNAMENTE
+            dataGridView1.DataSource = repositorioConsumible.getAll().FindAll(cm => !cm.getCodigo().Equals(1) && !cm.getCodigo().Equals(2)).OrderBy(c => c.getDescripcion()).ToList();
             dataGridView1.AutoResizeColumns();
             dataGridView1.ClearSelection();
             textBox1.Text = "";

@@ -187,38 +187,21 @@ namespace FrbaHotel.Repositorios
             //hago for each de los consumibles y sumo total y puntos
             ItemFactura itemFactura = null;
             float montoTotal = 0;
-            
 
-
-            /*
-                foreach (Consumible item in consumiblesXEstadia.Select(cm => cm.getConsumible()))
+            foreach (ConsumibleParaMostrar cm in consumiblesXEstadia)
+            {
+                int cantidad = cm.getCantidad();
+                
+                if (!allInclusive)
                 {
-                    cant = 0;
-                    foreach (Consumible item2 in consumiblesXEstadia.Select(cm => cm.getConsumible())
-                    {
-                        if (item.getCodigo()==item2.getCodigo())
-                        {
-                            cant = cant + 1;
-                            //consumiblesXEstadia.Remove(item2);
-                            consumiblesXEstadia.remo(cm => item2.getIdConsumible().Equals(cm.//.Remove(item2);
-                            
-                        }   
-                    }
-                    if(cant!=0)
-                    {
-                        idConsumible = item.getIdConsumible();
-                        if (!allInclusive)
-                        {
-                            monto = item.getPrecio();
-                        }
-                        else monto = 0;
-
-                        itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
-                        itemsFactura.Add(itemFactura);
-                        montoTotal = monto + montoTotal;
-                    }
+                    monto = cm.getConsumible().getPrecio();
                 }
-             */
+                else monto = 0;
+
+                itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
+                itemsFactura.Add(itemFactura);
+                montoTotal = monto + montoTotal;
+            }             
 
             if (allInclusive)
             {

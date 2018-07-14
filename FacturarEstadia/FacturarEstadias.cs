@@ -138,7 +138,7 @@ namespace FrbaHotel.FacturarEstadia
                 if (idFactura == 2)
                     MessageBox.Show("Error cargando la factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (idFactura == 1)
-                    MessageBox.Show("Estadia facturada correctamente.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Estadia facturada correctamente. Factura Numero: " + repoFact.getLastNumeroFactura() + ".", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.ListadoFacturarEstadia_Load(sender, e);    
                 
             }else
@@ -147,20 +147,20 @@ namespace FrbaHotel.FacturarEstadia
                 nombreTarjeta = textTitularTarjeta.Text.Trim();
                 if (textNumeroTarjeta.Text != "" )
                 {
-                    nroTarjeta = Decimal.Parse(textNumeroTarjeta.Text);
+                    nroTarjeta = Decimal.Parse(textNumeroTarjeta.Text.Trim());
                 }
                 if (textCodigoSeguridad.Text != "")
                 {
-                    codSegTarjeta = int.Parse(textCodigoSeguridad.Text);
+                    codSegTarjeta = int.Parse(textCodigoSeguridad.Text.Trim());
                 }
                 if (textBox5.Text != "")
                 {
-                    vencTarjeta = int.Parse(textBox5.Text);
+                    vencTarjeta = int.Parse(textBox5.Text.Trim());
                 }
                 if (vencTarjeta==0 |codSegTarjeta==0| nroTarjeta==0 | nombreTarjeta=="")
                 {
                     MessageBox.Show("Por favor completar todos los campos de informacion de tarjeta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.ListadoFacturarEstadia_Load(sender, e);    
+                    //this.ListadoFacturarEstadia_Load(sender, e);    
                 }else
                 {
                     //tomo la informacion de la estadia, consumibles por estadia y datos de pago
@@ -170,7 +170,9 @@ namespace FrbaHotel.FacturarEstadia
                     if (idFactura == 2)
                         MessageBox.Show("Error cargando la factura.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     if (idFactura == 1)
-                         MessageBox.Show("Estadia facturada correctamente.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    {
+                        MessageBox.Show("Estadia facturada correctamente. Factura Numero: " + repoFact.getLastNumeroFactura() + ".", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     this.ListadoFacturarEstadia_Load(sender, e);    
                 }
             }    
