@@ -146,7 +146,7 @@ namespace FrbaHotel.Repositorios
         }
 
 
-        public int facturar(List<Estadia> estadias, List<Consumible> consumiblesXEstadia, String tipoPago,String nombreTarjeta,decimal nroTarjeta,int codSegTarjeta,int vencTarjeta)
+        public int facturar(List<Estadia> estadias, List<ConsumibleParaMostrar> consumiblesXEstadia, String tipoPago,String nombreTarjeta,decimal nroTarjeta,int codSegTarjeta,int vencTarjeta)
         {
             int idFactura = 0;
             int resultado = 0;
@@ -188,16 +188,19 @@ namespace FrbaHotel.Repositorios
             ItemFactura itemFactura = null;
             float montoTotal = 0;
             
-            
-                foreach (Consumible item in consumiblesXEstadia.ToList())
+
+
+            /*
+                foreach (Consumible item in consumiblesXEstadia.Select(cm => cm.getConsumible()))
                 {
                     cant = 0;
-                    foreach (Consumible item2 in consumiblesXEstadia.ToList())
+                    foreach (Consumible item2 in consumiblesXEstadia.Select(cm => cm.getConsumible())
                     {
                         if (item.getCodigo()==item2.getCodigo())
                         {
                             cant = cant + 1;
-                            consumiblesXEstadia.Remove(item2);
+                            //consumiblesXEstadia.Remove(item2);
+                            consumiblesXEstadia.remo(cm => item2.getIdConsumible().Equals(cm.//.Remove(item2);
                             
                         }   
                     }
@@ -215,6 +218,7 @@ namespace FrbaHotel.Repositorios
                         montoTotal = monto + montoTotal;
                     }
                 }
+             */
 
             if (allInclusive)
             {

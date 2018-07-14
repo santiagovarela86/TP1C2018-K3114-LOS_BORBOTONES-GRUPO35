@@ -30,7 +30,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buscarEstadia = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textIdEstadia = new System.Windows.Forms.TextBox();
@@ -62,7 +62,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.buscarEstadia);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textIdEstadia);
@@ -73,15 +73,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtros de búsqueda";
             // 
-            // button2
+            // buscarEstadia
             // 
-            this.button2.Location = new System.Drawing.Point(377, 26);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Buscar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buscarEstadia.Location = new System.Drawing.Point(377, 26);
+            this.buscarEstadia.Name = "buscarEstadia";
+            this.buscarEstadia.Size = new System.Drawing.Size(75, 23);
+            this.buscarEstadia.TabIndex = 7;
+            this.buscarEstadia.Text = "Buscar";
+            this.buscarEstadia.UseVisualStyleBackColor = true;
+            this.buscarEstadia.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -185,10 +185,10 @@
             // textBox5
             // 
             this.textBox5.Location = new System.Drawing.Point(469, 50);
+            this.textBox5.MaxLength = 9;
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(48, 20);
             this.textBox5.TabIndex = 0;
-            this.textBox5.MaxLength = 9;
             this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // groupBox3
@@ -300,6 +300,7 @@
             // 
             // FacturarEstadias
             // 
+            this.AcceptButton = this.buscarEstadia;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 512);
@@ -338,7 +339,7 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buscarEstadia;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox5;

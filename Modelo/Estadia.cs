@@ -92,8 +92,8 @@ namespace FrbaHotel.Modelo
 
         //Estos metodos extra los necesito para popular los combo box y data grid view
         //public int IdEstadia { get { return this.getIdEstadia(); } }
-        public Usuario UsuarioCheckIn { get { return this.getUsuarioCheckIn(); } }
-        public Usuario UsuarioCheckOut { get { return this.getUsuarioCheckOut(); } }
+        public String UsuarioCheckIn { get { return this.getUsuarioCheckIn().getUsername(); } }
+        public String UsuarioCheckOut { get { return this.getUsuarioCheckOut().getUsername(); } }
         public DateTime FechaEntrada { get { return this.getFechaEntrada(); } }
         public DateTime FechaSalida { get { return this.getFechaSalida(); } }
         public Boolean Facturada { get { return this.getFacturada(); } }

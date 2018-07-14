@@ -16,7 +16,9 @@ namespace FrbaHotel.FacturarEstadia
     {
         private Sesion sesion = null;
         List<Estadia> estadias = new List<Estadia>();
-        List<Consumible> consumiblesXEstadia = new List<Consumible>();
+        List<ConsumibleParaMostrar> consumiblesXEstadia = new List<ConsumibleParaMostrar>();
+        private RepositorioConsumibles repoConsumibles = new RepositorioConsumibles();
+
         public FacturarEstadias(Sesion sesion)
         {
             InitializeComponent();
@@ -98,7 +100,8 @@ namespace FrbaHotel.FacturarEstadia
                 dataGridView1.ClearSelection();
                 //lleno los consumibles por estadia en el datagrid2
                 //List<Consumible> consumiblesXEstadia = new List<Consumible>();
-                consumiblesXEstadia = repositorioEstadia.getConsumiblesXIdEstadia(estadia.getIdEstadia());
+                //repositorioEstadia.getConsumiblesXIdEstadia(estadia.getIdEstadia()).ForEach(i => consumiblesXEstadia.Add(new ConsumibleParaMostrar(i, );
+                consumiblesXEstadia = repoConsumibles.getByQuery(estadia.getIdEstadia());
                 dataGridView2.DataSource = consumiblesXEstadia;
                 dataGridView2.AutoResizeColumns();
                 dataGridView2.ClearSelection();                
