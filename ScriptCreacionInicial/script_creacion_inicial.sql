@@ -1751,6 +1751,7 @@ GO
 
 --------------------------------------------------------------------------------------------------------------------------------
 --  LAS INCONSISTENCIAS DE LOS CLIENTES SE MANEJAN DE LA SIGUIENTE MANERA:
+-- SI HAY DOS CLIENTES
 --	SE MARCA EL CLIENTE COMO INCONSISTENTE, Y LA PROXIMA VEZ QUE SE INTENTA RESERVAR CON UN CLIENTE O MODIFICARLO
 --	SE MUESTRA POR GUI UN CARTEL QUE DEBE ACTUALIZAR LOS DATOS PRIMERO.
 --  INCONSISTENCIA: MAIL DUPLICADO O TIPO Y NUMERO DE DOCUMENTO DUPLICADO.
@@ -1763,13 +1764,48 @@ FROM LOS_BORBOTONES.Cliente cliente1
 	,LOS_BORBOTONES.Cliente cliente2
 	,LOS_BORBOTONES.Identidad id1
 	,LOS_BORBOTONES.Identidad id2
+	WHERE cliente1.idIdentidad = id1.idIdentidad
+	AND cliente2.idIdentidad = id2.idIdentidad
+	AND id2.NumeroDocumento = id1.NumeroDocumento
+	AND id2.TipoDocumento = id1.TipoDocumento
+	AND id1.idIdentidad < id2.idIdentidad
+UNION
+SELECT cliente1.idCliente as idClienteInconsistente
+FROM LOS_BORBOTONES.Cliente cliente1
+	,LOS_BORBOTONES.Cliente cliente2
+	,LOS_BORBOTONES.Identidad id1
+	,LOS_BORBOTONES.Identidad id2
 WHERE cliente1.idIdentidad = id1.idIdentidad
   AND cliente2.idIdentidad = id2.idIdentidad
   AND id2.NumeroDocumento = id1.NumeroDocumento
   AND id2.TipoDocumento = id1.TipoDocumento
   AND id1.idIdentidad < id2.idIdentidad
 GO
-  
+
+INSERT INTO LOS_BORBOTONES.TemporalInconsistencias
+SELECT cliente2.idCliente as idClienteInconsistente
+FROM LOS_BORBOTONES.Cliente cliente1
+	,LOS_BORBOTONES.Cliente cliente2
+	,LOS_BORBOTONES.Identidad id1
+	,LOS_BORBOTONES.Identidad id2
+WHERE cliente1.idIdentidad = id1.idIdentidad
+  AND cliente2.idIdentidad = id2.idIdentidad
+  AND id2.Mail = id1.Mail
+  AND id1.idIdentidad < id2.idIdentidad
+  AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
+UNION
+SELECT cliente1.idCliente as idClienteInconsistente
+FROM LOS_BORBOTONES.Cliente cliente1
+	,LOS_BORBOTONES.Cliente cliente2
+	,LOS_BORBOTONES.Identidad id1
+	,LOS_BORBOTONES.Identidad id2
+WHERE cliente1.idIdentidad = id1.idIdentidad
+  AND cliente2.idIdentidad = id2.idIdentidad
+  AND id2.Mail = id1.Mail
+  AND id1.idIdentidad < id2.idIdentidad
+  AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
+GO
+
 INSERT INTO LOS_BORBOTONES.TemporalInconsistencias
 SELECT cliente2.idCliente as idClienteInconsistente
 FROM LOS_BORBOTONES.Cliente cliente1
@@ -1783,15 +1819,15 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
 GO
 
-DECLARE migroInconsistencias CURSOR FOR
+DECLARE cursorClienteInconsistente CURSOR FOR
 SELECT * FROM LOS_BORBOTONES.TemporalInconsistencias
 
 DECLARE @idClienteInconsistente INT
 
-OPEN migroInconsistencias
+OPEN cursorClienteInconsistente
 
 -- Perform the first fetch.
-FETCH NEXT FROM migroInconsistencias
+FETCH NEXT FROM cursorClienteInconsistente
 INTO @idClienteInconsistente
 
 -- Check @@FETCH_STATUS to see if there are any more rows to fetch.
@@ -1804,12 +1840,12 @@ BEGIN
 	WHERE idCliente = @idClienteInconsistente;
 	
     -- This is executed as long as the previous fetch succeeds.
-    FETCH NEXT FROM migroInconsistencias
+    FETCH NEXT FROM cursorClienteInconsistente
     INTO @idClienteInconsistente
 END
 
-CLOSE migroInconsistencias
-DEALLOCATE migroInconsistencias
+CLOSE cursorClienteInconsistente
+DEALLOCATE cursorClienteInconsistente
 
 GO
 
