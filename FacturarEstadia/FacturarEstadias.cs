@@ -75,7 +75,7 @@ namespace FrbaHotel.FacturarEstadia
                     MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                if (estadia.getCantidadNoches() == 0 | (!estadoReserva.getTipoEstado().Equals("RCE") && !estadoReserva.getTipoEstado().Equals("RCCR")) | estadia.getFacturada() == true | reserva.getHotel().getIdHotel() != this.sesion.getHotel().getIdHotel())
+                if ( (!estadoReserva.getTipoEstado().Equals("RCE") && !estadoReserva.getTipoEstado().Equals("RCCR")) | estadia.getFacturada() == true | reserva.getHotel().getIdHotel() != this.sesion.getHotel().getIdHotel())
              {
                  if(estadoReserva.getTipoEstado().Equals("RCI"))
                      MessageBox.Show("Todavia no se realizo el checkout de la estadia ingresada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -83,8 +83,6 @@ namespace FrbaHotel.FacturarEstadia
                      MessageBox.Show("La estadia ya fue facturada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  else if (estadia.getFacturada() == true)
                      MessageBox.Show("La estadia ingresada ya fue facturada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                 else if (estadia.getCantidadNoches() == 0)
-                    MessageBox.Show("La estadia ingresada no es correcta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  else if (reserva.getHotel().getIdHotel() != this.sesion.getHotel().getIdHotel())
                      MessageBox.Show("La estadia ingresada no corresponde al hotel al cual el usuario esta logueado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                  else
