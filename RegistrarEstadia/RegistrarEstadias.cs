@@ -59,12 +59,11 @@ namespace FrbaHotel.RegistrarEstadia
                       {
                           var result = form.ShowDialog();
 
-                          if (result == DialogResult.OK)
-                          {
-                              this.Close();
-                          }
+                          this.Close();
                       }
-                }
+                    }
+
+                    this.Close();
                 }
                 else if (estadoValidez == 2)
                 {
