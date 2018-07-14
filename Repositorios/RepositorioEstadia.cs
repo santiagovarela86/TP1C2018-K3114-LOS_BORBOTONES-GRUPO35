@@ -59,9 +59,21 @@ namespace FrbaHotel.Repositorios
                 }
 
                 fechaEntrada = reader.GetDateTime(reader.GetOrdinal("FechaEntrada"));
-                fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("FechaSalida")))
+                {
+                    fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
+                }
+
+                //fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
                 facturada = reader.GetBoolean(reader.GetOrdinal("Facturada"));
-                cantidadNoches = reader.GetDecimal(reader.GetOrdinal("CantidadNoches"));
+
+                if (!reader.IsDBNull(reader.GetOrdinal("CantidadNoches")))
+                {
+                    cantidadNoches = reader.GetDecimal(reader.GetOrdinal("CantidadNoches"));
+                }
+
+                //cantidadNoches = reader.GetDecimal(reader.GetOrdinal("CantidadNoches"));
             }
 
             //Cierro Primera Consulta
