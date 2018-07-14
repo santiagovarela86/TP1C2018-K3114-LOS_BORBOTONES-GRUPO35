@@ -270,6 +270,9 @@ namespace FrbaHotel.Repositorios
             Reserva reserva = null;
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
             RepositorioHotel repoHotel = new RepositorioHotel();
+            RepositorioEstadia repoEstadia = new RepositorioEstadia();
+            RepositorioCliente repoClientes = new RepositorioCliente();
+
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             SqlCommand sqlCommand = new SqlCommand();
@@ -278,7 +281,7 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idEstadia", idEstadia);
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "SELECT TOP 1 * FROM LOS_BORBOTONES.Reserva WHERE idEstadia = @idEstadia";
+            sqlCommand.CommandText = "SELECT * FROM LOS_BORBOTONES.Reserva WHERE idEstadia = @idEstadia";
 
             sqlConnection.Open();
 
@@ -293,11 +296,10 @@ namespace FrbaHotel.Repositorios
                 DateTime fechaHasta = reader.SafeGetDateTime(reader.GetOrdinal("FechaHasta"));
                 DateTime fechaCreacion = reader.SafeGetDateTime(reader.GetOrdinal("FechaCreacion"));
                 Hotel hotel = repoHotel.getById(reader.GetInt32(reader.GetOrdinal("idHotel"))); ;
-                //Regimen regimen = null;
-                Regimen regimen = repoRegimen.getById(reader.GetInt32(reader.GetOrdinal("idRegimen")));                
-                Estadia estadia = null;
-                Cliente cliente = null;
-                List<EstadoReserva> estados = new List<EstadoReserva>();
+                Regimen regimen = repoRegimen.getById(reader.GetInt32(reader.GetOrdinal("idRegimen")));
+                Estadia estadia = repoEstadia.getById(reader.GetInt32(reader.GetOrdinal("idEstadia")));
+                Cliente cliente = repoClientes.getById(reader.GetInt32(reader.GetOrdinal("idCliente")));
+                List<EstadoReserva> estados = new List<EstadoReserva>(); //NO TRAE LOS ESTADOS DE LA RESERVA DE LA BASE?
                 reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
             }
             sqlConnection.Close();

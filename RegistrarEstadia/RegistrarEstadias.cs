@@ -119,17 +119,23 @@ namespace FrbaHotel.RegistrarEstadia
                         }else
                             if (estado.Equals("RCI") | estado.Equals("RCCR"))
                             {
-                                Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
+                                //Estadia estadia = new Estadia(idEstadia, this.sesion.getUsuario(), date);
+                                Estadia estadia = reserva.getEstadia();
+                                estadia.setFechaSalida(date);
+                                estadia.setCantidadNoches(Convert.ToDecimal((date - reserva.getFechaDesde()).TotalDays));
+                                estadia.setUsuarioOut(this.sesion.getUsuario());
+
                                 repoEstadia.update(estadia);
                                 //hago update de EstadoReserva
                                 RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
-                                int idEstadoReserva = 0;
+                                //int idEstadoReserva = 0;
                                 //Reserva reserva = repoReserva.getIdByIdEstadia(estadia.getIdEstadia());
                                 String desc = "Reserva Con Egreso";
                                 String tipoEstado = "RCE";
-                                EstadoReserva estadoReserva = new EstadoReserva(idEstadoReserva, this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
+                                EstadoReserva estadoReserva = new EstadoReserva(reserva.getIdReserva(), this.sesion.getUsuario(), reserva, tipoEstado, date, desc);
                                 repoEstadoReserva.update(estadoReserva);
                                 MessageBox.Show("Check out correcto, proceder a facturar Estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                this.Close();
                             }
                             else MessageBox.Show("La reserva ingresada no esta actualmente en estado 'Reserva con Ingreso' o 'Reserva con Consumibles Registrados'.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

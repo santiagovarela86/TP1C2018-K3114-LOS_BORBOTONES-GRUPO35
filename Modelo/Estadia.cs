@@ -65,6 +65,21 @@ namespace FrbaHotel.Modelo
             return this.fechaSalida;
         }
 
+        public void setFechaSalida(DateTime date)
+        {  
+            this.fechaSalida = date;
+        }
+
+        public void setCantidadNoches(decimal cantidad)
+        {
+            this.cantidadNoches = cantidad;
+        }
+
+        public void setUsuarioOut(Usuario usuario)
+        {
+            this.usuarioCheckOut = usuario;
+        }
+
         public Boolean getFacturada()
         {
             return this.facturada;
