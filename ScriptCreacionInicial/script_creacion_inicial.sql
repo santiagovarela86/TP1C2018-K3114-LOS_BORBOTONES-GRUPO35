@@ -922,7 +922,7 @@ CREATE TABLE LOS_BORBOTONES.Estadia (
 	CantidadNoches	NUMERIC(18,0),
 	Facturada		BIT			DEFAULT 1,
 	idUsuarioIn		INT			NOT NULL,
-	idUsuarioOut	INT			NOT NULL,
+	idUsuarioOut	INT,
 		
 )
 GO
