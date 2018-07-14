@@ -48,15 +48,19 @@ namespace FrbaHotel.RegistrarConsumible
                 idEstadia = int.Parse(textBox1.Text.Trim());
                 //hago el get estado para ver si no termino de ponerle el Reserva Con Consumibles (RCC)
                 Reserva reserva= repoReserva.getIdByIdEstadia(idEstadia);
-                if((reserva==null)|reserva.getHotel().getIdHotel()!=this.sesion.getHotel().getIdHotel())
-                    {
-                    if(reserva==null)
-                        MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    else MessageBox.Show("La estadia ingresada no corresponde al hotel al cual el usuario esta logueado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+
+                if (reserva == null)
+                {
+                    MessageBox.Show("La estadia ingresada no existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 else
                 {
-                    estado = repoEstadia.getEstado((int)reserva.getCodigoReserva());
+                    if (reserva.getHotel().getIdHotel()!=this.sesion.getHotel().getIdHotel()){
+                        MessageBox.Show("La estadia ingresada no corresponde al hotel al cual el usuario esta logueado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        estado = repoEstadia.getEstado((int)reserva.getCodigoReserva());
                     if (estado.Equals("RCI") | estado.Equals("RCE"))
                     {
                         RepositorioConsumibles repositorioConsumibles = new RepositorioConsumibles();
@@ -85,6 +89,7 @@ namespace FrbaHotel.RegistrarConsumible
                     }
                     else
                         MessageBox.Show("La estadia debe estar con ingreso o con egreso para registrar consumibles.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }else
                 MessageBox.Show("Ingresar ID estadia por favor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
