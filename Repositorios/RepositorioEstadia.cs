@@ -43,8 +43,21 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
+                //ESTADIA PUEDE TENER VALORES NULL PRIMERO PREGUNTO
+                //idEstadia = reader.IsDBNull(reader.GetOrdinal("idEstadia")) ? 0 : reader.GetInt32(reader.GetOrdinal("idEstadia")); 
+
                 usuarioCheckIn = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("idUsuarioIn")));
-                usuarioCheckOut = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("idUsuarioOut")));
+
+
+                if (reader.IsDBNull(reader.GetOrdinal("idUsuarioOut")))
+                {
+                    usuarioCheckOut = null;
+                }
+                else
+                {
+                    usuarioCheckOut = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("idUsuarioOut")));
+                }
+
                 fechaEntrada = reader.GetDateTime(reader.GetOrdinal("FechaEntrada"));
                 fechaSalida = reader.GetDateTime(reader.GetOrdinal("FechaSalida"));
                 facturada = reader.GetBoolean(reader.GetOrdinal("Facturada"));
