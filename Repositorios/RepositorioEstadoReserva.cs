@@ -64,7 +64,7 @@ namespace FrbaHotel.Repositorios
             RepositorioReserva repoReserva = new RepositorioReserva();
 
             //Elementos del EstadoReserva a devolver
-            EstadoReserva estadoReserva;
+            EstadoReserva estadoReserva=null;
             Usuario usuario = null;
             Reserva reserva = null;
             String tipoEstado = "";
@@ -95,6 +95,8 @@ namespace FrbaHotel.Repositorios
                 //fecha = reader.GetDateTime(reader.GetOrdinal("Fecha"));
                 tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
                 descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
+                estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
+
             }
 
             //Cierro Primera Consulta
@@ -104,7 +106,6 @@ namespace FrbaHotel.Repositorios
             //if (usuario.Equals(null)) throw new NoExisteIDException("No existe estadoReserva con el ID asociado");
 
             //Armo el estadoReserva completo
-            estadoReserva = new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
             return estadoReserva;
         }
 
