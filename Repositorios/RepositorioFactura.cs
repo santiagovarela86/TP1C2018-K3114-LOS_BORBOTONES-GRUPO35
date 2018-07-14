@@ -187,8 +187,8 @@ namespace FrbaHotel.Repositorios
             //hago for each de los consumibles y sumo total y puntos
             ItemFactura itemFactura = null;
             float montoTotal = 0;
-            if (!allInclusive)
-            {
+            
+            
                 foreach (Consumible item in consumiblesXEstadia.ToList())
                 {
                     cant = 0;
@@ -204,14 +204,19 @@ namespace FrbaHotel.Repositorios
                     if(cant!=0)
                     {
                         idConsumible = item.getIdConsumible();
-                        monto = item.getPrecio();
+                        if (!allInclusive)
+                        {
+                            monto = item.getPrecio();
+                        }
+                        else monto = 0;
+
                         itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
                         itemsFactura.Add(itemFactura);
                         montoTotal = monto + montoTotal;
                     }
-                }   
+                }
 
-            }else
+            if (allInclusive)
             {
                 //es all inclusive, hago un solo itemFactura all inclusive y no se cobra nada
                 idConsumible = 6;//poner el idConsumible del all inclusive
