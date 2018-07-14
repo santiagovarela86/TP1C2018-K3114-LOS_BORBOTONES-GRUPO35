@@ -29,17 +29,28 @@ namespace FrbaHotel.AbmReserva
             this.reserva = reserva;
             this.usuario = usuario;
             InitializeComponent();
+
+            buildReservaActual(reserva);
+         
+            init();
+        }
+
+        private void buildReservaActual(Reserva reserva)
+        {
             List<Habitacion> habitaciones = reserva.getHabitaciones();
-            Regimen regimen=reserva.getRegimen();
+            Regimen regimen = reserva.getRegimen();
+            this.labelHotelActual.Text = "";
+            this.labelRegimenActual.Text = "";
+            this.labelFechaDesde.Text = "";
+            this.labelFechaHasta.Text = "";
+
             this.labelHotelActual.Text += " " + reserva.getHotel().getNombre();
             this.labelRegimenActual.Text += " " + regimen.getDescripcion();
             this.labelFechaDesde.Text += " " + reserva.getFechaDesde();
             this.labelFechaHasta.Text += " " + reserva.getFechaHasta();
             this.buttonModificarReserva.Enabled = false;
-
-            this.dataGridView1.DataSource=buildHabitacionesReservadas(habitaciones,regimen).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
+            this.dataGridView1.DataSource = buildHabitacionesReservadas(habitaciones, regimen).OrderBy(hd => hd.getNumeroHabitacion()).ToList();
             this.dataGridView1.AutoResizeColumns();
-            init();
         }
 
 
@@ -237,24 +248,7 @@ namespace FrbaHotel.AbmReserva
             }
         }
 
-        private void reservarHabitacion(object sender, EventArgs e)
-        {
-
-            DateTime fechaInicio = calendarioDesde.Value;
-            DateTime fechaFin = calendarioHasta.Value;
-            List<HabitacionDisponible> habitacionesAReservar = new List<HabitacionDisponible>();
-
-            foreach (DataGridViewRow item in this.habitacionesDisponiblesGrid.SelectedRows)
-            {
-                habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponible);
-            }
-
-            using (ConfirmarReservaWindow form = new ConfirmarReservaWindow(habitacionesAReservar, fechaInicio, fechaFin, usuario))
-            {
-                var result = form.ShowDialog();
-                this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
-            }
-        }
+        
 
         private void regimenesDisponiblesGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -284,12 +278,19 @@ namespace FrbaHotel.AbmReserva
                 habitacionesAReservar.Add(item.DataBoundItem as HabitacionDisponible);
             }
 
+            if (!isReservaModificada(habitacionesAReservar, fechaInicio, fechaFin)){
+                MessageBox.Show("La reserva es identica a la ya reservada. Por ende no se modifica", "Modificar Reserva");
+                return;
+            }
             using (ConfirmarModificacionWindow form = new ConfirmarModificacionWindow(habitacionesAReservar, fechaInicio, fechaFin, usuario,reserva))
             {
                 var result = form.ShowDialog();
                 this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
+                RepositorioReserva repoReserva = new RepositorioReserva();
+                reserva = repoReserva.getById(reserva.getIdReserva());
+                buildReservaActual(reserva);
             }
-            this.Close();
+
         }
 
         //CIERRO LA VENTANA CON ESCAPE
@@ -301,6 +302,19 @@ namespace FrbaHotel.AbmReserva
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private bool isReservaModificada(List<HabitacionDisponible> habitacionesAReservar, DateTime fechaInicio, DateTime fechaFin){
+            bool distintoRegimen= habitacionesAReservar[0].getRegimen().getIdRegimen() != reserva.getRegimen().getIdRegimen();
+            bool distintoHotel = habitacionesAReservar[0].getHabitacion().getHotel().getIdHotel() != reserva.getHotel().getIdHotel();
+            bool mismaCantidadesHabitacionesEntreReservaYSeleccionadas=habitacionesAReservar.Count == reserva.getHabitaciones().Count;
+            bool existenTodasLasHabitacionesDeLaReservaEnLasNuevasHabitaciones= reserva.getHabitaciones().All(habitacionReserva => habitacionesAReservar.Exists(habitacionAReservar => habitacionAReservar.getHabitacion().getIdHabitacion().Equals(habitacionReserva.getIdHabitacion())));
+            bool distintaFechaInicio = fechaInicio != reserva.getFechaDesde();
+            bool distintaFechaFin = fechaFin != reserva.getFechaHasta();
+
+            return distintaFechaFin | distintaFechaInicio | distintoHotel |
+                    distintoRegimen | !(mismaCantidadesHabitacionesEntreReservaYSeleccionadas & existenTodasLasHabitacionesDeLaReservaEnLasNuevasHabitaciones);
+           
         }
 
 

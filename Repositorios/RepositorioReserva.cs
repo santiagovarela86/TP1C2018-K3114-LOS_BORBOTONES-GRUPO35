@@ -342,16 +342,12 @@ namespace FrbaHotel.Repositorios
             //Elementos de la Reserva a devolver
             Reserva reserva;
 
-            Hotel hotel = null;
-            Estadia estadia = null;
-            Regimen regimen = null;
-            Cliente cliente = null;
+  
             decimal codigoReserva = 0;
             decimal diasAlojados = 0;
             DateTime fechaCreacion =  Utils.getSystemDatetimeNow();
             DateTime fechaDesde =  Utils.getSystemDatetimeNow();
             DateTime fechaHasta =  Utils.getSystemDatetimeNow();
-            EstadoReserva estado = null;
             
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -376,21 +372,14 @@ namespace FrbaHotel.Repositorios
                 fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
                 fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
                 fechaCreacion = reader.GetDateTime(reader.GetOrdinal("FechaCreacion"));
-                hotel = repoHotel.getById(reader.GetOrdinal("IdHotel"));
-                regimen = repoRegimen.getById(reader.GetOrdinal("IdRegimen"));
-                estadia = repoEstadia.getById(reader.GetOrdinal("IdEstadia"));
-                cliente = repoCliente.getById(reader.GetOrdinal("IdCliente"));
-                estado=repoEstadoReserva.getById(idReserva);
+
             }
 
             //Cierro Primera Consulta
             sqlConnection.Close();
 
-            //Si no encuentro elemento con ese ID tiro una excepción
-            if (cliente.Equals(null)) throw new NoExisteIDException("No existe reserva con el ID asociado");
-
             //Armo la reserva completa
-            reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estado);
+            reserva = new Reserva(idReserva, null, null, null, null, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, null);
 
             return reserva;
         }
