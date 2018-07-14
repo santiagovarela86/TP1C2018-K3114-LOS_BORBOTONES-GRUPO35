@@ -194,8 +194,7 @@ namespace FrbaHotel.RegistrarConsumible
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        //ESTO LO PONGO PARA QUE EL NUMERO DE CALLE SOLO PUEDA SER UN NUMERO
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void onlyNumeric(object sender, KeyPressEventArgs e)
         {
             // Verify that the pressed key isn't CTRL or any non-numeric digit
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))

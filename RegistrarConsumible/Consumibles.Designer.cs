@@ -37,10 +37,10 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.botonAgregar = new System.Windows.Forms.Button();
             this.botonRegistrar = new System.Windows.Forms.Button();
             this.botonBorrar = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -96,7 +96,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(113, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumeric);
             // 
             // groupBox2
             // 
@@ -141,6 +141,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Acciones";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(303, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(90, 23);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Salir";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // botonAgregar
             // 
             this.botonAgregar.Location = new System.Drawing.Point(9, 19);
@@ -170,16 +180,6 @@
             this.botonBorrar.Text = "Quitar...";
             this.botonBorrar.UseVisualStyleBackColor = true;
             this.botonBorrar.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(303, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Salir";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // Consumibles
             // 
