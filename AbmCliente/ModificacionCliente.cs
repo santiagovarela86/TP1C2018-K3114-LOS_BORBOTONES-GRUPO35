@@ -62,6 +62,13 @@ namespace FrbaHotel.AbmCliente
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (textBoxNroDoc.Text.Trim().Equals("INCONSISTENTE") ||
+                    textBoxMail.Text.Trim().Equals("INCONSISTENTE"))
+            {
+                MessageBox.Show("Corrija el tipo y numero de documento y el Mail.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             //ACTUALIZAR EL CLIENTE
             RepositorioCliente repoCliente = new RepositorioCliente();
 
@@ -106,7 +113,17 @@ namespace FrbaHotel.AbmCliente
             {
                 try
                 {
-                    repoCliente.update(updatedClient);
+                   //SI EL CLIENTE ORIGINAL ESTABA INCONSISTENTE
+                    if (cliente.getInconsistente())
+                    {
+                        repoCliente.limpioInconsistenciaYactualizo(updatedClient);
+                    }
+                    else
+                    {
+                            //SI ES UN UPDATE NORMAL
+                            repoCliente.update(updatedClient);
+                    }
+
                     MessageBox.Show("Cliente actualizado con éxito", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     //ME TRAIGO EL USUARIO ACTUALIZADO

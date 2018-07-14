@@ -152,36 +152,6 @@ namespace FrbaHotel.Repositorios
             return clientes;
         }
 
-        /*
-        override public List<Cliente> getAll()
-        {
-            List<Cliente> clientes = new List<Cliente>();
-
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
-
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-
-            sqlCommand.CommandText = "SELECT idCliente FROM LOS_BORBOTONES.Cliente";
-
-            sqlConnection.Open();
-
-            reader = sqlCommand.ExecuteReader();
-
-            while (reader.Read())
-            {
-                clientes.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idCliente"))));
-            }
-
-            sqlConnection.Close();
-
-            return clientes;
-        }
-        */
-
         override public int create(Cliente cliente)
         {
             int idCliente = 0;
@@ -250,103 +220,18 @@ namespace FrbaHotel.Repositorios
 
         }
 
-        /*
-        override public int create(Cliente cliente)
+        public void limpioInconsistenciaYactualizo(Cliente cliente)
         {
-            int idCliente = 0;
-            
-            if (!this.exists(cliente))
+            //PRIMERO LIMPIO LAS IDENTIDADES DUPLICADAS
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+
+            //AGREGO VALIDACIONES AL UPDATE
+            if (repoIdentidad.yaExisteOtraIdentidadMismoMailOTipoYNumDoc(cliente.getIdentidad()))
             {
-                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-                SqlConnection sqlConnection = new SqlConnection(connectionString);
-                SqlCommand sqlCommand = new SqlCommand();
-                SqlDataReader reader;
-                sqlCommand.CommandType = CommandType.Text;
-                sqlCommand.Connection = sqlConnection;
-
-                //PARAMETERS DE LA DIRECCION
-                sqlCommand.Parameters.AddWithValue("@Pais", cliente.getIdentidad().getDireccion().getPais());
-                sqlCommand.Parameters.AddWithValue("@Ciudad", cliente.getIdentidad().getDireccion().getCiudad());
-                sqlCommand.Parameters.AddWithValue("@Calle", cliente.getIdentidad().getDireccion().getCalle());
-                sqlCommand.Parameters.AddWithValue("@NumeroCalle", cliente.getIdentidad().getDireccion().getNumeroCalle());
-                sqlCommand.Parameters.AddWithValue("@Piso", cliente.getIdentidad().getDireccion().getPiso());
-                sqlCommand.Parameters.AddWithValue("@Departamento", cliente.getIdentidad().getDireccion().getDepartamento());
-                //sqlCommand.Parameters.AddWithValue("@idDireccion", cliente.getIdentidad().getDireccion().getIdDireccion());
-
-                //PARAMETERS DE LA IDENTIDAD
-                sqlCommand.Parameters.AddWithValue("@TipoIdent", cliente.getIdentidad().getTipoIdentidad());
-                sqlCommand.Parameters.AddWithValue("@Nombre", cliente.getIdentidad().getNombre());
-                sqlCommand.Parameters.AddWithValue("@Apellido", cliente.getIdentidad().getApellido());
-                sqlCommand.Parameters.AddWithValue("@TipoDoc", cliente.getIdentidad().getTipoDocumento());
-                sqlCommand.Parameters.AddWithValue("@NroDoc", cliente.getIdentidad().getNumeroDocumento());
-                sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
-                sqlCommand.Parameters.AddWithValue("@FecNac", cliente.getIdentidad().getFechaNacimiento());
-                sqlCommand.Parameters.AddWithValue("@Nacion", cliente.getIdentidad().getNacionalidad());
-                sqlCommand.Parameters.AddWithValue("@Tel", cliente.getIdentidad().getTelefono());
-                //sqlCommand.Parameters.AddWithValue("@idIdentidad", cliente.getIdentidad().getIdIdentidad());
-
-                //PARAMETERS DEL CLIENTE
-                /////////////////////////
-                //POR EL MOMENTO NO CONSIDERAMOS LAS RESERVAS EN EL CLIENTE EN EL CREATE
-                /////////////////////////
-                sqlCommand.Parameters.AddWithValue("@Activo", cliente.getActivo());
-                //sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
-
-                StringBuilder sqlBuilder = new StringBuilder();
-                sqlBuilder.Append(@"
-                    BEGIN TRY
-                    BEGIN TRANSACTION
-
-                    INSERT INTO LOS_BORBOTONES.Identidad(TipoIdentidad, Nombre, Apellido, TipoDocumento, NumeroDocumento, Mail, FechaNacimiento, Nacionalidad, Telefono)
-                    OUTPUT INSERTED.idIdentidad
-                    VALUES(@TipoIdent, @Nombre, @Apellido, @TipoDoc, @NroDoc, @Mail, @FecNac, @Nacion, @Tel);
-
-                    DECLARE @idIdentidad int;
-                    SET @idIdentidad = SCOPE_IDENTITY();
-
-                    INSERT INTO LOS_BORBOTONES.Direccion(Pais, Ciudad, Calle, NumeroCalle, Piso, Depto, idIdentidad)
-                    OUTPUT INSERTED.idDireccion
-                    VALUES(@Pais, @Ciudad, @Calle, @NumeroCalle, @Piso, @Departamento, @idIdentidad);
-
-                    INSERT INTO LOS_BORBOTONES.Cliente(Activo, idIdentidad)
-                    OUTPUT INSERTED.idCliente
-                    VALUES(@Activo, @idIdentidad);
-
-                    DECLARE @idCliente int;
-                    SET @idCliente = SCOPE_IDENTITY();
-
-                    COMMIT
-                    END TRY
-
-                    BEGIN CATCH
-                    ROLLBACK
-                    END CATCH
-                ");
-
-                sqlCommand.CommandText = sqlBuilder.ToString();
-                sqlConnection.Open();
-                reader = sqlCommand.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    idCliente = reader.GetInt32(reader.GetOrdinal("idCliente"));
-                }
-
-                sqlConnection.Close();
-
-                return idCliente;
+                throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo mail o tipo y numero de documento.");
             }
-            else
-            {
-                throw new ElementoYaExisteException("Ya existe el cliente que intenta crear.");
-            }
-        }
-         * */
 
-        /*
-        private Boolean yaExisteMismoMailDistintoCliente(Cliente cliente)
-        {
-            int idOtraIdentidad = -1;
+            List<Identidad> identidadesDuplicadas = new List<Identidad>();
 
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -354,59 +239,25 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            //Primera Consulta
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", cliente.getIdentidad().getIdIdentidad());
+            sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
             sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
-            sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = @"
-                SELECT identidad.idIdentidad
-                FROM LOS_BORBOTONES.Identidad identidad
-                    ,LOS_BORBOTONES.Cliente cliente
-                WHERE cliente.idCliente <> @idCliente
-                  AND identidad.idIdentidad = cliente.idIdentidad
-                  AND identidad.Mail = @Mail
-            ";
-
-            sqlConnection.Open();
-
-            reader = sqlCommand.ExecuteReader();
-
-            while (reader.Read())
-            {
-                idOtraIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
-            }
-
-            //Cierro Primera Consulta
-            sqlConnection.Close();
-
-            return !idOtraIdentidad.Equals(-1);
-        }
-
-        private Boolean yaExisteMismoTipoYDocDistintoCliente(Cliente cliente)
-        {
-            int idOtraIdentidad = -1;
-
-            //Configuraciones de la consulta
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
-
-            //Primera Consulta
-            sqlCommand.Parameters.AddWithValue("@Tipo", cliente.getIdentidad().getTipoDocumento());
             sqlCommand.Parameters.AddWithValue("@Num", cliente.getIdentidad().getNumeroDocumento());
-            sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
+            sqlCommand.Parameters.AddWithValue("@Tipo", cliente.getIdentidad().getTipoDocumento());
+
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = @"
-                SELECT TOP 1 * 
+                SELECT identidad.idIdentidad 
                 FROM LOS_BORBOTONES.Identidad identidad
                     ,LOS_BORBOTONES.Cliente cliente
                 WHERE cliente.idCliente <> @idCliente
                   AND identidad.idIdentidad = cliente.idIdentidad
-                  AND identidad.TipoDocumento = @Tipo
-                  AND identidad.NumeroDocumento = @Num
+                  AND   (
+                            (identidad.TipoDocumento = @Tipo AND identidad.NumeroDocumento = @Num) 
+                            OR 
+                            (identidad.Mail = @Mail)
+                        )
             ";
 
             sqlConnection.Open();
@@ -415,15 +266,17 @@ namespace FrbaHotel.Repositorios
 
             while (reader.Read())
             {
-                idOtraIdentidad = reader.GetInt32(reader.GetOrdinal("idIdentidad"));
+                identidadesDuplicadas.Add(repoIdentidad.getById(reader.GetInt32(reader.GetOrdinal("idIdentidad"))));
             }
 
             //Cierro Primera Consulta
             sqlConnection.Close();
 
-            return !idOtraIdentidad.Equals(-1);
+            identidadesDuplicadas.ForEach(identDup => repoIdentidad.limpiarDuplicado(identDup));
+
+            //LUEGO ACTUALIZO EL CLIENTE
+            this.update(cliente);
         }
-        */
 
         override public void update(Cliente cliente)
         {
@@ -434,18 +287,6 @@ namespace FrbaHotel.Repositorios
             {
                 throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo mail o tipo y numero de documento.");
             }
-
-            /*
-            if (this.yaExisteMismoMailDistintoCliente(cliente))
-            {
-                throw new ElementoYaExisteException("Ya existe un cliente con el mismo mail.");
-            }
-
-            if (this.yaExisteMismoTipoYDocDistintoCliente(cliente))
-            {
-                throw new ElementoYaExisteException("Ya existe un cliente con el mismo documento.");
-            }
-            */
 
             if (this.exists(cliente))
             {
@@ -667,134 +508,6 @@ namespace FrbaHotel.Repositorios
 
                 return clientes;
 
-            /*
-            List<Cliente> clientes = new List<Cliente>();
-            //hago join con identidad ya que de ahi vendran los filtros como nombre apellido y dni
-            String query = "SELECT c.idCliente FROM LOS_BORBOTONES.Cliente c INNER JOIN LOS_BORBOTONES.Identidad i ON c.idIdentidad = i.idIdentidad";
-
-            //Consulta SIN FILTRO
-            if (nombre.Equals("") && apellido.Equals("") && tipoDoc.Equals("") && dni.Equals("") && estado.Key == null && mail.Equals(""))
-            {
-                clientes = this.getAll();
-            }
-            else
-            {
-                //Consulta CON FILTROS
-                //PREPARO TODO PARA HACER LA CONSULTA
-                String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-                SqlConnection sqlConnection = new SqlConnection(connectionString);
-                SqlCommand sqlCommand = new SqlCommand();
-                SqlDataReader reader;
-                sqlCommand.CommandType = CommandType.Text;
-                sqlCommand.Connection = sqlConnection;
-
-                //Booleano que uso para armar bien la consulta
-                Boolean primerCriterioWhere = true;
-
-                //AGREGO FILTRO NOMBRE
-                if (!nombre.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.Nombre LIKE @Nombre";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        //aca va WHERE tambien ya que no lo puse en el inner join porque valide en el ON
-                        query = query + " WHERE i.Nombre LIKE @Nombre";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Nombre", "%" + nombre + "%");
-                }
-                //AGREGO FILTRO Apellido
-                if (!apellido.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.Apellido LIKE @Apellido";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.Apellido LIKE @Apellido";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Apellido", "%" + apellido + "%");
-                }
-                //AGREGO FILTRO tipoDoc
-                if (!tipoDoc.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.TipoDocumento LIKE @TipoDoc";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.TipoDocumento LIKE @TipoDoc";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@TipoDoc", "%" + tipoDoc + "%");
-                }
-                //AGREGO FILTRO DNI
-                if (!dni.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.NumeroDocumento LIKE @Dni";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.NumeroDocumento LIKE @Dni";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Dni", "%" + dni + "%");
-                }
-
-                //AGREGO FILTRO ESTADO
-                if (estado.Key != null)
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE c.Activo = @Estado";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND c.Activo = @Estado";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Estado", Convert.ToInt32(estado.Value));
-                }
-
-                //AGREGO FILTRO MAIL
-                if (!mail.Equals(""))
-                {
-                    if (primerCriterioWhere)
-                    {
-                        query = query + " WHERE i.Mail LIKE @Mail";
-                        primerCriterioWhere = false;
-                    }
-                    else
-                    {
-                        query = query + " AND i.Mail LIKE @Mail";
-                    }
-                    sqlCommand.Parameters.AddWithValue("@Mail", "%" + mail + "%");
-                }
-
-                //HAGO LA CONSULTA
-                sqlCommand.CommandText = query;
-                sqlConnection.Open();
-                reader = sqlCommand.ExecuteReader();
-
-                //ARMAR CLIENTES
-                while (reader.Read())
-                {
-                    clientes.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idCliente"))));
-                }
-
-                sqlConnection.Close();
-            }
-
-            return clientes;
-            */
         }
     }
 }
