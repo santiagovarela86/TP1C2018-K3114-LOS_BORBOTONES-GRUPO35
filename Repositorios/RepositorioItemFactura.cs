@@ -176,7 +176,14 @@ namespace FrbaHotel.Repositorios
         }
         public void createTodos(List<ItemFactura> itemsFactura)
         {
+            foreach(ItemFactura item in itemsFactura)
+            {
+                this.create(item);
+            }
             
+            
+            
+            /*
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -192,6 +199,7 @@ namespace FrbaHotel.Repositorios
                     BEGIN TRANSACTION
 
                 ");
+
             int k = 1;
             foreach (ItemFactura item in itemsFactura)
             {    
@@ -207,10 +215,16 @@ namespace FrbaHotel.Repositorios
                     String paramName3 = "@IdFactura" + k.ToString();
                     String paramName4 = "@IdConsumible" + k.ToString();
                     sqlBuilder.AppendFormat("INSERT INTO LOS_BORBOTONES.ItemFactura(FechaCreacion,Cantidad,Monto,idFactura,idConsumible) VALUES({0},{1},{2},{3},{4})", paramName, paramName1, paramName2, paramName3, paramName4);
+
+                    float temp1 = item.getCantidad();
+                    float temp2 = item.getMonto();
+                    DateTime temp3 = item.getFechaCreacion();
+                    int temp4 = item.getIdFactura();
+                    int temp5 = item.getIdConsumible();
                     
-                    sqlCommand.Parameters.AddWithValue(paramName, item.getFechaCreacion());
-                    sqlCommand.Parameters.AddWithValue(paramName1, item.getCantidad());
-                    sqlCommand.Parameters.AddWithValue(paramName2, item.getMonto());
+                    sqlCommand.Parameters.AddWithValue(paramName, item.getCantidad());
+                    sqlCommand.Parameters.AddWithValue(paramName1, item.getMonto());
+                    sqlCommand.Parameters.AddWithValue(paramName2, item.getFechaCreacion());
                     sqlCommand.Parameters.AddWithValue(paramName3, item.getIdFactura());
                     sqlCommand.Parameters.AddWithValue(paramName4, item.getIdConsumible());
 
@@ -231,6 +245,7 @@ namespace FrbaHotel.Repositorios
             reader = sqlCommand.ExecuteReader();
 
             sqlConnection.Close();
+            */
 
             
         }

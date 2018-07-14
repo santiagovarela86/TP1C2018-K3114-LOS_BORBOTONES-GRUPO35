@@ -167,20 +167,20 @@ namespace FrbaHotel.Repositorios
             float total = 0;
             int puntos = 0;
 
-            float cant = 1;//pongo cant siempre en 1 ya que no marco mas que 1 solo consumible y lo mismo con la habitacion
+            //float cant = 1;//pongo cant siempre en 1 ya que no marco mas que 1 solo consumible y lo mismo con la habitacion
             float monto = 0;//va a ser siempre el precio del cons ya que no marco mas que 1 solo consumible
             DateTime fecha = Utils.getSystemDatetimeNow();
             int idItemFactura = 0;
-            int idConsumible = 0;          
+            //int idConsumible = 0;          
                   
             //traigo el numero de factura asi le sumo 1 que sera el nuevo.
-            numeroFactura = getLastNumeroFactura()+1 ;
+            numeroFactura = getLastNumeroFactura() + 1 ;
 
             //traigo regimen para sumarlo o ver si es all inclusive
             RepositorioRegimen repoRegimen= new RepositorioRegimen();
             Regimen regimen = reserva.getRegimen();
             Boolean allInclusive = false;
-            if (regimen.getCodigoRegimen().Equals("RGAI"))
+            if (regimen.getCodigoRegimen().Equals("RGAI")) 
                 allInclusive = true;
 
             //traigo el total
@@ -192,13 +192,14 @@ namespace FrbaHotel.Repositorios
             {
                 int cantidad = cm.getCantidad();
                 
+                //SI ES ALL INCLUSIVE NO SUMAN PARA EL TOTAL DE LA FACTURA
                 if (!allInclusive)
                 {
-                    monto = cm.getConsumible().getPrecio();
+                    monto = cm.getConsumible().getPrecio() * cm.getCantidad();
                 }
                 else monto = 0;
 
-                itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
+                itemFactura = new ItemFactura(idItemFactura, cm.getConsumible().getIdConsumible(), cm.getCantidad(), monto, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
                 montoTotal = monto + montoTotal;
             }             
@@ -206,10 +207,10 @@ namespace FrbaHotel.Repositorios
             if (allInclusive)
             {
                 //es all inclusive, hago un solo itemFactura all inclusive y no se cobra nada
-                idConsumible = 6;//poner el idConsumible del all inclusive
+                int idConsumible = 6;//poner el idConsumible del all inclusive
                 monto = 0;
                 //necesito un nuevo campo que sea descripcion por regimen de estadia
-                itemFactura = new ItemFactura(idItemFactura, idConsumible, cant, monto, fecha, idFactura);
+                itemFactura = new ItemFactura(idItemFactura, idConsumible, 1, monto, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
             }
             
@@ -225,7 +226,7 @@ namespace FrbaHotel.Repositorios
                     float diasAlojados=(float)reserva.getDiasAlojados();
                     //se quedo toda la estadia hago solo un item factura con los dias x el monto
                     totalHabitacion = montoHabitacion * diasAlojados;
-                    idConsumible = 5; //con 5 marco que es la habitacion
+                    int idConsumible = 5; //con 5 marco que es la habitacion
                     itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
                     itemsFactura.Add(itemFactura);
                 
@@ -237,7 +238,7 @@ namespace FrbaHotel.Repositorios
                     float diasAlojadosTotal = (float)reserva.getDiasAlojados();
                 
                 totalHabitacion = montoHabitacion * diasAlojadosTotal;
-                idConsumible = 5; //con 5 marco que es la habitacion
+                int idConsumible = 5; //con 5 marco que es la habitacion
                 itemFactura = new ItemFactura(idItemFactura, idConsumible, diasAlojados, montoHabitacion, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
 

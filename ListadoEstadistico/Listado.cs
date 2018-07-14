@@ -23,7 +23,7 @@ namespace FrbaHotel.ListadoEstadistico
             trimestre.Items.Add("4");
 
             tipoListado.Items.Insert(0, "Hotel con mas reservas canceladas");
-            tipoListado.Items.Insert(1, "Hotel con mas consumibles  facturados");
+            tipoListado.Items.Insert(1, "Hotel con mas consumibles facturados");
             tipoListado.Items.Insert(2, "Hotel con mas dias fuera de servicio");
             tipoListado.Items.Insert(3, "Cliente con mas puntos");
             tipoListado.Items.Insert(4, "Habitaciones mas ocupadas");
