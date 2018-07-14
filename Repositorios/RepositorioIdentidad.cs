@@ -129,6 +129,8 @@ namespace FrbaHotel.Repositorios
             //Devuelve verdadero si el ID coincide o si el username coincide
             return identidad.getMail().ToUpper().Equals(mail.ToUpper()) || idIdentidadNumeroDoc != 0;
         }
+        
+            
 
         override public int create(Identidad identidad)
         {
@@ -192,6 +194,44 @@ namespace FrbaHotel.Repositorios
             }
 
             return idIdentidad;
+        }
+
+        public void limpiarDuplicado(Identidad identDup)
+        {
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataReader reader;
+
+            sqlCommand.CommandType = CommandType.Text;
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.Parameters.AddWithValue("@TipoDoc", "INCONSISTENTE");
+            sqlCommand.Parameters.AddWithValue("@NroDoc", "INCONSISTENTE");
+            sqlCommand.Parameters.AddWithValue("@Mail", "INCONSISTENTE");
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", identDup.getIdIdentidad());
+
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Identidad
+                    SET TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail
+                    WHERE idIdentidad = @idIdentidad;
+
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+            sqlCommand.CommandText = sqlBuilder.ToString();
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
         }
 
         //A ESTO LE PASO UNA IDENTIDAD CON UN ID EXISTENTE Y LOS ATRIBUTOS ACTUALIZADOS
