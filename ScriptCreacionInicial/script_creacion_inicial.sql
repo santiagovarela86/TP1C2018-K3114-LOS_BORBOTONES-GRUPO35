@@ -118,6 +118,11 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Cliente_Reserva', 'F') IS NOT NULL
 	ALTER TABLE LOS_BORBOTONES.Reserva
 	DROP CONSTRAINT FK_Cliente_Reserva
 GO
+
+IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Reserva', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Reserva
+	DROP CONSTRAINT FK_Hotel_Reserva
+GO
 	
 -- Tabla  Reserva_X_Habitacion_X_Cliente 
 IF OBJECT_ID('LOS_BORBOTONES.FK_Reserva_Habitacion_Cliente', 'F') IS NOT NULL
@@ -1158,6 +1163,11 @@ ADD CONSTRAINT FK_Regimen_Reserva FOREIGN KEY(idRegimen) REFERENCES LOS_BORBOTON
 ALTER TABLE LOS_BORBOTONES.Reserva
 ADD CONSTRAINT FK_Cliente_Reserva FOREIGN KEY(idCliente) REFERENCES LOS_BORBOTONES.Cliente(idCliente) 
 
+
+ALTER TABLE LOS_BORBOTONES.Reserva
+ADD CONSTRAINT FK_Hotel_Reserva FOREIGN KEY(idHotel) REFERENCES LOS_BORBOTONES.Hotel(idHotel) 
+
+
 -- Tabla  Reserva_X_Habitacion_X_Cliente 
 ALTER TABLE LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente
 ADD CONSTRAINT FK_Reserva_Habitacion_Cliente FOREIGN KEY(idReserva) REFERENCES LOS_BORBOTONES.Reserva(idReserva) ON DELETE CASCADE ON UPDATE CASCADE
@@ -1210,7 +1220,10 @@ CREATE INDEX IDX_IDENTIDAD01 ON LOS_BORBOTONES.Identidad (Mail); -- se crea un i
 
 CREATE INDEX IDX_Reserva_CodigoReserva ON LOS_BORBOTONES.Reserva(CodigoReserva);
 CREATE INDEX IDX_Reserva_Fecha ON LOS_BORBOTONES.Reserva(FechaDesde,FechaHasta);
-
+CREATE INDEX IDX_ReservaXHabitacionXCliente_Reserva ON LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idReserva);
+CREATE INDEX IDX_ReservaXHabitacionXCliente_Habitacion ON LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idHabitacion);
+CREATE INDEX IDX_ReservaXHabitacionXCliente_Cliente ON LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente(idCliente);
+CREATE INDEX IDX_EstadoReserva_Reserva ON LOS_BORBOTONES.EstadoReserva(idReserva);
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Carga de  Roles Iniciales
 
@@ -1602,7 +1615,7 @@ GO
 --Migracion Habitacion
 
 INSERT INTO LOS_BORBOTONES.Habitacion(Numero, Piso, Ubicacion, idHotel, idTipoHabitacion) 
-		SELECT DISTINCT m.Habitacion_Numero, m.Habitacion_Piso, m.Habitacion_Frente, h.idHotel, t.idTipoHabitacion
+		SELECT DISTINCT m.Habitacion_Numero, m.Habitacion_Piso, (CASE WHEN m.Habitacion_Frente = 'S' THEN 'Vista Exterior' ELSE 'Interior' END), h.idHotel, t.idTipoHabitacion
 		FROM LOS_BORBOTONES.Hotel h
 		JOIN gd_esquema.maestra m ON LOS_BORBOTONES.concatenarNombreHotel(m.Hotel_Calle, m.Hotel_Nro_Calle) = h.Nombre
 		JOIN LOS_BORBOTONES.TipoHabitacion t ON m.Habitacion_Tipo_Codigo = t.Codigo

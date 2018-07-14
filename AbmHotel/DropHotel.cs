@@ -199,6 +199,12 @@ namespace FrbaHotel.AbmHotel
             DateTime fechaDesde = calendarioDesde.Value;
             DateTime fechaHasta = calendarioHasta.Value;
 
+            if (fechaDesde < Utils.getSystemDatetimeNow())
+            {
+                MessageBox.Show("No puede realizar reservas en el pasado", "Error");
+                return;
+            }
+
             if (fechaDesde > fechaHasta)
             {
                 MessageBox.Show("La fecha inicio no puede ser superior a la fecha final.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
