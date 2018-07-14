@@ -14,12 +14,12 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioEstadoReserva : Repositorio<EstadoReserva>
     {
-        public List<EstadoReserva> getByIdReserva(int idReserva)
+        public EstadoReserva getByIdReserva(int idReserva)
         {
             RepositorioUsuario repoUsuario = new RepositorioUsuario();
             RepositorioReserva repoReserva = new RepositorioReserva();
 
-            List<EstadoReserva> estadoReservas= new List<EstadoReserva>();
+            EstadoReserva estadoReserva= null;
             
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -34,14 +34,13 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandText = @"
                 SELECT *
                 FROM LOS_BORBOTONES.EstadoReserva
-                WHERE idReserva = @idReserva
-                ORDER BY idEstado DESC;";
+                WHERE idReserva = @idReserva;";
 
             sqlConnection.Open();
 
             reader = sqlCommand.ExecuteReader();
 
-            while (reader.Read())
+            if (reader.Read())
             {
                 int idEstadoReserva = reader.GetInt32(reader.GetOrdinal("idEstado"));
                 String tipoEstado = reader.GetString(reader.GetOrdinal("TipoEstado"));
@@ -49,12 +48,12 @@ namespace FrbaHotel.Repositorios
                 String descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
                 Usuario usuario = repoUsuario.getById(reader.GetInt32(reader.GetOrdinal("IdUsuario")));
                 Reserva reserva = repoReserva.getById(reader.GetInt32(reader.GetOrdinal("IdReserva")));
-                estadoReservas.Add(new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion));
+                estadoReserva= new EstadoReserva(idEstadoReserva, usuario, reserva, tipoEstado, fecha, descripcion);
             }
             
             sqlConnection.Close();
             
-            return estadoReservas;
+            return estadoReserva;
         }
 
         override public EstadoReserva getById(int idEstadoReserva)
@@ -211,7 +210,8 @@ namespace FrbaHotel.Repositorios
             sqlCommand.Parameters.AddWithValue("@idUsuario", usuario.getIdUsuario());
 
 
-            sqlCommand.CommandText = "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) VALUES('RCNS',LOS_BORBOTONES.fn_getDate(),'Reserva Cancelada No Show',@idUsuario,@idReserva);";
+            sqlCommand.CommandText = @"UPDATE LOS_BORBOTONES.EstadoReserva SET TipoEstado='RCNS',Fecha=LOS_BORBOTONES.fn_getDate(),Descripcion='Reserva Cancelada No Show',idUsuario=@idUsuario
+                                        WHERE idReserva = @idReserva;";
             sqlConnection.Open();
             reader = sqlCommand.ExecuteReader();
 

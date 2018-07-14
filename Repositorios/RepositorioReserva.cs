@@ -14,14 +14,7 @@ namespace FrbaHotel.Repositorios
 {
     public class RepositorioReserva : Repositorio<Reserva>
     {
-        //ESTO TARDABA MUCHO EN TRAER LAS RESERVAS POR HOTEL
-        //COMENTE TODO LO QUE ES TRAER LOS OBJETOS CON OTROS REPOSITORIOS
-        //EN CASO DE QUE HAGA FALTA TRAER ESOS OBJETOS
-        //TENDREMOS QUE OBTENERLOS EN UNA SOLA CONSULTA EN ESTE REPOSITORIO
-        //SINO SE VUELVE MUY POCO PERFORMANTE
-        //HAY QUE VER BIEN EN QUE CASOS HACE FALTA QUE UNA RESERVA CONOZCA ESTOS OBJETOS
-        //POR EJEMPLO, ¿PARA QUE NECESITA OBTENER SU HOTEL DE LA BASE SI LA ESTOY BUSCANDO A PARTIR DEL IDHOTEL?, AL HOTEL YA LO CONOZCO
-        public List<Reserva> getByIdHotel(int idHotel)
+          public List<Reserva> getByIdHotel(int idHotel)
         {
             RepositorioHotel repoHotel = new RepositorioHotel();
             RepositorioRegimen repoRegimen = new RepositorioRegimen();
@@ -105,11 +98,8 @@ namespace FrbaHotel.Repositorios
 
 
             sqlCommand.CommandText = "SELECT RES.idReserva FROM LOS_BORBOTONES.Reserva AS RES " + 
-                "WHERE NOT EXISTS( " + 
-                "SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE " +
-                "WHERE RES.idReserva = ESRE.idReserva " +
-                "AND ESRE.TipoEstado  IN ('RCR','RCC','RCNS','RCI','RCE','RCCR','RF') " +
-				") " +
+                "JOIN LOS_BORBOTONES.EstadoReserva AS ESRE ON RES.idReserva = ESRE.idReserva " +
+                "WHERE ESRE.TipoEstado  IN ('RC','RM') " +
                 "AND RES.idHotel= @idHotel " +
                 "AND RES.FechaDesde < LOS_BORBOTONES.fn_getDate();";
 
@@ -214,8 +204,8 @@ namespace FrbaHotel.Repositorios
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
-                " VALUES(@tipoEstado,@fecha,@descripcion,@idUsuario,@idReserva);";
+            sqlCommand.CommandText = "UPDATE LOS_BORBOTONES.EstadoReserva SET TipoEstado=@tipoEstado,Fecha=@fecha,Descripcion=@descripcion,idUsuario=@idUsuario " +
+                                     "WHERE idReserva=@idReserva;";
 
             sqlConnection.Open();
 
@@ -251,12 +241,6 @@ namespace FrbaHotel.Repositorios
                 DateTime fechaDesde = reader.GetDateTime(reader.GetOrdinal("FechaDesde"));
                 DateTime fechaHasta = reader.GetDateTime(reader.GetOrdinal("FechaHasta"));
                 decimal diasAlojados = reader.GetDecimal(reader.GetOrdinal("DiasAlojados"));
-                //Hotel hotel = repoHotel.getById(reader.GetOrdinal("idHotel"));
-                //Estadia estadia = repoEstadia.getById(reader.GetOrdinal("idEstadia"));
-                //Regimen regimen = repoRegimen.getById(reader.GetOrdinal("idRegimen"));                
-                //Cliente cliente = repoCliente.getById(reader.GetOrdinal("idCliente"));
-                //List<EstadoReserva> estados = repoEstadoReserva.getByIdReserva(idReserva);
-                //Reserva reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
                 reserva = new Reserva(idReserva, null, null, null, null, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, null);
             }
 
@@ -272,6 +256,7 @@ namespace FrbaHotel.Repositorios
             RepositorioHotel repoHotel = new RepositorioHotel();
             RepositorioEstadia repoEstadia = new RepositorioEstadia();
             RepositorioCliente repoClientes = new RepositorioCliente();
+            RepositorioEstadoReserva repoEstadoReserva = new RepositorioEstadoReserva();
 
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -299,8 +284,8 @@ namespace FrbaHotel.Repositorios
                 Regimen regimen = repoRegimen.getById(reader.GetInt32(reader.GetOrdinal("idRegimen")));
                 Estadia estadia = repoEstadia.getById(reader.GetInt32(reader.GetOrdinal("idEstadia")));
                 Cliente cliente = repoClientes.getById(reader.GetInt32(reader.GetOrdinal("idCliente")));
-                List<EstadoReserva> estados = new List<EstadoReserva>(); //NO TRAE LOS ESTADOS DE LA RESERVA DE LA BASE?
-                reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+                EstadoReserva estado = repoEstadoReserva.getByIdReserva(idReserva);
+                reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estado);
             }
             sqlConnection.Close();
 
@@ -330,8 +315,9 @@ namespace FrbaHotel.Repositorios
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = "SELECT 1 FROM LOS_BORBOTONES.Reserva AS RES " +
+                "JOIN LOS_BORBOTONES.EstadoReserva AS ESRE ON ESRE.idReserva = RES.idReserva " +
                 "WHERE RES.FechaDesde < @fechaHasta AND @fechaDesde < RES.FechaHasta AND RES.idHotel = @idHotel " +
-                "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE WHERE ESRE.idReserva = RES.idReserva AND  ESRE.TipoEstado IN ('RCR','RCC','RCNS')); ";
+                "AND  ESRE.TipoEstado NOT IN ('RCR','RCC','RCNS')";
 
             sqlConnection.Open();
 
@@ -365,7 +351,7 @@ namespace FrbaHotel.Repositorios
             DateTime fechaCreacion =  Utils.getSystemDatetimeNow();
             DateTime fechaDesde =  Utils.getSystemDatetimeNow();
             DateTime fechaHasta =  Utils.getSystemDatetimeNow();
-            List<EstadoReserva> estados = new List<EstadoReserva>();
+            EstadoReserva estado = null;
             
             //Configuraciones de la consulta
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
@@ -394,7 +380,7 @@ namespace FrbaHotel.Repositorios
                 regimen = repoRegimen.getById(reader.GetOrdinal("IdRegimen"));
                 estadia = repoEstadia.getById(reader.GetOrdinal("IdEstadia"));
                 cliente = repoCliente.getById(reader.GetOrdinal("IdCliente"));
-                estados.Add(repoEstadoReserva.getById(idReserva));
+                estado=repoEstadoReserva.getById(idReserva);
             }
 
             //Cierro Primera Consulta
@@ -404,7 +390,7 @@ namespace FrbaHotel.Repositorios
             if (cliente.Equals(null)) throw new NoExisteIDException("No existe reserva con el ID asociado");
 
             //Armo la reserva completa
-            reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estados);
+            reserva = new Reserva(idReserva, hotel, estadia, regimen, cliente, codigoReserva, diasAlojados, fechaCreacion, fechaDesde, fechaHasta, estado);
 
             return reserva;
         }
@@ -414,36 +400,7 @@ namespace FrbaHotel.Repositorios
             throw new NotImplementedException();            
         }
 
-        //ESTO DEBE TARDAR 44 HORAS EN TRAER TODO
-        /*
-        override public List<Reserva> getAll()
-        {
-            List<Reserva> reservas = new List<Reserva>();
-
-            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-            SqlCommand sqlCommand = new SqlCommand();
-            SqlDataReader reader;
-
-            sqlCommand.CommandType = CommandType.Text;
-            sqlCommand.Connection = sqlConnection;
-
-            sqlCommand.CommandText = "SELECT idReserva FROM LOS_BORBOTONES.Reserva";
-
-            sqlConnection.Open();
-
-            reader = sqlCommand.ExecuteReader();
-
-            while (reader.Read())
-            {
-                reservas.Add(this.getById(reader.GetInt32(reader.GetOrdinal("idReserva"))));
-            }
-
-            sqlConnection.Close();
-
-            return reservas;
-        }
-        */
+      
 
         override public int create(Reserva reserva)
         {
@@ -541,8 +498,8 @@ namespace FrbaHotel.Repositorios
 
                                         "UPDATE LOS_BORBOTONES.Reserva SET FechaDesde=@fechaDesde, FechaHasta=@fechaHasta,DiasAlojados=@diasAlojados,idHotel=@idHotel,idRegimen=@idRegimen,idCliente=@idCliente WHERE idReserva=@idReserva; " +
 
-                                        "INSERT INTO LOS_BORBOTONES.EstadoReserva(TipoEstado,Fecha,Descripcion,idUsuario,idReserva) " +
-                                        "VALUES('RM', LOS_BORBOTONES.fn_getDate(),'Reserva Modificada',@idUsuario,@idReserva); " +
+                                        "UPDATE LOS_BORBOTONES.EstadoReserva SET TipoEstado = 'RM',Fecha=LOS_BORBOTONES.fn_getDate(),Descripcion='Reserva Modificada',idUsuario=@idUsuario " +
+                                        "WHERE idReserva=@idReserva; " +
                                         "DELETE FROM LOS_BORBOTONES.Reserva_X_Habitacion_X_Cliente WHERE idReserva=@idReserva; " +
                                         getReservaXHabitacionInserts(reserva, sqlCommand) +
 
@@ -804,10 +761,12 @@ namespace FrbaHotel.Repositorios
              sqlCommand.CommandType = CommandType.Text;
              sqlCommand.Connection = sqlConnection;
              sqlCommand.CommandText =
-                 "SELECT idReserva FROM LOS_BORBOTONES.Reserva AS RES WHERE RES.idRegimen = @idRegimen " +
+                 "SELECT RES.idReserva FROM LOS_BORBOTONES.Reserva AS RES " +
+                 "JOIN LOS_BORBOTONES.EstadoReserva AS ESRE ON ESRE.idReserva = RES.idReserva " +
+                 "WHERE RES.idRegimen = @idRegimen " +
                  "AND RES.idHotel=@idHotel " +
                  "AND RES.FechaHasta > LOS_BORBOTONES.fn_getDate()" +
-                 "AND NOT EXISTS (SELECT * FROM LOS_BORBOTONES.EstadoReserva AS ESRE WHERE ESRE.idReserva = res.idReserva AND  ESRE.TipoEstado IN ('RCR','RCC','RCNS'));";
+                 "AND ESRE.TipoEstado NOT  IN ('RCR','RCC','RCNS');";
 
              sqlConnection.Open();
 

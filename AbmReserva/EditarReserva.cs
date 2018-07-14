@@ -69,9 +69,9 @@ namespace FrbaHotel.AbmReserva
                         return;
                     }
 
-                    List<EstadoReserva> estadosDeLaReserva = reserva.getEstados();
+                    EstadoReserva estadoDeLaReserva = reserva.getEstadoReserva();
                     List<String> estadosNoModificables = new List<String>(new String[] { "RCC", "RCR", "RCNS", "RCE", "RCI","RCCR", "RF" });
-                    bool noPuedeModificar = estadosDeLaReserva.Exists(estado => estadosNoModificables.Exists(estadoNoModificable => estadoNoModificable.Equals(estado.getTipoEstado())));
+                    bool noPuedeModificar = estadosNoModificables.Exists(estadoNoModificable => estadoNoModificable.Equals(estadoDeLaReserva.getTipoEstado()));
 
                     if (noPuedeModificar)
                     {

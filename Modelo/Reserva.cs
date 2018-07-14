@@ -23,10 +23,10 @@ namespace FrbaHotel.Modelo
         private DateTime fechaCreacion = Utils.getSystemDatetimeNow();
         private DateTime fechaDesde = Utils.getSystemDatetimeNow();
         private DateTime fechaHasta = Utils.getSystemDatetimeNow();
-        private List<EstadoReserva> estados = new List<EstadoReserva>();
+        private EstadoReserva estado = null;
 
         public Reserva(int idReserva, Hotel hotel, Estadia estadia, Regimen regimen, Cliente cliente, decimal codigoReserva,
-            decimal diasAlojados, DateTime fechaCreacion, DateTime fechaDesde, DateTime fechaHasta, List<EstadoReserva> estados)
+            decimal diasAlojados, DateTime fechaCreacion, DateTime fechaDesde, DateTime fechaHasta, EstadoReserva estado)
         {
             this.idReserva = idReserva;
             this.hotel = hotel;
@@ -38,7 +38,7 @@ namespace FrbaHotel.Modelo
             this.fechaCreacion = fechaCreacion;
             this.fechaDesde = fechaDesde;
             this.fechaHasta = fechaHasta;
-            this.estados = estados;
+            this.estado = estado;
         }
 
         public Reserva(List<Habitacion> habitacionesParaReservar,Regimen regimen, Cliente clienteDueñoDeLaReserva, DateTime fechaInicio, DateTime fechaFin, int diasAlojados,Usuario usuario)
@@ -118,14 +118,14 @@ namespace FrbaHotel.Modelo
             return this.fechaHasta;
         }
 
-        public List<EstadoReserva> getEstados()
+        public EstadoReserva getEstadoReserva()
         {
 
-            if (this.estados == null) {
+            if (this.estado == null) {
                 RepositorioEstadoReserva repoEstados = new RepositorioEstadoReserva();
-                this.estados = repoEstados.getByIdReserva(this.idReserva);
+                this.estado = repoEstados.getByIdReserva(this.idReserva);
             }
-            return this.estados;
+            return this.estado;
         }
 
         public Boolean esNuevo()

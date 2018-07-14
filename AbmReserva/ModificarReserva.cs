@@ -289,6 +289,7 @@ namespace FrbaHotel.AbmReserva
                 var result = form.ShowDialog();
                 this.buscarHabitaciones((Regimen)comboBoxRegimen.SelectedItem);
             }
+            this.Close();
         }
 
         //CIERRO LA VENTANA CON ESCAPE
