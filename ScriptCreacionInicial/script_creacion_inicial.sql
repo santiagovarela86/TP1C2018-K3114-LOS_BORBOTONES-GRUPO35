@@ -2001,8 +2001,8 @@ INTO @CodigoReserva, @FechaCreacion, @FechaDesde, @FechaHasta, @DiasAlojados, @i
 WHILE @@FETCH_STATUS = 0
 BEGIN
 
-	INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, idUsuarioIn, idUsuarioOut)
-	VALUES (@FechaDesde, @FechaHasta, @DiasAlojados, @idUsuario, @idUsuario)
+	INSERT INTO LOS_BORBOTONES.Estadia(FechaEntrada, FechaSalida, CantidadNoches, Facturada, idUsuarioIn, idUsuarioOut)
+	VALUES (@FechaDesde, @FechaHasta, @DiasAlojados, 0, @idUsuario, @idUsuario)
 	
 	DECLARE @idEstadia INT
 	SET @idEstadia = SCOPE_IDENTITY();
