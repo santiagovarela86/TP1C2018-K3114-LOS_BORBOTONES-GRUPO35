@@ -196,7 +196,7 @@ namespace FrbaHotel.Repositorios
             return idIdentidad;
         }
 
-        public void limpiarDuplicado(Identidad identDup)
+        public void limpiarDuplicadoMarcarInconsistente(Identidad identDup)
         {
             String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
             SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -217,6 +217,10 @@ namespace FrbaHotel.Repositorios
 
                     UPDATE LOS_BORBOTONES.Identidad
                     SET TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail
+                    WHERE idIdentidad = @idIdentidad;
+
+                    UPDATE LOS_BORBOTONES.Cliente
+                    SET Inconsistente = 1
                     WHERE idIdentidad = @idIdentidad;
 
                     COMMIT

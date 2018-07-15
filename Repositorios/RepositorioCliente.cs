@@ -225,12 +225,6 @@ namespace FrbaHotel.Repositorios
             //PRIMERO LIMPIO LAS IDENTIDADES DUPLICADAS
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
 
-            //AGREGO VALIDACIONES AL UPDATE
-            if (repoIdentidad.yaExisteOtraIdentidadMismoMailOTipoYNumDoc(cliente.getIdentidad()))
-            {
-                throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo mail o tipo y numero de documento.");
-            }
-
             List<Identidad> identidadesDuplicadas = new List<Identidad>();
 
             //Configuraciones de la consulta
@@ -272,7 +266,7 @@ namespace FrbaHotel.Repositorios
             //Cierro Primera Consulta
             sqlConnection.Close();
 
-            identidadesDuplicadas.ForEach(identDup => repoIdentidad.limpiarDuplicado(identDup));
+            identidadesDuplicadas.ForEach(identDup => repoIdentidad.limpiarDuplicadoMarcarInconsistente(identDup));
 
             //LUEGO ACTUALIZO EL CLIENTE
             this.update(cliente);
