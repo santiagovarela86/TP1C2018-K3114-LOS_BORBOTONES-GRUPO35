@@ -220,16 +220,10 @@ namespace FrbaHotel.Repositorios
 
         }
 
-        public void limpioInconsistenciaYactualizo(Cliente cliente)
+        public void limpioInconsistenciaYactualizo(Cliente clienteViejo, Cliente clienteActualizado)
         {
             //PRIMERO LIMPIO LAS IDENTIDADES DUPLICADAS
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
-
-            //AGREGO VALIDACIONES AL UPDATE
-            if (repoIdentidad.yaExisteOtraIdentidadMismoMailOTipoYNumDoc(cliente.getIdentidad()))
-            {
-                throw new ElementoYaExisteException("Ya existe un cliente o un usuario con el mismo mail o tipo y numero de documento.");
-            }
 
             List<Identidad> identidadesDuplicadas = new List<Identidad>();
 
@@ -239,11 +233,16 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@idIdentidad", cliente.getIdentidad().getIdIdentidad());
-            sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
-            sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
-            sqlCommand.Parameters.AddWithValue("@Num", cliente.getIdentidad().getNumeroDocumento());
-            sqlCommand.Parameters.AddWithValue("@Tipo", cliente.getIdentidad().getTipoDocumento());
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", clienteViejo.getIdentidad().getIdIdentidad());
+            sqlCommand.Parameters.AddWithValue("@idCliente", clienteViejo.getIdCliente());
+
+            sqlCommand.Parameters.AddWithValue("@Mail", clienteActualizado.getIdentidad().getMail());
+            sqlCommand.Parameters.AddWithValue("@Num", clienteActualizado.getIdentidad().getNumeroDocumento());
+            sqlCommand.Parameters.AddWithValue("@Tipo", clienteActualizado.getIdentidad().getTipoDocumento());
+
+            sqlCommand.Parameters.AddWithValue("@MailViejo", clienteViejo.getIdentidad().getMail());
+            sqlCommand.Parameters.AddWithValue("@TipoViejo", clienteViejo.getIdentidad().getTipoDocumento());
+            sqlCommand.Parameters.AddWithValue("@NumViejo", clienteViejo.getIdentidad().getTipoDocumento());
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
@@ -257,6 +256,10 @@ namespace FrbaHotel.Repositorios
                             (identidad.TipoDocumento = @Tipo AND identidad.NumeroDocumento = @Num) 
                             OR 
                             (identidad.Mail = @Mail)
+                            OR
+                            (identidad.TipoDocumento = @TipoViejo AND identidad.NumeroDocumento = @NumViejo) 
+                            OR 
+                            (identidad.Mail = @MailViejo)
                         )
             ";
 
@@ -272,10 +275,86 @@ namespace FrbaHotel.Repositorios
             //Cierro Primera Consulta
             sqlConnection.Close();
 
-            identidadesDuplicadas.ForEach(identDup => repoIdentidad.limpiarDuplicado(identDup));
+            identidadesDuplicadas.ForEach(identDup => repoIdentidad.limpiarDuplicadoMarcarInconsistente(identDup));
 
             //LUEGO ACTUALIZO EL CLIENTE
-            this.update(cliente);
+            this.updateAutoritativo(clienteActualizado);
+        }
+
+        public void updateAutoritativo(Cliente cliente)
+        {
+            RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
+
+            String connectionString = ConfigurationManager.AppSettings["BaseLocal"];
+                SqlConnection sqlConnection = new SqlConnection(connectionString);
+                SqlCommand sqlCommand = new SqlCommand();
+                SqlDataReader reader;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Connection = sqlConnection;
+
+                //PARAMETERS DE LA DIRECCION
+                sqlCommand.Parameters.AddWithValue("@Pais", cliente.getIdentidad().getDireccion().getPais());
+                sqlCommand.Parameters.AddWithValue("@Ciudad", cliente.getIdentidad().getDireccion().getCiudad());
+                sqlCommand.Parameters.AddWithValue("@Calle", cliente.getIdentidad().getDireccion().getCalle());
+                sqlCommand.Parameters.AddWithValue("@NumeroCalle", cliente.getIdentidad().getDireccion().getNumeroCalle());
+                sqlCommand.Parameters.AddWithValue("@Piso", cliente.getIdentidad().getDireccion().getPiso());
+                sqlCommand.Parameters.AddWithValue("@Departamento", cliente.getIdentidad().getDireccion().getDepartamento());
+                sqlCommand.Parameters.AddWithValue("@idDireccion", cliente.getIdentidad().getDireccion().getIdDireccion());
+
+                //PARAMETERS DE LA IDENTIDAD
+                sqlCommand.Parameters.AddWithValue("@TipoIdent", cliente.getIdentidad().getTipoIdentidad());
+                sqlCommand.Parameters.AddWithValue("@Nombre", cliente.getIdentidad().getNombre());
+                sqlCommand.Parameters.AddWithValue("@Apellido", cliente.getIdentidad().getApellido());
+                sqlCommand.Parameters.AddWithValue("@TipoDoc", cliente.getIdentidad().getTipoDocumento());
+                sqlCommand.Parameters.AddWithValue("@NroDoc", cliente.getIdentidad().getNumeroDocumento());
+                sqlCommand.Parameters.AddWithValue("@Mail", cliente.getIdentidad().getMail());
+                sqlCommand.Parameters.AddWithValue("@FecNac", cliente.getIdentidad().getFechaNacimiento());
+                sqlCommand.Parameters.AddWithValue("@Nacion", cliente.getIdentidad().getNacionalidad());
+                sqlCommand.Parameters.AddWithValue("@Tel", cliente.getIdentidad().getTelefono());
+                sqlCommand.Parameters.AddWithValue("@idIdentidad", cliente.getIdentidad().getIdIdentidad());
+
+                //PARAMETERS DEL CLIENTE
+                /////////////////////////
+                //POR EL MOMENTO NO CONSIDERAMOS LAS RESERVAS EN EL CLIENTE EN EL UPDATE
+                /////////////////////////
+                sqlCommand.Parameters.AddWithValue("@Activo", cliente.getActivo());
+                sqlCommand.Parameters.AddWithValue("@idCliente", cliente.getIdCliente());
+
+                StringBuilder sqlBuilder = new StringBuilder();
+                sqlBuilder.Append(@"
+                    BEGIN TRY
+                    BEGIN TRANSACTION
+
+                    UPDATE LOS_BORBOTONES.Direccion
+                    SET Pais = @Pais, Ciudad = @Ciudad, Calle = @Calle, NumeroCalle = @NumeroCalle, Piso = @Piso, Depto = @Departamento
+                    WHERE idDireccion = @idDireccion;
+
+                    UPDATE LOS_BORBOTONES.Identidad
+                    SET TipoIdentidad = @TipoIdent, Nombre = @Nombre, Apellido = @Apellido, TipoDocumento = @TipoDoc, NumeroDocumento = @NroDoc, Mail = @Mail, FechaNacimiento = @FecNac, Nacionalidad = @Nacion, Telefono = @Tel
+                    WHERE idIdentidad = @idIdentidad;
+
+                    UPDATE LOS_BORBOTONES.Cliente
+                    SET Activo = @Activo, idIdentidad = @idIdentidad, Inconsistente = 0
+                    WHERE idCliente = @idCliente;
+
+                    COMMIT
+                    END TRY
+
+                    BEGIN CATCH
+                    ROLLBACK
+                    END CATCH
+                ");
+
+                //LA LOGICA EN PONER 'INCONSISTENTE = 0' EN TODOS LOS UPDATE
+                //ES QUE POR GUI YO AVISO QUE EL CLIENTE ESTA INCONSISTENTE
+                //SI EL USUARIO DEL SISTEMA DECIDE CONTINUAR EDITANDOLO DEBE GARANTIZAR QUE 
+                //VERIFICA LA IDENTIDAD DEL CLIENTE MEDIANTE DOCUMENTO Y VALIDA SU MAIL
+
+                sqlCommand.CommandText = sqlBuilder.ToString();
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                sqlConnection.Close();
         }
 
         override public void update(Cliente cliente)

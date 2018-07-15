@@ -1799,7 +1799,7 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND cliente2.idIdentidad = id2.idIdentidad
   AND id2.Mail = id1.Mail
   AND id1.idIdentidad < id2.idIdentidad
-  AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
+  --AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
 UNION
 SELECT cliente1.idCliente as idClienteInconsistente
 FROM LOS_BORBOTONES.Cliente cliente1
@@ -1810,9 +1810,10 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND cliente2.idIdentidad = id2.idIdentidad
   AND id2.Mail = id1.Mail
   AND id1.idIdentidad < id2.idIdentidad
-  AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
+  --AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
 GO
 
+/*
 INSERT INTO LOS_BORBOTONES.TemporalInconsistencias
 SELECT cliente2.idCliente as idClienteInconsistente
 FROM LOS_BORBOTONES.Cliente cliente1
@@ -1823,11 +1824,14 @@ WHERE cliente1.idIdentidad = id1.idIdentidad
   AND cliente2.idIdentidad = id2.idIdentidad
   AND id2.Mail = id1.Mail
   AND id1.idIdentidad < id2.idIdentidad
-  AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
+  --AND cliente2.idCliente NOT IN (SELECT idClienteInconsistente as idCliente FROM LOS_BORBOTONES.TemporalInconsistencias)
 GO
+*/
 
 DECLARE cursorClienteInconsistente CURSOR FOR
-SELECT * FROM LOS_BORBOTONES.TemporalInconsistencias
+SELECT DISTINCT * 
+FROM LOS_BORBOTONES.TemporalInconsistencias
+ORDER BY idClienteInconsistente
 
 DECLARE @idClienteInconsistente INT
 

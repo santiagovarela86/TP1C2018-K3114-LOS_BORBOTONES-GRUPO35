@@ -128,8 +128,7 @@ namespace FrbaHotel.AbmCliente
                 var result = form.ShowDialog();
 
                 //AL CERRAR LA VENTANA DESPUES DE DAR DE ALTA UN NUEVO CLIENTE VUELVO A CARGAR LA LISTA
-                //this.button2_Click(sender, e);
-                //NO LO HAGO MAS PORQUE TRAE PROBLEMAS DE PERFORMANCE
+                this.button2_Click(sender, e);
             }
         }
 
