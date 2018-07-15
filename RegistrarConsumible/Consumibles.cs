@@ -142,7 +142,7 @@ namespace FrbaHotel.RegistrarConsumible
                     try
                     {
                         repoEstadoReserva.update(estadoReserva);
-                        MessageBox.Show("Consumibles registrados.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Consumibles registrados. Ya puede facturar la estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.botonAgregar.Enabled = false;
                         this.botonBorrar.Enabled = false;
                         this.botonRegistrar.Enabled = false;
