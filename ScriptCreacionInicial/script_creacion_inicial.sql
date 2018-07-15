@@ -54,6 +54,11 @@ IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Direccion', 'F') IS NOT NULL
 	DROP CONSTRAINT FK_Hotel_Direccion 
 GO
 
+IF OBJECT_ID('LOS_BORBOTONES.UNIQUE_Hotel_UniqueNombre', 'F') IS NOT NULL
+	ALTER TABLE LOS_BORBOTONES.Habitacion
+	DROP CONSTRAINT UNIQUE_Hotel_UniqueNombre
+GO
+
 -- Tabla Hotel_X_Usuario
 IF OBJECT_ID('LOS_BORBOTONES.FK_Hotel_Usuario', 'F') IS NOT NULL
 	ALTER TABLE LOS_BORBOTONES.Hotel_X_Usuario
@@ -846,9 +851,9 @@ CREATE TABLE LOS_BORBOTONES.Hotel (
 
 	idHotel					INT					IDENTITY(1,1)	NOT NULL	UNIQUE, 
 	Nombre					NVARCHAR(255)		NOT NULL,
-	Mail					NVARCHAR(255),
-	Telefono				VARCHAR(45),
-	FechaInicioActividades	DATETIME,
+	Mail					NVARCHAR(255)		DEFAULT 'No Posee',
+	Telefono				VARCHAR(45)			DEFAULT 'No Posee',
+	FechaInicioActividades	DATETIME			NOT NULL,
 	idCategoria				INT					NOT NULL,
 	idDireccion				INT					NOT NULL,
 )
@@ -878,7 +883,7 @@ CREATE TABLE LOS_BORBOTONES.Regimen (
 	
 	idRegimen		INT				IDENTITY(1,1)	NOT NULL,
 	Codigo			VARCHAR(45)		NOT NULL,		
-	Descripcion		NVARCHAR(255),
+	Descripcion		NVARCHAR(255)	DEFAULT 'No Posee',
 	Precio			NUMERIC(18,2),
 	Activo			BIT
 )
@@ -910,7 +915,7 @@ CREATE TABLE LOS_BORBOTONES.Habitacion (
 	Activa				BIT				DEFAULT 1,
 	Numero				INT	NOT NULL,
 	Piso				INT	NOT NULL,
-	Descripcion			VARCHAR(500),
+	Descripcion			VARCHAR(500) DEFAULT 'No Posee',
 	Ubicacion			NVARCHAR(50)	NOT NULL,
 	idHotel				INT				NOT NULL,
 	idTipoHabitacion	INT				NOT NULL,	
@@ -1125,6 +1130,12 @@ ADD CONSTRAINT FK_Hotel_Categoria FOREIGN KEY(idCategoria) REFERENCES LOS_BORBOT
 
 ALTER TABLE LOS_BORBOTONES.Hotel
 ADD CONSTRAINT FK_Hotel_Direccion FOREIGN KEY(idDireccion) REFERENCES LOS_BORBOTONES.Direccion(idDireccion) ON DELETE CASCADE ON UPDATE CASCADE
+
+
+ALTER TABLE LOS_BORBOTONES.Hotel
+ADD CONSTRAINT UNIQUE_Hotel_UniqueNombre UNIQUE (Nombre)
+
+
 
 -- Tabla Hotel_X_Usuario
 ALTER TABLE LOS_BORBOTONES.Hotel_X_Usuario
