@@ -71,26 +71,8 @@ namespace FrbaHotel.RegistrarConsumible
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }           
-
-            /*
-            RepositorioConsumibles repoConsumible = new RepositorioConsumibles();
-
-                 //sumar el consumible elegido a la estadia marcada
-                 //consumible.setIdEstadia(idEstadia);
-                 //metodo registrar que no crea el consumible solo lo suma
-                 //idConsumible = repoConsumible.registrar(consumible);
-                    if (idConsumible == consumible.getIdConsumible())
-                    {
-                        MessageBox.Show("Consumible Registrado correctamente en la estadia.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.AltaConsumible_Load(sender, e);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error al registrar el consumible.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.AltaConsumible_Load(sender, e);
-                    }
-            */
+            }     
+      
             }
 
         private void button3_Click(object sender, EventArgs e)
