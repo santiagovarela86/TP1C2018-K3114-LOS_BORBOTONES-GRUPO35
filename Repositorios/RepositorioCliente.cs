@@ -220,7 +220,7 @@ namespace FrbaHotel.Repositorios
 
         }
 
-        public void limpioInconsistenciaYactualizo(Cliente clienteViejo, Cliente clienteActualizado)
+        public void limpioInconsistencia(Cliente clienteActualizado)
         {
             //PRIMERO LIMPIO LAS IDENTIDADES DUPLICADAS
             RepositorioIdentidad repoIdentidad = new RepositorioIdentidad();
@@ -233,33 +233,23 @@ namespace FrbaHotel.Repositorios
             SqlCommand sqlCommand = new SqlCommand();
             SqlDataReader reader;
 
-            sqlCommand.Parameters.AddWithValue("@idIdentidad", clienteViejo.getIdentidad().getIdIdentidad());
-            sqlCommand.Parameters.AddWithValue("@idCliente", clienteViejo.getIdCliente());
+            sqlCommand.Parameters.AddWithValue("@idIdentidad", clienteActualizado.getIdentidad().getIdIdentidad());
+            sqlCommand.Parameters.AddWithValue("@idCliente", clienteActualizado.getIdCliente());
 
             sqlCommand.Parameters.AddWithValue("@Mail", clienteActualizado.getIdentidad().getMail());
             sqlCommand.Parameters.AddWithValue("@Num", clienteActualizado.getIdentidad().getNumeroDocumento());
             sqlCommand.Parameters.AddWithValue("@Tipo", clienteActualizado.getIdentidad().getTipoDocumento());
-
-            sqlCommand.Parameters.AddWithValue("@MailViejo", clienteViejo.getIdentidad().getMail());
-            sqlCommand.Parameters.AddWithValue("@TipoViejo", clienteViejo.getIdentidad().getTipoDocumento());
-            sqlCommand.Parameters.AddWithValue("@NumViejo", clienteViejo.getIdentidad().getTipoDocumento());
 
             sqlCommand.CommandType = CommandType.Text;
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = @"
                 SELECT identidad.idIdentidad 
                 FROM LOS_BORBOTONES.Identidad identidad
-                    ,LOS_BORBOTONES.Cliente cliente
-                WHERE cliente.idCliente <> @idCliente
-                  AND identidad.idIdentidad = cliente.idIdentidad
+                WHERE identidad.idIdentidad <> @idIdentidad
                   AND   (
                             (identidad.TipoDocumento = @Tipo AND identidad.NumeroDocumento = @Num) 
                             OR 
                             (identidad.Mail = @Mail)
-                            OR
-                            (identidad.TipoDocumento = @TipoViejo AND identidad.NumeroDocumento = @NumViejo) 
-                            OR 
-                            (identidad.Mail = @MailViejo)
                         )
             ";
 
@@ -276,9 +266,6 @@ namespace FrbaHotel.Repositorios
             sqlConnection.Close();
 
             identidadesDuplicadas.ForEach(identDup => repoIdentidad.limpiarDuplicadoMarcarInconsistente(identDup));
-
-            //LUEGO ACTUALIZO EL CLIENTE
-            this.updateAutoritativo(clienteActualizado);
         }
 
         public void updateAutoritativo(Cliente cliente)

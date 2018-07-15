@@ -115,7 +115,9 @@ namespace FrbaHotel.AbmCliente
                    //SI EL CLIENTE ORIGINAL ESTABA INCONSISTENTE
                     if (cliente.getInconsistente())
                     {
-                        repoCliente.limpioInconsistenciaYactualizo(cliente, updatedClient);
+                        repoCliente.limpioInconsistencia(cliente, updatedClient);
+                        //LUEGO ACTUALIZO EL CLIENTE
+                        repoCliente.updateAutoritativo(updatedClient);
                     }
                     else
                     {
