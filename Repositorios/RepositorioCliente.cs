@@ -234,8 +234,6 @@ namespace FrbaHotel.Repositorios
             SqlDataReader reader;
 
             sqlCommand.Parameters.AddWithValue("@idIdentidad", clienteActualizado.getIdentidad().getIdIdentidad());
-            sqlCommand.Parameters.AddWithValue("@idCliente", clienteActualizado.getIdCliente());
-
             sqlCommand.Parameters.AddWithValue("@Mail", clienteActualizado.getIdentidad().getMail());
             sqlCommand.Parameters.AddWithValue("@Num", clienteActualizado.getIdentidad().getNumeroDocumento());
             sqlCommand.Parameters.AddWithValue("@Tipo", clienteActualizado.getIdentidad().getTipoDocumento());
@@ -246,11 +244,14 @@ namespace FrbaHotel.Repositorios
                 SELECT identidad.idIdentidad 
                 FROM LOS_BORBOTONES.Identidad identidad
                 WHERE identidad.idIdentidad <> @idIdentidad
-                  AND   (
-                            (identidad.TipoDocumento = @Tipo AND identidad.NumeroDocumento = @Num) 
-                            OR 
-                            (identidad.Mail = @Mail)
-                        )
+                  AND (identidad.TipoDocumento = @Tipo AND identidad.NumeroDocumento = @Num)
+
+                UNION
+
+                SELECT identidad.idIdentidad 
+                FROM LOS_BORBOTONES.Identidad identidad
+                WHERE identidad.idIdentidad <> @idIdentidad
+                  AND (identidad.Mail = @Mail)
             ";
 
             sqlConnection.Open();
