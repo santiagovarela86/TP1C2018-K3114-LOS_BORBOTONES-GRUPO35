@@ -62,8 +62,7 @@ namespace FrbaHotel.AbmCliente
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (textBoxNroDoc.Text.Trim().Equals("INCONSISTENTE") ||
-                    textBoxMail.Text.Trim().Equals("INCONSISTENTE"))
+            if (textBoxMail.Text.Trim().Equals("INCONSISTENTE"))
             {
                 MessageBox.Show("Corrija el tipo y numero de documento y el Mail.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -116,7 +115,7 @@ namespace FrbaHotel.AbmCliente
                    //SI EL CLIENTE ORIGINAL ESTABA INCONSISTENTE
                     if (cliente.getInconsistente())
                     {
-                        repoCliente.limpioInconsistenciaYactualizo(updatedClient);
+                        repoCliente.limpioInconsistenciaYactualizo(cliente, updatedClient);
                     }
                     else
                     {
