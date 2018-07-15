@@ -195,13 +195,13 @@ namespace FrbaHotel.Repositorios
                 //SI ES ALL INCLUSIVE NO SUMAN PARA EL TOTAL DE LA FACTURA
                 if (!allInclusive)
                 {
-                    monto = cm.getConsumible().getPrecio() * cm.getCantidad();
+                    monto = cm.getConsumible().getPrecio();
                 }
                 else monto = 0;
 
                 itemFactura = new ItemFactura(idItemFactura, cm.getConsumible().getIdConsumible(), cm.getCantidad(), monto, fecha, idFactura);
                 itemsFactura.Add(itemFactura);
-                montoTotal = monto + montoTotal;
+                montoTotal = monto * cm.getCantidad() + montoTotal;
             }             
 
             if (allInclusive)
